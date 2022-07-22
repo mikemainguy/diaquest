@@ -13,10 +13,11 @@
     <!--<script src="/components/collider.js"></script> -->
     <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.misc.min.js"></script>
 
-    <script type="text/javascript">
+    <!--<script type="text/javascript">
       AFRAME.ASSETS_PATH = "/ext/assets";
     </script>
-    <script src="/ext/aframe-material.js"></script>
+    <script src="/ext/aframe-material.js"></script>-->
+    <script src="/ext/aframe-keyboard.js"></script>
 </head>
 <body>
 
@@ -25,16 +26,17 @@
         <img id="skybox" src="./assets/skybox.png">
         <script id="billboard" type="text/x-nunjucks-template">
             <a-entity grabbable>
-                <a-entity class="text" text="color: #000; value: test; baseline: top; width: 1;align: center" position="0 0.5 .006" key-listen></a-entity>
+                <a-entity class="text" text="color: #000; value: test; baseline: top; width: 1;align: center" key-listen position="0 0.5 .006"></a-entity>
                 <a-box width="1" height="1" depth="0.01" color="#cc0"></a-box>
             </a-entity>
         </script>
+
     </a-assets>
-    <a-keyboard id="keyboard" position="0 1 8"></a-keyboard>
-    <a-entity template="src: #billboard" position="0 1.6 0"></a-entity>
+    <!--<a-entity a-keyboard id="keyboard" position="0 1 8"></a-entity>
+        <a-entity template="src: #billboard" position="0 1.6 0"></a-entity>
 
-    <a-plane  width="32" height="32" color="#ffffff" rotation="-90 0 0"></a-plane>
-
+        <a-plane  width="32" height="32" color="#ffffff" rotation="-90 0 0"></a-plane> -->
+    <a-sphere text="value: Multiverse" color="#66f"></a-sphere>
     <a-entity id="rig" position="0 0 14">
 
         <a-entity id="left-hand"  oculus-touch-controls="hand: left" forwardback strafe></a-entity>
@@ -50,7 +52,7 @@
         </a-camera>
     </a-entity>
 
-    <a-sky color="#9999ff" material="src: #skybox"> </a-sky>
+    <a-sky color="#111122"> </a-sky>
 
 </a-scene>
 </body>
