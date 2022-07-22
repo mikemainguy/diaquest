@@ -1,0 +1,50 @@
+<html>
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="/ext/aframe.min.js"></script>
+    <script src="/ext/aframe-template-component.min.js"></script>
+    <script src="/ext/superhands.min.js"></script>
+    <script src="/ext/oculus-thumbstick-controls.js"></script>
+    <script src="/components/components.js"></script>
+    <script src="/components/keyboard.js"></script>
+    <script src="/components/thumbstick.js"></script>
+    <script src="/components/trigger.js"></script>
+    <!--<script src="/components/collider.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.misc.min.js"></script>
+
+    <script type="text/javascript">
+      AFRAME.ASSETS_PATH = "/ext/assets";
+    </script>
+    <script src="/ext/aframe-material.js"></script>
+</head>
+<body>
+
+<a-scene>
+    <a-assets timeout="20000">
+        <img id="skybox" src="./assets/skybox.png">
+        <script id="billboard" type="text/x-nunjucks-template">
+            <a-entity grabbable>
+                <a-entity class="text" text="color: #000; value: test; baseline: top; width: 1;align: center" position="0 0.5 .006" key-listen></a-entity>
+                <a-box width="1" height="1" depth="0.01" color="#cc0"></a-box>
+            </a-entity>
+        </script>
+    </a-assets>
+    <a-keyboard id="keyboard" position="0 1 8"></a-keyboard>
+    <a-entity template="src: #billboard" position="0 1.6 0"></a-entity>
+
+    <a-plane  width="32" height="32" color="#ffffff" rotation="-90 0 0"></a-plane>
+
+    <a-entity id="rig" position="0 0 14">
+        <a-entity id="left-hand"  oculus-touch-controls="hand: left" forwardback strafe></a-entity>
+        <a-entity id="right-hand" laser-controls  trigger oculus-touch-controls="hand: right" forwardback turn></a-entity>
+        <a-camera id="camera" position="0 1.6 0">
+            <!--<a-box color="#f00" height="0.1" width="0.1" position="0 .2 -1.5"></a-box> -->
+        </a-camera>
+    </a-entity>
+
+    <a-sky color="#9999ff" material="src: #skybox"> </a-sky>
+
+</a-scene>
+</body>
+</html>
