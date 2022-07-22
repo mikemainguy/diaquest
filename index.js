@@ -12,7 +12,7 @@ const auth0Config = {
   authRequired: true,
   auth0Logout: true,
   secret: env.AUTH0_SECRET,
-  baseURL: 'http://localhost:3000',
+  baseURL: env.AUTH0_BASE_URL,
   clientID: '7el4MeFi7147tNZlL9EbYI8hEBuzMTaB',
   issuerBaseURL: 'https://aardvarkguru.us.auth0.com'
 };
