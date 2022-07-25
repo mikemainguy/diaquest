@@ -5,7 +5,7 @@ AFRAME.registerComponent('forwardback', {
     this.el.addEventListener('thumbstickmoved', this.thumbstick);
   },
   thumbstick: function (evt) {
-    if (Math.abs(evt.detail.y) > 0.2) {
+    if (Math.abs(evt.detail.y) > 0.5) {
       move(evt.detail.y, false);
     }
   },
@@ -19,14 +19,29 @@ AFRAME.registerComponent('turn', {
     this.el.addEventListener('thumbstickmoved', this.thumbstick);
   },
   thumbstick: function (evt) {
-    if (Math.abs(evt.detail.x)  > -0.2) {
-      rotate(0 - evt.detail.x);
+    if (Math.abs(evt.detail.x)  > -0.5) {
+      rotatey(0 - evt.detail.x);
     }
   },
   tick: function () {
 
   }
 });
+AFRAME.registerComponent('elevate', {
+  init: function () {
+    this.el.addEventListener('thumbstickmoved', this.thumbstick);
+  },
+  thumbstick: function (evt) {
+    if (Math.abs(evt.detail.y)  > -0.2) {
+      elevate(evt.detail.y);
+
+    }
+  },
+  tick: function () {
+
+  }
+});
+
 AFRAME.registerComponent('strafe', {
   init: function () {
     this.el.addEventListener('thumbstickmoved', this.thumbstick);
@@ -41,7 +56,15 @@ AFRAME.registerComponent('strafe', {
   }
 });
 
-function rotate(amount) {
+function elevate(amount) {
+  const rig = getRig();
+  let position = rig.getAttribute("position");
+  position.y += getSpeed(amount);
+
+  rig.setAttribute("position", position);
+}
+
+function rotatey(amount) {
   const rig = getRig();
   let rotation = rig.getAttribute("rotation");
   rotation.y += amount;
@@ -62,6 +85,7 @@ function move(amount, slide) {
   let pos = rig.getAttribute("position");
   let direction = new THREE.Vector3();
   c.object3D.getWorldDirection(direction);
+
   direction.y = 0;
   if (slide) {
       let axis = new THREE.Vector3( 0, 1, 0 );
@@ -77,9 +101,11 @@ function move(amount, slide) {
 function getSpeed(value) {
   let speed = 0;
   if (value > 0) {
-    speed = Math.log(value);
+    speed = Math.log(value)/5;
+    speed = 0.05;
   } else {
-    speed = (Math.log(Math.abs(value))) * -1;
+    speed = (Math.log(Math.abs(value))/5) * -1;
+    speed = -0.05;
   }
-  return value/5;
+  return speed;
 }

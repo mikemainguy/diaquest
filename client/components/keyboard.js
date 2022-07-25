@@ -3,26 +3,26 @@ AFRAME.registerComponent('key-listen', {
     keyboard: {default: '#keyboard', type: 'selector'}
   },
   init: function () {
-    this.data.keyboard.addEventListener("input", this.keypress.bind(this));
-    this.data.keyboard.addEventListener("backspace", this.backspace.bind(this));
-    this.data.keyboard.addEventListener("enter", this.enter.bind(this));
-    let pos = new THREE.Vector3();
-    this.el.object3D.getWorldPosition(pos);
-    pos.x = pos.x-.7;
-    pos.y = pos.y-1.4;
-    this.data.keyboard.setAttribute('rotation', '-30 0 0');
-    this.data.keyboard.setAttribute('position', pos);
+    document.addEventListener("a-keyboard-update", this.keypress.bind(this));
   },
   keypress: function(event) {
-      {
-        this.el.setAttribute('text', 'value: ' + this.el.getAttribute('text').value + event.detail);
-      }
-  },
-  backspace: function(event) {
-    this.el.setAttribute('text', 'value: ' + this.el.getAttribute('text').value.slice(0,-1));
-  },
-  enter: function(event) {
-    this.data.keyboard.dismiss();
+    const code = parseInt(event.detail.code);
+    switch(code) {
+      case 8:
+        this.el.setAttribute('text', 'value: ' + this.el.getAttribute('text').value.slice(0,-1));
+        break;
+      case 6:
+        const keyboard = document.querySelector('#keyboard');
+        if (keyboard) {
+          keyboard.parentNode.removeChild(keyboard);
+        }
+
+        return;
+      default:
+        const current = this.el.getAttribute('text').value;
+        debug("'" + 'value: ' + current + event.detail.value + "'");
+        this.el.setAttribute('text', 'value: ' + current + event.detail.value);
+    }
   },
   tick: function () {
 
