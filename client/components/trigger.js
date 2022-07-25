@@ -1,6 +1,8 @@
 AFRAME.registerComponent('trigger', {
+
   init: function () {
-    //this.el.addEventListener("triggerdown", this.triggerdown);
+
+    // this.el.addEventListener("triggerdown", this.triggerdown);
     // this.el.addEventListener("triggerup", this.triggerup);
   },
   keypress: (evt) => {
@@ -24,6 +26,9 @@ AFRAME.registerComponent('trigger', {
     scene.appendChild(ele);
   },
   tick: function () {
+    const dir = new THREE.Vector3();
+    document.querySelector('#rig').object3D.getWorldDirection(dir);
+    debug(JSON.stringify(dir));
 
   }
 });
