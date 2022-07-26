@@ -26,14 +26,15 @@ function createKeyboard(target) {
   const ele = document.createElement('a-entity');
   ele.setAttribute("id", "keyboard");
   let pos = new THREE.Vector3();
-  const obj = target.parentEl.object3D;
+  const obj = document.querySelector('#camera').object3D;
   obj.getWorldPosition(pos);
   let dir = new THREE.Vector3();
   obj.getWorldDirection(dir);
+  dir.y += 0.25;
   dir.multiplyScalar(-1);
+
   pos.add(dir);
 
-  pos.y += 1;
   ele.setAttribute('position', pos);
   ele.setAttribute('lookatme', '');
   ele.setAttribute("template", "src: #keys");

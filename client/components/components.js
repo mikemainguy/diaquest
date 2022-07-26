@@ -16,12 +16,11 @@ AFRAME.registerComponent('user', {
 AFRAME.registerComponent('lookatme', {
   init: function() {
     this.pos = new THREE.Vector3();
-    this.rig = document.querySelector('#rig').object3D;
+    this.camera = document.querySelector('#camera').object3D;
 
   },
   tick: function() {
-    this.rig.getWorldPosition(this.pos);
-    //this.pos.multiplyScalar(-1);
+    this.camera.getWorldPosition(this.pos);
     this.el.object3D.lookAt(this.pos);
   }
 });

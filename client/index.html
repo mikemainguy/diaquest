@@ -59,11 +59,12 @@
         </a-entity>
 
         <a-entity id="keys" type="text/x-nunjucks-template">
-            <a-plane color="#eee" key-listen width="1" height="0.2" text="color: #000; value: test; baseline: top; width: 1;align: center"  position="0 0.5 .006"></a-plane>
-            <a-entity a-keyboard rotation="-30 0 0"></a-entity>
+            <a-plane position=".25 0.1 -.05" color="#eee" key-listen width="1" height="0.2" text="color: #000; value: test; baseline: center; width: 1;align: center"></a-plane>
+            <a-entity position="0 0 0" a-keyboard rotation="0 0 0"></a-entity>
         </a-entity>
     </a-assets>
     <a-entity template="src: #plus" position="1 1.6 0"></a-entity>
+
 
     <a-sphere text="value: Multiverse" color="#77f"></a-sphere>
     <a-entity line="start: -20 0 0; end: 20 0 0; color: red"
