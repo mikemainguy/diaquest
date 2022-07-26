@@ -29,16 +29,11 @@ function createKeyboard(target) {
   const obj = target.parentEl.object3D;
   obj.getWorldPosition(pos);
   let dir = new THREE.Vector3();
-
   obj.getWorldDirection(dir);
-
-  dir.multiplyScalar(-2);
-  const start = Object.assign({}, pos);
+  dir.multiplyScalar(-1);
   pos.add(dir);
-  const end = pos;
-  drawLine(start, end);
 
-  pos.y += 1.2;
+  pos.y += 1;
   ele.setAttribute('position', pos);
   ele.setAttribute('lookatme', '');
   ele.setAttribute("template", "src: #keys");
@@ -55,6 +50,7 @@ function drawLine(start, end) {
 
   document.querySelector('a-scene').appendChild(ele);
 }
+
 function vectorString(vector) {
   return vector.x + " " + vector.y + " " + vector.z;
 }

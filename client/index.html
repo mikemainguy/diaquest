@@ -65,32 +65,25 @@
     </a-assets>
     <a-entity template="src: #plus" position="1 1.6 0"></a-entity>
 
-    <!--<a-entity a-keyboard id="keyboard" position="0 1 8"></a-entity>
-        <a-entity template="src: #billboard" position="0 1.6 0"></a-entity>
-
-        <a-plane  width="32" height="32" color="#ffffff" rotation="-90 0 0"></a-plane> -->
     <a-sphere text="value: Multiverse" color="#77f"></a-sphere>
     <a-entity line="start: -20 0 0; end: 20 0 0; color: red"
               line__2="start: 0 -20 0; end: 0 20 0; color: green"
               line__3="start: 0 0 -20; end: 0 0 20; color: blue"></a-entity>
 
     <a-entity id="rig" position="0 0 14">
-
         <a-entity id="left-hand"  oculus-touch-controls="hand: left" elevate strafe>
             <a-plane width="0.2" height="0.03" color="#fff" id="debug" class="text"
                      text="color: #000; value: test; baseline: center; width: 0.25; align: center"
                      position=".1 0.07 0.06"
                      rotation="-70 10 0"></a-plane>
         </a-entity>
-        <a-entity id="right-hand" laser-controls  trigger oculus-touch-controls="hand: right" forwardback turn>
+        <a-entity id="right-hand" laser-controls trigger oculus-touch-controls="hand: right" forwardback turn>
             <a-plane width="0.2" height="0.03" color="#fff" id="user" user class="text"
                      text="color: #000; value: test; baseline: center; width: 0.25; align: center"
-                      position=".1 0.07 0.06"
-             rotation="-70 10 0"></a-plane>
+                      position=".1 0.07 0.06" rotation="-70 10 0"></a-plane>
         </a-entity>
         <a-camera id="camera" position="0 1.6 0">
 
-            <!--<a-box color="#f00" height="0.1" width="0.1" position="0 .2 -1.5"></a-box> -->
         </a-camera>
     </a-entity>
 
