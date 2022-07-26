@@ -49,21 +49,29 @@
             </a-entity>
         </script>
         <a-entity lookatme id="plus" type="text/x-nunjucks-template">
-            <a-box width="0.05" height=".4" depth="0.05" color="#ccc"></a-box>
-            <a-box width=".4" height="0.05" depth="0.05" color="#ccc"></a-box>
-            <a-sphere id='add-universe' color="#aaf" collider radius="0.5" material="opacity: 0.5"></a-sphere>
-        </a-entity>
-        <a-entity id="universe" type="text/x-nunjucks-template">
-            <a-sphere color="#aaf" collider radius="0.5" material="opacity: 0.5"></a-sphere>
-            <a-plane color="#eee"  width="1" height="0.2" text="color: #000; value: test; baseline: top; width: 1;align: center"  position="0 0.5 .006"></a-plane>
+            <a-entity lookatme>
+                <a-box width="0.05" height=".4" depth="0.05" color="#ccc"></a-box>
+                <a-box width=".4" height="0.05" depth="0.05" color="#ccc"></a-box>
+            </a-entity>
+            <a-sphere id='add-universe' color="#aaf" collider="type: create" radius="0.5" material="opacity: 0.5"></a-sphere>
         </a-entity>
 
+        <a-entity id="universe" type="text/x-nunjucks-template">
+            <a-entity universe>
+                <a-sphere color="#2f2" radius="0.25" material="opacity: 0.6"></a-sphere>
+                <a-plane color="#222"  material="opacity: 0.2"
+                         lookatme width="1" height="0.2"
+                         text="color: #fff; value: test; baseline: top; width: 1;align: center"
+                         position="0 0.4 0"></a-plane>
+            </a-entity>
+        </a-entity>
         <a-entity id="keys" type="text/x-nunjucks-template">
             <a-plane position=".25 0.1 -.05" color="#eee" key-listen width="1" height="0.2" text="color: #000; value: test; baseline: center; width: 1;align: center"></a-plane>
             <a-entity position="0 0 0" a-keyboard rotation="0 0 0"></a-entity>
         </a-entity>
     </a-assets>
     <a-entity template="src: #plus" position="1 1.6 0"></a-entity>
+    <a-entity template="src: #universe" position="1 1 10"></a-entity>
 
 
     <a-sphere text="value: Multiverse" color="#77f"></a-sphere>

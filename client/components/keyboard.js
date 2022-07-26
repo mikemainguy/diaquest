@@ -15,6 +15,7 @@ AFRAME.registerComponent('key-listen', {
       case 6:
         const keyboard = document.querySelector('#keyboard');
         if (keyboard) {
+          createUniverse(keyboard, this.text);
           keyboard.parentNode.removeChild(keyboard);
         }
 
@@ -28,4 +29,13 @@ AFRAME.registerComponent('key-listen', {
 
   }
 });
+function createUniverse(el, text) {
+  const scene = document.querySelector('a-scene');
+  const ele = document.createElement('a-entity');
+  ele.setAttribute('template', 'src: #universe');
+  let pos = new THREE.Vector3();
+  el.object3D.getWorldPosition(pos);
+  ele.setAttribute('position', pos);
+  scene.appendChild(ele);
+}
 

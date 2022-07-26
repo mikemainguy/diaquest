@@ -1,4 +1,7 @@
 AFRAME.registerComponent('collider', {
+  schema: {
+    type: {type: 'string'}
+  },
   init: function() {
     this.basecolor = this.el.getAttribute('color');
     this.el.addEventListener('raycaster-intersected', (event) => {
