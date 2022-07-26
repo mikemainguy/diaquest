@@ -3,9 +3,13 @@ AFRAME.registerComponent('universe', {
     text: {type: 'string'}
   },
   init: function() {
-    this.el.querySelector('a-plane').setAttribute('text', 'value: '+ this.data.text);
+    if (this.el.querySelector('a-plane')) {
+      this.el.querySelector('a-plane').setAttribute('text', 'value: '+ this.data.text);
+    }
   },
   update: function() {
-    this.el.querySelector('a-plane').setAttribute('text', 'value: '+ this.data.text);
+    if (this.el.querySelector('a-plane')) {
+      this.el.querySelector('a-plane').setAttribute('text', 'value: '+ this.data.text);
+    }
   }
 });

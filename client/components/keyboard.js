@@ -5,7 +5,6 @@ AFRAME.registerComponent('key-listen', {
     document.addEventListener("a-keyboard-update", this.keypress.bind(this));
   },
   keypress: function(event) {
-
     const code = parseInt(event.detail.code);
     switch(code) {
       case 8:
@@ -16,6 +15,7 @@ AFRAME.registerComponent('key-listen', {
         const keyboard = document.querySelector('#keyboard');
         if (keyboard) {
           createUniverse(keyboard, this.text);
+          this.text = '';
           keyboard.parentNode.removeChild(keyboard);
         }
 
@@ -29,6 +29,7 @@ AFRAME.registerComponent('key-listen', {
 
   }
 });
+
 function createUniverse(el, text) {
   const scene = document.querySelector('a-scene');
   const ele = document.createElement('a-entity');
@@ -36,6 +37,12 @@ function createUniverse(el, text) {
   let pos = new THREE.Vector3();
   el.object3D.getWorldPosition(pos);
   ele.setAttribute('position', pos);
+
   scene.appendChild(ele);
+  //stupid hack I don't 100% understand why I need to do this...seems like async load is problem.
+  window.setTimeout(function() {
+    ele.setAttribute('universe', 'text: ' + text);
+  },200);
 }
+
 

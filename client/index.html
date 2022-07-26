@@ -11,6 +11,7 @@
     <script src="/components/thumbstick.js"></script>
     <script src="/components/trigger.js"></script>
     <script src="/components/collider.js"></script>
+    <script src="/components/universe.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.misc.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/nunjucks/2.3.0/nunjucks.min.js"></script>
 
@@ -57,11 +58,11 @@
         </a-entity>
 
         <a-entity id="universe" type="text/x-nunjucks-template">
-            <a-entity universe>
+            <a-entity>
                 <a-sphere color="#2f2" radius="0.25" material="opacity: 0.6"></a-sphere>
                 <a-plane color="#222"  material="opacity: 0.2"
                          lookatme width="1" height="0.2"
-                         text="color: #fff; value: test; baseline: top; width: 1;align: center"
+                         text="color: #fff;  baseline: top; width: 1; align: center"
                          position="0 0.4 0"></a-plane>
             </a-entity>
         </a-entity>
@@ -71,7 +72,7 @@
         </a-entity>
     </a-assets>
     <a-entity template="src: #plus" position="1 1.6 0"></a-entity>
-    <a-entity template="src: #universe" position="1 1 10"></a-entity>
+    <!--<a-entity  template="src: #universe" position="1 1 10"></a-entity> -->
 
 
     <a-sphere text="value: Multiverse" color="#77f"></a-sphere>
