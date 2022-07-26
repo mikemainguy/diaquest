@@ -14,14 +14,11 @@
     <script src="/components/universe.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.misc.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/nunjucks/2.3.0/nunjucks.min.js"></script>
-
-    <!--<script type="text/javascript">
-      AFRAME.ASSETS_PATH = "/ext/assets";
-    </script>
-    <script src="/ext/aframe-material.js"></script>-->
     <script src="/ext/aframe-keyboard.js"></script>
+
 </head>
 <body>
+<script type="module" src="/firebase/firebase.js"></script>
 <script>
   function debug( value ) {
     const debug = document.querySelector("#debug")
@@ -30,14 +27,6 @@
     }
 
   }
-  window.addEventListener('keydown', function(e) {
-    if (e.code == 'Space') {
-      //const event = {event: {currentTarget: {touching: document.querySelector('#add-universe')}});
-      //document.querySelector('#add-universe').components.collider.triggerdown.bind(document.querySelector('#add-universe'))(event);
-      console.log(e.code);
-
-    }
-  })
 </script>
 
 <a-scene>
