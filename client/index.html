@@ -32,6 +32,7 @@
 <a-scene>
     <a-assets timeout="20000">
         <img id="skybox" src="./assets/skybox.png">
+        <img id="nebula" src="./assets/photos_2018_12_12_fst_nebula.jpeg">
         <script id="billboard" type="text/x-nunjucks-template">
             <a-entity grabbable>
                 <a-entity class="text" text="color: #000; value: test; baseline: top; width: 1;align: center"
@@ -103,7 +104,7 @@
         </a-camera>
     </a-entity>
 
-    <a-sky color="#112"></a-sky>
+    <a-sky src="#nebula"></a-sky>
 
 </a-scene>
 </body>
