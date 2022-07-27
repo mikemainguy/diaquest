@@ -1,20 +1,24 @@
 AFRAME.registerComponent('key-listen', {
   init: function () {
     this.text = '';
-    this.el.setAttribute('text', 'value: ' +  this.text);
+    this.el.setAttribute('text', 'value: ' + this.text);
     document.addEventListener("a-keyboard-update", this.keypress.bind(this));
   },
-  keypress: function(event) {
+  keypress: function (event) {
     const code = parseInt(event.detail.code);
-    switch(code) {
+    switch (code) {
       case 8:
-        this.text = this.text.slice(0,-1);
-        this.el.setAttribute('text', 'value: ' +  this.text);
+        this.text = this.text.slice(0, -1);
+        this.el.setAttribute('text', 'value: ' + this.text);
         break;
       case 6:
         const keyboard = document.querySelector('#keyboard');
         if (keyboard) {
-          createUniverse(keyboard, this.text);
+          let pos = new THREE.Vector3();
+          keyboard.object3D.getWorldPosition(pos);
+          import('../firebase/firebase.js').then((module) => {
+            module.createUniverse(createUUID(), pos, this.text);
+          });
           this.text = '';
           keyboard.parentNode.removeChild(keyboard);
         }
@@ -22,7 +26,7 @@ AFRAME.registerComponent('key-listen', {
         return;
       default:
         this.text += event.detail.value;
-        this.el.setAttribute('text', 'value: ' +  this.text);
+        this.el.setAttribute('text', 'value: ' + this.text);
     }
   },
   tick: function () {
@@ -30,19 +34,11 @@ AFRAME.registerComponent('key-listen', {
   }
 });
 
-function createUniverse(el, text) {
-  const scene = document.querySelector('a-scene');
-  const ele = document.createElement('a-entity');
-  ele.setAttribute('template', 'src: #universe');
-  let pos = new THREE.Vector3();
-  el.object3D.getWorldPosition(pos);
-  ele.setAttribute('position', pos);
 
-  scene.appendChild(ele);
-  //stupid hack I don't 100% understand why I need to do this...seems like async load is problem.
-  window.setTimeout(function() {
-    ele.setAttribute('universe', 'text: ' + text);
-  },200);
+function createUUID() {
+  return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
+    (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+  )
 }
 
 

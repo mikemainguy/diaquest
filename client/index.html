@@ -20,10 +20,10 @@
 <body>
 <script type="module" src="/firebase/firebase.js"></script>
 <script>
-  function debug( value ) {
+  function debug(value) {
     const debug = document.querySelector("#debug")
     if (debug) {
-      debug.setAttribute('text','value: ' + value);
+      debug.setAttribute('text', 'value: ' + value);
     }
 
   }
@@ -34,7 +34,8 @@
         <img id="skybox" src="./assets/skybox.png">
         <script id="billboard" type="text/x-nunjucks-template">
             <a-entity grabbable>
-                <a-entity class="text" text="color: #000; value: test; baseline: top; width: 1;align: center"  position="0 0.5 .006"></a-entity>
+                <a-entity class="text" text="color: #000; value: test; baseline: top; width: 1;align: center"
+                          position="0 0.5 .006"></a-entity>
                 <a-box width="1" height="1" depth="0.01" color="#cc0"></a-box>
             </a-entity>
         </script>
@@ -43,26 +44,27 @@
                 <a-box width="0.05" height=".4" depth="0.05" color="#ccc"></a-box>
                 <a-box width=".4" height="0.05" depth="0.05" color="#ccc"></a-box>
             </a-entity>
-            <a-sphere id='add-universe' color="#aaf" collider="type: create" radius="0.5" material="opacity: 0.5"></a-sphere>
+            <a-sphere id='add-universe' color="#aaf" collider="type: create" radius="0.5"
+                      material="opacity: 0.5"></a-sphere>
         </a-entity>
 
         <a-entity id="universe" type="text/x-nunjucks-template">
-            <a-entity>
+            <a-entity class="saveable">
                 <a-sphere color="#2f2" radius="0.25" material="opacity: 0.6"></a-sphere>
-                <a-plane color="#222"  material="opacity: 0.2"
+                <a-plane color="#222" material="opacity: 0.2"
                          lookatme width="1" height="0.2"
                          text="color: #fff;  baseline: top; width: 1; align: center"
                          position="0 0.4 0"></a-plane>
             </a-entity>
         </a-entity>
         <a-entity id="keys" type="text/x-nunjucks-template">
-            <a-plane position=".25 0.1 -.05" color="#eee" key-listen width="1" height="0.2" text="color: #000; value: test; baseline: center; width: 1;align: center"></a-plane>
+            <a-plane position=".25 0.1 -.05" color="#eee" key-listen width="1" height="0.2"
+                     text="color: #000; value: test; baseline: center; width: 1;align: center"></a-plane>
             <a-entity position="0 0 0" a-keyboard rotation="0 0 0"></a-entity>
         </a-entity>
     </a-assets>
     <a-entity template="src: #plus" position="1 1.6 0"></a-entity>
-    <!--<a-entity  template="src: #universe" position="1 1 10"></a-entity> -->
-
+    <a-entity id="123" template="src: #universe" position="1 1.6 3"></a-entity>
 
     <a-sphere text="value: Multiverse" color="#77f"></a-sphere>
     <a-entity line="start: -20 0 0; end: 20 0 0; color: red"
@@ -70,23 +72,38 @@
               line__3="start: 0 0 -20; end: 0 0 20; color: blue"></a-entity>
 
     <a-entity id="rig" position="0 0 14">
-        <a-entity id="left-hand"  oculus-touch-controls="hand: left" elevate strafe>
-            <a-plane width="0.2" height="0.03" color="#fff" id="debug" class="text"
+        <a-entity id="left-hand" oculus-touch-controls="hand: left" elevate strafe>
+            <a-plane width="0.2"
+                     height="0.03"
+                     color="#fff"
+                     id="debug"
+                     class="text"
                      text="color: #000; value: test; baseline: center; width: 0.25; align: center"
                      position=".1 0.07 0.06"
                      rotation="-70 10 0"></a-plane>
         </a-entity>
-        <a-entity id="right-hand" laser-controls trigger oculus-touch-controls="hand: right" forwardback turn>
-            <a-plane width="0.2" height="0.03" color="#fff" id="user" user class="text"
+        <a-entity id="right-hand"
+                  laser-controls
+                  trigger
+                  oculus-touch-controls="hand: right"
+                  forwardback
+                  turn>
+            <a-plane width="0.2"
+                     height="0.03"
+                     color="#fff"
+                     id="user"
+                     user
+                     class="text"
                      text="color: #000; value: test; baseline: center; width: 0.25; align: center"
-                      position=".1 0.07 0.06" rotation="-70 10 0"></a-plane>
+                     position=".1 0.07 0.06"
+                     rotation="-70 10 0"></a-plane>
         </a-entity>
         <a-camera id="camera" position="0 1.6 0">
 
         </a-camera>
     </a-entity>
 
-    <a-sky color="#112"> </a-sky>
+    <a-sky color="#112"></a-sky>
 
 </a-scene>
 </body>

@@ -1,7 +1,7 @@
 import profile from "/api/user/profile" assert {type: 'json'};
 import { getAuth, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/9.8.3/firebase-auth.js";
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.8.3/firebase-app.js';
-import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/9.8.3/firebase-database.js";
+import { getDatabase, get, ref, set, child, onValue } from "https://www.gstatic.com/firebasejs/9.8.3/firebase-database.js";
 
 
 const firebaseConfig = {
@@ -27,12 +27,50 @@ export function writeUser(user) {
   user.last_seen = new Date().toUTCString();
   set(ref(database, 'users/' + user.sub), user);
 }
-export function writeUniverse() {
-  const scene = document.querySelector('#scene');
-  set(ref(database, 'universes/1'), scene);
+export function writeUniverse(universe) {
+  set(ref(database, 'universes/' + universe.id), universe);
 }
 const users = ref(database, 'users/' + profile.sub);
 onValue(users, (snapshot) => {
   const data = snapshot.val();
 })
+
+const universes = ref(database, 'universes');
+onValue(universes, (snapshot) => {
+  const data = snapshot.val();
+  console.log(data);
+  snapshot.forEach((item) => {
+    const it = item.val()
+    if (document.querySelector('#i'+it.id)) {
+      console.log(it.id + ' already exists');
+    } else {
+      createUniverse(it.id, it.position, it.text);
+    }
+  });
+
+})
+
 writeUser(profile);
+
+export function createUniverse(id, pos, text) {
+  const scene = document.querySelector('a-scene');
+  const ele = document.createElement('a-entity');
+
+  ele.setAttribute('template', 'src: #universe');
+  ele.setAttribute('position', pos);
+
+  scene.appendChild(ele);
+  //stupid hack I don't 100% understand why I need to do this...seems like async load is problem.
+  window.setTimeout(function() {
+    ele.setAttribute('universe', 'text: ' + text);
+    const uuid = id? id: createUUID();
+    ele.parentEl.setAttribute('id', uuid);
+
+    const data = {
+      id: uuid,
+        text: text,
+        position: pos,
+        template: '#universe'}
+      writeUniverse(data);
+  },200);
+}
