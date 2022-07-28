@@ -32,7 +32,8 @@
 <a-scene>
     <a-assets timeout="20000">
         <img id="skybox" src="./assets/skybox.png">
-        <img id="nebula" src="./assets/photos_2018_12_12_fst_nebula.jpeg">
+        <img id="nebula" src="./assets/8192.jpeg">
+        <img id="sky2" src="./assets/sky2.jpeg">
         <script id="billboard" type="text/x-nunjucks-template">
             <a-entity grabbable>
                 <a-entity class="text" text="color: #000; value: test; baseline: top; width: 1;align: center"
@@ -51,7 +52,7 @@
 
         <a-entity id="universe" type="text/x-nunjucks-template">
             <a-entity class="saveable">
-                <a-sphere color="#2f2" radius="0.25" material="opacity: 0.6"></a-sphere>
+                <a-sphere material="src: #sky2" color="#77f" radius="0.25" material="opacity: 0.6"></a-sphere>
                 <a-plane color="#222" material="opacity: 0.2"
                          lookatme width="1" height="0.2"
                          text="color: #fff;  baseline: top; width: 1; align: center"
@@ -68,9 +69,9 @@
     <a-entity id="123" template="src: #universe" position="1 1.6 3"></a-entity>
 
     <a-sphere text="value: Multiverse" color="#77f"></a-sphere>
-    <a-entity line="start: -20 0 0; end: 20 0 0; color: red"
+    <!--<a-entity line="start: -20 0 0; end: 20 0 0; color: red"
               line__2="start: 0 -20 0; end: 0 20 0; color: green"
-              line__3="start: 0 0 -20; end: 0 0 20; color: blue"></a-entity>
+              line__3="start: 0 0 -20; end: 0 0 20; color: blue"></a-entity> -->
 
     <a-entity id="rig" position="0 0 14">
         <a-entity id="left-hand" oculus-touch-controls="hand: left" elevate strafe>
@@ -104,7 +105,8 @@
         </a-camera>
     </a-entity>
 
-    <a-sky src="#nebula"></a-sky>
+    <a-sky src="#nebula" radius="2500" opacity="0.2"></a-sky>
+    <a-sky color="#002" radius="5000"></a-sky>
 
 </a-scene>
 </body>
