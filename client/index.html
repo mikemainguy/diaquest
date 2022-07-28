@@ -9,7 +9,7 @@
     <script src="/components/components.js"></script>
     <script src="/components/keyboard.js"></script>
     <script src="/components/thumbstick.js"></script>
-    <script src="/components/trigger.js"></script>
+    <script src="/components/buttons.js"></script>
     <script src="/components/collider.js"></script>
     <script src="/components/universe.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.misc.min.js"></script>
@@ -41,13 +41,24 @@
                 <a-box width="1" height="1" depth="0.01" color="#cc0"></a-box>
             </a-entity>
         </script>
+        <a-entity id="hud-template" type="text/x-nunjucks-template">
+            <a-sphere position="-.5 0 0" id='remove-universe' color="#aaf" collider="type: remove" radius="0.25"
+                      material="opacity: 0.5">
+                <a-entity lookatme>
+                    <a-box width=".4" height="0.05" depth="0.05" color="#ccc"></a-box>
+                </a-entity>
+            </a-sphere>
+            <a-sphere position=".5 0 0" id='add-universe' color="#aaf" collider="type: create" radius="0.25"
+                      material="opacity: 0.5">
+                <a-entity lookatme>
+                    <a-box width="0.05" height=".4" depth="0.05" color="#ccc"></a-box>
+                    <a-box width=".4" height="0.05" depth="0.05" color="#ccc"></a-box>
+                </a-entity>
+            </a-sphere>
+
+        </a-entity>
         <a-entity lookatme id="plus" type="text/x-nunjucks-template">
-            <a-entity lookatme>
-                <a-box width="0.05" height=".4" depth="0.05" color="#ccc"></a-box>
-                <a-box width=".4" height="0.05" depth="0.05" color="#ccc"></a-box>
-            </a-entity>
-            <a-sphere id='add-universe' color="#aaf" collider="type: create" radius="0.5"
-                      material="opacity: 0.5"></a-sphere>
+
         </a-entity>
 
         <a-entity id="universe" type="text/x-nunjucks-template">
@@ -74,7 +85,7 @@
               line__3="start: 0 0 -20; end: 0 0 20; color: blue"></a-entity> -->
 
     <a-entity id="rig" position="0 0 14">
-        <a-entity id="left-hand" oculus-touch-controls="hand: left" elevate strafe>
+        <a-entity id="left-hand" oculus-touch-controls="hand: left" elevate strafe buttons>
             <a-plane width="0.2"
                      height="0.03"
                      color="#fff"
@@ -86,7 +97,7 @@
         </a-entity>
         <a-entity id="right-hand"
                   laser-controls=""
-                  trigger
+                  buttons
                   oculus-touch-controls="hand: right"
                   forwardback
                   turn>
