@@ -1,7 +1,7 @@
 import profile from "/api/user/profile" assert {type: 'json'};
 import { getAuth, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/9.8.3/firebase-auth.js";
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.8.3/firebase-app.js';
-import { getDatabase, get, ref, set, child, onValue } from "https://www.gstatic.com/firebasejs/9.8.3/firebase-database.js";
+import { getDatabase, get, ref, set, onChildRemoved, child, onValue } from "https://www.gstatic.com/firebasejs/9.8.3/firebase-database.js";
 
 
 const firebaseConfig = {
@@ -41,7 +41,7 @@ onValue(universes, (snapshot) => {
   console.log(data);
   snapshot.forEach((item) => {
     const it = item.val()
-    if (document.querySelector('#i'+it.id)) {
+    if (document.querySelector('#'+it.id)) {
       console.log(it.id + ' already exists');
     } else {
       createUniverse(it.id, it.position, it.text);
@@ -49,7 +49,17 @@ onValue(universes, (snapshot) => {
   });
 
 })
+onChildRemoved(universes, (snapshot) => {
+  const ele = document.querySelector('#'+snapshot.val().id);
+  if (ele) {
+    ele.parentNode.removeChild(ele);
+  }
 
+});
+
+function removeUniverse(id) {
+  const obj = document.querySelector(id);
+}
 writeUser(profile);
 
 export function createUniverse(id, pos, text) {
