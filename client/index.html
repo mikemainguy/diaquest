@@ -55,8 +55,12 @@
                     <a-box width=".4" height="0.05" depth="0.05" color="#ccc"></a-box>
                 </a-entity>
             </a-sphere>
-        </a-entity>
-        <a-entity lookatme id="plus" type="text/x-nunjucks-template">
+            <a-entity position="-.5 -1 0" rotation="0 0 90">
+                <!--animation="property: position; from: 0 -0.625 0; to: 0 0.625 0; loop: true"  -->
+                <a-cone radius-bottom="0.06" radius-top="0" height="0.25" position="0 0.3 0" opacity="0.5"></a-cone>
+                <a-cylinder radius="0.05" id="add-connector" collider opacity="0.4" height=".4"></a-cylinder>
+
+            </a-entity>
 
         </a-entity>
 
@@ -76,10 +80,16 @@
             <a-entity position="0 0 0" a-keyboard rotation="0 0 0"></a-entity>
         </a-entity>
     </a-assets>
-    <a-entity template="src: #plus" position="1 1.6 0"></a-entity>
+    <a-entity template="src: #hud-template"  position="1 1.6 10"></a-entity>
+    <a-entity>
+
+        <a-cylinder opacity="0.5" height="100" color="#f00" radius="0.01"></a-cylinder>
+        <a-cylinder opacity="0.5" height="100" color="#0f0" radius="0.01" rotation="90 0 0"></a-cylinder>
+        <a-cylinder opacity="0.5" height="100" color="#00f" radius="0.01" rotation="0 0 90"></a-cylinder>
+        <a-sphere opacity="0.2" radius="0.25" color="#ff4"></a-sphere>
+    </a-entity>
 
 
-    <a-sphere text="value: Multiverse" color="#77f"></a-sphere>
     <!--<a-entity line="start: -20 0 0; end: 20 0 0; color: red"
               line__2="start: 0 -20 0; end: 0 20 0; color: green"
               line__3="start: 0 0 -20; end: 0 0 20; color: blue"></a-entity> -->
