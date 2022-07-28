@@ -1,7 +1,7 @@
 import profile from "/api/user/profile" assert {type: 'json'};
 import { getAuth, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/9.8.3/firebase-auth.js";
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.8.3/firebase-app.js';
-import { getDatabase, get, ref, set, onChildRemoved, child, onValue } from "https://www.gstatic.com/firebasejs/9.8.3/firebase-database.js";
+import { getDatabase, remove, ref, set, onChildRemoved, child, onValue } from "https://www.gstatic.com/firebasejs/9.8.3/firebase-database.js";
 
 
 const firebaseConfig = {
@@ -30,6 +30,9 @@ export function writeUser(user) {
 export function writeUniverse(universe) {
   set(ref(database, 'universes/' + universe.id), universe);
 }
+export function removeUniverse(id) {
+  remove(ref(database, 'universes/' + id));
+}
 const users = ref(database, 'users/' + profile.sub);
 onValue(users, (snapshot) => {
   const data = snapshot.val();
@@ -47,7 +50,6 @@ onValue(universes, (snapshot) => {
       createUniverse(it.id, it.position, it.text);
     }
   });
-
 })
 onChildRemoved(universes, (snapshot) => {
   const ele = document.querySelector('#'+snapshot.val().id);
@@ -57,9 +59,6 @@ onChildRemoved(universes, (snapshot) => {
 
 });
 
-function removeUniverse(id) {
-  const obj = document.querySelector(id);
-}
 writeUser(profile);
 
 export function createUniverse(id, pos, text) {
@@ -74,7 +73,7 @@ export function createUniverse(id, pos, text) {
   window.setTimeout(function() {
     ele.setAttribute('universe', 'text: ' + text);
     const uuid = id? id: createUUID();
-    ele.parentEl.setAttribute('id', uuid);
+    ele.setAttribute('id', uuid);
 
     const data = {
       id: uuid,

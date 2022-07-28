@@ -1,49 +1,24 @@
 AFRAME.registerComponent('collider', {
   schema: {
-    type: {type: 'string'}
+    type: {type: 'string'},
+    color: {default: '#fff'}
   },
-  init: function() {
+  init: function () {
     this.basecolor = this.el.getAttribute('color');
-      this.el.addEventListener('raycaster-intersected', (event) => {
-        this.el.setAttribute("color", "#ff0");
-        event.detail.el.touching = this;
-        event.detail.el.addEventListener("triggerdown", this.triggerdown.bind(this));
-      });
-      this.el.addEventListener('raycaster-intersected-cleared', (event) => {
-        this.el.setAttribute("color", this.basecolor);
-        event.detail.el.removeEventListener("triggerdown", this.triggerdown);
-        event.detail.el.removeEventListener("triggerup", this.triggerup);
-      });
-
-  },
-  triggerdown: function (event) {
-    switch (this.data.type) {
-      case 'create':
-        if (document.querySelector('#keyboard') != null) {
-          return;
-        }
-        createKeyboard(event.currentTarget);
-      case 'remove':
-        removeEntity(event.currentTarget);
-        break;
-      default:
-        console.log('type not found');
-
-    }
-    if (this.data.type == 'create') {
-
-    }
-  },
-  triggerup: (event) => {
+    this.el.addEventListener('raycaster-intersected', (event) => {
+      this.el.setAttribute("color", this.data.color);
+      this.el.classList.add('intersected');
+    });
+    this.el.addEventListener('raycaster-intersected-cleared', (event) => {
+      this.el.setAttribute("color", this.basecolor);
+      this.el.classList.remove('intersected');
+    });
 
   }
-})
 
-function removeEntity(target) {
-  console.log(target);
-}
+});
 
-function createKeyboard(target) {
+function createKeyboard() {
   const ele = document.createElement('a-entity');
   ele.setAttribute("id", "keyboard");
   ele.setAttribute('position', getHUDPosition());
@@ -61,7 +36,7 @@ function getHUDPosition(distance) {
   let dir = new THREE.Vector3();
   obj.getWorldDirection(dir);
   dir.y += 0.25;
-  dir.multiplyScalar(distance? distance: -1);
+  dir.multiplyScalar(distance ? distance : -1);
   pos.add(dir);
   return pos;
 }
@@ -70,7 +45,7 @@ function drawLine(start, end) {
   const ele = document.createElement('a-entity');
   const sphere = document.createElement('a-sphere');
   sphere.setAttribute("position", vectorString(start));
-  ele.setAttribute("line", "start: " + vectorString(start)+ ";end: " + vectorString(end));
+  ele.setAttribute("line", "start: " + vectorString(start) + ";end: " + vectorString(end));
 
   document.querySelector('a-scene').appendChild(ele);
 }
