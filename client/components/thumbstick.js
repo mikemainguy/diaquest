@@ -47,7 +47,7 @@ AFRAME.registerComponent('strafe', {
     this.el.addEventListener('thumbstickmoved', this.thumbstick);
   },
   thumbstick: function (evt) {
-    if (Math.abs(evt.detail.x) > 0.2) {
+    if (Math.abs(evt.detail.x) > 0.5) {
       move(evt.detail.x, true);
     }
   },
@@ -99,13 +99,6 @@ function move(amount, slide) {
 }
 
 function getSpeed(value) {
-  let speed = 0;
-  if (value > 0) {
-    speed = Math.log(value)/5;
-    speed = 0.05;
-  } else {
-    speed = (Math.log(Math.abs(value))/5) * -1;
-    speed = -0.05;
-  }
-  return speed;
+
+  return value/5;
 }

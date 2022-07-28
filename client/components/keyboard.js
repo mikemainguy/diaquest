@@ -6,24 +6,30 @@ AFRAME.registerComponent('key-listen', {
   },
   keypress: function (event) {
     const code = parseInt(event.detail.code);
+    const keyboard = document.querySelector('#keyboard');
     switch (code) {
       case 8:
         this.text = this.text.slice(0, -1);
         this.el.setAttribute('text', 'value: ' + this.text);
         break;
       case 6:
-        const keyboard = document.querySelector('#keyboard');
         if (keyboard) {
           let pos = new THREE.Vector3();
           keyboard.object3D.getWorldPosition(pos);
+          const text = this.text;
           import('../firebase/firebase.js').then((module) => {
-            module.createUniverse(createUUID(), pos, this.text);
+            module.createUniverse(createUUID(), pos, text);
           });
           this.text = '';
           keyboard.parentNode.removeChild(keyboard);
         }
-
-        return;
+        break;
+      case 24:
+        this.text = '';
+        if (keyboard) {
+          keyboard.parentNode.removeChild(keyboard);
+        }
+        break;
       default:
         this.text += event.detail.value;
         this.el.setAttribute('text', 'value: ' + this.text);

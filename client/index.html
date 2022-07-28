@@ -53,9 +53,9 @@
         <a-entity id="universe" type="text/x-nunjucks-template">
             <a-entity class="saveable">
                 <a-sphere material="src: #sky2" color="#77f" radius="0.25" material="opacity: 0.6"></a-sphere>
-                <a-plane color="#222" material="opacity: 0.2"
-                         lookatme width="1" height="0.2"
-                         text="color: #fff;  baseline: top; width: 1; align: center"
+                <a-plane color="#222" material="opacity: 0.1"
+                         lookatme width="1.5" height="0.2"
+                         text="color: #fff;  baseline: top; align: center"
                          position="0 0.4 0"></a-plane>
             </a-entity>
         </a-entity>
@@ -85,7 +85,7 @@
                      rotation="-70 10 0"></a-plane>
         </a-entity>
         <a-entity id="right-hand"
-                  laser-controls
+                  laser-controls=""
                   trigger
                   oculus-touch-controls="hand: right"
                   forwardback
