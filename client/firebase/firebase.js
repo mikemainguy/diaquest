@@ -1,7 +1,7 @@
 import profile from "/api/user/profile" assert {type: 'json'};
 import { getAuth, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/9.8.3/firebase-auth.js";
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.8.3/firebase-app.js';
-import { getDatabase, remove, ref, set, onChildRemoved, child, onValue } from "https://www.gstatic.com/firebasejs/9.8.3/firebase-database.js";
+import { getDatabase, remove, ref, set, onChildRemoved, onChildAdded, get, onValue } from "https://www.gstatic.com/firebasejs/9.8.3/firebase-database.js";
 
 
 const firebaseConfig = {
@@ -27,8 +27,14 @@ export function writeUser(user) {
   user.last_seen = new Date().toUTCString();
   set(ref(database, 'users/' + user.sub), user);
 }
-export function writeUniverse(universe) {
-  set(ref(database, 'universes/' + universe.id), universe);
+export function writeUniverse(uid, pos, text) {
+  const data = {
+    id: uid,
+    position: pos,
+    text: text,
+    template: "#universe"
+  }
+  set(ref(database, 'universes/' + uid), data);
 }
 export function removeUniverse(id) {
   remove(ref(database, 'universes/' + id));
@@ -38,8 +44,8 @@ onValue(users, (snapshot) => {
   const data = snapshot.val();
 })
 
-const universes = ref(database, 'universes');
-onValue(universes, (snapshot) => {
+const universes = ref(database, 'universes/');
+get(universes).then( (snapshot) => {
   const data = snapshot.val();
   console.log(data);
   snapshot.forEach((item) => {
@@ -51,35 +57,35 @@ onValue(universes, (snapshot) => {
     }
   });
 })
-onChildRemoved(universes, (snapshot) => {
+const universes2 = ref(database, 'universes');
+onChildAdded(universes2, (snapshot) => {
+  const universe = snapshot.val();
+  createUniverse(universe.id, universe.position, universe.text);
+});
+onChildRemoved(universes2, (snapshot) => {
   const ele = document.querySelector('#'+snapshot.val().id);
   if (ele) {
-    ele.parentNode.removeChild(ele);
+     ele.remove();
+
   }
 
 });
 
 writeUser(profile);
 
-export function createUniverse(id, pos, text) {
+function createUniverse(id, pos, text) {
   const scene = document.querySelector('a-scene');
   const ele = document.createElement('a-entity');
 
   ele.setAttribute('template', 'src: #universe');
   ele.setAttribute('position', pos);
-
-  scene.appendChild(ele);
-  //stupid hack I don't 100% understand why I need to do this...seems like async load is problem.
+  ele.setAttribute('id', id);
   window.setTimeout(function() {
     ele.setAttribute('universe', 'text: ' + text);
-    const uuid = id? id: createUUID();
-    ele.setAttribute('id', uuid);
+  }, 200);
 
-    const data = {
-      id: uuid,
-        text: text,
-        position: pos,
-        template: '#universe'}
-      writeUniverse(data);
-  },200);
+  scene.appendChild(ele);
+
+
+
 }

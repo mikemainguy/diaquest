@@ -7,6 +7,8 @@ AFRAME.registerComponent('key-listen', {
   keypress: function (event) {
     const code = parseInt(event.detail.code);
     const keyboard = document.querySelector('#keyboard');
+    const click = document.querySelector('#click');
+    click.components.sound.playSound();
     switch (code) {
       case 8:
         this.text = this.text.slice(0, -1);
@@ -18,7 +20,7 @@ AFRAME.registerComponent('key-listen', {
           keyboard.object3D.getWorldPosition(pos);
           const text = this.text;
           import('../firebase/firebase.js').then((module) => {
-            module.createUniverse(createUUID(), pos, text);
+            module.writeUniverse(createUUID(), pos, text);
           });
           this.text = '';
           keyboard.parentNode.removeChild(keyboard);

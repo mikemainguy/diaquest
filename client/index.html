@@ -55,7 +55,6 @@
                     <a-box width=".4" height="0.05" depth="0.05" color="#ccc"></a-box>
                 </a-entity>
             </a-sphere>
-
         </a-entity>
         <a-entity lookatme id="plus" type="text/x-nunjucks-template">
 
@@ -71,6 +70,7 @@
             </a-entity>
         </a-entity>
         <a-entity id="keys" type="text/x-nunjucks-template">
+            <a-sound id="click" src="src: url(/assets/click.mp3)" autoplay="false" position="0 2 5"></a-sound>
             <a-plane position=".25 0.1 -.05" color="#eee" key-listen width="1" height="0.2"
                      text="color: #000; value: test; baseline: center; width: 1;align: center"></a-plane>
             <a-entity position="0 0 0" a-keyboard rotation="0 0 0"></a-entity>

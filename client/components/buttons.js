@@ -28,11 +28,17 @@ AFRAME.registerComponent('buttons', {
           break;
         default:
           if (this.el.mode == 'removing') {
+            const parent = ele.parentNode;
+            console.log(ele);
+            console.log(parent);
             if (ele.classList.contains('saveable')) {
-              import('../firebase/firebase.js').then((module) => {
-                module.removeUniverse(ele.getAttribute('id'));
-              });
               this.el.mode = null;
+              import('../firebase/firebase.js').then((module) => {
+                console.log(parent.id);
+
+                module.removeUniverse(parent.id);
+              });
+
             }
           }
           console.log('type not found');
