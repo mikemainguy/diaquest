@@ -16,10 +16,12 @@ AFRAME.registerComponent('mover', {
   thumbstick: function(evt) {
     const val = evt.detail[this.data.axis];
     const sign = Math.sign(val);
-
-      if (Math.abs(val) > 0.5) {
+    const fastmove = Math.abs(val) > .9;
+      if (Math.abs(val) > 0.2) {
         if (!this.running) {
-          this.running=true;
+          if (!fastmove) {
+            this.running=true;
+          }
           if (this.data.forwardback) {
             move(this.data.moveIncrement * sign, false);
           }
@@ -63,10 +65,10 @@ function getCamera() {
 
 function move(amount, slide) {
   const rig = getRig();
-  //const c = getCamera();
+  const c = getCamera();
   let pos = rig.getAttribute("position");
   let direction = new THREE.Vector3();
-  rig.object3D.getWorldDirection(direction);
+  c.object3D.getWorldDirection(direction);
 
   direction.y = 0;
   if (slide) {

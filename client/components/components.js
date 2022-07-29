@@ -16,6 +16,28 @@ AFRAME.registerComponent('user', {
 
   }
 });
+
+AFRAME.registerComponent('rotate-listen', {
+  schema: {
+    //keyboard: {default: '#keyboard', type: 'selector'}
+  },
+  init: function () {
+
+  },
+  tick: function () {
+    //debug(vectorString(getHUDPosition()));
+    //document.querySelector('#reticle').object3D.position.set(getHUDPosition());
+    /*debug(radians_to_degrees(this.el.object3D.rotation.x) + ' '+
+      radians_to_degrees(this.el.object3D.rotation.y) + ' '+
+      radians_to_degrees(this.el.object3D.rotation.z)
+    );*/
+  }
+});
+function radians_to_degrees(radians)
+{
+  var pi = Math.PI;
+  return radians * (180/pi);
+}
 AFRAME.registerComponent('lookatme', {
   init: function() {
     this.pos = new THREE.Vector3();

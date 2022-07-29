@@ -7,6 +7,12 @@ AFRAME.registerComponent('collider', {
     this.basecolor = this.el.getAttribute('color');
     this.el.addEventListener('raycaster-intersected', (event) => {
       this.el.setAttribute("color", this.data.color);
+      const intersected = document.querySelectorAll('.intersected');
+      for(const obj of intersected) {
+        if (obj && obj.classList) {
+          obj.classList.remove('intersected');
+        }
+      }
       this.el.classList.add('intersected');
     });
     this.el.addEventListener('raycaster-intersected-cleared', (event) => {
@@ -31,10 +37,10 @@ function createKeyboard() {
 
 function getHUDPosition(distance) {
   let pos = new THREE.Vector3();
-  const obj = document.querySelector('#rig').object3D;
-  obj.getWorldPosition(pos);
+  const c = document.querySelector('#camera').object3D;
+  c.getWorldPosition(pos);
   let dir = new THREE.Vector3();
-  obj.getWorldDirection(dir);
+  c.getWorldDirection(dir);
   dir.multiplyScalar(distance ? distance : -1);
   pos.add(dir);
   return pos;
@@ -49,6 +55,3 @@ function drawLine(start, end) {
   document.querySelector('a-scene').appendChild(ele);
 }
 
-function vectorString(vector) {
-  return vector.x + " " + vector.y + " " + vector.z;
-}

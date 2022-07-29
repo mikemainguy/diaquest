@@ -1,13 +1,13 @@
 AFRAME.registerComponent('buttons', {
   init: function () {
-    this.el.mode = null;
+    this.mode = null;
     this.el.addEventListener("bbuttondown", this.bbuttondown.bind(this));
     this.el.addEventListener("bbuttonup", this.bbuttonup.bind(this));
     this.el.addEventListener('triggerdown', this.triggerdown.bind(this));
 
   },
   bbuttondown: function (evt) {
-    this.el.mode = null;
+    this.mode = null;
     showHud();
   },
   bbuttonup: function (evt) {
@@ -23,16 +23,15 @@ AFRAME.registerComponent('buttons', {
             return;
           }
           createKeyboard();
+          break;
         case 'remove-universe':
-          this.el.mode = 'removing';
+          this.mode = 'removing';
           break;
         default:
-          if (this.el.mode == 'removing') {
+          if (this.mode == 'removing') {
             const parent = ele.parentNode;
-            console.log(ele);
-            console.log(parent);
             if (ele.classList.contains('saveable')) {
-              this.el.mode = null;
+              this.mode = null;
               import('../firebase/firebase.js').then((module) => {
                 console.log(parent.id);
 
