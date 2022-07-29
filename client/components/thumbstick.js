@@ -1,66 +1,48 @@
-
-AFRAME.registerComponent('forwardback', {
-  init: function () {
-    this.forwardback = 0;
-    this.el.addEventListener('thumbstickmoved', this.thumbstick);
+AFRAME.registerComponent('mover', {
+  multiple: true,
+  schema: {
+      axis: {type: 'string', default: 'x'},
+      forwardback: {type: 'boolean', default: false},
+      elevate: {type: 'boolean', default: false},
+      strafe: {type: 'boolean', default: false},
+      turn: {type: 'boolean', default: false},
+      moveIncrement: {type: 'int', default: 1},
+      turnIncrement: {type: 'int', default: 45}
   },
-  thumbstick: function (evt) {
-    if (Math.abs(evt.detail.y) > 0.5) {
-      move(evt.detail.y, false);
-    }
+  init: function() {
+    this.running = false;
+    this.el.addEventListener('thumbstickmoved', this.thumbstick.bind(this));
   },
-  tick: function (time, delta) {
+  thumbstick: function(evt) {
+    const val = evt.detail[this.data.axis];
+    const sign = Math.sign(val);
 
-
-  }
-});
-AFRAME.registerComponent('turn', {
-  init: function () {
-    this.el.addEventListener('thumbstickmoved', this.thumbstick);
-  },
-  thumbstick: function (evt) {
-    if (Math.abs(evt.detail.x)  > -0.5) {
-      rotatey(0 - evt.detail.x);
-    }
-  },
-  tick: function () {
-
-  }
-});
-AFRAME.registerComponent('elevate', {
-  init: function () {
-    this.el.addEventListener('thumbstickmoved', this.thumbstick);
-  },
-  thumbstick: function (evt) {
-    if (Math.abs(evt.detail.y)  > -0.2) {
-      elevate(evt.detail.y);
-
-    }
-  },
-  tick: function () {
-
-  }
-});
-
-AFRAME.registerComponent('strafe', {
-  init: function () {
-    this.el.addEventListener('thumbstickmoved', this.thumbstick);
-  },
-  thumbstick: function (evt) {
-    if (Math.abs(evt.detail.x) > 0.5) {
-      move(evt.detail.x, true);
-    }
-  },
-  tick: function () {
-
+      if (Math.abs(val) > 0.5) {
+        if (!this.running) {
+          this.running=true;
+          if (this.data.forwardback) {
+            move(this.data.moveIncrement * sign, false);
+          }
+          if (this.data.elevate) {
+            elevate(this.data.moveIncrement * sign);
+          }
+          if (this.data.strafe) {
+            move(this.data.moveIncrement * sign, true);
+          }
+          if (this.data.turn) {
+            rotatey( (this.data.turnIncrement * sign)*-1);
+          }
+        }
+      } else {
+        this.running = false;
+      }
   }
 });
 
 function elevate(amount) {
   const rig = getRig();
   let position = rig.getAttribute("position");
-  position.y += getSpeed(amount);
-
+  position.y += amount;
   rig.setAttribute("position", position);
 }
 
@@ -81,10 +63,10 @@ function getCamera() {
 
 function move(amount, slide) {
   const rig = getRig();
-  const c = getCamera();
+  //const c = getCamera();
   let pos = rig.getAttribute("position");
   let direction = new THREE.Vector3();
-  c.object3D.getWorldDirection(direction);
+  rig.object3D.getWorldDirection(direction);
 
   direction.y = 0;
   if (slide) {
@@ -93,12 +75,7 @@ function move(amount, slide) {
       let angle = deg * (Math.PI / 180);
       direction.applyAxisAngle( axis, angle );
   }
-  direction.multiplyScalar(getSpeed(amount));
+  direction.multiplyScalar(amount);
   pos.add(direction);
   rig.setAttribute("position", pos);
-}
-
-function getSpeed(value) {
-
-  return value/5;
 }

@@ -31,11 +31,10 @@ function createKeyboard() {
 
 function getHUDPosition(distance) {
   let pos = new THREE.Vector3();
-  const obj = document.querySelector('#camera').object3D;
+  const obj = document.querySelector('#rig').object3D;
   obj.getWorldPosition(pos);
   let dir = new THREE.Vector3();
   obj.getWorldDirection(dir);
-  dir.y += 0.25;
   dir.multiplyScalar(distance ? distance : -1);
   pos.add(dir);
   return pos;
