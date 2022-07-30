@@ -97,7 +97,7 @@
 
         <a-entity id="universe" type="text/x-nunjucks-template">
             <a-entity collider class="saveable">
-                <a-sphere class="collidable" material="src: #sky2" color="#77f" radius="0.25" material="opacity: 0.6"></a-sphere>
+                <a-sphere animation="property: rotation; from: 0 0 0; to: 0 360 0; loop: true; dur: 60000"  class="collidable" material="src: #sky2" color="#77f" radius="0.25" material="opacity: 0.6"></a-sphere>
                 <a-plane color="#222" material="opacity: 0.1"
                          lookatme width="1.5" height="0.2"
                          text="color: #fff;  baseline: top; align: center"
@@ -163,8 +163,10 @@
         <a-entity camera rotate-listen look-controls id="camera" position="0 1.6 2">
 
         </a-entity>
+        <a-sound id="ambient" src="src: url(/assets/444.mp3); loop: true; volume=0.3" autoplay="true" position="0 2 5"></a-sound>
     </a-entity>
-
+    <a-entity light="type: ambient; color: #BBB"></a-entity>
+    <a-entity light="type: point; color: #FFF; distance: 50; intensity: 1" position="0 0 0"></a-entity>
     <a-sky src="#nebula" radius="2500" opacity="0.2"></a-sky>
     <a-sky color="#002" radius="5000"></a-sky>
 
