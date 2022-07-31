@@ -73,7 +73,7 @@ onChildRemoved(universes2, (snapshot) => {
 
 writeUser(profile);
 
-function createUniverse(id, pos, text) {
+export function createUniverse(id, pos, text) {
   const scene = document.querySelector('a-scene');
   const ele = document.createElement('a-entity');
 
@@ -85,7 +85,4 @@ function createUniverse(id, pos, text) {
   }, 200);
 
   scene.appendChild(ele);
-
-
-
 }

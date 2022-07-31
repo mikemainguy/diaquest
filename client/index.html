@@ -3,6 +3,7 @@
 <html>
 <head>
     <script src="/ext/aframe.min.js"></script>
+    <script src="/ext/nunjucks.min.js"></script>
     <script src="/ext/aframe-template-component.min.js"></script>
     <script src="/ext/superhands.min.js"></script>
     <script src="/ext/oculus-thumbstick-controls.js"></script>
@@ -12,8 +13,8 @@
     <script src="/components/buttons.js"></script>
     <script src="/components/collider.js"></script>
     <script src="/components/universe.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.misc.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/nunjucks/2.3.0/nunjucks.min.js"></script>
+    <script src="/ext/aframe-extras.misc.min.js"></script>
+    <script src="/ext/nunjucks.min.js"></script>
     <script src="/ext/aframe-keyboard.js"></script>
 
 </head>
@@ -25,15 +26,26 @@
     if (debug) {
       debug.setAttribute('text', 'value: ' + value);
     }
-
   }
   function vectorString(vector) {
     return vector.x + " " + vector.y + " " + vector.z;
   }
+  window.addEventListener('keydown', (event) => {
+    console.log(event.code);
+    if (event.code=='KeyI') {
+      import('../firebase/firebase.js').then((module) => {
+        for (let i = 0; i< 1000; i++) {
+          const max = 500;
+          const pos = new THREE.Vector3(Math.random()*max-(max/2),Math.random()*max-(max/2), Math.random()*max-(max-2));
+          module.createUniverse(createUUID(), pos, pos.x + ' ' + pos.y + ' ' + pos.z);
+        }
+      });
+    }
+  });
 
 </script>
 
-<a-scene>
+<a-scene stats fog="type: exponential; color: #fff; near: 20; far: 100">
     <a-assets timeout="20000">
         <img id="skybox" src="./assets/skybox.png">
         <img id="nebula" src="./assets/8192.jpeg">
@@ -167,8 +179,8 @@
     </a-entity>
     <a-entity light="type: ambient; color: #BBB"></a-entity>
     <a-entity light="type: point; color: #FFF; distance: 50; intensity: 1" position="0 0 0"></a-entity>
-    <a-sky src="#nebula" radius="2500" opacity="0.2"></a-sky>
-    <a-sky color="#002" radius="5000"></a-sky>
+    <a-sky src="#nebula" radius="1000" material="fog: false" opacity="0.2"></a-sky>
+    <a-sky color="#002" radius="2000" material="fog: false"></a-sky>
 
 </a-scene>
 </body>

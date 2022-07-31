@@ -34,7 +34,6 @@ AFRAME.registerComponent('buttons', {
               this.mode = null;
               import('../firebase/firebase.js').then((module) => {
                 console.log(parent.id);
-
                 module.removeUniverse(parent.id);
               });
 
