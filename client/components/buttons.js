@@ -3,18 +3,41 @@ AFRAME.registerComponent('buttons', {
     this.mode = null;
     this.el.addEventListener("bbuttondown", this.bbuttondown.bind(this));
     this.el.addEventListener("bbuttonup", this.bbuttonup.bind(this));
+    this.el.addEventListener("abuttondown", (evt) => {
+      generateWorlds(100);
+    });
     this.el.addEventListener('triggerdown', this.triggerdown.bind(this));
 
   },
   bbuttondown: function (evt) {
     this.mode = null;
+    this.template = '#universe';
     showHud();
   },
-  bbuttonup: function (evt) {
-    const hud = document.querySelector('#hud');
-    hud.parentElement.removeChild(hud);
-  },
-  triggerdown: function (event) {
+  triggerdown: function (evt) {
+    const ele = document.querySelector('.intersected');
+    const parent = ele?ele.parentNode:null;
+      switch (this.mode) {
+        case 'removing':
+          if (ele) {
+
+            if (ele.classList.contains('saveable')) {
+              import('../firebase/firebase.js').then((module) => {
+                console.log(parent.id);
+                module.removeUniverse(parent.id);
+              });
+            }
+          }
+          break;
+        case 'adding':
+          if (!parent) {
+            this.mode = 'typing';
+            createKeyboard();
+          }
+
+
+  }},
+  bbuttonup: function (event) {
     const ele = document.querySelector('.intersected');
     if (ele) {
       switch (ele.getAttribute('id')) {
@@ -22,7 +45,8 @@ AFRAME.registerComponent('buttons', {
           if (document.querySelector('#keyboard') != null) {
             return;
           }
-          createKeyboard();
+
+          this.mode = 'adding';
           break;
         case 'remove-universe':
           this.mode = 'removing';
@@ -41,7 +65,10 @@ AFRAME.registerComponent('buttons', {
           }
           console.log('type not found');
       }
+
     }
+    const hud = document.querySelector('#hud');
+    hud.parentElement.removeChild(hud);
   },
   tick: function () {
 

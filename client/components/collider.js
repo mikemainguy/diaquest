@@ -26,6 +26,7 @@ AFRAME.registerComponent('collider', {
 
 function createKeyboard() {
   const ele = document.createElement('a-entity');
+
   ele.setAttribute("id", "keyboard");
   ele.setAttribute('position', getHUDPosition());
   ele.setAttribute('lookatme', '');
