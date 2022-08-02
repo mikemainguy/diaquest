@@ -1,14 +1,13 @@
 AFRAME.registerComponent('key-listen', {
   init: function () {
     this.text = '';
+    this.buttons = document.querySelector('a-scene').systems['buttons'];
     this.el.setAttribute('text', 'value: ' + this.text);
     document.addEventListener("a-keyboard-update", this.keypress.bind(this));
   },
   keypress: function (event) {
     const code = parseInt(event.detail.code);
     const keyboard = document.querySelector('#keyboard');
-
-
     const click = document.querySelector('#click').components.sound;
     click.stopSound();
     click.playSound();
@@ -25,13 +24,16 @@ AFRAME.registerComponent('key-listen', {
           import('../firebase/firebase.js').then((module) => {
             module.writeUniverse(createUUID(), pos, text);
           });
+          this.buttons.mode='adding';
           this.text = '';
+
           keyboard.remove();
         }
         break;
       case 24:
         this.text = '';
         if (keyboard) {
+          this.buttons.mode='adding';
           keyboard.remove();
         }
         break;

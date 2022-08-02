@@ -1,6 +1,12 @@
+AFRAME.registerSystem('buttons', {
+  init: function() {
+    this.mode = null;
+
+  }
+});
 AFRAME.registerComponent('buttons', {
   init: function () {
-    this.mode = null;
+    this.system.mode = null;
     this.el.addEventListener("bbuttondown", this.bbuttondown.bind(this));
     this.el.addEventListener("bbuttonup", this.bbuttonup.bind(this));
     this.el.addEventListener("abuttondown", (evt) => {
@@ -10,33 +16,30 @@ AFRAME.registerComponent('buttons', {
 
   },
   bbuttondown: function (evt) {
-    this.mode = null;
+    this.system.mode = null;
     this.template = '#universe';
     showHud();
   },
   triggerdown: function (evt) {
     const ele = document.querySelector('.intersected');
-    const parent = ele?ele.parentNode:null;
-      switch (this.mode) {
-        case 'removing':
-          if (ele) {
-
-            if (ele.classList.contains('saveable')) {
-              import('../firebase/firebase.js').then((module) => {
-                console.log(parent.id);
-                module.removeUniverse(parent.id);
-              });
-            }
+    const parent = ele ? ele.parentNode : null;
+    switch (this.system.mode) {
+      case 'removing':
+        if (ele) {
+          if (ele.classList.contains('saveable')) {
+            import('../firebase/firebase.js').then((module) => {
+              module.removeUniverse(parent.id);
+            });
           }
-          break;
-        case 'adding':
-          if (!parent) {
-            this.mode = 'typing';
-            createKeyboard();
-          }
-
-
-  }},
+        }
+        break;
+      case 'adding':
+        if (!parent) {
+          this.system.mode = 'typing';
+          createKeyboard();
+        }
+    }
+  },
   bbuttonup: function (event) {
     const ele = document.querySelector('.intersected');
     if (ele) {
@@ -45,27 +48,26 @@ AFRAME.registerComponent('buttons', {
           if (document.querySelector('#keyboard') != null) {
             return;
           }
-
-          this.mode = 'adding';
+          this.system.mode = 'adding';
           break;
         case 'remove-universe':
-          this.mode = 'removing';
+          this.system.mode = 'removing';
           break;
         default:
-          if (this.mode == 'removing') {
+          if (this.system.mode == 'removing') {
             const parent = ele.parentNode;
             if (ele.classList.contains('saveable')) {
-              this.mode = null;
+              this.system.mode = null;
               import('../firebase/firebase.js').then((module) => {
                 console.log(parent.id);
                 module.removeUniverse(parent.id);
               });
-
             }
+          } else {
+            console.log('type not found');
           }
-          console.log('type not found');
-      }
 
+      }
     }
     const hud = document.querySelector('#hud');
     hud.parentElement.removeChild(hud);

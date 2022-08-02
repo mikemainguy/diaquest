@@ -19,21 +19,17 @@ AFRAME.registerComponent('collider', {
       this.el.setAttribute("color", this.basecolor);
       this.el.classList.remove('intersected');
     });
-
   }
-
 });
 
 function createKeyboard() {
   const ele = document.createElement('a-entity');
-
   ele.setAttribute("id", "keyboard");
   ele.setAttribute('position', getHUDPosition());
   ele.setAttribute('lookatme', '');
   ele.setAttribute("template", "src: #keys");
   const scene = document.querySelector("a-scene");
   scene.appendChild(ele);
-
 }
 
 function getHUDPosition(distance) {
@@ -52,7 +48,6 @@ function drawLine(start, end) {
   const sphere = document.createElement('a-sphere');
   sphere.setAttribute("position", vectorString(start));
   ele.setAttribute("line", "start: " + vectorString(start) + ";end: " + vectorString(end));
-
   document.querySelector('a-scene').appendChild(ele);
 }
 
