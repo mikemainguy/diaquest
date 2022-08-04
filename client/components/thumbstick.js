@@ -6,8 +6,8 @@ AFRAME.registerComponent('mover', {
       elevate: {type: 'boolean', default: false},
       strafe: {type: 'boolean', default: false},
       turn: {type: 'boolean', default: false},
-      moveIncrement: {type: 'int', default: 1},
-      turnIncrement: {type: 'int', default: 45}
+      moveIncrement: {type: 'float', default: 0.25},
+      turnIncrement: {type: 'float', default: 22.5}
   },
   init: function() {
     this.sound = false;
@@ -49,7 +49,7 @@ AFRAME.registerComponent('mover', {
 function elevate(amount) {
   const rig = getRig();
   let position = rig.getAttribute("position");
-  position.y += amount;
+  position.y -= amount;
   rig.setAttribute("position", position);
 }
 

@@ -1,7 +1,6 @@
 AFRAME.registerSystem('buttons', {
-  init: function() {
+  init: function () {
     this.mode = null;
-
   }
 });
 AFRAME.registerComponent('buttons', {
@@ -24,6 +23,22 @@ AFRAME.registerComponent('buttons', {
     const ele = document.querySelector('.intersected');
     const parent = ele ? ele.parentNode : null;
     switch (this.system.mode) {
+      case 'select-first':
+        if (ele) {
+          if (ele.classList.contains('saveable')) {
+            this.system.first = parent.id;
+            this.system.mode = 'select-second';
+          }
+        }
+        break;
+      case 'select-second':
+        if (ele) {
+          if (ele.classList.contains('saveable')) {
+            createConnector(this.system.first, parent.id);
+          }
+          this.system.mode='select-first';
+        }
+        break;
       case 'removing':
         if (ele) {
           if (ele.classList.contains('saveable')) {
@@ -44,6 +59,9 @@ AFRAME.registerComponent('buttons', {
     const ele = document.querySelector('.intersected');
     if (ele) {
       switch (ele.getAttribute('id')) {
+        case 'add-connector':
+          this.system.mode = 'select-first'
+          break;
         case 'add-universe':
           if (document.querySelector('#keyboard') != null) {
             return;
@@ -76,6 +94,16 @@ AFRAME.registerComponent('buttons', {
 
   }
 });
+function createConnector(first, second) {
+  const scene = document.querySelector("a-scene");
+  const ele = document.createElement('a-entity');
+
+  ele.setAttribute('id', 'test');
+  ele.setAttribute('template', 'src: #connector-template');
+  ele.setAttribute('connector', 'startEl: #' + first + "; endEl: #" + second);
+
+  scene.appendChild(ele);
+}
 
 function showHud() {
   const scene = document.querySelector("a-scene");

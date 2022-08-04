@@ -83,10 +83,17 @@
                 </a-entity>
             </a-entity>
         </a-entity>
-
+        <a-entity id="connector-template" type="text/x-nunjucks-template">
+            <a-entity class="saveable">
+                <a-cylinder  class="collidable" height="1" color="#dd2" radius="0.02" ></a-cylinder>
+                <a-plane color="#222"
+                         lookatme width="1.5" height="0.25"
+                         text="color: #fff;  baseline: top; align: center; wrapCount: 20"
+                         position="0 0.35 0"></a-plane>
+            </a-entity>
+        </a-entity>
         <a-entity id="universe" type="text/x-nunjucks-template">
             <a-entity collider class="saveable">
-
                 <a-sphere  animation="property: rotation; from: 0 0 0; to: 0 360 0; loop: true; dur: 60000" class="collidable" material="src: #sky2" color="#77f" radius="0.25" ></a-sphere>
                 <a-plane color="#222"
                          lookatme width="1.5" height="0.25"
@@ -96,7 +103,7 @@
         </a-entity>
 
         <a-entity id="keys" type="text/x-nunjucks-template">
-            <a-sound id="click" src="src: url(/assets/KeyIn.mp3)" autoplay="false"></a-sound>
+            <a-sound id="click" src="src: url(/assets/KeyDown.mp3)" autoplay="false"></a-sound>
             <a-plane position="-.01 0 0" color="#eee" key-listen width="1" height="0.2" rotation="0 0 0"
                      text="color: #000; value: test; baseline: center; width: 1;align: center"></a-plane>
             <a-entity position="-.25 -0.125 0" a-keyboard rotation="-10 0 0"></a-entity>
@@ -110,8 +117,6 @@
         <a-cylinder opacity="0.5" height="100" color="#00f" radius="0.01" rotation="0 0 90"></a-cylinder>
         <a-sphere opacity="0.2" radius="0.25" color="#ff4"></a-sphere>
     </a-entity>
-
-
     <!--<a-entity line="start: -20 0 0; end: 20 0 0; color: red"
               line__2="start: 0 -20 0; end: 0 20 0; color: green"
               line__3="start: 0 0 -20; end: 0 0 20; color: blue"></a-entity> -->
@@ -122,7 +127,7 @@
                 id="left-hand"
                 oculus-touch-controls="hand: left"
                 buttons
-                mover="elevate: true; axis: y"
+                mover="forwardback: true; axis: y"
                 mover__2="strafe: true; axis: x">
             <a-plane width="0.2"
                      height="0.03"
@@ -138,7 +143,7 @@
                   raycaster="objects: [collider], .collidable"
                   buttons
                   oculus-touch-controls="hand: right"
-                  mover="forwardback: true; axis: y"
+                  mover="elevate: true; axis: y"
                   mover__2="turn: true; axis: x">
             <a-plane width="0.2"
                      height="0.03"

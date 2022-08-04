@@ -12,6 +12,12 @@ window.addEventListener('keydown', (event) => {
   if (event.code=='KeyI') {
     generateWorlds(100);
   }
+  if (event.code=='KeyT'){
+    const first = '';
+    const second = '';
+    createConnector('#one', '#two');
+
+  }
 });
 function generateWorlds(count) {
   import('../firebase/firebase.js').then((module) => {
