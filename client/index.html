@@ -14,6 +14,7 @@
     <script src="/components/collider.js"></script>
     <script src="/components/universe.js"></script>
     <script src="/components/debug.js"></script>
+    <script src="/components/connector.js"></script>
     <script src="/ext/aframe-extras.misc.min.js"></script>
     <script src="/ext/nunjucks.min.js"></script>
     <script src="/ext/aframe-keyboard.js"></script>
@@ -85,9 +86,10 @@
         </a-entity>
         <a-entity id="connector-template" type="text/x-nunjucks-template">
             <a-entity class="saveable">
-                <a-cylinder  class="collidable" height="1" color="#dd2" radius="0.02" ></a-cylinder>
+                <a-cylinder material="opacity: 0.2; color: ff2" transparent="true" class="collidable" height="1" color="#dd2" radius="0.02" ></a-cylinder>
                 <a-plane color="#222"
                          lookatme width="1.5" height="0.25"
+
                          text="color: #fff;  baseline: top; align: center; wrapCount: 20"
                          position="0 0.35 0"></a-plane>
             </a-entity>
