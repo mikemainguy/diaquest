@@ -22,95 +22,82 @@ AFRAME.registerComponent('buttons', {
   triggerdown: function (evt) {
     const ele = document.querySelector('.intersected');
     const parent = ele ? ele.parentNode : null;
-    switch (this.system.mode) {
-      case 'select-first':
-        if (ele) {
-          if (ele.classList.contains('saveable')) {
-            this.system.first = parent.id;
-            this.system.mode = 'select-second';
-          }
-        }
-        break;
-      case 'select-second':
-        if (ele) {
-          if (ele.classList.contains('saveable')) {
-            import('../firebase/firebase.js').then((module) => {
-            //createConnector(this.system.first, parent.id);
-              const data = {
-                id: createUUID(),
-                first: this.system.first,
-                second: parent.id,
-                text: '',
-                template: '#connector'
-              }
-              module.writeEntity(data);
-            });
-
-          }
-          this.system.mode='select-first';
-        }
-        break;
-      case 'removing':
-        if (ele) {
-          if (ele.classList.contains('saveable')) {
-            import('../firebase/firebase.js').then((module) => {
-              const template = ele.closest('[template]');
-              if (template && template.id) {
-                module.removeEntity(template.id);
-              } else {
-                console.log('no template found for item');
-              }
-
-            });
-          }
-        }
-        break;
-      case 'adding':
-        if (!parent) {
-          this.system.mode = 'typing';
-          createKeyboard();
-        }
+    if (ele == null && this.system.mode != 'adding') {
+      debug('nothing intersected');
+      return;
     }
-  },
-  bbuttonup: function (event) {
-    const ele = document.querySelector('.intersected');
-    if (ele) {
-      switch (ele.getAttribute('id')) {
-        case 'add-connector':
-          this.system.mode = 'select-first'
+    if ((ele && ele.classList.contains('saveable')) || this.system.mode == 'adding') {
+      debug(this.system.mode);
+      const template = ele.closest('[template]');
+      if (template && template.id && template.id != '') {
+        debug(template.id);
+      }
+      switch (this.system.mode) {
+        case 'select-first':
+          debug('first selected: ' + template.id);
+          this.system.first = template.id;
+          this.system.mode = 'select-second';
+          debug(this.system.mode);
           break;
-        case 'add-universe':
-          if (document.querySelector('#keyboard') != null) {
-            return;
-          }
-          this.system.mode = 'adding';
-          break;
-        case 'remove':
-          this.system.mode = 'removing';
-          break;
-        default:
-          if (this.system.mode == 'removing') {
-            const parent = ele.parentNode;
-            if (ele.classList.contains('saveable')) {
-              this.system.mode = null;
-              import('../firebase/firebase.js').then((module) => {
-                console.log(parent.id);
-                module.removeEntity(parent.id);
-              });
+        case 'select-second':
+          debug('second selected: ' + template.id);
+          import('../firebase/firebase.js').then((module) => {
+            const data = {
+              id: createUUID(),
+              first: this.system.first,
+              second: template.id,
+              text: '',
+              template: '#connector'
             }
-          } else {
-            console.log('type not found');
-          }
+            module.writeEntity(data);
+            this.system.mode = 'select-first';
+            debug(this.system.mode);
+          });
+          break;
+        case 'removing':
+          import('../firebase/firebase.js').then((module) => {
+            module.removeEntity(template.id);
+          });
+          break;
+        case 'adding':
+            this.system.mode = 'typing';
+            createKeyboard();
 
       }
+
     }
-    const hud = document.querySelector('#hud');
-    hud.parentElement.removeChild(hud);
+
   },
+  bbuttonup:
+    function (event) {
+      const ele = document.querySelector('.intersected');
+      if (ele) {
+        switch (ele.getAttribute('id')) {
+          case 'add-connector':
+            this.system.mode = 'select-first'
+            break;
+          case 'add-universe':
+            if (document.querySelector('#keyboard') != null) {
+              return;
+            }
+            this.system.mode = 'adding';
+            break;
+          case 'remove':
+            this.system.mode = 'removing';
+            break;
+        }
+        debug(this.system.mode);
+      }
+      const hud = document.querySelector('#hud');
+      hud.parentElement.removeChild(hud);
+    }
+
+  ,
   tick: function () {
 
   }
-});
+})
+;
 
 function showHud() {
   const scene = document.querySelector("a-scene");

@@ -39,12 +39,13 @@ onValue(users, (snapshot) => {
   const data = snapshot.val();
 })
 
-const entities = ref(database, 'entities/');
+/*const entities = ref(database, 'entities/');
 get(entities).then( (snapshot) => {
   snapshot.forEach((item) => {
+    console.log('existing data ' + item.val().id);
     createEntity(item.val());
   });
-})
+}) */
 function createEntity(entity) {
   if (document.querySelector('#'+entity.id)) {
     console.log(entity.id + ' already exists');
@@ -61,6 +62,7 @@ function createEntity(entity) {
 }
 const entities2 = ref(database, 'entities');
 onChildAdded(entities2, (snapshot) => {
+  console.log('child added ' + snapshot.val().id);
   createEntity(snapshot.val());
 
 });

@@ -1,7 +1,10 @@
 function debug(value) {
   const debug = document.querySelector("#debug")
   if (debug) {
-    debug.setAttribute('text', 'value: ' + value);
+    const lines = debug.getAttribute('text').value;
+    const data = lines.split('\n').slice(-5);
+    data.push(value)
+    debug.setAttribute('text', 'value', data.join('\n'));
   }
 }
 function vectorString(vector) {

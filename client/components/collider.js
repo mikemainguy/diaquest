@@ -13,6 +13,13 @@ AFRAME.registerComponent('collider', {
           obj.classList.remove('intersected');
         }
       }
+      const save = this.el.closest('[template]');
+      /*if (save && save.id) {
+        debug(save.id);
+        debug(this.el.id);
+      }
+
+       */
       this.el.classList.add('intersected');
     });
     this.el.addEventListener('raycaster-intersected-cleared', (event) => {

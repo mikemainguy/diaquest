@@ -6,16 +6,22 @@ AFRAME.registerComponent('connector', {
   init: function() {
 
     this.pos = new THREE.Vector3();
-    this.obj1 = this.data.startEl.object3D;
-    this.obj2 = this.data.endEl.object3D;
-    const distance = this.obj1.position.distanceTo(this.obj2.position);
+    if (this.data.startEl && this.data.startEl.object3D &&
+      this.data.endEl && this.data.endEl.object3D ) {
+      this.obj1 = this.data.startEl.object3D;
+      this.obj2 = this.data.endEl.object3D;
+      const distance = this.obj1.position.distanceTo(this.obj2.position);
 
-    this.el.querySelector('.data-direction').setAttribute('height', distance);
-    this.el.querySelector('.data-direction').setAttribute('position', "0 0 " + distance/2);
-    this.el.querySelector('.data-packet').setAttribute('animation', 'to', "0 0 " + distance);
-    this.el.querySelector('a-plane').setAttribute('position','z', distance/2);
-    this.el.setAttribute('position', this.obj1.position);
-    this.el.object3D.lookAt(this.obj2.position);
+      this.el.querySelector('.data-direction').setAttribute('height', distance);
+      this.el.querySelector('.data-direction').setAttribute('position', "0 0 " + distance/2);
+      this.el.querySelector('.data-packet').setAttribute('animation', 'to', "0 0 " + distance);
+      this.el.querySelector('a-plane').setAttribute('position','z', distance/2);
+      this.el.setAttribute('position', this.obj1.position);
+      this.el.object3D.lookAt(this.obj2.position);
+    } else {
+      debug(JSON.stringify(this.data));
+    }
+
   },
   update: function() {
 

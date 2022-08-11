@@ -130,7 +130,7 @@
         </a-entity>
     </a-assets>
     <!--<a-entity template="src: #keys" position="0 1.6 13"></a-entity>-->
-    <a-entity template="src: #hud-template" position="1 1.6 10"></a-entity>
+    <!--<a-entity template="src: #hud-template" position="1 1.6 10"></a-entity> -->
     <a-entity>
         <a-cylinder opacity="0.5" height="100" color="#f00" radius="0.01"></a-cylinder>
         <a-cylinder opacity="0.5" height="100" color="#0f0" radius="0.01" rotation="90 0 0"></a-cylinder>
@@ -149,12 +149,12 @@
                 buttons
                 mover="forwardback: true; axis: y"
                 mover__2="strafe: true; axis: x">
-            <a-plane width="0.2"
-                     height="0.03"
+            <a-plane width="0.3"
+                     height=".3"
                      color="#fff"
                      id="debug"
                      class="text"
-                     text="color: #000; value: test; baseline: center; width: 0.25; align: center"
+                     text="color: #000; value: test; baseline: center; align: left"
                      position=".1 0.07 0.06"
                      rotation="-70 10 0"></a-plane>
         </a-entity>
