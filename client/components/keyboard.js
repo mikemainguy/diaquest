@@ -22,7 +22,13 @@ AFRAME.registerComponent('key-listen', {
           keyboard.object3D.getWorldPosition(pos);
           const text = this.text;
           import('../firebase/firebase.js').then((module) => {
-            module.writeUniverse(createUUID(), pos, text);
+            const data = {
+              id: createUUID(),
+              position: pos,
+              text: text,
+              template: "#universe"
+            }
+            module.writeEntity(data);
           });
           this.buttons.mode='adding';
           this.text = '';

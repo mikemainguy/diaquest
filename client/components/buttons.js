@@ -34,7 +34,18 @@ AFRAME.registerComponent('buttons', {
       case 'select-second':
         if (ele) {
           if (ele.classList.contains('saveable')) {
-            createConnector(this.system.first, parent.id);
+            import('../firebase/firebase.js').then((module) => {
+            //createConnector(this.system.first, parent.id);
+              const data = {
+                id: createUUID(),
+                first: this.system.first,
+                second: parent.id,
+                text: '',
+                template: '#connector'
+              }
+              module.writeEntity(data);
+            });
+
           }
           this.system.mode='select-first';
         }
@@ -43,7 +54,13 @@ AFRAME.registerComponent('buttons', {
         if (ele) {
           if (ele.classList.contains('saveable')) {
             import('../firebase/firebase.js').then((module) => {
-              module.removeUniverse(parent.id);
+              const template = ele.closest('[template]');
+              if (template && template.id) {
+                module.removeEntity(template.id);
+              } else {
+                console.log('no template found for item');
+              }
+
             });
           }
         }
@@ -68,7 +85,7 @@ AFRAME.registerComponent('buttons', {
           }
           this.system.mode = 'adding';
           break;
-        case 'remove-universe':
+        case 'remove':
           this.system.mode = 'removing';
           break;
         default:
@@ -78,7 +95,7 @@ AFRAME.registerComponent('buttons', {
               this.system.mode = null;
               import('../firebase/firebase.js').then((module) => {
                 console.log(parent.id);
-                module.removeUniverse(parent.id);
+                module.removeEntity(parent.id);
               });
             }
           } else {
@@ -94,16 +111,6 @@ AFRAME.registerComponent('buttons', {
 
   }
 });
-function createConnector(first, second) {
-  const scene = document.querySelector("a-scene");
-  const ele = document.createElement('a-entity');
-
-  ele.setAttribute('id', 'test');
-  ele.setAttribute('template', 'src: #connector-template');
-  ele.setAttribute('connector', 'startEl: #' + first + "; endEl: #" + second);
-
-  scene.appendChild(ele);
-}
 
 function showHud() {
   const scene = document.querySelector("a-scene");

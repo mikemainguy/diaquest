@@ -27,48 +27,48 @@ export function writeUser(user) {
   user.last_seen = new Date().toUTCString();
   set(ref(database, 'users/' + user.sub), user);
 }
-export function writeUniverse(uid, pos, text) {
-  const data = {
-    id: uid,
-    position: pos,
-    text: text,
-    template: "#universe"
-  }
-  set(ref(database, 'universes/' + uid), data);
+
+export function writeEntity(data) {
+  set(ref(database, 'entities/' + data.id), data);
 }
-export function removeUniverse(id) {
-  remove(ref(database, 'universes/' + id));
+export function removeEntity(id) {
+  remove(ref(database, 'entities/' + id));
 }
 const users = ref(database, 'users/' + profile.sub);
 onValue(users, (snapshot) => {
   const data = snapshot.val();
 })
 
-const universes = ref(database, 'universes/');
-get(universes).then( (snapshot) => {
-  const data = snapshot.val();
-  console.log(data);
+const entities = ref(database, 'entities/');
+get(entities).then( (snapshot) => {
   snapshot.forEach((item) => {
-    const it = item.val()
-    if (document.querySelector('#'+it.id)) {
-      console.log(it.id + ' already exists');
-    } else {
-      createUniverse(it.id, it.position, it.text);
-    }
+    createEntity(item.val());
   });
 })
-const universes2 = ref(database, 'universes');
-onChildAdded(universes2, (snapshot) => {
-  const universe = snapshot.val();
-  createUniverse(universe.id, universe.position, universe.text);
+function createEntity(entity) {
+  if (document.querySelector('#'+entity.id)) {
+    console.log(entity.id + ' already exists');
+  } else {
+    switch (entity.template) {
+      case '#universe':
+        createUniverse(entity.id, entity.position, entity.text);
+        break;
+      case '#connector':
+        createConnector(entity.id, entity.first, entity.second);
+        break;
+    }
+  }
+}
+const entities2 = ref(database, 'entities');
+onChildAdded(entities2, (snapshot) => {
+  createEntity(snapshot.val());
+
 });
-onChildRemoved(universes2, (snapshot) => {
+onChildRemoved(entities2, (snapshot) => {
   const ele = document.querySelector('#'+snapshot.val().id);
   if (ele) {
      ele.remove();
-
   }
-
 });
 
 writeUser(profile);
@@ -83,6 +83,19 @@ export function createUniverse(id, pos, text) {
   window.setTimeout(function() {
     ele.setAttribute('universe', 'text: ' + text);
   }, 200);
+
+  scene.appendChild(ele);
+}
+
+
+function createConnector(id, first, second) {
+  const scene = document.querySelector("a-scene");
+  const ele = document.createElement('a-entity');
+  ele.setAttribute('id', id);
+  ele.setAttribute('template', 'src: #connector-template');
+  window.setTimeout(function() {
+    ele.setAttribute('connector', 'startEl: #' + first + "; endEl: #" + second);
+  }, 200)
 
   scene.appendChild(ele);
 }

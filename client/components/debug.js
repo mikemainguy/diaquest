@@ -10,7 +10,7 @@ function vectorString(vector) {
 window.addEventListener('keydown', (event) => {
   console.log(event.code);
   if (event.code=='KeyI') {
-    generateWorlds(100);
+    //generateWorlds(100);
   }
   if (event.code=='KeyT'){
     const first = '';

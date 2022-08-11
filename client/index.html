@@ -33,10 +33,20 @@
             <a-entity position="0 0 0">
                 <a-entity position="-.5 .5 0">
                     <a-entity lookatme>
+                        <a-box width=".05" height="0.05" depth="0.05" color="#fff"></a-box>
+                        <a-box width=".05" position="-.1 0 0" height="0.05" depth="0.05" color="#fff"></a-box>
+                        <a-box width=".05" position=".1 0 0" height="0.05" depth="0.05" color="#fff"></a-box>
+                    </a-entity>
+                    <a-plane color="#ccc" width="1" height="1" position="0 0 -.25" id='remove'
+                             collider="type: create; color: #f00"></a-plane>
+                </a-entity>
+
+                <a-entity position="-1.5 .5 0">
+                    <a-entity lookatme>
                         <a-box width=".2" height="0.05" depth="0.05" color="#f55"></a-box>
                     </a-entity>
-                    <a-plane color="#ccc" width="1" height="1" position="0 0 -.25" id='remove-universe'
-                             collider="type: create; color: #f00"></a-plane>
+                    <a-plane color="#ccc" width="1" height="1" position="0 0 -.25" id='remove'
+                             collider="type: edit; color: #f00"></a-plane>
                 </a-entity>
 
                 <a-entity position=".5 .5 0">
@@ -85,11 +95,19 @@
             </a-entity>
         </a-entity>
         <a-entity id="connector-template" type="text/x-nunjucks-template">
-            <a-entity class="saveable">
-                <a-cylinder material="opacity: 0.2; color: ff2" transparent="true" class="collidable" height="1" color="#dd2" radius="0.02" ></a-cylinder>
+
+            <a-entity class="data-connector">
+
+                <a-sphere rotation="90 0 0" position="0 0 0" radius="0.09" class="data-packet"
+                          animation="property: position; from: 0 0 0; to: 0 0 1; loop: true; dur: 1000" color="#f00" >
+
+                </a-sphere>
+                <a-cylinder collider class="saveable data-direction collidable" rotation="90 0 0" position="0 0 0" material="opacity: 0.5; color: #ccc" transparent="true"
+                            height="1" radius="0.1" >
+
+                </a-cylinder>
                 <a-plane color="#222"
                          lookatme width="1.5" height="0.25"
-
                          text="color: #fff;  baseline: top; align: center; wrapCount: 20"
                          position="0 0.35 0"></a-plane>
             </a-entity>
@@ -112,7 +130,7 @@
         </a-entity>
     </a-assets>
     <!--<a-entity template="src: #keys" position="0 1.6 13"></a-entity>-->
-    <!--<a-entity template="src: #hud-template" position="1 1.6 10"></a-entity>-->
+    <a-entity template="src: #hud-template" position="1 1.6 10"></a-entity>
     <a-entity>
         <a-cylinder opacity="0.5" height="100" color="#f00" radius="0.01"></a-cylinder>
         <a-cylinder opacity="0.5" height="100" color="#0f0" radius="0.01" rotation="90 0 0"></a-cylinder>
