@@ -13,6 +13,7 @@ AFRAME.registerComponent('mover', {
     this.sound = false;
     this.running = false;
     this.el.addEventListener('thumbstickmoved', this.thumbstick.bind(this));
+    document.querySelector('#camera').setAttribute('camera', 'active', true);
   },
   thumbstick: function(evt) {
     if (!this.sound) {

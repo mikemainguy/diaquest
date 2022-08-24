@@ -23,6 +23,38 @@
 <body>
 <script type="module" src="/firebase/firebase.js"></script>
 <script src="/components/debug.js"></script>
+<!--<script src="/twilio/twilio-video.min.js"></script> -->
+
+<script>
+  /*import('../firebase/twilio.js').then((module) => {
+        module.connect();
+  });
+    */
+
+  /*window.addEventListener('load', (event) => {
+    const logger = Twilio.Video.Logger.getLogger('twilio-video');
+    logger.setLevel('debug');
+
+    fetch("/api/user/profile")
+      .then(response =>{
+        return response.json();
+        })
+      .then((profile) => {
+        console.log(profile);
+      Twilio.Video.createLocalTracks({audio:true, video: false}).then(localTracks => {
+        Twilio.Video.connect(profile.twilio_token, {name: 'diaQuest', tracks: localTracks});
+      });
+    })
+
+
+
+
+  });
+
+
+*/
+</script>
+
 
 <a-scene buttons stats background="color: #003" fog="type: exponential; color: #fff; near: 20; far: 100">
     <a-assets timeout="20000">
@@ -113,7 +145,7 @@
             </a-entity>
         </a-entity>
         <a-entity id="universe" type="text/x-nunjucks-template">
-            <a-entity collider class="saveable">
+            <a-entity collider grabbable class="saveable">
                 <a-sphere  animation="property: rotation; from: 0 0 0; to: 0 360 0; loop: true; dur: 60000" class="collidable" material="src: #sky2" color="#77f" radius="0.25" ></a-sphere>
                 <a-plane color="#222"
                          lookatme width="1.5" height="0.25"
@@ -175,7 +207,7 @@
                      position=".1 0.07 0.06"
                      rotation="-70 10 0"></a-plane>
         </a-entity>
-        <a-entity camera rotate-listen look-controls id="camera" position="0 1.6 2">
+        <a-entity camera="active: true" rotate-listen  id="camera" position="0 1.6 2">
 
         </a-entity>
         <a-sound id="ambient" src="src: url(/assets/444.mp3); loop: true; volume=0.3" autoplay="true" position="0 2 5"></a-sound>

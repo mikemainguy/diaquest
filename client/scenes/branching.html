@@ -1,0 +1,48 @@
+<html>
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="/ext/aframe.min.js"></script>
+    <script src="/ext/nunjucks.min.js"></script>
+    <script src="/ext/aframe-template-component.min.js"></script>
+    <script src="/ext/superhands.min.js"></script>
+    <script src="/ext/oculus-thumbstick-controls.js"></script>
+    <script src="/ext/aframe-extras.misc.min.js"></script>
+    <script src="/ext/nunjucks.min.js"></script>
+    <script src="/ext/aframe-keyboard.js"></script>
+
+</head>
+<body>
+
+
+
+
+<a-scene buttons background="color: #556">
+    <a-assets timeout="20000">
+
+        <a-entity id="commit" type="text/x-nunjucks-template">
+            <a-sphere radius="0.25"/>
+        </a-entity>
+        <a-entity id="branch" type="text/x-nunjucks-template">
+            <a-cylinder radius="0.2" color="#fff" height="1" rotation="0 0 0" position="0 0 -start"></a-cylinder>
+            <a-cylinder radius="0.1" height="{{height}}" rotation="90 0 0" color="{{color}}" position="0 0 {{(-height/2) -start}}"></a-cylinder>
+            <a-cylinder radius="0.2" height="1" rotation="0 0 0" position="0 0 -start-height"></a-cylinder>
+        </a-entity>
+
+        <a-entity id="grid" type="text/x-nunjucks-template">
+            {% for x in range (0,50) %}
+                <a-plane position="0 0 {{-x}}" width="2" height="2" transparent="true" material="opacity: 0.1" rotation="0 0 0"></a-plane>
+            {% endfor %}
+        </a-entity>
+
+    </a-assets>
+
+    <a-entity data-color="#f00" template="src:#branch" data-height="20" data-start="0"></a-entity>
+    <a-entity data-color="#00f" position="0 1 0" template="src:#branch" data-height="5" data-start="3"></a-entity>
+
+    <a-entity light="type: ambient; color: #BBB"></a-entity>
+    <a-entity light="type: point; color: #FFF; distance: 50; intensity: 1" position="0 0 0"></a-entity>
+    <a-camera position="5 5 10"></a-camera>
+</a-scene>
+</body>
+</html>

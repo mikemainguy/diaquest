@@ -15,6 +15,8 @@ AFRAME.registerComponent('connector', {
       this.el.querySelector('.data-direction').setAttribute('height', distance);
       this.el.querySelector('.data-direction').setAttribute('position', "0 0 " + distance/2);
       this.el.querySelector('.data-packet').setAttribute('animation', 'to', "0 0 " + distance);
+
+      this.el.querySelector('a-plane').setAttribute('visible', false);
       this.el.querySelector('a-plane').setAttribute('position','z', distance/2);
       this.el.setAttribute('position', this.obj1.position);
       this.el.object3D.lookAt(this.obj2.position);
