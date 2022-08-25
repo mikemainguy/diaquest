@@ -15,6 +15,7 @@
     <script src="/components/universe.js"></script>
     <script src="/components/debug.js"></script>
     <script src="/components/connector.js"></script>
+    <script src="/components/gridLayout.js"></script>
     <script src="/ext/aframe-extras.misc.min.js"></script>
     <script src="/ext/nunjucks.min.js"></script>
     <script src="/ext/aframe-keyboard.js"></script>
@@ -62,26 +63,56 @@
         <img id="nebula" src="./assets/8192.jpeg">
         <img id="sky2" src="./assets/sky2.jpeg">
         <a-entity id="hud-template" type="text/x-nunjucks-template">
-            <a-entity position="0 0 0">
+            <a-entity gridlayout position="0 0 0">
                 <a-entity position="-.5 .5 0">
+                    <a-plane id='edit'
+                             color="#ccc" width="1" height="1" position="0 0 -.25"
+                             collider="type: create; color: #f00"></a-plane>
                     <a-entity lookatme>
                         <a-box width=".05" height="0.05" depth="0.05" color="#fff"></a-box>
                         <a-box width=".05" position="-.1 0 0" height="0.05" depth="0.05" color="#fff"></a-box>
                         <a-box width=".05" position=".1 0 0" height="0.05" depth="0.05" color="#fff"></a-box>
                     </a-entity>
-                    <a-plane color="#ccc" width="1" height="1" position="0 0 -.25" id='move'
+
+                </a-entity>
+                <a-entity position="-.5 1.5 0">
+                    <a-plane id='move'
+                             text="value: move" color="#ccc" width="1" height="1" position="0 0 -.25"
                              collider="type: create; color: #f00"></a-plane>
+                    <a-entity lookatme>
+
+                        {% for item in [{rotation: "30 30 0"}, {rotation: "39 30 90"}, {rotation: "120 30 0"}] %}
+                        <a-entity rotation="{{item.rotation}}">
+                            <a-cylinder radius=".01" height="0.3" color="#fff"></a-cylinder>
+                            <a-cone color="#fff" radius-bottom="0.03" radius-top="0" height="0.1" position="0 .2 0"
+                                    opacity="0.5"></a-cone>
+                            <a-cone color="#fff" radius-bottom="0.03" radius-top="0" height="0.1" rotation="0 0 180"
+                                    position="0 -.2 0"
+                                    opacity="0.5"></a-cone>
+
+                        </a-entity>
+
+                        {% endfor %}
+
+
+                    </a-entity>
+
                 </a-entity>
 
                 <a-entity position="-1.5 .5 0">
+                    <a-plane id='remove'
+                             color="#ccc" width="1" height="1" position="0 0 -.25"
+                             collider="type: edit; color: #f00"></a-plane>
                     <a-entity lookatme>
                         <a-box width=".2" height="0.05" depth="0.05" color="#f55"></a-box>
                     </a-entity>
-                    <a-plane color="#ccc" width="1" height="1" position="0 0 -.25" id='remove'
-                             collider="type: edit; color: #f00"></a-plane>
+
                 </a-entity>
 
                 <a-entity position=".5 .5 0">
+                    <a-plane id='add-universe'
+                             color="#ccc" width="1" height="1" position="0 0 -.25"
+                             collider="type: create; color: #0f0"></a-plane>
                     <a-sphere color="#aaf"
                               radius="0.25"
                               material="opacity: 0.5">
@@ -90,12 +121,57 @@
                             <a-box width=".2" height="0.05" depth="0.05" color="#5f5"></a-box>
                         </a-entity>
                     </a-sphere>
-                    <a-plane color="#ccc" width="1" height="1" position="0 0 -.25" id='add-universe'
+
+                </a-entity>
+                <a-entity position=".5 1.5 0">
+                    <a-plane id='add-box'
+                             color="#ccc" width="1" height="1" position="0 0 -.25"
+                             collider="type: create; color: #0f0"></a-plane>
+                    <a-box color="#aaf"
+                           width="0.25"
+                           height="0.25"
+                           depth="0.25"
+                           material="opacity: 0.5">
+                        <a-entity lookatme>
+                            <a-box width="0.05" height=".2" depth="0.05" color="#5f5"></a-box>
+                            <a-box width=".2" height="0.05" depth="0.05" color="#5f5"></a-box>
+                        </a-entity>
+                    </a-box>
+
+                </a-entity>
+
+                <a-entity position=".5 -.5 0">
+                    <!--animation="property: position; from: 0 -0.625 0; to: 0 0.625 0; loop: true"  -->
+                    <a-box color="#aaf"
+                           opacity="0.4" width=".4" depth=".05" height=".4">
+                        <a-entity lookatme>
+                            <a-box width="0.05" height=".2" depth="0.05" color="#5f5"></a-box>
+                            <a-box width=".2" height="0.05" depth="0.05" color="#5f5"></a-box>
+                        </a-entity>
+                    </a-box>
+                    <a-plane color="#ccc"
+                             id="add-billboard" collider="type: foo; color: #0f0"
+                             width="1" height="1" depth="0.1" position="0 0 -.25" id='add-billboard'
+                             collider="type: create; color: #0f0"></a-plane>
+                </a-entity>
+                <a-entity position=".5 -.5 0">
+                    <!--animation="property: position; from: 0 -0.625 0; to: 0 0.625 0; loop: true"  -->
+                    <a-box color="#aaf"
+                           opacity="0.4" width=".4" depth=".4" height=".05">
+                        <a-entity lookatme>
+                            <a-box width="0.05" height=".2" depth="0.05" color="#5f5"></a-box>
+                            <a-box width=".2" height="0.05" depth="0.05" color="#5f5"></a-box>
+                        </a-entity>
+                    </a-box>
+                    <a-plane color="#ccc"
+                             id="add-plane" collider="type: foo; color: #0f0"
+                             width="1" height="1" depth="0.1" position="0 0 -.25" id='add-billboard'
                              collider="type: create; color: #0f0"></a-plane>
                 </a-entity>
                 <a-entity position="-.5 -.5 0">
                     <a-entity>
-                        <a-plane color="#ccc" width="1" height="1" position="0 0 -.25" id='add-connector'
+                        <a-plane id='add-connector'
+                                 color="#ccc" width="1" height="1" position="0 0 -.25"
                                  collider="type: create; color: #0f0"></a-plane>
                         <!--animation="property: position; from: 0 -0.625 0; to: 0 0.625 0; loop: true"  -->
                         <a-cone color="#aaf" radius-bottom="0.08" radius-top="0" height="0.25" position="0 0.3 0"
@@ -110,32 +186,20 @@
 
                     </a-entity>
                 </a-entity>
-                <a-entity position=".5 -.5 0" rotation="0 0 90">
-                    <!--animation="property: position; from: 0 -0.625 0; to: 0 0.625 0; loop: true"  -->
-                    <a-box color="#aaf"
-                           opacity="0.4" width=".4" depth=".2" height=".4">
-                        <a-entity lookatme>
-                            <a-box width="0.05" height=".2" depth="0.05" color="#5f5"></a-box>
-                            <a-box width=".2" height="0.05" depth="0.05" color="#5f5"></a-box>
-                        </a-entity>
-                    </a-box>
-                    <a-plane color="#ccc"
-                             id="add-billboard" collider="type: foo; color: #0f0"
-                             width="1" height="1" position="0 0 -.25" id='add-billboard'
-                             collider="type: create; color: #0f0"></a-plane>
-                </a-entity>
+
             </a-entity>
         </a-entity>
         <a-entity id="connector-template" type="text/x-nunjucks-template">
 
             <a-entity class="data-connector">
 
-                <a-sphere rotation="90 0 0" position="0 0 0" radius="0.09" class="data-packet"
-                          color="#f00" >
+                <a-sphere rotation="90 0 0" position="0 0 0" radius="0.04" class="data-packet"
+                          color="#f00">
 
                 </a-sphere>
-                <a-cylinder collider class="saveable data-direction collidable" rotation="90 0 0" position="0 0 0" material="opacity: 0.5; color: #ccc" transparent="true"
-                            height="1" radius="0.1" >
+                <a-cylinder collider class="saveable data-direction collidable" rotation="90 0 0" position="0 0 0"
+                            material="opacity: 0.5; color: #ccc" transparent="true"
+                            height="1" radius="0.05">
 
                 </a-cylinder>
                 <a-plane color="#222"
@@ -146,7 +210,17 @@
         </a-entity>
         <a-entity id="universe" type="text/x-nunjucks-template">
             <a-entity collider grabbable class="saveable">
-                <a-sphere  animation="property: rotation; from: 0 0 0; to: 0 360 0; loop: true; dur: 60000" class="collidable" material="src: #sky2" color="#77f" radius="0.25" ></a-sphere>
+                <a-sphere animation="property: rotation; from: 0 0 0; to: 0 360 0; loop: true; dur: 60000"
+                          class="collidable" material="src: #sky2" color="#77f" radius="0.5"></a-sphere>
+                <a-plane color="#222"
+                         lookatme width="1.5" height="0.25"
+                         text="color: #fff;  baseline: top; align: center; wrapCount: 20"
+                         position="0 0.35 0"></a-plane>
+            </a-entity>
+        </a-entity>
+        <a-entity id="box" type="text/x-nunjucks-template">
+            <a-entity collider grabbable class="saveable">
+                <a-box class="collidable" color="#00f" width=".5" height=".5" depth="0.5"></a-box>
                 <a-plane color="#222"
                          lookatme width="1.5" height="0.25"
                          text="color: #fff;  baseline: top; align: center; wrapCount: 20"
@@ -161,8 +235,10 @@
             <a-entity position="-.25 -0.125 0" a-keyboard rotation="-10 0 0"></a-entity>
         </a-entity>
     </a-assets>
+
     <!--<a-entity template="src: #keys" position="0 1.6 13"></a-entity>-->
-    <!--<a-entity template="src: #hud-template" position="1 1.6 10"></a-entity> -->
+    <!--<a-entity template="src: #hud-template"  position="1 1 14"></a-entity> -->
+
     <a-entity>
         <a-cylinder opacity="0.5" height="100" color="#f00" radius="0.01"></a-cylinder>
         <a-cylinder opacity="0.5" height="100" color="#0f0" radius="0.01" rotation="90 0 0"></a-cylinder>
@@ -208,15 +284,16 @@
                      position=".1 0.07 0.06"
                      rotation="-70 10 0"></a-plane>
         </a-entity>
-        <a-entity camera="active: true" rotate-listen  id="camera" position="0 1.6 2">
+        <a-entity camera="active: true" rotate-listen id="camera" position="0 1.6 2">
 
         </a-entity>
-        <a-sound id="ambient" src="src: url(/assets/444.mp3); loop: true; volume=0.3" autoplay="true" position="0 2 5"></a-sound>
+        <a-sound id="ambient" src="src: url(/assets/444.mp3); loop: true; volume=0.3" autoplay="true"
+                 position="0 2 5"></a-sound>
     </a-entity>
     <a-entity light="type: ambient; color: #BBB"></a-entity>
     <a-entity light="type: point; color: #FFF; distance: 50; intensity: 1" position="0 0 0"></a-entity>
-   <!-- <a-sky src="#nebula" radius="1000" material="fog: false" opacity="0.2"></a-sky> -->
-   <!-- <a-sky color="#002" radius="2000" material="fog: false"></a-sky> -->
+    <!-- <a-sky src="#nebula" radius="1000" material="fog: false" opacity="0.2"></a-sky> -->
+    <!-- <a-sky color="#002" radius="2000" material="fog: false"></a-sky> -->
 
 </a-scene>
 </body>

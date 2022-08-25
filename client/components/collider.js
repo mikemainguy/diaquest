@@ -1,7 +1,7 @@
 AFRAME.registerComponent('collider', {
   schema: {
     type: {type: 'string'},
-    color: {default: '#fff'}
+    color: {default: '#ff0'}
   },
   init: function () {
 

@@ -1,7 +1,10 @@
 AFRAME.registerComponent('connector', {
   schema: {
     startEl: {type: 'selector'},
-    endEl: {type: 'selector'}
+    endEl: {type: 'selector'},
+    speed: {type: 'number', default: 1.0},
+    delay: {type: 'number', default: 1.0},
+    twoWay: {type: 'boolean', default: false}
   },
   init: function() {
 

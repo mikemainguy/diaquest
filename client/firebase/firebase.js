@@ -1,7 +1,7 @@
 import profile from "/api/user/profile" assert {type: 'json'};
 import { getAuth, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/9.8.3/firebase-auth.js";
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.8.3/firebase-app.js';
-import { getDatabase, remove, ref, set, onChildRemoved, onChildAdded, get, onValue } from "https://www.gstatic.com/firebasejs/9.8.3/firebase-database.js";
+import { getDatabase, remove, ref, set, onChildRemoved, onChildAdded, onChildChanged,  onValue } from "https://www.gstatic.com/firebasejs/9.8.3/firebase-database.js";
 
 
 const firebaseConfig = {
@@ -48,16 +48,16 @@ get(entities).then( (snapshot) => {
 }) */
 function createEntity(entity) {
   if (document.querySelector('#'+entity.id)) {
-    document.querySelector('#'+ entity.id).remove();
     console.log(entity.id + ' already exists');
   }
   switch (entity.template) {
-    case '#universe':+
-      createUniverse(entity.id, entity.position, entity.text);
-      break;
     case '#connector':
       createConnector(entity.id, entity.first, entity.second);
       break;
+    default:
+      createUniverse(entity.id, entity.position, entity.text, entity.template);
+      break;
+
   }
 
 }
@@ -73,21 +73,27 @@ onChildRemoved(entities2, (snapshot) => {
      ele.remove();
   }
 });
+onChildChanged(entities2, (snapshot) => {
+  console.log('child updated ' + snapshot.val().id);
+  createEntity(snapshot.val());
+});
 
 writeUser(profile);
+export function createUniverse(id, pos, text, template) {
+  let exists =   document.querySelector('#'+ id);
 
-export function createUniverse(id, pos, text) {
   const scene = document.querySelector('a-scene');
-  const ele = document.createElement('a-entity');
+  const ele = exists ? exists :  document.createElement('a-entity');
 
-  ele.setAttribute('template', 'src: #universe');
+  ele.setAttribute('template', 'src: ' + template);
   ele.setAttribute('position', pos);
   ele.setAttribute('id', id);
   window.setTimeout(function() {
     ele.setAttribute('universe', 'text: ' + text);
   }, 200);
-
-  scene.appendChild(ele);
+  if (!exists) {
+    scene.appendChild(ele);
+  }
 }
 
 
