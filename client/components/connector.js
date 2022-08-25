@@ -33,6 +33,7 @@ AFRAME.registerComponent('connector', {
 
   },
   tick: function(time, timeDelta) {
+    this.el.object3D.position.set(this.obj1.position.x, this.obj1.position.y, this.obj1.position.z);
     this.el.object3D.lookAt(this.obj2.position);
     const distance = this.obj1.position.distanceTo(this.obj2.position);
     if (this.packetPosition < 50) {

@@ -30,15 +30,6 @@ AFRAME.registerComponent('collider', {
   }
 });
 
-function createKeyboard() {
-  const ele = document.createElement('a-entity');
-  ele.setAttribute("id", "keyboard");
-  ele.setAttribute('position', getHUDPosition());
-  ele.setAttribute('lookatme', '');
-  ele.setAttribute("template", "src: #keys");
-  const scene = document.querySelector("a-scene");
-  scene.appendChild(ele);
-}
 
 function getHUDPosition(distance) {
   let pos = new THREE.Vector3();

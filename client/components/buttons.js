@@ -29,7 +29,8 @@ AFRAME.registerComponent('buttons', {
     }
     if ((ele && ele.classList.contains('saveable')) || this.system.mode == 'adding') {
       debug(this.system.mode);
-      const template = ele.closest('[template]');
+
+      const template = ele ? ele.closest('[template]') : null;
       if (template && template.id && template.id != '') {
         debug(template.id);
       }
@@ -113,5 +114,15 @@ function showHud() {
   ele.setAttribute('lookatme', '');
   ele.setAttribute('position', getHUDPosition(-3));
   ele.setAttribute("template", "src: #hud-template");
+  scene.appendChild(ele);
+}
+
+function createKeyboard() {
+  const ele = document.createElement('a-entity');
+  ele.setAttribute("id", "keyboard");
+  ele.setAttribute('position', getHUDPosition());
+  ele.setAttribute('lookatme', '');
+  ele.setAttribute("template", "src: #keys");
+  const scene = document.querySelector("a-scene");
   scene.appendChild(ele);
 }
