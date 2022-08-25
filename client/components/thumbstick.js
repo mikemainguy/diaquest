@@ -62,7 +62,12 @@ function rotatey(amount) {
 }
 
 function getRig() {
-  return document.querySelector("#rig");
+  const buttons = document.querySelector('a-scene').systems['buttons'];
+  if (buttons && buttons.element && buttons.mode == 'moving') {
+    return document.querySelector('#' + buttons.element);
+  } else {
+    return document.querySelector("#rig");
+  }
 }
 
 function getCamera() {

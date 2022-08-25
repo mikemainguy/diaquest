@@ -69,7 +69,7 @@
                         <a-box width=".05" position="-.1 0 0" height="0.05" depth="0.05" color="#fff"></a-box>
                         <a-box width=".05" position=".1 0 0" height="0.05" depth="0.05" color="#fff"></a-box>
                     </a-entity>
-                    <a-plane color="#ccc" width="1" height="1" position="0 0 -.25" id='remove'
+                    <a-plane color="#ccc" width="1" height="1" position="0 0 -.25" id='move'
                              collider="type: create; color: #f00"></a-plane>
                 </a-entity>
 
@@ -131,7 +131,7 @@
             <a-entity class="data-connector">
 
                 <a-sphere rotation="90 0 0" position="0 0 0" radius="0.09" class="data-packet"
-                          animation="property: position; from: 0 0 0; to: 0 0 1; loop: true; dur: 1000" color="#f00" >
+                          color="#f00" >
 
                 </a-sphere>
                 <a-cylinder collider class="saveable data-direction collidable" rotation="90 0 0" position="0 0 0" material="opacity: 0.5; color: #ccc" transparent="true"
@@ -194,6 +194,7 @@
                   laser-controls
                   raycaster="objects: [collider], .collidable"
                   buttons
+                  super-hands sphere-collider="objects: [grabbable]"
                   oculus-touch-controls="hand: right"
                   mover="elevate: true; axis: y"
                   mover__2="turn: true; axis: x">

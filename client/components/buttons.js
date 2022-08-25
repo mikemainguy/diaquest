@@ -1,6 +1,7 @@
 AFRAME.registerSystem('buttons', {
   init: function () {
     this.mode = null;
+    this.element = null;
   }
 });
 AFRAME.registerComponent('buttons', {
@@ -62,6 +63,9 @@ AFRAME.registerComponent('buttons', {
         case 'adding':
             this.system.mode = 'typing';
             createKeyboard();
+        case 'moving':
+          this.system.mode = 'moving';
+          this.system.element = template.id;
 
       }
 
@@ -84,6 +88,9 @@ AFRAME.registerComponent('buttons', {
             break;
           case 'remove':
             this.system.mode = 'removing';
+            break;
+          case 'move':
+            this.system.mode = 'moving';
             break;
         }
         debug(this.system.mode);

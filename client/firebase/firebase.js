@@ -48,17 +48,18 @@ get(entities).then( (snapshot) => {
 }) */
 function createEntity(entity) {
   if (document.querySelector('#'+entity.id)) {
+    document.querySelector('#'+ entity.id).remove();
     console.log(entity.id + ' already exists');
-  } else {
-    switch (entity.template) {
-      case '#universe':
-        createUniverse(entity.id, entity.position, entity.text);
-        break;
-      case '#connector':
-        createConnector(entity.id, entity.first, entity.second);
-        break;
-    }
   }
+  switch (entity.template) {
+    case '#universe':+
+      createUniverse(entity.id, entity.position, entity.text);
+      break;
+    case '#connector':
+      createConnector(entity.id, entity.first, entity.second);
+      break;
+  }
+
 }
 const entities2 = ref(database, 'entities');
 onChildAdded(entities2, (snapshot) => {

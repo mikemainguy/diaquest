@@ -10,16 +10,17 @@ AFRAME.registerComponent('connector', {
       this.data.endEl && this.data.endEl.object3D ) {
       this.obj1 = this.data.startEl.object3D;
       this.obj2 = this.data.endEl.object3D;
+
       const distance = this.obj1.position.distanceTo(this.obj2.position);
 
-      this.el.querySelector('.data-direction').setAttribute('height', distance);
-      this.el.querySelector('.data-direction').setAttribute('position', "0 0 " + distance/2);
-      this.el.querySelector('.data-packet').setAttribute('animation', 'to', "0 0 " + distance);
+      this.packet = this.el.querySelector('.data-packet').object3D;
+      this.connector = this.el.querySelector('.data-direction').object3D;
+      this.packetPosition = 0;
 
       this.el.querySelector('a-plane').setAttribute('visible', false);
       this.el.querySelector('a-plane').setAttribute('position','z', distance/2);
       this.el.setAttribute('position', this.obj1.position);
-      this.el.object3D.lookAt(this.obj2.position);
+
     } else {
       debug(JSON.stringify(this.data));
     }
@@ -28,7 +29,17 @@ AFRAME.registerComponent('connector', {
   update: function() {
 
   },
-  tick: function() {
+  tick: function(time, timeDelta) {
+    this.el.object3D.lookAt(this.obj2.position);
+    const distance = this.obj1.position.distanceTo(this.obj2.position);
+    if (this.packetPosition < 50) {
+      this.packet.position.z = this.packetPosition++ * (distance/50);
+
+    } else {
+      this.packetPosition = 0;
+    }
+    this.connector.position.z = distance/2;
+    this.connector.scale.y = distance;
 
   }
 });
