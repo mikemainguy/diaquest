@@ -63,7 +63,7 @@ function rotatey(amount) {
 
 function getRig() {
   const buttons = document.querySelector('a-scene').systems['buttons'];
-  if (buttons && buttons.element && buttons.mode == 'moving') {
+  if (buttons && buttons.element && buttons.mode == 'moving' && buttons.element) {
     return document.querySelector('#' + buttons.element);
   } else {
     return document.querySelector("#rig");

@@ -66,7 +66,14 @@ AFRAME.registerComponent('buttons', {
             createKeyboard();
         case 'moving':
           this.system.mode = 'moving';
-          this.system.element = template.id;
+          if (template) {
+            this.system.element = template.id;
+            debug('moving: ' + template.id);
+          } else {
+            debug('movement cleared: ');
+            this.system.element = null;
+          }
+
 
       }
 
