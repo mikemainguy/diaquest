@@ -7,7 +7,7 @@ AFRAME.registerComponent('user', {
       .then((res)=> res.json())
       .then((data) => {
           import('../firebase/firebase.js').then((module) => {
-            module.writeUser(data.user);
+            module.writeUser(data);
           });
           this.el.setAttribute('text','value: ' + data.user.email);
       });

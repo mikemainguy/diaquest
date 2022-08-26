@@ -13,7 +13,6 @@ AFRAME.registerComponent('buttons', {
       generateWorlds(100);
     });
     this.el.addEventListener('triggerdown', this.triggerdown.bind(this));
-
   },
   bbuttondown: function (evt) {
     this.system.mode = null;

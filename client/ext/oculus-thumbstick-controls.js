@@ -1,7 +1,7 @@
 AFRAME.registerComponent('oculus-thumbstick-controls', {
     schema: {
         acceleration: { default: 45 },
-        rigSelector: {default: "#rig"},
+        rigSelector: {default: ".rig"},
         fly: { default: false },
         controllerOriented: { default: false },
         adAxis: {default: 'x', oneOf: ['x', 'y', 'z']},
@@ -80,7 +80,7 @@ AFRAME.registerComponent('oculus-thumbstick-controls', {
         acceleration = data.acceleration;
         if (data.adEnabled && this.tsData.x) {
             adSign = data.adInverted ? -1 : 1;
-            velocity[adAxis] += adSign * acceleration * this.tsData.x * delta; 
+            velocity[adAxis] += adSign * acceleration * this.tsData.x * delta;
         }
         if (data.wsEnabled) {
             wsSign = data.wsInverted ? -1 : 1;

@@ -227,6 +227,11 @@
                          position="0 0.35 0"></a-plane>
             </a-entity>
         </a-entity>
+        <a-entity id="user" type="text/x-nunjucks-template">
+
+            <a-box color="ff0" width=".5" height=".5" depth="0.5"></a-box>
+
+        </a-entity>
 
         <a-entity id="keys" type="text/x-nunjucks-template">
             <a-sound id="click" src="src: url(/assets/KeyDown.mp3)" autoplay="false"></a-sound>
@@ -249,7 +254,7 @@
               line__2="start: 0 -20 0; end: 0 20 0; color: green"
               line__3="start: 0 0 -20; end: 0 0 20; color: blue"></a-entity> -->
     <a-sphere radius="0.1" id="reticle" position="0 0 0"></a-sphere>
-    <a-entity id="rig" position="0 0 14">
+    <a-entity class="rig" position="0 0 14">
         <!--<a-box height="0.1" width="0.1" depth="20"></a-box>-->
         <a-entity
                 id="left-hand"

@@ -47,12 +47,6 @@ AFRAME.registerComponent('mover', {
   }
 });
 
-function elevate(amount) {
-  const rig = getRig();
-  let position = rig.getAttribute("position");
-  position.y -= amount;
-  rig.setAttribute("position", position);
-}
 
 function rotatey(amount) {
   const rig = getRig();
@@ -66,7 +60,7 @@ function getRig() {
   if (buttons && buttons.element && buttons.mode == 'moving' && buttons.element) {
     return document.querySelector('#' + buttons.element);
   } else {
-    return document.querySelector("#rig");
+    return document.querySelector(".rig");
   }
 }
 
@@ -90,5 +84,24 @@ function move(amount, slide) {
   }
   direction.multiplyScalar(amount);
   pos.add(direction);
-  rig.setAttribute("position", pos);
+  updatePosition(rig, pos);
+
+}
+
+function elevate(amount) {
+  const rig = getRig();
+  let position = rig.getAttribute("position");
+  position.y -= amount;
+  updatePosition(rig, position);
+}
+
+function updatePosition(rig, position) {
+  import('../firebase/firebase.js').then((module) => {
+    const data = {
+      id: rig.getAttribute('id'),
+      position: position
+    }
+    module.updateEntity(data);
+  });
+
 }
