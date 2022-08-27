@@ -17,37 +17,21 @@ AFRAME.registerComponent('user', {
   }
 });
 
-AFRAME.registerComponent('rotate-listen', {
-
-  schema: {
-    //keyboard: {default: '#keyboard', type: 'selector'}
-  },
-  init: function () {
-
-  },
-  tick: function () {
-    //debug(vectorString(getHUDPosition()));
-    //document.querySelector('#reticle').object3D.position.set(getHUDPosition());
-    /*debug(radians_to_degrees(this.el.object3D.rotation.x) + ' '+
-      radians_to_degrees(this.el.object3D.rotation.y) + ' '+
-      radians_to_degrees(this.el.object3D.rotation.z)
-    );*/
-  }
-});
-function radians_to_degrees(radians)
-{
-  var pi = Math.PI;
-  return radians * (180/pi);
-}
 AFRAME.registerComponent('lookatme', {
   init: function() {
-    this.pos = new THREE.Vector3();
-    this.camera = document.querySelector('#camera').object3D;
+    const cam = document.querySelector('#camera');
+    if (cam) {
+      this.pos = new THREE.Vector3();
+      this.camera = document.querySelector('#camera').object3D;
+    } else {
 
+    }
   },
   tick: function() {
-    this.camera.getWorldPosition(this.pos);
-    this.el.object3D.lookAt(this.pos);
+    if (this.camera) {
+      this.camera.getWorldPosition(this.pos);
+      this.el.object3D.lookAt(this.pos);
+    }
   }
 });
 

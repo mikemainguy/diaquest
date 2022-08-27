@@ -34,13 +34,12 @@ signInWithCustomToken(auth, profile.firebase_token).then((credential) => {
 const database = getDatabase(app);
 
 export function writeUser(profile) {
-  console.log(profile);
   profile.user.last_seen = new Date().toUTCString();
-  const id = sha256(getCookieValue('appSession'));
-  set(ref(database, 'users/' + id), profile.user);
+  const id = 'session' + sha256(profile.user.sid);
+  set(ref(database, 'users/' + profile.user.sub), profile);
   const rig = document.querySelector('.rig');
   rig.setAttribute('id', id);
-  writeEntity({id: id, position: rig.object3D.position, template: "#user"});
+  writeEntity({id: id, position: rig.object3D.position, rotation: rig.getAttribute('rotation'), template: "#user"});
 }
 
 export function updateEntity(data) {
@@ -76,9 +75,10 @@ function createEntity(entity) {
       createConnector(entity.id, entity.first, entity.second);
       break;
     case '#user':
+      updateUser(entity);
       break;
     default:
-      createUniverse(entity.id, entity.position, entity.text, entity.template);
+      createUniverse(entity);
       break;
 
   }
@@ -87,7 +87,6 @@ function createEntity(entity) {
 
 const entities2 = ref(database, 'entities');
 onChildAdded(entities2, (snapshot) => {
-  console.log('child added ' + snapshot.val().id);
   createEntity(snapshot.val());
 
 });
@@ -98,27 +97,36 @@ onChildRemoved(entities2, (snapshot) => {
   }
 });
 onChildChanged(entities2, (snapshot) => {
-  console.log('child updated ' + snapshot.val().id);
   createEntity(snapshot.val());
 });
 
 
-export function createUniverse(id, pos, text, template) {
-  let exists = document.querySelector('#' + id);
+export function createUniverse(entity) {
+  let exists = document.querySelector('#' + entity.id);
   const scene = document.querySelector('a-scene');
   const ele = exists ? exists : document.createElement('a-entity');
 
-  ele.setAttribute('template', 'src: ' + template);
-  ele.setAttribute('position', pos);
-  ele.setAttribute('id', id);
+  ele.setAttribute('template', 'src: ' + entity.template);
+  ele.setAttribute('position', entity.position);
+  ele.setAttribute('id', entity.id);
+  if (entity.rotation) {
+    ele.setAttribute('rotation', entity.rotation);
+  }
   window.setTimeout(function () {
-    ele.setAttribute('universe', 'text: ' + text);
+    ele.setAttribute('universe', 'text: ' + entity.text);
   }, 200);
   if (!exists) {
     scene.appendChild(ele);
   }
 }
+function updateUser(entity) {
+  const me = document.querySelector('.rig')
+  if (me && (me.getAttribute('id') == entity.id)) {
 
+  } else {
+    createUniverse(entity);
+  }
+}
 
 function createConnector(id, first, second) {
   const scene = document.querySelector("a-scene");
