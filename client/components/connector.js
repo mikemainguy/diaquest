@@ -7,7 +7,6 @@ AFRAME.registerComponent('connector', {
     twoWay: {type: 'boolean', default: false}
   },
   init: function() {
-
     this.pos = new THREE.Vector3();
     if (this.data.startEl && this.data.startEl.object3D &&
       this.data.endEl && this.data.endEl.object3D ) {
@@ -33,17 +32,27 @@ AFRAME.registerComponent('connector', {
 
   },
   tick: function(time, timeDelta) {
-    this.el.object3D.position.set(this.obj1.position.x, this.obj1.position.y, this.obj1.position.z);
-    this.el.object3D.lookAt(this.obj2.position);
-    const distance = this.obj1.position.distanceTo(this.obj2.position);
-    if (this.packetPosition < 50) {
-      this.packet.position.z = this.packetPosition++ * (distance/50);
+    if (this.obj1 && this.obj2) {
+      this.el.object3D.position.set(this.obj1.position.x, this.obj1.position.y, this.obj1.position.z);
+      this.el.object3D.lookAt(this.obj2.position);
+      const distance = this.obj1.position.distanceTo(this.obj2.position);
+      if (this.packetPosition < 50) {
+        this.packet.position.z = this.packetPosition++ * (distance/50);
+
+      } else {
+        this.packetPosition = 0;
+      }
+      this.connector.position.z = distance/2;
+      this.connector.scale.y = distance;
 
     } else {
-      this.packetPosition = 0;
+      const id = this.el.getAttribute('id');
+      console.log(id + ' missing data, removing');
+      import('../firebase/firebase.js').then((module) => {
+        module.removeEntity(id);
+      });
+
     }
-    this.connector.position.z = distance/2;
-    this.connector.scale.y = distance;
 
   }
 });

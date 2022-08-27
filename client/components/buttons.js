@@ -27,9 +27,10 @@ AFRAME.registerComponent('buttons', {
       return;
     }
     if ((ele && ele.classList.contains('saveable')) || this.system.mode == 'adding') {
-      debug(this.system.mode);
+
 
       const template = ele ? ele.closest('[template]') : null;
+
       if (template && template.id && template.id != '') {
         debug(template.id);
       }

@@ -62,6 +62,7 @@
         <img id="skybox" src="./assets/skybox.png">
         <img id="nebula" src="./assets/8192.jpeg">
         <img id="sky2" src="./assets/sky2.jpeg">
+        <a-asset-item id="emoji-asset" src="/assets/emoji.glb"></a-asset-item>
         <a-entity id="hud-template" type="text/x-nunjucks-template">
             <a-entity gridlayout position="0 0 0">
                 <a-entity position="-.5 .5 0">
@@ -209,8 +210,8 @@
             </a-entity>
         </a-entity>
         <a-entity id="universe" type="text/x-nunjucks-template">
-            <a-entity collider grabbable class="saveable">
-                <a-sphere animation="property: rotation; from: 0 0 0; to: 0 360 0; loop: true; dur: 60000"
+            <a-entity grabbable>
+                <a-sphere collider class="saveable" animation="property: rotation; from: 0 0 0; to: 0 360 0; loop: true; dur: 60000"
                           class="collidable" material="src: #sky2" color="#77f" radius="0.5"></a-sphere>
                 <a-plane color="#222"
                          lookatme width="1.5" height="0.25"
@@ -219,8 +220,8 @@
             </a-entity>
         </a-entity>
         <a-entity id="box" type="text/x-nunjucks-template">
-            <a-entity collider grabbable class="saveable">
-                <a-box class="collidable" color="#00f" width=".5" height=".5" depth="0.5"></a-box>
+            <a-entity grabbable>
+                <a-box collider class="collidable saveable" color="#00f" width=".5" height=".5" depth="0.5"></a-box>
                 <a-plane color="#222"
                          lookatme width="1.5" height="0.25"
                          text="color: #fff;  baseline: top; align: center; wrapCount: 20"
@@ -229,7 +230,7 @@
         </a-entity>
         <a-entity id="user" type="text/x-nunjucks-template">
 
-            <a-box color="ff0" width=".5" height=".5" depth="0.5"></a-box>
+            <a-entity scale="1 1 1" position="0 1.6 0" rotation="0 180 0" gltf-model="#emoji-asset"></a-entity>
 
         </a-entity>
 
@@ -243,6 +244,7 @@
 
     <!--<a-entity template="src: #keys" position="0 1.6 13"></a-entity>-->
     <!--<a-entity template="src: #hud-template"  position="1 1 14"></a-entity> -->
+    <!-- <a-entity template="src: #user"  position="1 1 14"></a-entity> -->
 
     <a-entity>
         <a-cylinder opacity="0.5" height="100" color="#f00" radius="0.01"></a-cylinder>

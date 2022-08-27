@@ -7,27 +7,31 @@ AFRAME.registerComponent('collider', {
 
     this.basecolor = this.el.getAttribute('color');
     this.el.addEventListener('raycaster-intersected', (event) => {
-      this.el.setAttribute("color", this.data.color);
+
       const intersected = document.querySelectorAll('.intersected');
       for(const obj of intersected) {
         if (obj && obj.classList) {
-          obj.classList.remove('intersected');
+          if (obj.getAttribute('id') != this.el.getAttribute('id')) {
+            obj.classList.remove('intersected');
+          }
         }
       }
       const save = this.el.closest('[template]');
-      /*if (save && save.id) {
-        debug(save.id);
-        debug(this.el.id);
+      if (this.el.classList.contains('saveable')) {
+        this.el.setAttribute('material', 'wireframe', true);
       }
-
-       */
-      this.el.classList.add('intersected');
+      this.el.setAttribute("color", this.data.color);
+      if (!this.el.classList.contains('intersected')) {
+        this.el.classList.add('intersected');
+      }
     });
     this.el.addEventListener('raycaster-intersected-cleared', (event) => {
       this.el.setAttribute("color", this.basecolor);
+      this.el.setAttribute('material', 'wireframe', false);
       this.el.classList.remove('intersected');
     });
   }
+
 });
 
 

@@ -22,7 +22,7 @@ AFRAME.registerComponent('mover', {
     }
     const val = evt.detail[this.data.axis];
     const sign = Math.sign(val);
-    const fastmove = Math.abs(val) > .9;
+    const fastmove = Math.abs(val) > .99;
       if (Math.abs(val) > 0.2) {
         if (fastmove || !this.running) {
           if (!fastmove) {
@@ -53,6 +53,7 @@ function rotatey(amount) {
   let rotation = rig.getAttribute("rotation");
   rotation.y += amount;
   rig.setAttribute("rotation", rotation);
+  updatePosition(rig, rig.getAttribute('position'));
 }
 
 function getRig() {
@@ -99,7 +100,8 @@ function updatePosition(rig, position) {
   import('../firebase/firebase.js').then((module) => {
     const data = {
       id: rig.getAttribute('id'),
-      position: position
+      position: position,
+      rotation: rig.getAttribute('rotation')
     }
     module.updateEntity(data);
   });
