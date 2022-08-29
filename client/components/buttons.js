@@ -63,9 +63,8 @@ AFRAME.registerComponent('buttons', {
           this.system.mode.push('typing');
           this.el.emit('key-listen-target', {id: null}, true);
           createKeyboard();
+          break;
         case 'moving':
-          this.system.mode.pop();
-          this.system.mode.push('moving');
           if (template) {
             this.system.id = template.id;
             debug('moving: ' + template.id);
@@ -75,7 +74,7 @@ AFRAME.registerComponent('buttons', {
           }
       }
       if (this.system.mode.length > 0) {
-        debug(this.system.mode[-1]);
+        debug(JSON.stringify(this.system.mode));
       }
     }
 

@@ -14,9 +14,8 @@ AFRAME.registerSystem('key-listen', {
 
       this.keyboard.setAttribute('visible', true);
       this.keyboard.setAttribute('position', getHUDPosition());
-
+      document.querySelector('#right-hand').setAttribute('raycaster', 'objects: .collidable');
       if (this.targetEl) {
-
         this.targetEl.setAttribute('text', 'value: ' + this.text);
       }
     }
@@ -49,11 +48,10 @@ AFRAME.registerSystem('key-listen', {
               module.writeEntity(data);
             });
           }
-
         }
-
       case 24:
         this.text = '';
+        document.querySelector('#right-hand').setAttribute('raycaster', 'objects: [collider]');
         this.keyboard.setAttribute('visible', false);
         break;
       default:

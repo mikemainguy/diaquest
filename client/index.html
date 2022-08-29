@@ -232,7 +232,8 @@
             <a-entity scale="1 1 1" position="0 1.6 0" rotation="0 180 0" gltf-model="#emoji-asset"></a-entity>
         </a-entity>
     </a-assets>
-    <a-entity id="keyboard" visible="false" material="visible: false" lookatme>
+
+    <a-entity id="keyboard" visible="false" lookatme>
         <a-sound id="click" src="src: url(/assets/KeyDown.mp3)" autoplay="false"></a-sound>
         <a-plane position="-.01 0 0" color="#eee" key-listen width="1" height="0.2" rotation="0 0 0"
                  text="color: #000; value: test; baseline: center; width: 1;align: center"></a-plane>
@@ -259,6 +260,7 @@
         <a-entity
                 id="left-hand"
                 oculus-touch-controls="hand: left"
+                raycaster="objects: [collider]"
                 buttons
                 mover="forwardback: true; axis: y"
                 mover__2="strafe: true; axis: x">
@@ -273,7 +275,7 @@
         </a-entity>
         <a-entity id="right-hand"
                   laser-controls
-                  raycaster="objects: [collider], .collidable"
+                  raycaster="objects: [collider]"
                   buttons
                   super-hands sphere-collider="objects: [grabbable]"
                   oculus-touch-controls="hand: right"
