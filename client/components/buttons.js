@@ -1,7 +1,8 @@
 AFRAME.registerSystem('buttons', {
   init: function () {
     this.mode = [];
-    this.id = null;
+    this.first = null;
+    this.second = null;
   }
 });
 
@@ -12,7 +13,7 @@ AFRAME.registerComponent('buttons', {
     this.el.addEventListener('triggerdown', this.triggerdown.bind(this));
   },
   bbuttondown: function (evt) {
-    this.template = '#universe';
+    disableAlignment();
     showHud();
   },
   triggerdown: function (evt) {
@@ -22,53 +23,67 @@ AFRAME.registerComponent('buttons', {
       return;
     }
     if ((ele && ele.classList.contains('saveable')) || this.system.mode.length > 0) {
-      const template = ele ? ele.closest('[template]') : null;
-      if (template && template.id && template.id != '') {
-        debug(template.id);
+      const selectedObject = ele ? ele.closest('[template]') : null;
+      if (selectedObject && selectedObject.id && selectedObject.id != '') {
+        debug(selectedObject.id);
       }
       switch (this.system.mode.length > 0 ? this.system.mode.slice(-1)[0] : null) {
         case 'select-first':
-          debug('first selected: ' + template.id);
-          this.system.first = template.id;
-          this.system.mode.pop();
+          this.system.first = selectedObject.id;
           this.system.mode.push('select-second');
           break;
         case 'select-second':
-          debug('second selected: ' + template.id);
-          import('../firebase/firebase.js').then((module) => {
-            const data = {
-              id: createUUID(),
-              first: this.system.first,
-              second: template.id,
-              text: '',
-              template: '#connector'
-            }
-            module.writeEntity(data);
-            this.system.mode.pop();
-            this.system.mode.push('select-first');
-          });
+          switch (this.system.mode[0]) {
+            case 'connecting':
+              import('../firebase/firebase.js').then((module) => {
+                const data = {
+                  id: createUUID(),
+                  first: this.system.first,
+                  second: selectedObject.id,
+                  text: '',
+                  template: '#connector'
+                }
+                module.writeEntity(data);
+              });
+              this.system.mode.pop();
+              break;
+            case 'aligning':
+              if (!selectedObject && this.system.second) {
+                const data = {id: this.system.second, position: document.querySelector(this.system.second).getAttribute('position')};
+                import('../firebase/firebase.js').then((module) => {
+                  module.updateEntity(data);
+                });
+                this.system.second = null;
+                this.system.mode.pop();
+              } else {
+                if (selectedObject) {
+                  this.system.second = selectedObject.id;
+                }
+              }
+              break;
+          }
           break;
         case 'removing':
           import('../firebase/firebase.js').then((module) => {
-            module.removeEntity(template.id);
+            module.removeEntity(selectedObject.id);
           });
           break;
         case 'editing':
           this.system.mode.push('typing');
-          this.el.emit('key-listen-target', {id: template.id}, true);
+          this.el.emit('key-listen-target', {id: selectedObject.id}, true);
           break;
         case 'adding':
-          this.system.id = null;
+          this.system.first = null;
           this.system.mode.push('typing');
           this.el.emit('key-listen-target', {id: null}, true);
           break;
         case 'moving':
-          if (template) {
-            this.system.id = template.id;
-            debug('moving: ' + template.id);
+          if (selectedObject) {
+            this.system.first = selectedObject.id;
+            debug('moving: ' + selectedObject.id);
           } else {
             debug('movement cleared: ');
-            this.system.id = null;
+            this.system.first = null;
           }
       }
       if (this.system.mode.length > 0) {
@@ -83,7 +98,8 @@ AFRAME.registerComponent('buttons', {
       if (ele) {
         switch (ele.getAttribute('id')) {
           case 'add-connector':
-            this.system.mode = ['select-first'];
+            this.system.mode = ['connecting'];
+            this.system.mode.push('select-first');
             break;
           case 'add-universe':
             this.system.mode = ['adding'];
@@ -97,6 +113,11 @@ AFRAME.registerComponent('buttons', {
           case 'edit':
             this.system.mode = ['editing'];
             break;
+          case 'align':
+            enableAlignment();
+            this.system.mode = ['aligning'];
+            this.system.mode.push('select-first');
+            break;
         }
         debug(this.system.mode);
       }
@@ -108,7 +129,14 @@ AFRAME.registerComponent('buttons', {
 
   }
 });
-
+function disableAlignment() {
+  const hand = document.querySelector('#right-hand');
+  hand.removeAttribute('aligner');
+}
+function enableAlignment() {
+  const hand = document.querySelector('#right-hand');
+  hand.setAttribute('aligner', '');
+}
 function showHud() {
   const hud = document.querySelector('#hud');
   document.querySelector('#right-hand').setAttribute('raycaster', 'objects: .widget');

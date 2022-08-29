@@ -1,3 +1,15 @@
+AFRAME.registerSystem('mover', {
+  init: function() {
+    this.enabled = true;
+  },
+  disable: function() {
+    this.enabled = false;
+  },
+  enable: function() {
+    this.enabled = true;
+  }
+});
+
 AFRAME.registerComponent('mover', {
   multiple: true,
   schema: {
@@ -12,16 +24,31 @@ AFRAME.registerComponent('mover', {
   init: function() {
     this.sound = false;
     this.running = false;
-    this.el.addEventListener('thumbstickmoved', this.thumbstick.bind(this));
+    this.handler = this.thumbstick.bind(this);
+    this.el.addEventListener('thumbstickmoved', this.handler);
     document.querySelector('#camera').setAttribute('camera', 'active', true);
   },
+  remove: function() {
+    this.el.removeEventListener(this.handler);
+  },
+  play: function() {
+    this.system.enabled = true;
+  },
+  pause: function() {
+    this.system.enabled = false;
+  },
   thumbstick: function(evt) {
+    if (!this.system.enabled) {
+      return;
+    }
     if (!this.sound) {
       document.querySelector('#ambient').components.sound.playSound();
       this.sound = true;
     }
+    const buttons = document.querySelector('a-scene').systems['buttons'];
     const val = evt.detail[this.data.axis];
     const sign = Math.sign(val);
+
     const fastmove = Math.abs(val) > .99;
       if (Math.abs(val) > 0.2) {
         if (fastmove || !this.running) {
@@ -47,7 +74,6 @@ AFRAME.registerComponent('mover', {
   }
 });
 
-
 function rotatey(amount) {
   const rig = getRig();
   let rotation = rig.getAttribute("rotation");
@@ -58,8 +84,8 @@ function rotatey(amount) {
 
 function getRig() {
   const buttons = document.querySelector('a-scene').systems['buttons'];
-  if (buttons && buttons.id && buttons.mode == 'moving') {
-    return document.querySelector('#' + buttons.id);
+  if (buttons && buttons.first && buttons.mode[0] == 'moving') {
+    return document.querySelector('#' + buttons.first);
   } else {
     return document.querySelector(".rig");
   }

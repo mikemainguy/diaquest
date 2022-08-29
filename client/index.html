@@ -7,6 +7,7 @@
     <script src="/ext/aframe-template-component.min.js"></script>
     <script src="/ext/superhands.min.js"></script>
     <script src="/ext/oculus-thumbstick-controls.js"></script>
+    <script src="/components/aligner.js"></script>
     <script src="/components/components.js"></script>
     <script src="/components/keyboard.js"></script>
     <script src="/components/thumbstick.js"></script>
@@ -54,6 +55,9 @@
 
 
 */
+  document.addEventListener('keypress', function (event) {
+    console.log(event.detail);
+  })
 </script>
 
 
@@ -84,7 +88,8 @@
         </a-entity>
         <a-entity id="universe" type="text/x-nunjucks-template">
             <a-entity grabbable>
-                <a-sphere collider class="saveable" animation="property: rotation; from: 0 0 0; to: 0 360 0; loop: true; dur: 60000"
+                <a-sphere collider class="saveable"
+                          animation="property: rotation; from: 0 0 0; to: 0 360 0; loop: true; dur: 60000"
                           class="collidable" material="src: #sky2" color="#77f" radius="0.5"></a-sphere>
                 <a-plane color="#222"
                          lookatme width="1.5" height="0.25"
@@ -108,7 +113,7 @@
     </a-assets>
 
 
-    <a-entity position="0 1.6 13" id="hud" visible="true" lookatme>
+    <a-entity position="0 1.6 13" id="hud" visible="false" lookatme>
         <a-entity gridlayout position="0 0 0">
             <a-entity position="-.5 .5 0">
                 <a-plane id='edit'
@@ -123,7 +128,7 @@
             <a-entity position="-.5 1.5 0">
                 <a-plane id='move'
                          text="value: move" color="#ccc" width="1" height="1" position="0 0 -.25"
-                         class="widget" collider ></a-plane>
+                         class="widget" collider></a-plane>
                 <a-entity lookatme>
 
 
@@ -154,8 +159,6 @@
                                 opacity="0.5"></a-cone>
 
                     </a-entity>
-
-
 
 
                 </a-entity>
@@ -252,32 +255,33 @@
             <a-entity position="-.5 1.5 0">
                 <a-plane id='align'
                          text="value: move" color="#ccc" width="1" height="1" position="0 0 -.25"
-                         class="widget" collider ></a-plane>
+                         class="widget" collider></a-plane>
                 <a-entity lookatme>
-
-
-                    <a-entity rotation="30 30 0">
+                    <a-entity rotation="0 0 0">
                         <a-cylinder radius=".01" height="0.3" color="#fff"></a-cylinder>
 
                     </a-entity>
-                    <a-entity rotation="30 30 90">
+                    <a-entity rotation="0 90 0">
                         <a-cylinder radius=".01" height="0.3" color="#fff"></a-cylinder>
 
                     </a-entity>
-                    <a-entity rotation="120 30 0">
+                    <a-entity rotation="0 0 90">
                         <a-cylinder radius=".01" height="0.3" color="#fff"></a-cylinder>
 
                     </a-entity>
-
-
-
-
                 </a-entity>
 
             </a-entity>
 
 
         </a-entity>
+    </a-entity>
+    <a-entity id="aligner" visible="false">
+        <a-entity id="aligner-axis">
+            <a-cylinder radius="0.1" opacity="0.1" rotation="0 0 0" height="1"></a-cylinder>
+            <a-sphere radius="0.1" rotation="0 0 0" position="0 0 .5"></a-sphere>
+        </a-entity>
+
     </a-entity>
     <a-entity id="keyboard" visible="false" lookatme>
         <a-sound id="click" src="src: url(/assets/KeyDown.mp3)" autoplay="false"></a-sound>
