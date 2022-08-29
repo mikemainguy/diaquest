@@ -1,55 +1,71 @@
-AFRAME.registerComponent('key-listen', {
-  init: function () {
+AFRAME.registerSystem('key-listen', {
+  init: function() {
     this.text = '';
-    this.buttons = document.querySelector('a-scene').systems['buttons'];
-    this.el.setAttribute('text', 'value: ' + this.text);
+    this.id = null;
+
     document.addEventListener("a-keyboard-update", this.keypress.bind(this));
+    document.addEventListener( "key-listen-target", this.targetListener.bind(this));
+  },
+  targetListener: function(event) {
+    if (event.detail.id) {
+      this.keyboard = this.targetEl.parentEl;
+      this.id = event.detail.id;
+      this.text = document.querySelector('#'+ this.id).querySelector('a-plane').getAttribute('text').value;
+
+      this.keyboard.setAttribute('visible', true);
+      this.keyboard.setAttribute('position', getHUDPosition());
+
+      if (this.targetEl) {
+
+        this.targetEl.setAttribute('text', 'value: ' + this.text);
+      }
+    }
   },
   keypress: function (event) {
     const code = parseInt(event.detail.code);
-    const keyboard = document.querySelector('#keyboard');
     const click = document.querySelector('#click').components.sound;
     click.stopSound();
     click.playSound();
     switch (code) {
       case 8:
         this.text = this.text.slice(0, -1);
-        this.el.setAttribute('text', 'value: ' + this.text);
+        this.targetEl.setAttribute('text', 'value: ' + this.text);
         break;
       case 6:
-        if (keyboard) {
-          let pos = new THREE.Vector3();
-          keyboard.object3D.getWorldPosition(pos);
-          const text = this.text;
-          import('../firebase/firebase.js').then((module) => {
-            const data = {
-              id: createUUID(),
-              position: pos,
-              text: text,
-              template: "#universe"
-            }
-            module.writeEntity(data);
-          });
-          this.buttons.mode='adding';
-          this.text = '';
+        if (this.keyboard) {
+          if (this.id) {
+            const data = {id: this.id, text: this.text};
+            import('../firebase/firebase.js').then((module) => {
+              module.updateEntity(data);
+            });
+          } else {
+            let pos = new THREE.Vector3();
+            this.keyboard.object3D.getWorldPosition(pos);
+            data.id = createUUID();
+            data.position = pos;
+            data.template = "#universe";
 
-          keyboard.remove();
+            import('../firebase/firebase.js').then((module) => {
+              module.writeEntity(data);
+            });
+          }
+
         }
-        break;
+
       case 24:
         this.text = '';
-        if (keyboard) {
-          this.buttons.mode='adding';
-          keyboard.remove();
-        }
+        this.keyboard.setAttribute('visible', false);
         break;
       default:
         this.text += event.detail.value;
-        this.el.setAttribute('text', 'value: ' + this.text);
+        this.targetEl.setAttribute('text', 'value: ' + this.text);
     }
   },
-  tick: function () {
+})
 
+AFRAME.registerComponent('key-listen', {
+  init: function () {
+    this.system.targetEl = this.el;
   }
 });
 

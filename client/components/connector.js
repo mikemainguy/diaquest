@@ -24,7 +24,7 @@ AFRAME.registerComponent('connector', {
       this.el.setAttribute('position', this.obj1.position);
 
     } else {
-      debug(JSON.stringify(this.data));
+      //debug(JSON.stringify(this.data));
     }
 
   },

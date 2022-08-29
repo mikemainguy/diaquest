@@ -10,6 +10,7 @@ AFRAME.registerComponent('universe', {
   update: function() {
     if (this.el.querySelector('a-plane')) {
       if (this.data.text) {
+        this.el.querySelector('a-plane').setAttribute('visible', true);
         this.el.querySelector('a-plane').setAttribute('text', 'value: '+ this.data.text);
       } else {
         this.el.querySelector('a-plane').setAttribute('visible', false);

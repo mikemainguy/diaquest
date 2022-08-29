@@ -216,7 +216,7 @@
                 <a-plane color="#222"
                          lookatme width="1.5" height="0.25"
                          text="color: #fff;  baseline: top; align: center; wrapCount: 20"
-                         position="0 0.35 0"></a-plane>
+                         position="0 0.7 0"></a-plane>
             </a-entity>
         </a-entity>
         <a-entity id="box" type="text/x-nunjucks-template">
@@ -229,18 +229,16 @@
             </a-entity>
         </a-entity>
         <a-entity id="user" type="text/x-nunjucks-template">
-
             <a-entity scale="1 1 1" position="0 1.6 0" rotation="0 180 0" gltf-model="#emoji-asset"></a-entity>
-
-        </a-entity>
-
-        <a-entity id="keys" type="text/x-nunjucks-template">
-            <a-sound id="click" src="src: url(/assets/KeyDown.mp3)" autoplay="false"></a-sound>
-            <a-plane position="-.01 0 0" color="#eee" key-listen width="1" height="0.2" rotation="0 0 0"
-                     text="color: #000; value: test; baseline: center; width: 1;align: center"></a-plane>
-            <a-entity position="-.25 -0.125 0" a-keyboard rotation="-10 0 0"></a-entity>
         </a-entity>
     </a-assets>
+    <a-entity id="keyboard" visible="false" material="visible: false" lookatme>
+        <a-sound id="click" src="src: url(/assets/KeyDown.mp3)" autoplay="false"></a-sound>
+        <a-plane position="-.01 0 0" color="#eee" key-listen width="1" height="0.2" rotation="0 0 0"
+                 text="color: #000; value: test; baseline: center; width: 1;align: center"></a-plane>
+        <a-entity position="-.25 -0.125 0" a-keyboard rotation="-10 0 0"></a-entity>
+    </a-entity>
+
 
     <!--<a-entity template="src: #keys" position="0 1.6 13"></a-entity>-->
     <!--<a-entity template="src: #hud-template"  position="1 1 14"></a-entity> -->

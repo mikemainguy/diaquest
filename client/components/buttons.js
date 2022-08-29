@@ -1,45 +1,37 @@
 AFRAME.registerSystem('buttons', {
   init: function () {
-    this.mode = null;
-    this.element = null;
+    this.mode = [];
+    this.id = null;
   }
 });
+
 AFRAME.registerComponent('buttons', {
   init: function () {
-    this.system.mode = null;
     this.el.addEventListener("bbuttondown", this.bbuttondown.bind(this));
     this.el.addEventListener("bbuttonup", this.bbuttonup.bind(this));
-    this.el.addEventListener("abuttondown", (evt) => {
-      generateWorlds(100);
-    });
     this.el.addEventListener('triggerdown', this.triggerdown.bind(this));
   },
   bbuttondown: function (evt) {
-    this.system.mode = null;
     this.template = '#universe';
     showHud();
   },
   triggerdown: function (evt) {
     const ele = document.querySelector('.intersected');
-    const parent = ele ? ele.parentNode : null;
-    if (ele == null && this.system.mode != 'adding') {
+    if (this.system.mode.length == 0 && ele == null) {
       debug('nothing intersected');
       return;
     }
-    if ((ele && ele.classList.contains('saveable')) || this.system.mode == 'adding') {
-
-
+    if ((ele && ele.classList.contains('saveable')) || this.system.mode.length > 0) {
       const template = ele ? ele.closest('[template]') : null;
-
       if (template && template.id && template.id != '') {
         debug(template.id);
       }
-      switch (this.system.mode) {
+      switch (this.system.mode.length > 0 ? this.system.mode.slice(-1)[0] : null) {
         case 'select-first':
           debug('first selected: ' + template.id);
           this.system.first = template.id;
-          this.system.mode = 'select-second';
-          debug(this.system.mode);
+          this.system.mode.pop();
+          this.system.mode.push('select-second');
           break;
         case 'select-second':
           debug('second selected: ' + template.id);
@@ -52,8 +44,8 @@ AFRAME.registerComponent('buttons', {
               template: '#connector'
             }
             module.writeEntity(data);
-            this.system.mode = 'select-first';
-            debug(this.system.mode);
+            this.system.mode.pop();
+            this.system.mode.push('select-first');
           });
           break;
         case 'removing':
@@ -61,22 +53,30 @@ AFRAME.registerComponent('buttons', {
             module.removeEntity(template.id);
           });
           break;
-        case 'adding':
-            this.system.mode = 'typing';
+        case 'editing':
+            this.system.mode.push('typing');
+            this.el.emit('key-listen-target', {id: template.id}, true);
             createKeyboard();
+          break;
+        case 'adding':
+          this.system.id = null;
+          this.system.mode.push('typing');
+          this.el.emit('key-listen-target', {id: null}, true);
+          createKeyboard();
         case 'moving':
-          this.system.mode = 'moving';
+          this.system.mode.pop();
+          this.system.mode.push('moving');
           if (template) {
-            this.system.element = template.id;
+            this.system.id = template.id;
             debug('moving: ' + template.id);
           } else {
             debug('movement cleared: ');
-            this.system.element = null;
+            this.system.id = null;
           }
-
-
       }
-
+      if (this.system.mode.length > 0) {
+        debug(this.system.mode[-1]);
+      }
     }
 
   },
@@ -86,33 +86,33 @@ AFRAME.registerComponent('buttons', {
       if (ele) {
         switch (ele.getAttribute('id')) {
           case 'add-connector':
-            this.system.mode = 'select-first'
+            this.system.mode = ['select-first'];
             break;
           case 'add-universe':
             if (document.querySelector('#keyboard') != null) {
               return;
             }
-            this.system.mode = 'adding';
+            this.system.mode = ['adding'];
             break;
           case 'remove':
-            this.system.mode = 'removing';
+            this.system.mode = ['removing'];
             break;
           case 'move':
-            this.system.mode = 'moving';
+            this.system.mode = ['moving'];
+            break;
+          case 'edit':
+            this.system.mode = ['editing'];
             break;
         }
         debug(this.system.mode);
       }
       const hud = document.querySelector('#hud');
       hud.parentElement.removeChild(hud);
-    }
-
-  ,
+    },
   tick: function () {
 
   }
-})
-;
+});
 
 function showHud() {
   const scene = document.querySelector("a-scene");
@@ -125,11 +125,6 @@ function showHud() {
 }
 
 function createKeyboard() {
-  const ele = document.createElement('a-entity');
-  ele.setAttribute("id", "keyboard");
-  ele.setAttribute('position', getHUDPosition());
-  ele.setAttribute('lookatme', '');
-  ele.setAttribute("template", "src: #keys");
-  const scene = document.querySelector("a-scene");
-  scene.appendChild(ele);
+
 }
+
