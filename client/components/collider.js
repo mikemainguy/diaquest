@@ -4,13 +4,13 @@ AFRAME.registerComponent('collider', {
     color: {default: '#ff0'}
   },
   init: function () {
-    this.basecolor = this.el.getAttribute('color');
+    this.basecolor = this.el.getAttribute("material").color;
     this.el.addEventListener('raycaster-intersected', this.intersected.bind(this));
     this.el.addEventListener('raycaster-intersected-cleared', this.cleared.bind(this));
 
   },
   cleared: function(event) {
-      this.el.setAttribute("color", this.basecolor);
+      this.el.setAttribute("material","color", this.basecolor);
       this.el.setAttribute('material', 'wireframe', false);
       this.el.classList.remove('intersected');
   },
@@ -27,7 +27,7 @@ AFRAME.registerComponent('collider', {
       this.el.setAttribute('material', 'wireframe', true);
 
     }
-    this.el.setAttribute("color", this.data.color);
+    this.el.setAttribute("material", "color", this.data.color);
     if (!this.el.classList.contains('intersected')) {
       this.el.classList.add('intersected');
     }

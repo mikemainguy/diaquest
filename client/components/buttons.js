@@ -139,7 +139,7 @@ function enableAlignment() {
 }
 function showHud() {
   const hud = document.querySelector('#hud');
-  document.querySelector('#right-hand').setAttribute('raycaster', 'objects: .widget');
+  document.querySelector('#right-hand').setAttribute('raycaster', 'objects: [widget]');
   hud.setAttribute('position', getHUDPosition(-3));
   hud.setAttribute('visible', true);
 }
