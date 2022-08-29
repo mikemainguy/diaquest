@@ -54,15 +54,13 @@ AFRAME.registerComponent('buttons', {
           });
           break;
         case 'editing':
-            this.system.mode.push('typing');
-            this.el.emit('key-listen-target', {id: template.id}, true);
-            createKeyboard();
+          this.system.mode.push('typing');
+          this.el.emit('key-listen-target', {id: template.id}, true);
           break;
         case 'adding':
           this.system.id = null;
           this.system.mode.push('typing');
           this.el.emit('key-listen-target', {id: null}, true);
-          createKeyboard();
           break;
         case 'moving':
           if (template) {
@@ -88,9 +86,6 @@ AFRAME.registerComponent('buttons', {
             this.system.mode = ['select-first'];
             break;
           case 'add-universe':
-            if (document.querySelector('#keyboard') != null) {
-              return;
-            }
             this.system.mode = ['adding'];
             break;
           case 'remove':
@@ -106,7 +101,8 @@ AFRAME.registerComponent('buttons', {
         debug(this.system.mode);
       }
       const hud = document.querySelector('#hud');
-      hud.parentElement.removeChild(hud);
+      hud.setAttribute('visible', false);
+      document.querySelector('#right-hand').setAttribute('raycaster', 'objects: [collider]');
     },
   tick: function () {
 
@@ -114,16 +110,10 @@ AFRAME.registerComponent('buttons', {
 });
 
 function showHud() {
-  const scene = document.querySelector("a-scene");
-  const ele = document.createElement('a-entity');
-  ele.setAttribute('id', 'hud');
-  ele.setAttribute('lookatme', '');
-  ele.setAttribute('position', getHUDPosition(-3));
-  ele.setAttribute("template", "src: #hud-template");
-  scene.appendChild(ele);
+  const hud = document.querySelector('#hud');
+  document.querySelector('#right-hand').setAttribute('raycaster', 'objects: .widget');
+  hud.setAttribute('position', getHUDPosition(-3));
+  hud.setAttribute('visible', true);
 }
 
-function createKeyboard() {
-
-}
 

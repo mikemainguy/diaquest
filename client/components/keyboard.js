@@ -1,24 +1,30 @@
 AFRAME.registerSystem('key-listen', {
-  init: function() {
+  init: function () {
     this.text = '';
     this.id = null;
 
     document.addEventListener("a-keyboard-update", this.keypress.bind(this));
-    document.addEventListener( "key-listen-target", this.targetListener.bind(this));
+    document.addEventListener("key-listen-target", this.targetListener.bind(this));
   },
-  targetListener: function(event) {
+  targetListener: function (event) {
+    this.keyboard = this.targetEl.parentEl;
     if (event.detail.id) {
-      this.keyboard = this.targetEl.parentEl;
       this.id = event.detail.id;
-      this.text = document.querySelector('#'+ this.id).querySelector('a-plane').getAttribute('text').value;
-
-      this.keyboard.setAttribute('visible', true);
-      this.keyboard.setAttribute('position', getHUDPosition());
-      document.querySelector('#right-hand').setAttribute('raycaster', 'objects: .collidable');
-      if (this.targetEl) {
-        this.targetEl.setAttribute('text', 'value: ' + this.text);
+      if (this.id) {
+        const ele = document.querySelector('#' + this.id);
+        if (ele) {
+          const txt = ele.querySelector('a-plane');
+          if (txt) {
+            this.text = txt.getAttribute('text').value;
+          }
+        }
+      } else {
+        this.id = null;
+        this.text = '';
       }
     }
+    showKeyboard(this);
+
   },
   keypress: function (event) {
     const code = parseInt(event.detail.code);
@@ -32,8 +38,8 @@ AFRAME.registerSystem('key-listen', {
         break;
       case 6:
         if (this.keyboard) {
-          if (this.id) {
-            const data = {id: this.id, text: this.text};
+          const data = {id: this.id, text: this.text};
+          if (data.id) {
             import('../firebase/firebase.js').then((module) => {
               module.updateEntity(data);
             });
@@ -43,16 +49,14 @@ AFRAME.registerSystem('key-listen', {
             data.id = createUUID();
             data.position = pos;
             data.template = "#universe";
-
             import('../firebase/firebase.js').then((module) => {
               module.writeEntity(data);
             });
           }
         }
+        //we intentionally fall through to cancel here.
       case 24:
-        this.text = '';
-        document.querySelector('#right-hand').setAttribute('raycaster', 'objects: [collider]');
-        this.keyboard.setAttribute('visible', false);
+        hideKeyboard(this);
         break;
       default:
         this.text += event.detail.value;
@@ -60,7 +64,23 @@ AFRAME.registerSystem('key-listen', {
     }
   },
 })
+function hideKeyboard(obj) {
+  obj.text = '';
+  obj.id = null;
+  document.querySelector('#right-hand').setAttribute('raycaster', 'objects: [collider]');
+  obj.keyboard.setAttribute('visible', false);
+  const buttons = document.querySelector('a-scene').systems['buttons'];
+  buttons.mode.pop();
+}
 
+function showKeyboard(obj) {
+  obj.keyboard.setAttribute('visible', true);
+  obj.keyboard.setAttribute('position', getHUDPosition());
+  document.querySelector('#right-hand').setAttribute('raycaster', 'objects: .collidable');
+  if (obj.targetEl) {
+    obj.targetEl.setAttribute('text', 'value: ' + obj.text);
+  }
+}
 AFRAME.registerComponent('key-listen', {
   init: function () {
     this.system.targetEl = this.el;
@@ -69,7 +89,7 @@ AFRAME.registerComponent('key-listen', {
 
 
 function createUUID() {
-  return 'id'+ ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
+  return 'id' + ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
     (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
   )
 }

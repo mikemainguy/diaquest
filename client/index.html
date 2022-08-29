@@ -63,133 +63,6 @@
         <img id="nebula" src="./assets/8192.jpeg">
         <img id="sky2" src="./assets/sky2.jpeg">
         <a-asset-item id="emoji-asset" src="/assets/emoji.glb"></a-asset-item>
-        <a-entity id="hud-template" type="text/x-nunjucks-template">
-            <a-entity gridlayout position="0 0 0">
-                <a-entity position="-.5 .5 0">
-                    <a-plane id='edit'
-                             color="#ccc" width="1" height="1" position="0 0 -.25"
-                             collider="type: create; color: #f00"></a-plane>
-                    <a-entity lookatme>
-                        <a-box width=".05" height="0.05" depth="0.05" color="#fff"></a-box>
-                        <a-box width=".05" position="-.1 0 0" height="0.05" depth="0.05" color="#fff"></a-box>
-                        <a-box width=".05" position=".1 0 0" height="0.05" depth="0.05" color="#fff"></a-box>
-                    </a-entity>
-
-                </a-entity>
-                <a-entity position="-.5 1.5 0">
-                    <a-plane id='move'
-                             text="value: move" color="#ccc" width="1" height="1" position="0 0 -.25"
-                             collider="type: create; color: #f00"></a-plane>
-                    <a-entity lookatme>
-
-                        {% for item in [{rotation: "30 30 0"}, {rotation: "39 30 90"}, {rotation: "120 30 0"}] %}
-                        <a-entity rotation="{{item.rotation}}">
-                            <a-cylinder radius=".01" height="0.3" color="#fff"></a-cylinder>
-                            <a-cone color="#fff" radius-bottom="0.03" radius-top="0" height="0.1" position="0 .2 0"
-                                    opacity="0.5"></a-cone>
-                            <a-cone color="#fff" radius-bottom="0.03" radius-top="0" height="0.1" rotation="0 0 180"
-                                    position="0 -.2 0"
-                                    opacity="0.5"></a-cone>
-
-                        </a-entity>
-
-                        {% endfor %}
-
-
-                    </a-entity>
-
-                </a-entity>
-
-                <a-entity position="-1.5 .5 0">
-                    <a-plane id='remove'
-                             color="#ccc" width="1" height="1" position="0 0 -.25"
-                             collider="type: edit; color: #f00"></a-plane>
-                    <a-entity lookatme>
-                        <a-box width=".2" height="0.05" depth="0.05" color="#f55"></a-box>
-                    </a-entity>
-
-                </a-entity>
-
-                <a-entity position=".5 .5 0">
-                    <a-plane id='add-universe'
-                             color="#ccc" width="1" height="1" position="0 0 -.25"
-                             collider="type: create; color: #0f0"></a-plane>
-                    <a-sphere color="#aaf"
-                              radius="0.25"
-                              material="opacity: 0.5">
-                        <a-entity lookatme>
-                            <a-box width="0.05" height=".2" depth="0.05" color="#5f5"></a-box>
-                            <a-box width=".2" height="0.05" depth="0.05" color="#5f5"></a-box>
-                        </a-entity>
-                    </a-sphere>
-
-                </a-entity>
-                <a-entity position=".5 1.5 0">
-                    <a-plane id='add-box'
-                             color="#ccc" width="1" height="1" position="0 0 -.25"
-                             collider="type: create; color: #0f0"></a-plane>
-                    <a-box color="#aaf"
-                           width="0.25"
-                           height="0.25"
-                           depth="0.25"
-                           material="opacity: 0.5">
-                        <a-entity lookatme>
-                            <a-box width="0.05" height=".2" depth="0.05" color="#5f5"></a-box>
-                            <a-box width=".2" height="0.05" depth="0.05" color="#5f5"></a-box>
-                        </a-entity>
-                    </a-box>
-
-                </a-entity>
-
-                <a-entity position=".5 -.5 0">
-                    <!--animation="property: position; from: 0 -0.625 0; to: 0 0.625 0; loop: true"  -->
-                    <a-box color="#aaf"
-                           opacity="0.4" width=".4" depth=".05" height=".4">
-                        <a-entity lookatme>
-                            <a-box width="0.05" height=".2" depth="0.05" color="#5f5"></a-box>
-                            <a-box width=".2" height="0.05" depth="0.05" color="#5f5"></a-box>
-                        </a-entity>
-                    </a-box>
-                    <a-plane color="#ccc"
-                             id="add-billboard" collider="type: foo; color: #0f0"
-                             width="1" height="1" depth="0.1" position="0 0 -.25" id='add-billboard'
-                             collider="type: create; color: #0f0"></a-plane>
-                </a-entity>
-                <a-entity position=".5 -.5 0">
-                    <!--animation="property: position; from: 0 -0.625 0; to: 0 0.625 0; loop: true"  -->
-                    <a-box color="#aaf"
-                           opacity="0.4" width=".4" depth=".4" height=".05">
-                        <a-entity lookatme>
-                            <a-box width="0.05" height=".2" depth="0.05" color="#5f5"></a-box>
-                            <a-box width=".2" height="0.05" depth="0.05" color="#5f5"></a-box>
-                        </a-entity>
-                    </a-box>
-                    <a-plane color="#ccc"
-                             id="add-plane" collider="type: foo; color: #0f0"
-                             width="1" height="1" depth="0.1" position="0 0 -.25" id='add-billboard'
-                             collider="type: create; color: #0f0"></a-plane>
-                </a-entity>
-                <a-entity position="-.5 -.5 0">
-                    <a-entity>
-                        <a-plane id='add-connector'
-                                 color="#ccc" width="1" height="1" position="0 0 -.25"
-                                 collider="type: create; color: #0f0"></a-plane>
-                        <!--animation="property: position; from: 0 -0.625 0; to: 0 0.625 0; loop: true"  -->
-                        <a-cone color="#aaf" radius-bottom="0.08" radius-top="0" height="0.25" position="0 0.3 0"
-                                opacity="0.5"></a-cone>
-                        <a-cylinder color="#aaf" radius="0.04"
-                                    opacity="0.4" height=".4">
-                            <a-entity lookatme>
-                                <a-box width="0.05" height=".2" depth="0.05" color="#5f5"></a-box>
-                                <a-box width=".2" height="0.05" depth="0.05" color="#5f5"></a-box>
-                            </a-entity>
-                        </a-cylinder>
-
-                    </a-entity>
-                </a-entity>
-
-            </a-entity>
-        </a-entity>
         <a-entity id="connector-template" type="text/x-nunjucks-template">
 
             <a-entity class="data-connector">
@@ -231,8 +104,181 @@
         <a-entity id="user" type="text/x-nunjucks-template">
             <a-entity scale="1 1 1" position="0 1.6 0" rotation="0 180 0" gltf-model="#emoji-asset"></a-entity>
         </a-entity>
+
     </a-assets>
 
+
+    <a-entity position="0 1.6 13" id="hud" visible="true" lookatme>
+        <a-entity gridlayout position="0 0 0">
+            <a-entity position="-.5 .5 0">
+                <a-plane id='edit'
+                         color="#ccc" width="1" height="1" position="0 0 -.25" collider class="widget"></a-plane>
+                <a-entity lookatme>
+                    <a-box width=".05" height="0.05" depth="0.05" color="#fff"></a-box>
+                    <a-box width=".05" position="-.1 0 0" height="0.05" depth="0.05" color="#fff"></a-box>
+                    <a-box width=".05" position=".1 0 0" height="0.05" depth="0.05" color="#fff"></a-box>
+                </a-entity>
+
+            </a-entity>
+            <a-entity position="-.5 1.5 0">
+                <a-plane id='move'
+                         text="value: move" color="#ccc" width="1" height="1" position="0 0 -.25"
+                         class="widget" collider ></a-plane>
+                <a-entity lookatme>
+
+
+                    <a-entity rotation="30 30 0">
+                        <a-cylinder radius=".01" height="0.3" color="#fff"></a-cylinder>
+                        <a-cone color="#fff" radius-bottom="0.03" radius-top="0" height="0.1" position="0 .2 0"
+                                opacity="0.5"></a-cone>
+                        <a-cone color="#fff" radius-bottom="0.03" radius-top="0" height="0.1" rotation="0 0 180"
+                                position="0 -.2 0"
+                                opacity="0.5"></a-cone>
+
+                    </a-entity>
+                    <a-entity rotation="30 30 90">
+                        <a-cylinder radius=".01" height="0.3" color="#fff"></a-cylinder>
+                        <a-cone color="#fff" radius-bottom="0.03" radius-top="0" height="0.1" position="0 .2 0"
+                                opacity="0.5"></a-cone>
+                        <a-cone color="#fff" radius-bottom="0.03" radius-top="0" height="0.1" rotation="0 0 180"
+                                position="0 -.2 0"
+                                opacity="0.5"></a-cone>
+
+                    </a-entity>
+                    <a-entity rotation="120 30 0">
+                        <a-cylinder radius=".01" height="0.3" color="#fff"></a-cylinder>
+                        <a-cone color="#fff" radius-bottom="0.03" radius-top="0" height="0.1" position="0 .2 0"
+                                opacity="0.5"></a-cone>
+                        <a-cone color="#fff" radius-bottom="0.03" radius-top="0" height="0.1" rotation="0 0 180"
+                                position="0 -.2 0"
+                                opacity="0.5"></a-cone>
+
+                    </a-entity>
+
+
+
+
+                </a-entity>
+
+            </a-entity>
+
+            <a-entity position="-1.5 .5 0">
+                <a-plane id='remove'
+                         color="#ccc" width="1" height="1" position="0 0 -.25"
+                         class="widget" collider></a-plane>
+                <a-entity lookatme>
+                    <a-box width=".2" height="0.05" depth="0.05" color="#f55"></a-box>
+                </a-entity>
+
+            </a-entity>
+
+            <a-entity position=".5 .5 0">
+                <a-plane id='add-universe'
+                         color="#ccc" width="1" height="1" position="0 0 -.25"
+                         class="widget" collider></a-plane>
+                <a-sphere color="#aaf"
+                          radius="0.25"
+                          material="opacity: 0.5">
+                    <a-entity lookatme>
+                        <a-box width="0.05" height=".2" depth="0.05" color="#5f5"></a-box>
+                        <a-box width=".2" height="0.05" depth="0.05" color="#5f5"></a-box>
+                    </a-entity>
+                </a-sphere>
+
+            </a-entity>
+            <a-entity position=".5 1.5 0">
+                <a-plane id='add-box'
+                         color="#ccc" width="1" height="1" position="0 0 -.25"
+                         class="widget" collider></a-plane>
+                <a-box color="#aaf"
+                       width="0.25"
+                       height="0.25"
+                       depth="0.25"
+                       material="opacity: 0.5">
+                    <a-entity lookatme>
+                        <a-box width="0.05" height=".2" depth="0.05" color="#5f5"></a-box>
+                        <a-box width=".2" height="0.05" depth="0.05" color="#5f5"></a-box>
+                    </a-entity>
+                </a-box>
+
+            </a-entity>
+
+            <a-entity position=".5 -.5 0">
+                <a-plane color="#ccc"
+                         id="add-billboard"
+                         width="1" height="1" depth="0.1" position="0 0 -.25"
+                         class="widget" collider></a-plane>
+                <a-box color="#aaf"
+                       opacity="0.4" width=".4" depth=".05" height=".4">
+                    <a-entity lookatme>
+                        <a-box width="0.05" height=".2" depth="0.05" color="#5f5"></a-box>
+                        <a-box width=".2" height="0.05" depth="0.05" color="#5f5"></a-box>
+                    </a-entity>
+                </a-box>
+
+            </a-entity>
+            <a-entity position=".5 -.5 0">
+                <a-plane color="#ccc"
+                         id="add-plane"
+                         width="1" height="1" depth="0.1" position="0 0 -.25"
+                         class="widget" collider></a-plane>
+                <a-box color="#aaf"
+                       opacity="0.4" width=".4" depth=".4" height=".05">
+                    <a-entity lookatme>
+                        <a-box width="0.05" height=".2" depth="0.05" color="#5f5"></a-box>
+                        <a-box width=".2" height="0.05" depth="0.05" color="#5f5"></a-box>
+                    </a-entity>
+                </a-box>
+
+            </a-entity>
+            <a-entity position="-.5 -.5 0">
+                <a-entity>
+                    <a-plane id='add-connector'
+                             color="#ccc" width="1" height="1" position="0 0 -.25"
+                             class="widget" collider></a-plane>
+                    <!--animation="property: position; from: 0 -0.625 0; to: 0 0.625 0; loop: true"  -->
+                    <a-cone color="#aaf" radius-bottom="0.08" radius-top="0" height="0.25" position="0 0.3 0"
+                            opacity="0.5"></a-cone>
+                    <a-cylinder color="#aaf" radius="0.04"
+                                opacity="0.4" height=".4">
+                        <a-entity lookatme>
+                            <a-box width="0.05" height=".2" depth="0.05" color="#5f5"></a-box>
+                            <a-box width=".2" height="0.05" depth="0.05" color="#5f5"></a-box>
+                        </a-entity>
+                    </a-cylinder>
+
+                </a-entity>
+            </a-entity>
+            <a-entity position="-.5 1.5 0">
+                <a-plane id='align'
+                         text="value: move" color="#ccc" width="1" height="1" position="0 0 -.25"
+                         class="widget" collider ></a-plane>
+                <a-entity lookatme>
+
+
+                    <a-entity rotation="30 30 0">
+                        <a-cylinder radius=".01" height="0.3" color="#fff"></a-cylinder>
+
+                    </a-entity>
+                    <a-entity rotation="30 30 90">
+                        <a-cylinder radius=".01" height="0.3" color="#fff"></a-cylinder>
+
+                    </a-entity>
+                    <a-entity rotation="120 30 0">
+                        <a-cylinder radius=".01" height="0.3" color="#fff"></a-cylinder>
+
+                    </a-entity>
+
+
+
+
+                </a-entity>
+
+            </a-entity>
+
+
+        </a-entity>
+    </a-entity>
     <a-entity id="keyboard" visible="false" lookatme>
         <a-sound id="click" src="src: url(/assets/KeyDown.mp3)" autoplay="false"></a-sound>
         <a-plane position="-.01 0 0" color="#eee" key-listen width="1" height="0.2" rotation="0 0 0"

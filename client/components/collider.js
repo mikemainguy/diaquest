@@ -4,10 +4,8 @@ AFRAME.registerComponent('collider', {
     color: {default: '#ff0'}
   },
   init: function () {
-
     this.basecolor = this.el.getAttribute('color');
     this.el.addEventListener('raycaster-intersected', (event) => {
-
       const intersected = document.querySelectorAll('.intersected');
       for(const obj of intersected) {
         if (obj && obj.classList) {
