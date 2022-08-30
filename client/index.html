@@ -34,6 +34,7 @@
         <img id="skybox" src="./assets/skybox.png">
         <img id="nebula" src="./assets/8192.jpeg">
         <img id="sky2" src="./assets/sky2.jpeg">
+        <img id="grass" src="./assets/wild+grass-1024x1024.jpeg">
         <a-asset-item id="emoji-asset" src="/assets/emoji.glb"></a-asset-item>
         <a-entity id="connector-template" type="text/x-nunjucks-template">
             <a-entity class="data-connector">
@@ -89,7 +90,7 @@
     </a-assets>
 
 
-    <a-entity position="0 1.6 14" id="hud" visible="true" lookatme scale="0.5 0.5 0.5">
+    <a-entity position="0 1.6 14" id="hud" visible="false" lookatme scale="0.5 0.5 0.5">
         <a-entity gridlayout position="0 0 0">
             <a-entity>
                 <a-plane id='edit' mixin="hudPlane"></a-plane>
@@ -231,7 +232,7 @@
                 id="left-hand"
                 oculus-touch-controls="hand: left"
                 laser-controls="hand: left"
-                raycaster="objects: .saveable"
+                raycaster="objects: .saveable; lineColor: #f33; lineOpacity: 0.7; far: 100"
                 buttons
                 mover="forwardback: true; axis: y"
                 mover__2="strafe: true; axis: x">
@@ -246,8 +247,9 @@
         </a-entity>
         <a-entity id="right-hand"
                   laser-controls="hand: right"
-                  raycaster="objects: .saveable"
+                  raycaster="objects: .saveable; lineColor: #f33; lineOpacity: 0.7; far: 100"
                   buttons
+
                   super-hands sphere-collider="objects: [grabbable]"
                   oculus-touch-controls="hand: right"
                   mover="elevate: true; axis: y"
@@ -261,17 +263,33 @@
                      text="color: #000; value: test; baseline: center; width: 0.25; align: center"
                      position=".1 0.07 0.06"
                      rotation="-70 10 0"></a-plane>
+            <a-plane width="0.01"
+                     height="0.01"
+                     color="#fff"
+                     id="menu-help"
+                     user
+                     class="text"
+                     text="color: #000; value: menu; baseline: center; align: center; wrap: 5"
+                     position="-.035 0.008 .03"
+                     rotation="-75 10 0"></a-plane>
         </a-entity>
         <a-entity camera="active: true" id="camera" position="0 1.6 2">
 
         </a-entity>
-        <a-sound id="ambient" src="src: url(/assets/444.mp3); loop: true; volume=0.3" autoplay="true"
-                 position="0 2 5"></a-sound>
+
     </a-entity>
-    <a-entity light="type: ambient; color: #BBB"></a-entity>
-    <a-entity light="type: point; color: #FFF; distance: 50; intensity: 1" position="0 0 0"></a-entity>
-    <!-- <a-sky src="#nebula" radius="1000" material="fog: false" opacity="0.2"></a-sky> -->
+    <a-entity light="type: ambient; color: #BBB">
+
+    </a-entity>
+    <a-sound id="ambient" src="src: url(/assets/frogs.mp3); loop: true; volume=0.5"
+             position="0 2 -20"></a-sound>
+    <a-entity position="0 20 0" light="type: point; color: #FFF; distance: 50; intensity: 1">
+        <a-sphere material="opacity: 0.9;color: #ff0" radius=".2"></a-sphere>
+    </a-entity>
+    <a-sky src="#nebula" radius="100" material="fog: false" opacity="0.9"></a-sky>
     <!-- <a-sky color="#002" radius="2000" material="fog: false"></a-sky> -->
+    <a-plane position="0 -10 0" material="src: #grass; repeat: 20 20"
+             width="100" height="100" rotation="-90 0 0"></a-plane>
 
 </a-scene>
 </body>

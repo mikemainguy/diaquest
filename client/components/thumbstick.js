@@ -42,18 +42,19 @@ AFRAME.registerComponent('mover', {
       return;
     }
     if (!this.sound) {
-      document.querySelector('#ambient').components.sound.playSound();
       this.sound = true;
+      const ambient = document.querySelector('#ambient').components.sound;
+      ambient.playSound();
     }
     const buttons = document.querySelector('a-scene').systems['buttons'];
     const val = evt.detail[this.data.axis];
     const sign = Math.sign(val);
 
-    const fastmove = Math.abs(val) > .99;
-      if (Math.abs(val) > 0.2) {
+    const fastmove = Math.abs(val) > .9;
+      if (Math.abs(val) > 0.1) {
         if (fastmove || !this.running) {
           if (!fastmove) {
-            this.running =true;
+            this.running = true;
           }
           if (this.data.forwardback) {
             move(this.data.moveIncrement * sign, false);

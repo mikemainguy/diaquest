@@ -67,8 +67,8 @@ AFRAME.registerSystem('key-listen', {
 function hideKeyboard(obj) {
   obj.text = '';
   obj.id = null;
-  document.querySelector('#right-hand').setAttribute('raycaster', 'objects: ,saveable');
-  document.querySelector('#left-hand').setAttribute('raycaster', 'objects: ,saveable');
+  document.querySelector('#right-hand').setAttribute('raycaster', 'objects: .saveable');
+  document.querySelector('#left-hand').setAttribute('raycaster', 'objects: .saveable');
   obj.keyboard.setAttribute('visible', false);
   const buttons = document.querySelector('a-scene').systems['buttons'];
   buttons.mode.pop();
