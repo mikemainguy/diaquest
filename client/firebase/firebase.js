@@ -59,17 +59,7 @@ onValue(users, (snapshot) => {
   const data = snapshot.val();
 })
 
-/*const entities = ref(database, 'entities/');
-get(entities).then( (snapshot) => {
-  snapshot.forEach((item) => {
-    console.log('existing data ' + item.val().id);
-    createEntity(item.val());
-  });
-}) */
 function createEntity(entity) {
-  if (document.querySelector('#' + entity.id)) {
-    console.log(entity.id + ' already exists');
-  }
   switch (entity.template) {
     case '#connector':
       createConnector(entity);
@@ -136,7 +126,7 @@ function createConnector(entity) {
   ele.setAttribute('template', 'src: #connector-template');
   const color = entity.color ? entity.color : '#669';
   window.setTimeout(function () {
-    ele.setAttribute('connector', 'startEl: #' + entity.first + "; endEl: #" + entity.second + "; color: " + color);
+  ele.setAttribute('connector', 'startEl: #' + entity.first + "; endEl: #" + entity.second + "; color: " + color);
   }, 200)
 
   scene.appendChild(ele);

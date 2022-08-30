@@ -4,10 +4,9 @@ AFRAME.registerComponent('universe', {
     color: {type: 'string'}
   },
   init: function() {
-    console.log('here');
+
   },
   update: function() {
-    console.log('here2');
     if (this.el.querySelector('a-plane')) {
       if (this.data.text) {
         this.el.querySelector('a-plane').setAttribute('visible', true);

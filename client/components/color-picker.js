@@ -20,7 +20,7 @@ AFRAME.registerComponent('color-picker', {
           ele.setAttribute('class', 'colorswatch');
           ele.setAttribute('position', new THREE.Vector3((x%8)*0.05, Math.floor((x/8))*0.05, 0));
           this.el.appendChild(ele);
-          console.log(color);
+
           x++;
         }
       }

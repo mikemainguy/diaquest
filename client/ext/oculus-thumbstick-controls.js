@@ -28,7 +28,7 @@ AFRAME.registerComponent('oculus-thumbstick-controls', {
         var data = this.data;
         var el = this.rigElement
         var velocity = this.velocity;
-        //console.log("here", this.tsData, this.tsData.length())
+
         if (!velocity[data.adAxis] && !velocity[data.wsAxis] && !this.tsData.length()) { return; }
 
         // Update velocity.
