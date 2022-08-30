@@ -41,7 +41,7 @@ AFRAME.registerComponent('buttons', {
                   first: this.system.first,
                   second: selectedObject.id,
                   text: '',
-                  template: '#connector'
+                  template: '#connector-template'
                 }
                 module.writeEntity(data);
               });

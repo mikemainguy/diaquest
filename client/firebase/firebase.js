@@ -59,21 +59,6 @@ onValue(users, (snapshot) => {
   const data = snapshot.val();
 })
 
-function createEntity(entity) {
-  switch (entity.template) {
-    case '#connector':
-      createConnector(entity);
-      break;
-    case '#user':
-      updateUser(entity);
-      break;
-    default:
-      createUniverse(entity);
-      break;
-
-  }
-
-}
 
 const entities2 = ref(database, 'entities');
 onChildAdded(entities2, (snapshot) => {
@@ -91,49 +76,42 @@ onChildChanged(entities2, (snapshot) => {
 });
 
 
-export function createUniverse(entity) {
+
+function createEntity(entity) {
+  const me = document.querySelector('.rig')
+  if (me && (me.getAttribute('id') == entity.id)) {
+    return;
+  }
+  const scene = document.querySelector("a-scene");
   let exists = document.querySelector('#' + entity.id);
-  const scene = document.querySelector('a-scene');
   const ele = exists ? exists : document.createElement('a-entity');
 
-  ele.setAttribute('template', 'src: ' + entity.template);
-  ele.setAttribute('position', entity.position);
-  ele.setAttribute('id', entity.id);
   if (entity.rotation) {
     ele.setAttribute('rotation', entity.rotation);
   }
-  window.setTimeout(function () {
-    const color = entity.color ? entity.color : '#669';
-    ele.setAttribute('universe', 'text: ' + entity.text + '; color: ' + color);
-  }, 200);
+  ele.setAttribute('template', 'src: ' + entity.template);
+  ele.setAttribute('position', entity.position);
+  ele.setAttribute('id', entity.id);
+
+  const color = entity.color ? entity.color : '#669';
+  switch (entity.template) {
+    case '#universe':
+      window.setTimeout(function () {
+        const color = entity.color ? entity.color : '#669';
+        ele.setAttribute('universe', 'text: ' + entity.text + '; color: ' + color);
+      }, 200);
+
+      break;
+    case '#connector-template':
+      window.setTimeout(function () {
+        ele.setAttribute('connector', 'startEl: #' + entity.first + "; endEl: #" + entity.second + "; color: " + color);
+      }, 200)
+      break;
+  }
+
   if (!exists) {
     scene.appendChild(ele);
   }
-}
-function updateUser(entity) {
-  const me = document.querySelector('.rig')
-  if (me && (me.getAttribute('id') == entity.id)) {
-
-  } else {
-    createUniverse(entity);
-  }
-}
-
-function createConnector(entity) {
-  const scene = document.querySelector("a-scene");
-  const ele = document.createElement('a-entity');
-  ele.setAttribute('id', entity.id);
-  ele.setAttribute('template', 'src: #connector-template');
-  const color = entity.color ? entity.color : '#669';
-  window.setTimeout(function () {
-  ele.setAttribute('connector', 'startEl: #' + entity.first + "; endEl: #" + entity.second + "; color: " + color);
-  }, 200)
-
-  scene.appendChild(ele);
-}
-
-function getCookieValue(name) {
-  return document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)')?.pop() || ''
 }
 
 
