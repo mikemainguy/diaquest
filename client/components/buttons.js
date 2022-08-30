@@ -77,6 +77,23 @@ AFRAME.registerComponent('buttons', {
           this.system.mode.push('typing');
           this.el.emit('key-listen-target', {id: null}, true);
           break;
+        case 'selecting-color-object':
+          if (selectedObject) {
+            ele.setAttribute('material', 'color', this.system.color);
+            ele.setAttribute('base-color', this.system.color);
+            const data = {id: selectedObject.id, color: this.system.color};
+            import('../firebase/firebase.js').then((module) => {
+              module.updateEntity(data);
+            });
+          }
+          break;
+        case 'editing-color':
+          if (ele && ele.classList.contains('colorswatch')) {
+            this.system.color=ele.getAttribute('newcolor');
+            this.system.mode.push('selecting-color-object');
+            hideColorPicker();
+          }
+          break;
         case 'moving':
           if (selectedObject) {
             this.system.first = selectedObject.id;
@@ -100,31 +117,41 @@ AFRAME.registerComponent('buttons', {
           case 'add-connector':
             this.system.mode = ['connecting'];
             this.system.mode.push('select-first');
+            hide('#hud');
             break;
           case 'add-universe':
             this.system.mode = ['adding'];
+            hide('#hud');
             break;
           case 'remove':
             this.system.mode = ['removing'];
+            hide('#hud');
             break;
           case 'move':
             this.system.mode = ['moving'];
+            hide('#hud');
             break;
           case 'edit':
             this.system.mode = ['editing'];
+            hide('#hud');
+            break;
+          case 'edit-color':
+            this.system.mode = ['editing-color'];
+            hide('#hud');
+            showColorPicker();
             break;
           case 'align':
+            hide('#hud');
             enableAlignment();
             this.system.mode = ['aligning'];
             this.system.mode.push('select-first');
             break;
+          default:
+            hide('#hud');
         }
         debug(this.system.mode);
       }
-      const hud = document.querySelector('#hud');
-      hud.setAttribute('visible', false);
-      document.querySelector('#right-hand').setAttribute('raycaster', 'objects: .saveable');
-      document.querySelector('#left-hand').setAttribute('raycaster', 'objects: .saveable');
+
     },
   tick: function () {
 
@@ -138,12 +165,29 @@ function enableAlignment() {
   const hand = document.querySelector('#right-hand');
   hand.setAttribute('aligner', '');
 }
-function showHud() {
-  const hud = document.querySelector('#hud');
-  document.querySelector('#right-hand').setAttribute('raycaster', 'objects: [widget]');
-  document.querySelector('#left-hand').setAttribute('raycaster', 'objects: [widget]');
-  hud.setAttribute('position', getHUDPosition(-1));
-  hud.setAttribute('visible', true);
+
+function showColorPicker() {
+  show('#color-picker', '.colorswatch');
+}
+function hideColorPicker() {
+  hide('#color-picker');
 }
 
+function showHud() {
+  show('#hud', '[widget]');
+}
+function hide(id) {
+  const obj = document.querySelector(id);
+  document.querySelector('#right-hand').setAttribute('raycaster', 'objects: .saveable');
+  document.querySelector('#left-hand').setAttribute('raycaster', 'objects: .saveable');
+  obj.setAttribute('visible', false);
+
+}
+function show(id, selector) {
+  const obj = document.querySelector(id);
+  document.querySelector('#right-hand').setAttribute('raycaster', 'objects' , selector);
+  document.querySelector('#left-hand').setAttribute('raycaster', 'objects' , selector);
+  obj.setAttribute('position', getHUDPosition(-1));
+  obj.setAttribute('visible', true);
+}
 

@@ -1,6 +1,7 @@
 AFRAME.registerComponent('connector', {
   schema: {
     startEl: {type: 'selector'},
+    color: {type: 'string'},
     endEl: {type: 'selector'},
     speed: {type: 'number', default: 1.0},
     delay: {type: 'number', default: 1.0},
@@ -18,7 +19,7 @@ AFRAME.registerComponent('connector', {
       this.packet = this.el.querySelector('.data-packet').object3D;
       this.connector = this.el.querySelector('.data-direction').object3D;
       this.packetPosition = 0;
-
+      this.el.querySelector('.saveable').setAttribute('material', 'color', this.data.color);
       this.el.querySelector('a-plane').setAttribute('visible', false);
       this.el.querySelector('a-plane').setAttribute('position','z', distance/2);
       this.el.setAttribute('position', this.obj1.position);

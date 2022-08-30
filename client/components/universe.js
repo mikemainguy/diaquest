@@ -1,13 +1,13 @@
 AFRAME.registerComponent('universe', {
   schema: {
-    text: {type: 'string'}
+    text: {type: 'string'},
+    color: {type: 'string'}
   },
   init: function() {
-    if (this.el.querySelector('a-plane')) {
-      this.el.querySelector('a-plane').setAttribute('text', 'value: '+ this.data.text);
-    }
+    console.log('here');
   },
   update: function() {
+    console.log('here2');
     if (this.el.querySelector('a-plane')) {
       if (this.data.text) {
         this.el.querySelector('a-plane').setAttribute('visible', true);
@@ -16,6 +16,9 @@ AFRAME.registerComponent('universe', {
         this.el.querySelector('a-plane').setAttribute('visible', false);
       }
 
+    }
+    if (this.el.querySelector('.saveable')) {
+      this.el.querySelector('.saveable').setAttribute('material', 'color', this.data.color);
     }
   }
 });

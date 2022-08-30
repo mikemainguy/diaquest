@@ -18,6 +18,7 @@
     <script src="/components/connector.js"></script>
     <script src="/components/gridLayout.js"></script>
     <script src="/components/widget.js"></script>
+    <script src="/components/color-picker.js"></script>
     <script src="/ext/aframe-extras.misc.min.js"></script>
     <script src="/ext/nunjucks.min.js"></script>
     <script src="/ext/aframe-keyboard.js"></script>
@@ -29,7 +30,7 @@
 
 <a-scene buttons stats background="color: #003" fog="type: exponential; color: #fff; near: 20; far: 100">
     <a-assets timeout="20000">
-        <a-mixin id="hudPlane" material="color: #22a" width="1" height="1" position="0 0 -.25" collider widget></a-mixin>
+        <a-mixin id="hudPlane" material="color: #22a" width="1" height="1" position="0 0 -.25" widget></a-mixin>
         <a-mixin id="widgetMaterial" material="color: #aaa; opacity: 0.5"></a-mixin>
         <a-mixin id="labelMixin"
                  material="color: #222; opacity: 0.5"
@@ -45,15 +46,12 @@
         <a-asset-item id="emoji-asset" src="/assets/emoji.glb"></a-asset-item>
         <a-entity id="connector-template" type="text/x-nunjucks-template">
             <a-entity class="data-connector">
-
                 <a-sphere rotation="90 0 0" position="0 0 0" radius="0.04" class="data-packet"
                           color="#f00">
-
                 </a-sphere>
-                <a-cylinder collider class="saveable data-direction collidable" rotation="90 0 0" position="0 0 0"
+                <a-cylinder class="saveable data-direction" rotation="90 0 0" position="0 0 0"
                             material="opacity: 0.5; color: #ccc" transparent="true"
                             height="1" radius="0.05">
-
                 </a-cylinder>
                 <a-plane color="#222"
                          lookatme width="1.5" height="0.25"
@@ -72,16 +70,15 @@
         </a-entity>
         <a-entity id="universe" type="text/x-nunjucks-template">
             <a-entity grabbable>
-                <a-sphere collider class="saveable"
-                          animation="property: rotation; from: 0 0 0; to: 0 360 0; loop: true; dur: 60000"
-                          class="collidable" material="src: #sky2" color="#77f" radius="0.5"></a-sphere>
+                <a-sphere class="saveable"
+                          class="collidable" material="color: #33f" radius="0.5"></a-sphere>
                 <a-plane mixin="labelMixin" width="1.5" height="0.25"
                          position="0 0.7 0"></a-plane>
             </a-entity>
         </a-entity>
         <a-entity id="box" type="text/x-nunjucks-template">
             <a-entity grabbable>
-                <a-box collider class="saveable" color="#00f" width=".5" height=".5" depth="0.5"></a-box>
+                <a-box class="saveable" color="#00f" width=".5" height=".5" depth="0.5"></a-box>
                 <a-plane mixin="labelMixin" width="1.5" height="0.25"
                          position="0 0.35 0"></a-plane>
             </a-entity>
@@ -94,8 +91,9 @@
             </a-entity>
         </a-entity>
     </a-assets>
+    <a-entity position="0 1.6 14" id="color-picker" color-picker visible="true" lookatme>
 
-
+    </a-entity>
     <a-entity position="0 1.6 14" id="hud" visible="false" lookatme scale="0.5 0.5 0.5">
         <a-entity gridlayout position="0 0 0">
             <a-entity>
@@ -107,6 +105,17 @@
                 </a-entity>
 
             </a-entity>
+            <a-entity>
+                <a-entity>
+                    <a-plane id='edit-color' mixin="hudPlane"></a-plane>
+
+                    <a-sphere mixin="widgetMaterial" radius=".1" position="0 0.05 0" material="color: #f00;"></a-sphere>
+                    <a-sphere mixin="widgetMaterial" radius=".1" position="0.05 0 0" material="color: #040;"></a-sphere>
+                    <a-sphere mixin="widgetMaterial" radius=".1" position="-0.05 0 0" material="color: #00f;"></a-sphere>
+                    </a-cylinder>
+                </a-entity>
+            </a-entity>
+
             <a-entity>
                 <a-plane id='move' mixin="hudPlane"></a-plane>
                 <a-entity>

@@ -72,7 +72,7 @@ function createEntity(entity) {
   }
   switch (entity.template) {
     case '#connector':
-      createConnector(entity.id, entity.first, entity.second);
+      createConnector(entity);
       break;
     case '#user':
       updateUser(entity);
@@ -113,7 +113,8 @@ export function createUniverse(entity) {
     ele.setAttribute('rotation', entity.rotation);
   }
   window.setTimeout(function () {
-    ele.setAttribute('universe', 'text: ' + entity.text);
+    const color = entity.color ? entity.color : '#669';
+    ele.setAttribute('universe', 'text: ' + entity.text + '; color: ' + color);
   }, 200);
   if (!exists) {
     scene.appendChild(ele);
@@ -128,13 +129,14 @@ function updateUser(entity) {
   }
 }
 
-function createConnector(id, first, second) {
+function createConnector(entity) {
   const scene = document.querySelector("a-scene");
   const ele = document.createElement('a-entity');
-  ele.setAttribute('id', id);
+  ele.setAttribute('id', entity.id);
   ele.setAttribute('template', 'src: #connector-template');
+  const color = entity.color ? entity.color : '#669';
   window.setTimeout(function () {
-    ele.setAttribute('connector', 'startEl: #' + first + "; endEl: #" + second);
+    ele.setAttribute('connector', 'startEl: #' + entity.first + "; endEl: #" + entity.second + "; color: " + color);
   }, 200)
 
   scene.appendChild(ele);
