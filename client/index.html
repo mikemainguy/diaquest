@@ -30,6 +30,7 @@
 <a-scene buttons stats background="color: #003" fog="type: exponential; color: #fff; near: 20; far: 100">
     <a-assets timeout="20000">
         <a-mixin id="hudPlane" material="color: #22a" width="1" height="1" position="0 0 -.25" collider widget></a-mixin>
+        <a-mixin id="widgetMaterial" material="color: #aaa; opacity: 0.5"></a-mixin>
         <img id="skybox" src="./assets/skybox.png">
         <img id="nebula" src="./assets/8192.jpeg">
         <img id="sky2" src="./assets/sky2.jpeg">
@@ -52,6 +53,15 @@
                          position="0 0.35 0"></a-plane>
             </a-entity>
         </a-entity>
+        <a-entity id="plus" type="text/x-nunjucks-template">
+            <a-entity position="0 0 .1">
+                <a-box width="0.05" height=".2" depth="0.05" color="#5f5"></a-box>
+                <a-box width=".2" height="0.05" depth="0.05" color="#5f5"></a-box>
+            </a-entity>
+        </a-entity>
+        <a-entity id="widgetPoint" type="text/x-nunjucks-template">
+            <a-cone radius-bottom="0.03" radius-top="0" height="0.1"  mixin="widgetMaterial"></a-cone>
+        </a-entity>
         <a-entity id="universe" type="text/x-nunjucks-template">
             <a-entity grabbable>
                 <a-sphere collider class="saveable"
@@ -65,7 +75,7 @@
         </a-entity>
         <a-entity id="box" type="text/x-nunjucks-template">
             <a-entity grabbable>
-                <a-box collider class="collidable saveable" color="#00f" width=".5" height=".5" depth="0.5"></a-box>
+                <a-box collider class="saveable" color="#00f" width=".5" height=".5" depth="0.5"></a-box>
                 <a-plane color="#222"
                          lookatme width="1.5" height="0.25"
                          text="color: #fff;  baseline: top; align: center; wrapCount: 20"
@@ -79,143 +89,109 @@
     </a-assets>
 
 
-    <a-entity position="0 1.6 13" id="hud" visible="false" lookatme>
+    <a-entity position="0 1.6 14" id="hud" visible="true" lookatme scale="0.5 0.5 0.5">
         <a-entity gridlayout position="0 0 0">
             <a-entity>
                 <a-plane id='edit' mixin="hudPlane"></a-plane>
-                <a-entity lookatme>
-                    <a-box width=".05" height="0.05" depth="0.05" color="#fff"></a-box>
-                    <a-box width=".05" position="-.1 0 0" height="0.05" depth="0.05" color="#fff"></a-box>
-                    <a-box width=".05" position=".1 0 0" height="0.05" depth="0.05" color="#fff"></a-box>
+                <a-entity>
+                    <a-box width=".05" height="0.05" depth="0.05" mixin="widgetMaterial"></a-box>
+                    <a-box width=".05" position="-.1 0 0" height="0.05" depth="0.05" mixin="widgetMaterial"></a-box>
+                    <a-box width=".05" position=".1 0 0" height="0.05" depth="0.05" mixin="widgetMaterial"></a-box>
                 </a-entity>
 
             </a-entity>
             <a-entity>
                 <a-plane id='move' mixin="hudPlane"></a-plane>
-                <a-entity lookatme>
+                <a-entity>
                     <a-entity rotation="30 30 0">
-                        <a-cylinder radius=".01" height="0.3" color="#fff"></a-cylinder>
-                        <a-cone color="#fff" radius-bottom="0.03" radius-top="0" height="0.1" position="0 .2 0"
-                                opacity="0.5"></a-cone>
-                        <a-cone color="#fff" radius-bottom="0.03" radius-top="0" height="0.1" rotation="0 0 180"
-                                position="0 -.2 0"
-                                opacity="0.5"></a-cone>
+                        <a-cylinder radius=".01" height="0.3" mixin="widgetMaterial"></a-cylinder>
+                        <a-entity template="src: #widgetPoint" position="0 .2 0"></a-entity>
+                        <a-entity template="src: #widgetPoint"  rotation="0 0 180" position="0 -.2 0"></a-entity>
 
                     </a-entity>
                     <a-entity rotation="30 30 90">
-                        <a-cylinder radius=".01" height="0.3" color="#fff"></a-cylinder>
-                        <a-cone color="#fff" radius-bottom="0.03" radius-top="0" height="0.1" position="0 .2 0"
-                                opacity="0.5"></a-cone>
-                        <a-cone color="#fff" radius-bottom="0.03" radius-top="0" height="0.1" rotation="0 0 180"
-                                position="0 -.2 0"
-                                opacity="0.5"></a-cone>
-
+                        <a-cylinder radius=".01" height="0.3" mixin="widgetMaterial"></a-cylinder>
+                        <a-entity template="src: #widgetPoint" position="0 .2 0" opacity="0.5"></a-entity>
+                        <a-entity template="src: #widgetPoint" rotation="0 0 180"
+                                position="0 -.2 0"></a-entity>
                     </a-entity>
                     <a-entity rotation="120 30 0">
                         <a-cylinder radius=".01" height="0.3" color="#fff"></a-cylinder>
-                        <a-cone color="#fff" radius-bottom="0.03" radius-top="0" height="0.1" position="0 .2 0"
-                                opacity="0.5"></a-cone>
-                        <a-cone color="#fff" radius-bottom="0.03" radius-top="0" height="0.1" rotation="0 0 180"
-                                position="0 -.2 0"
-                                opacity="0.5"></a-cone>
+                        <a-entity template="src: #widgetPoint" position="0 .2 0"></a-entity>
+                        <a-entity template="src: #widgetPoint" rotation="0 0 180"
+                                position="0 -.2 0"></a-entity>
+                    </a-entity>
+                </a-entity>
+            </a-entity>
+            <a-entity>
+                <a-plane id='align' mixin="hudPlane"></a-plane>
+                <a-entity>
+                    <a-entity rotation="10 0 10">
+                        <a-cylinder radius=".01" height="0.3" mixin="widgetMaterial" color="#f00"></a-cylinder>
+                    </a-entity>
+                    <a-entity rotation="10 90 10">
+                        <a-cylinder radius=".01" height="0.3" mixin="widgetMaterial" color="#0f0"></a-cylinder>
 
                     </a-entity>
-
-
+                    <a-entity rotation="10 0 100">
+                        <a-cylinder radius=".01" height="0.3" mixin="widgetMaterial" color="#00f"></a-cylinder>
+                    </a-entity>
                 </a-entity>
 
             </a-entity>
 
             <a-entity>
                 <a-plane id='remove' mixin="hudPlane"></a-plane>
-                <a-entity lookatme>
-                    <a-box width=".2" height="0.05" depth="0.05" color="#f55"></a-box>
+                <a-entity>
+                    <a-box mixin="widgetMaterial" width=".2" height="0.05" depth="0.05" color="#f55"></a-box>
                 </a-entity>
 
             </a-entity>
 
             <a-entity>
                 <a-plane id='add-universe' mixin="hudPlane"></a-plane>
-                <a-sphere color="#aaf"
-                          radius="0.25"
-                          material="opacity: 0.5">
-                    <a-entity lookatme>
-                        <a-box width="0.05" height=".2" depth="0.05" color="#5f5"></a-box>
-                        <a-box width=".2" height="0.05" depth="0.05" color="#5f5"></a-box>
-                    </a-entity>
+                <a-sphere radius="0.25"
+                          mixin="widgetMaterial">
+                    <a-entity template="src: #plus"></a-entity>
+
                 </a-sphere>
 
             </a-entity>
             <a-entity>
                 <a-plane id='add-box' mixin="hudPlane"></a-plane>
-                <a-box color="#aaf"
+                <a-box
                        width="0.25"
                        height="0.25"
                        depth="0.25"
-                       material="opacity: 0.5">
-                    <a-entity lookatme>
-                        <a-box width="0.05" height=".2" depth="0.05" color="#5f5"></a-box>
-                        <a-box width=".2" height="0.05" depth="0.05" color="#5f5"></a-box>
-                    </a-entity>
+                       mixin="widgetMaterial">
+                    <a-entity template="src: #plus"></a-entity>
                 </a-box>
 
             </a-entity>
 
             <a-entity>
                 <a-plane mixin="hudPlane" id="add-billboard"></a-plane>
-                <a-box color="#aaf"
-                       opacity="0.4" width=".4" depth=".05" height=".4">
-                    <a-entity lookatme>
-                        <a-box width="0.05" height=".2" depth="0.05" color="#5f5"></a-box>
-                        <a-box width=".2" height="0.05" depth="0.05" color="#5f5"></a-box>
-                    </a-entity>
+                <a-box mixin="widgetMaterial" width=".4" depth=".05" height=".4">
+                    <a-entity template="src: #plus"></a-entity>
                 </a-box>
 
             </a-entity>
             <a-entity>
                 <a-plane id="add-plane" mixin="hudPlane"></a-plane>
-                <a-box color="#aaf"
-                       opacity="0.4" width=".4" depth=".4" height=".05">
-                    <a-entity lookatme>
-                        <a-box width="0.05" height=".2" depth="0.05" color="#5f5"></a-box>
-                        <a-box width=".2" height="0.05" depth="0.05" color="#5f5"></a-box>
-                    </a-entity>
+                <a-box mixin="widgetMaterial"
+                       width=".4" depth=".4" height=".05">
+                    <a-entity template="src: #plus"></a-entity>
                 </a-box>
 
             </a-entity>
             <a-entity>
                 <a-entity>
                     <a-plane id='add-connector' mixin="hudPlane"></a-plane>
-                    <!--animation="property: position; from: 0 -0.625 0; to: 0 0.625 0; loop: true"  -->
-                    <a-cone color="#aaf" radius-bottom="0.08" radius-top="0" height="0.25" position="0 0.3 0"
-                            opacity="0.5"></a-cone>
-                    <a-cylinder color="#aaf" radius="0.04"
-                                opacity="0.4" height=".4">
-                        <a-entity lookatme>
-                            <a-box width="0.05" height=".2" depth="0.05" color="#5f5"></a-box>
-                            <a-box width=".2" height="0.05" depth="0.05" color="#5f5"></a-box>
-                        </a-entity>
+                        <a-entity template="src: #widgetPoint"  position="0 0.2 0"></a-entity>
+                        <a-cylinder radius=".01" height="0.3" color="#fff"></a-cylinder>
+                        <a-entity template="src: #plus"></a-entity>
                     </a-cylinder>
-
                 </a-entity>
-            </a-entity>
-            <a-entity>
-                <a-plane id='align' mixin="hudPlane"></a-plane>
-                <a-entity lookatme>
-                    <a-entity rotation="0 0 0">
-                        <a-cylinder radius=".01" height="0.3" color="#fff"></a-cylinder>
-
-                    </a-entity>
-                    <a-entity rotation="0 90 0">
-                        <a-cylinder radius=".01" height="0.3" color="#fff"></a-cylinder>
-
-                    </a-entity>
-                    <a-entity rotation="0 0 90">
-                        <a-cylinder radius=".01" height="0.3" color="#fff"></a-cylinder>
-
-                    </a-entity>
-                </a-entity>
-
             </a-entity>
 
 
@@ -236,8 +212,6 @@
     </a-entity>
 
 
-    <!--<a-entity template="src: #keys" position="0 1.6 13"></a-entity>-->
-    <!--<a-entity template="src: #hud-template"  position="1 1 14"></a-entity> -->
     <!-- <a-entity template="src: #user"  position="1 1 14"></a-entity> -->
 
     <a-entity>
@@ -252,10 +226,12 @@
     <a-sphere radius="0.1" id="reticle" position="0 0 0"></a-sphere>
     <a-entity class="rig" position="0 0 14">
         <!--<a-box height="0.1" width="0.1" depth="20"></a-box>-->
+
         <a-entity
                 id="left-hand"
                 oculus-touch-controls="hand: left"
-                raycaster="objects: [collider]"
+                laser-controls="hand: left"
+                raycaster="objects: .saveable"
                 buttons
                 mover="forwardback: true; axis: y"
                 mover__2="strafe: true; axis: x">
@@ -269,8 +245,8 @@
                      rotation="-70 10 0"></a-plane>
         </a-entity>
         <a-entity id="right-hand"
-                  laser-controls
-                  raycaster="objects: [collider]"
+                  laser-controls="hand: right"
+                  raycaster="objects: .saveable"
                   buttons
                   super-hands sphere-collider="objects: [grabbable]"
                   oculus-touch-controls="hand: right"

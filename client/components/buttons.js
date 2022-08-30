@@ -123,7 +123,8 @@ AFRAME.registerComponent('buttons', {
       }
       const hud = document.querySelector('#hud');
       hud.setAttribute('visible', false);
-      document.querySelector('#right-hand').setAttribute('raycaster', 'objects: [collider]');
+      document.querySelector('#right-hand').setAttribute('raycaster', 'objects: .saveable');
+      document.querySelector('#left-hand').setAttribute('raycaster', 'objects: .saveable');
     },
   tick: function () {
 
@@ -140,7 +141,8 @@ function enableAlignment() {
 function showHud() {
   const hud = document.querySelector('#hud');
   document.querySelector('#right-hand').setAttribute('raycaster', 'objects: [widget]');
-  hud.setAttribute('position', getHUDPosition(-3));
+  document.querySelector('#left-hand').setAttribute('raycaster', 'objects: [widget]');
+  hud.setAttribute('position', getHUDPosition(-1));
   hud.setAttribute('visible', true);
 }
 
