@@ -68,7 +68,7 @@
         <a-entity id="widgetPoint" type="text/x-nunjucks-template">
             <a-cone radius-bottom="0.03" radius-top="0" height="0.1"  mixin="widgetMaterial"></a-cone>
         </a-entity>
-        <a-entity id="universe" type="text/x-nunjucks-template">
+        <a-entity id="universe-template" type="text/x-nunjucks-template">
             <a-entity grabbable>
                 <a-sphere class="saveable"
                           class="collidable" material="color: #33f" radius="0.5"></a-sphere>
@@ -83,7 +83,7 @@
                          position="0 0.35 0"></a-plane>
             </a-entity>
         </a-entity>
-        <a-entity id="user" type="text/x-nunjucks-template">
+        <a-entity id="user-template" type="text/x-nunjucks-template">
             <a-entity>
                 <a-entity scale="1 1 1" position="0 1.6 0" rotation="0 180 0" gltf-model="#emoji-asset"></a-entity>
                 <a-plane mixin="labelMixin" lookatme width="1.5" height="0.25"

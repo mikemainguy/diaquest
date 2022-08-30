@@ -14,6 +14,8 @@ AFRAME.registerSystem('key-listen', {
         const ele = document.querySelector('#' + this.id);
         if (ele) {
           const txt = ele.querySelector('a-plane');
+          this.template = ele.closest('[template]').getAttribute('template').src;
+
           if (txt) {
             this.text = txt.getAttribute('text').value;
           }
@@ -48,7 +50,7 @@ AFRAME.registerSystem('key-listen', {
             this.keyboard.object3D.getWorldPosition(pos);
             data.id = createUUID();
             data.position = pos;
-            data.template = "#universe";
+            data.template = this.template;
             import('../firebase/firebase.js').then((module) => {
               module.writeEntity(data);
             });

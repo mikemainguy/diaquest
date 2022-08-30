@@ -95,7 +95,8 @@ function createEntity(entity) {
 
   const color = entity.color ? entity.color : '#669';
   switch (entity.template) {
-    case '#universe':
+    case '#user-template':
+    case '#universe-template':
       window.setTimeout(function () {
         const color = entity.color ? entity.color : '#669';
         ele.setAttribute('universe', 'text: ' + entity.text + '; color: ' + color);
