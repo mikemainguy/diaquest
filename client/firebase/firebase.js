@@ -39,7 +39,7 @@ export function writeUser(profile) {
   set(ref(database, 'users/' + profile.user.sub), profile);
   const rig = document.querySelector('.rig');
   rig.setAttribute('id', id);
-  writeEntity({id: id, position: rig.object3D.position, rotation: rig.getAttribute('rotation'), template: "#user"});
+  writeEntity({id: id, position: rig.object3D.position, rotation: rig.getAttribute('rotation'), text: profile.user.email, template: "#user"});
 }
 
 export function updateEntity(data) {
