@@ -76,11 +76,11 @@
                          position="0 0.7 0"></a-plane>
             </a-entity>
         </a-entity>
-        <a-entity id="box" type="text/x-nunjucks-template">
+        <a-entity id="box-template" type="text/x-nunjucks-template">
             <a-entity grabbable>
                 <a-box class="saveable" color="#00f" width=".5" height=".5" depth="0.5"></a-box>
                 <a-plane mixin="labelMixin" width="1.5" height="0.25"
-                         position="0 0.35 0"></a-plane>
+                         position="0 0.7 0"></a-plane>
             </a-entity>
         </a-entity>
         <a-entity id="user-template" type="text/x-nunjucks-template">
@@ -103,7 +103,6 @@
                     <a-box width=".05" position="-.1 0 0" height="0.05" depth="0.05" mixin="widgetMaterial"></a-box>
                     <a-box width=".05" position=".1 0 0" height="0.05" depth="0.05" mixin="widgetMaterial"></a-box>
                 </a-entity>
-
             </a-entity>
             <a-entity>
                 <a-entity>
@@ -165,7 +164,7 @@
             </a-entity>
 
             <a-entity>
-                <a-plane id='add-stuff' mixin="hudPlane"></a-plane>
+                <a-plane id='add-sphere' mixin="hudPlane"></a-plane>
                 <a-sphere radius="0.25"
                           mixin="widgetMaterial">
                     <a-entity template="src: #plus"></a-entity>

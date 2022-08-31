@@ -96,6 +96,8 @@ function createEntity(entity) {
   const color = entity.color ? entity.color : '#669';
   switch (entity.template) {
     case '#user-template':
+    case '#box-template':
+    case '#pane-template':
     case '#sphere-template':
       window.setTimeout(function () {
         const color = entity.color ? entity.color : '#669';

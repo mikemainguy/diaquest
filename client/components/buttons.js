@@ -3,6 +3,8 @@ AFRAME.registerSystem('buttons', {
     this.mode = [];
     this.first = null;
     this.second = null;
+    this.template = null;
+    this.color = '#399';
   }
 });
 
@@ -14,6 +16,7 @@ AFRAME.registerComponent('buttons', {
   },
   bbuttondown: function (evt) {
     disableAlignment();
+    hideColorPicker();
     showHud();
   },
   triggerdown: function (evt) {
@@ -91,8 +94,8 @@ AFRAME.registerComponent('buttons', {
           if (ele && ele.classList.contains('colorswatch')) {
             this.system.color=ele.getAttribute('newcolor');
             this.system.mode.push('selecting-color-object');
-            hideColorPicker();
           }
+          hideColorPicker();
           break;
         case 'moving':
           if (selectedObject) {
@@ -119,7 +122,18 @@ AFRAME.registerComponent('buttons', {
             this.system.mode.push('select-first');
             hide('#hud');
             break;
-          case 'add-stuff':
+          case 'add-sphere':
+            this.system.template = '#sphere-template'
+            this.system.mode = ['adding'];
+            hide('#hud');
+            break;
+          case 'add-box':
+            this.system.template = '#box-template'
+            this.system.mode = ['adding'];
+            hide('#hud');
+            break;
+          case 'add-plane':
+            this.system.template = '#plane-template'
             this.system.mode = ['adding'];
             hide('#hud');
             break;

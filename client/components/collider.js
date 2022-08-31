@@ -8,6 +8,7 @@ AFRAME.registerSystem('collider', {
   cleared: function(event) {
       event.target.setAttribute('material', 'wireframe', false);
       event.target.setAttribute('material', 'color', event.target.getAttribute('base-color'));
+      //event.target.setAttribute('position', event.target.getAttribute('base-position'));
       event.target.classList.remove('intersected');
   },
   intersected: function(event) {
@@ -21,7 +22,12 @@ AFRAME.registerSystem('collider', {
     }
 
     event.target.setAttribute('base-color', event.target.getAttribute('material').color);
-    event.target.setAttribute('material', 'color', '#ff0');
+    //event.target.setAttribute('base-position', event.target.getAttribute('position'));
+    if (event.target.classList.contains('colorswatch')) {
+      console.log('here');
+    } else {
+      event.target.setAttribute('material', 'color', '#ff0');
+    }
 
     if (!event.target.classList.contains('intersected')) {
       event.target.classList.add('intersected');

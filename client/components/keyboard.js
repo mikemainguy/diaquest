@@ -50,7 +50,8 @@ AFRAME.registerSystem('key-listen', {
             this.keyboard.object3D.getWorldPosition(pos);
             data.id = createUUID();
             data.position = pos;
-            data.template = '#sphere-template';
+            data.template = this.buttons.template;
+            data.color = this.buttons.color;
             import('../firebase/firebase.js').then((module) => {
               module.writeEntity(data);
             });
@@ -88,6 +89,7 @@ function showKeyboard(obj) {
 AFRAME.registerComponent('key-listen', {
   init: function () {
     this.system.targetEl = this.el;
+    this.system.buttons = document.querySelector('a-scene').systems['buttons'];
   }
 });
 
