@@ -44,6 +44,7 @@ AFRAME.registerComponent('buttons', {
                   first: this.system.first,
                   second: selectedObject.id,
                   text: '',
+                  color: this.system.color,
                   template: '#connector-template'
                 }
                 module.writeEntity(data);

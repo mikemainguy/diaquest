@@ -7,7 +7,7 @@ AFRAME.registerComponent('connector', {
     delay: {type: 'number', default: 1.0},
     twoWay: {type: 'boolean', default: false}
   },
-  init: function() {
+  update: function() {
     this.pos = new THREE.Vector3();
     if (this.data.startEl && this.data.startEl.object3D &&
       this.data.endEl && this.data.endEl.object3D ) {
@@ -27,9 +27,6 @@ AFRAME.registerComponent('connector', {
     } else {
       //debug(JSON.stringify(this.data));
     }
-
-  },
-  update: function() {
 
   },
   tick: function(time, timeDelta) {
