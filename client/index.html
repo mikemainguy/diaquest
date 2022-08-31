@@ -13,7 +13,7 @@
     <script src="/components/thumbstick.js"></script>
     <script src="/components/buttons.js"></script>
     <script src="/components/collider.js"></script>
-    <script src="/components/universe.js"></script>
+    <script src="/components/stuff.js"></script>
     <script src="/components/debug.js"></script>
     <script src="/components/connector.js"></script>
     <script src="/components/gridLayout.js"></script>
@@ -68,7 +68,7 @@
         <a-entity id="widgetPoint" type="text/x-nunjucks-template">
             <a-cone radius-bottom="0.03" radius-top="0" height="0.1"  mixin="widgetMaterial"></a-cone>
         </a-entity>
-        <a-entity id="universe-template" type="text/x-nunjucks-template">
+        <a-entity id="sphere-template" type="text/x-nunjucks-template">
             <a-entity grabbable>
                 <a-sphere class="saveable"
                           class="collidable" material="color: #33f" radius="0.5"></a-sphere>
@@ -165,7 +165,7 @@
             </a-entity>
 
             <a-entity>
-                <a-plane id='add-universe' mixin="hudPlane"></a-plane>
+                <a-plane id='add-stuff' mixin="hudPlane"></a-plane>
                 <a-sphere radius="0.25"
                           mixin="widgetMaterial">
                     <a-entity template="src: #plus"></a-entity>
@@ -296,8 +296,8 @@
     <a-entity light="type: ambient; color: #BBB">
 
     </a-entity>
-    <a-sound id="ambient" src="src: url(/assets/frogs.mp3); loop: true; volume=0.5"
-             position="0 2 -20"></a-sound>
+    <a-sound id="ambient" src="src: url(/assets/frogs.mp3); loop: true; volume=1"
+             position="10 3 -50"></a-sound>
     <a-entity position="0 20 0" light="type: point; color: #FFF; distance: 50; intensity: 1">
         <a-sphere material="opacity: 0.9;color: #ff0" radius=".2"></a-sphere>
     </a-entity>

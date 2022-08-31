@@ -119,7 +119,7 @@ AFRAME.registerComponent('buttons', {
             this.system.mode.push('select-first');
             hide('#hud');
             break;
-          case 'add-universe':
+          case 'add-stuff':
             this.system.mode = ['adding'];
             hide('#hud');
             break;
@@ -157,6 +157,7 @@ AFRAME.registerComponent('buttons', {
 
   }
 });
+
 function disableAlignment() {
   const hand = document.querySelector('#right-hand');
   hand.removeAttribute('aligner');
@@ -176,6 +177,7 @@ function hideColorPicker() {
 function showHud() {
   show('#hud', '[widget]');
 }
+
 function hide(id) {
   const obj = document.querySelector(id);
   document.querySelector('#right-hand').setAttribute('raycaster', 'objects: .saveable');

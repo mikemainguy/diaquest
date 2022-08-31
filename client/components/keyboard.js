@@ -50,7 +50,7 @@ AFRAME.registerSystem('key-listen', {
             this.keyboard.object3D.getWorldPosition(pos);
             data.id = createUUID();
             data.position = pos;
-            data.template = this.template;
+            data.template = '#sphere-template';
             import('../firebase/firebase.js').then((module) => {
               module.writeEntity(data);
             });

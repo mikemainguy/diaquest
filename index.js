@@ -24,9 +24,6 @@ app.use(express.static('client'));
 //cp node_modules/@twilio/voice-sdk/dist/twilio.min.js public
 app.get('/api/user/profile',
   (req, res, next)=> {
-    const user = 'user_' + Math.floor(Math.random() * 100);
-    console.log(user);
-
     const firebasePromise = firebase.getAuth().createCustomToken(req.oidc.user.sub);
   Promise.all([firebasePromise]).then(data => {
     const obj = {}

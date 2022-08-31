@@ -39,7 +39,7 @@ export function writeUser(profile) {
   set(ref(database, 'users/' + profile.user.sub), profile);
   const rig = document.querySelector('.rig');
   rig.setAttribute('id', id);
-  writeEntity({id: id, position: rig.object3D.position, rotation: rig.getAttribute('rotation'), text: profile.user.email, template: "#user"});
+  writeEntity({id: id, position: rig.object3D.position, rotation: rig.getAttribute('rotation'), text: profile.user.email, template: "#user-template"});
 }
 
 export function updateEntity(data) {
@@ -96,10 +96,10 @@ function createEntity(entity) {
   const color = entity.color ? entity.color : '#669';
   switch (entity.template) {
     case '#user-template':
-    case '#universe-template':
+    case '#sphere-template':
       window.setTimeout(function () {
         const color = entity.color ? entity.color : '#669';
-        ele.setAttribute('universe', 'text: ' + entity.text + '; color: ' + color);
+        ele.setAttribute('stuff', 'text: ' + entity.text + '; color: ' + color);
       }, 200);
 
       break;

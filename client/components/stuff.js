@@ -1,4 +1,4 @@
-AFRAME.registerComponent('universe', {
+AFRAME.registerComponent('stuff', {
   schema: {
     text: {type: 'string'},
     color: {type: 'string'}
