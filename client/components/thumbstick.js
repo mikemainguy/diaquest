@@ -41,11 +41,14 @@ AFRAME.registerComponent('mover', {
     if (!this.system.enabled) {
       return;
     }
-    if (!this.sound) {
-      this.sound = true;
+
+
       const ambient = document.querySelector('#ambient').components.sound;
+    if (ambient.loaded && ambient.listener.context.state != 'running') {
       ambient.playSound();
     }
+
+
     const buttons = document.querySelector('a-scene').systems['buttons'];
     const val = evt.detail[this.data.axis];
     const sign = Math.sign(val);
