@@ -23,11 +23,9 @@ AFRAME.registerComponent('grabber', {
   grab: function(evt) {
     if (evt.currentTarget.components['raycaster'].intersections[0].object.el.classList.contains('intersected')) {
       this.grabbed = evt.currentTarget.components['raycaster'].intersections[0].object.el.closest('[template]');
-      this.distance = evt.currentTarget.components['raycaster'].intersections[0].distance;
-      this.point = evt.currentTarget.components['raycaster'].intersections[0].distance;
       evt.currentTarget.object3D.attach(this.grabbed.object3D);
     } else {
-      console.log("nothing gripped");
+
     }
 
   },
@@ -41,7 +39,7 @@ AFRAME.registerComponent('grabber', {
       this.grabbed = null;
       this.distance = null;
     }
-    console.log("released");
+
   },
   tick: function() {
 

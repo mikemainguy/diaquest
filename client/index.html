@@ -23,12 +23,10 @@
     <script src="/ext/aframe-extras.misc.min.js"></script>
     <script src="/ext/nunjucks.min.js"></script>
     <script src="/ext/aframe-keyboard.js"></script>
-
 </head>
 <body>
 <script type="module" src="/firebase/firebase.js"></script>
 <script src="/components/debug.js"></script>
-
 <a-scene buttons stats background="color: #003" fog="type: exponential; color: #fff; near: 20; far: 100">
     <a-assets timeout="20000">
         <a-mixin id="hudPlane" material="color: #22a" width="1" height="1"
@@ -38,7 +36,6 @@
         <a-mixin id="labelMixin"
                  material="color: #222; opacity: 0.5"
                  lookatme
-
                  text="color: #fff;  baseline: center; align: center; wrapCount: 30"
                  position="0 0.35 0"></a-mixin>
         <img id="skybox" src="./assets/skybox.png">
@@ -48,36 +45,39 @@
         <img id="grass" src="./assets/wild+grass-1024x1024.jpeg">
         <img id="woods" src="./assets/woods.jpeg">
         <a-asset-item id="emoji-asset" src="/assets/emoji.glb"></a-asset-item>
-        <a-entity id="connector-template" type="text/x-nunjucks-template">
-            <a-entity class="data-connector">
-                <a-sphere rotation="90 0 0" position="0 0 0" radius="0.04" class="data-packet"
-                          color="#f00">
-                </a-sphere>
-                <a-cylinder class="saveable data-direction" rotation="90 0 0" position="0 0 0"
-                            material="opacity: 0.5; color: #ccc" transparent="true"
-                            height="1" radius="0.05">
-                </a-cylinder>
-                <a-plane color="#222"
-                         lookatme width="1.5" height="0.25"
-                         text="color: #fff;  baseline: top; align: center; wrapCount: 20"
-                         position="0 0.35 0"></a-plane>
-            </a-entity>
-        </a-entity>
+        <a-asset-item id="deer-asset" src="/assets/toontown_deer.glb"></a-asset-item>
+
+
         <a-entity id="plus" type="text/x-nunjucks-template">
             <a-entity position="0 0 .1">
                 <a-box width="0.05" height=".2" depth="0.05" color="#5f5"></a-box>
                 <a-box width=".2" height="0.05" depth="0.05" color="#5f5"></a-box>
             </a-entity>
         </a-entity>
+
         <a-entity id="widgetPoint" type="text/x-nunjucks-template">
-            <a-cone radius-bottom="0.03" radius-top="0" height="0.1"  mixin="widgetMaterial"></a-cone>
+            <a-cone radius-bottom="0.03" radius-top="0" height="0.1" mixin="widgetMaterial"></a-cone>
         </a-entity>
-        <a-entity id="sphere-template" type="text/x-nunjucks-template">
-            <a-entity grabbable>
-                <a-sphere class="saveable"
-                          class="collidable" material="color: #33f" radius="0.5"></a-sphere>
+
+
+
+
+        <a-entity id="connector-template" type="text/x-nunjucks-template">
+            <a-entity class="data-connector">
+                <a-sphere rotation="90 0 0" position="0 0 0" radius="0.04" class="data-packet" color="#111">
+                </a-sphere>
+                <a-cylinder class="saveable data-direction" rotation="90 0 0" position="0 0 0"
+                            material="opacity: 0.5; color: #33f" height="1" radius="0.05">
+                </a-cylinder>
                 <a-plane mixin="labelMixin" width="1.5" height="0.25"
                          position="0 0.7 0"></a-plane>
+            </a-entity>
+        </a-entity>
+
+        <a-entity id="sphere-template" type="text/x-nunjucks-template">
+            <a-entity>
+                <a-sphere class="saveable collidable" material="color: #33f" radius="0.5"></a-sphere>
+                <a-plane mixin="labelMixin" width="1.5" height="0.25" position="0 0.7 0"></a-plane>
             </a-entity>
         </a-entity>
         <a-entity id="box-template" type="text/x-nunjucks-template">
@@ -89,7 +89,7 @@
         </a-entity>
         <a-entity id="user-template" type="text/x-nunjucks-template">
             <a-entity>
-                <a-entity scale="1 1 1" position="0 1.6 0" rotation="0 180 0" gltf-model="#emoji-asset"></a-entity>
+                <a-entity scale=".25 .25 .25" position="0 1.6 0" rotation="0 180 0" gltf-model="#deer-asset"></a-entity>
                 <a-plane mixin="labelMixin" lookatme width="1.5" height="0.25"
                          position="0 2.0 0"></a-plane>
             </a-entity>
@@ -111,11 +111,12 @@
             </a-entity>
             <a-entity>
                 <a-entity>
-                    <a-plane text="value: Color"  id='edit-color' mixin="hudPlane"></a-plane>
+                    <a-plane text="value: Color" id='edit-color' mixin="hudPlane"></a-plane>
 
                     <a-sphere mixin="widgetMaterial" radius=".1" position="0 0.05 0" material="color: #f00;"></a-sphere>
                     <a-sphere mixin="widgetMaterial" radius=".1" position="0.05 0 0" material="color: #040;"></a-sphere>
-                    <a-sphere mixin="widgetMaterial" radius=".1" position="-0.05 0 0" material="color: #00f;"></a-sphere>
+                    <a-sphere mixin="widgetMaterial" radius=".1" position="-0.05 0 0"
+                              material="color: #00f;"></a-sphere>
                     </a-cylinder>
                 </a-entity>
             </a-entity>
@@ -126,20 +127,20 @@
                     <a-entity rotation="30 30 0">
                         <a-cylinder radius=".01" height="0.3" mixin="widgetMaterial"></a-cylinder>
                         <a-entity template="src: #widgetPoint" position="0 .2 0"></a-entity>
-                        <a-entity template="src: #widgetPoint"  rotation="0 0 180" position="0 -.2 0"></a-entity>
+                        <a-entity template="src: #widgetPoint" rotation="0 0 180" position="0 -.2 0"></a-entity>
 
                     </a-entity>
                     <a-entity rotation="30 30 90">
                         <a-cylinder radius=".01" height="0.3" mixin="widgetMaterial"></a-cylinder>
                         <a-entity template="src: #widgetPoint" position="0 .2 0" opacity="0.5"></a-entity>
                         <a-entity template="src: #widgetPoint" rotation="0 0 180"
-                                position="0 -.2 0"></a-entity>
+                                  position="0 -.2 0"></a-entity>
                     </a-entity>
                     <a-entity rotation="120 30 0">
                         <a-cylinder radius=".01" height="0.3" color="#fff"></a-cylinder>
                         <a-entity template="src: #widgetPoint" position="0 .2 0"></a-entity>
                         <a-entity template="src: #widgetPoint" rotation="0 0 180"
-                                position="0 -.2 0"></a-entity>
+                                  position="0 -.2 0"></a-entity>
                     </a-entity>
                 </a-entity>
             </a-entity>
@@ -161,7 +162,7 @@
             </a-entity>
 
             <a-entity>
-                <a-plane text="value: Remove"  id='remove' mixin="hudPlane"></a-plane>
+                <a-plane text="value: Remove" id='remove' mixin="hudPlane"></a-plane>
                 <a-entity>
                     <a-box mixin="widgetMaterial" width=".2" height="0.05" depth="0.05" color="#f55"></a-box>
                 </a-entity>
@@ -180,10 +181,10 @@
             <a-entity>
                 <a-plane text="value: Box" id='add-box' mixin="hudPlane"></a-plane>
                 <a-box
-                       width="0.25"
-                       height="0.25"
-                       depth="0.25"
-                       mixin="widgetMaterial">
+                        width="0.25"
+                        height="0.25"
+                        depth="0.25"
+                        mixin="widgetMaterial">
                     <a-entity template="src: #plus"></a-entity>
                 </a-box>
 
@@ -207,9 +208,9 @@
             <a-entity>
                 <a-entity>
                     <a-plane text="value: Connector" id='add-connector' mixin="hudPlane"></a-plane>
-                        <a-entity template="src: #widgetPoint"  position="0 0.2 0"></a-entity>
-                        <a-cylinder radius=".01" height="0.3" color="#fff"></a-cylinder>
-                        <a-entity template="src: #plus"></a-entity>
+                    <a-entity template="src: #widgetPoint" position="0 0.2 0"></a-entity>
+                    <a-cylinder radius=".01" height="0.3" color="#fff"></a-cylinder>
+                    <a-entity template="src: #plus"></a-entity>
                     </a-cylinder>
                 </a-entity>
             </a-entity>
@@ -240,13 +241,9 @@
         <a-cylinder opacity="0.5" height="100" color="#00f" radius="0.01" rotation="0 0 90"></a-cylinder>
         <a-sphere opacity="0.2" radius="0.25" color="#ff4"></a-sphere>
     </a-entity>
-    <!--<a-entity line="start: -20 0 0; end: 20 0 0; color: red"
-              line__2="start: 0 -20 0; end: 0 20 0; color: green"
-              line__3="start: 0 0 -20; end: 0 0 20; color: blue"></a-entity> -->
     <a-sphere radius="0.1" id="reticle" position="0 0 0"></a-sphere>
-    <a-entity class="rig" position="0 0 2">
-        <!--<a-box height="0.1" width="0.1" depth="20"></a-box>-->
 
+    <a-entity class="rig" position="0 0 2">
         <a-entity
                 id="left-hand"
                 oculus-touch-controls="hand: left"
@@ -294,24 +291,25 @@
                      position="-.035 0.008 .03"
                      rotation="-75 10 0"></a-plane>
         </a-entity>
-        <a-entity look-controls wasd-controls="fly: true"  camera="active: true" id="camera" position="0 1.6 2">
+        <a-entity look-controls wasd-controls="fly: true" camera="active: true" id="camera" position="0 1.6 2">
 
         </a-entity>
         <a-entity animation="property: rotation; from: 0 0 0; to: 0 360 0; dur: 60000; loop: true">
-            <a-entity animation="property: position; from: 0 -1 5; to: 0 -2 10; dur: 45000; dir: alternate; loop: true" >
-                <a-sound id="ambient" src="url(/assets/frogs.mp3)"   loop="true" volume=1">
+            <a-entity animation="property: position; from: 0 -1 5; to: 0 -2 10; dur: 45000; dir: alternate; loop: true">
+                <a-sound id="ambient" src="url(/assets/frogs.mp3)" loop="true" volume=.5">
 
                 </a-sound>
-                <a-sphere radius="1" material="color: green; opacity: 0.8"></a-sphere>
+
             </a-entity>
 
         </a-entity>
         <a-entity animation="property: rotation; from: 0 360 0; to: 0 0 0; dur: 60000; loop: true">
-            <a-entity animation="property: position; from: 0 -1 5; to: 0 -2 10; dur: 120000; dir: alternate; loop: true" >
-                <a-sound id="ambient" src="url(/assets/frogs.mp3)"   loop="true" volume=1">
+            <a-entity
+                    animation="property: position; from: 0 -1 5; to: 0 -2 10; dur: 120000; dir: alternate; loop: true">
+                <a-sound id="ambient" src="url(/assets/frogs.mp3)" loop="true" volume=.2">
 
                 </a-sound>
-                <a-sphere radius="1" material="color: green; opacity: 0.8"></a-sphere>
+
             </a-entity>
 
         </a-entity>
@@ -323,12 +321,7 @@
     <a-entity position="0 20 0" light="type: point; color: #FFF; distance: 50; intensity: 1">
         <a-sphere material="opacity: 0.9;color: #ff0" radius=".2"></a-sphere>
     </a-entity>
-    <!-- animation="property: rotation; dur: 500000; from: 0 0 0; to: 360 0 0; loop: true" -->
-    <a-sky src="#woods" radius="100"  material="fog: false"></a-sky>
-    <!--<a-cylinder radius="200" height="50" rotation="0 90 0" material="src: #farm;side: back"></a-cylinder>-->
-    <!--<a-sky color="#003023" radius="1100" material="fog: false" position="0 0 0"></a-sky>-->
-    <!--<a-plane position="0 -10 0" material="src: #grass; repeat: 10 10"
-             width="100" height="100" rotation="-90 0 0"></a-plane>-->
+    <a-sky src="#woods" radius="100" material="fog: false"></a-sky>
 
 </a-scene>
 </body>

@@ -5,7 +5,8 @@ AFRAME.registerComponent('connector', {
     endEl: {type: 'selector'},
     speed: {type: 'number', default: 1.0},
     delay: {type: 'number', default: 1.0},
-    twoWay: {type: 'boolean', default: false}
+    twoWay: {type: 'boolean', default: false},
+    text: {type: 'string'}
   },
   update: function() {
     this.pos1 = new THREE.Vector3();
@@ -22,10 +23,17 @@ AFRAME.registerComponent('connector', {
 
       this.packet = this.el.querySelector('.data-packet').object3D;
       this.connector = this.el.querySelector('.data-direction').object3D;
+
+      this.label = this.el.querySelector('a-plane').object3D;
       this.packetPosition = 0.1;
       this.el.querySelector('.saveable').setAttribute('material', 'color', this.data.color);
-      this.el.querySelector('a-plane').setAttribute('visible', false);
-      this.el.querySelector('a-plane').setAttribute('position','z', distance/2);
+      if (this.data.text) {
+        this.el.querySelector('a-plane').setAttribute('visible', true);
+        this.el.querySelector('a-plane').setAttribute('text', 'value', this.data.text);
+
+      } else {
+        this.el.querySelector('a-plane').setAttribute('visible', false);
+      }
       this.el.setAttribute('position', this.obj1.position);
       this.offset = this.data.speed /1000;
       this.obj1.getWorldPosition(this.oldPos1);
@@ -57,6 +65,7 @@ AFRAME.registerComponent('connector', {
       }
       this.packet.position.z = this.packetPosition
       this.connector.position.z = distance/2;
+      this.label.position.z = distance/2;
       this.connector.scale.y = distance;
 
     } else {

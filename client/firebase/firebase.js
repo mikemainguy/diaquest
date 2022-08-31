@@ -79,35 +79,40 @@ onChildChanged(entities2, (snapshot) => {
 
 function createEntity(entity) {
   const me = document.querySelector('.rig')
-  if (me && (me.getAttribute('id') == entity.id)) {
+
+  if (!entity || !entity.template || !entity.id || (me && (me.getAttribute('id') == entity.id))) {
     return;
   }
   const scene = document.querySelector("a-scene");
   let exists = document.querySelector('#' + entity.id);
   const ele = exists ? exists : document.createElement('a-entity');
 
+  ele.setAttribute('template', 'src: ' + entity.template);
+  ele.setAttribute('id', entity.id);
+
   if (entity.rotation) {
     ele.setAttribute('rotation', entity.rotation);
   }
-  ele.setAttribute('template', 'src: ' + entity.template);
-  ele.setAttribute('position', entity.position);
-  ele.setAttribute('id', entity.id);
+
+  if (entity.position) {
+    ele.setAttribute('position', entity.position);
+  }
 
   const color = entity.color ? entity.color : '#669';
+  const text = entity.text ? entity.text : '';
   switch (entity.template) {
     case '#user-template':
     case '#box-template':
     case '#pane-template':
     case '#sphere-template':
       window.setTimeout(function () {
-        const color = entity.color ? entity.color : '#669';
-        ele.setAttribute('stuff', 'text: ' + entity.text + '; color: ' + color);
+        ele.setAttribute('stuff', 'text: ' + text + '; color: ' + color);
       }, 200);
 
       break;
     case '#connector-template':
       window.setTimeout(function () {
-        ele.setAttribute('connector', 'startEl: #' + entity.first + "; endEl: #" + entity.second + "; color: " + color);
+        ele.setAttribute('connector', 'startEl: #' + entity.first + "; endEl: #" + entity.second + "; color: " + color + '; text: ' + text);
       }, 200)
       break;
   }
