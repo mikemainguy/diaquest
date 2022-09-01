@@ -1,6 +1,8 @@
-import profile from "/api/user/profile" assert {type: 'json'};
-import {getAuth, signInWithCustomToken} from "https://www.gstatic.com/firebasejs/9.8.3/firebase-auth.js";
-import {initializeApp} from 'https://www.gstatic.com/firebasejs/9.8.3/firebase-app.js';
+//import profile from "/api/user/profile" assert {type: 'json'};
+const axios = require('axios').default;
+
+import {getAuth, signInWithCustomToken} from "firebase/auth";
+import {initializeApp} from 'firebase/app';
 import {
   getDatabase,
   remove,
@@ -11,7 +13,7 @@ import {
   onChildAdded,
   onChildChanged,
   onValue
-} from "https://www.gstatic.com/firebasejs/9.8.3/firebase-database.js";
+} from "firebase/database";
 
 
 const firebaseConfig = {
@@ -26,12 +28,15 @@ const firebaseConfig = {
 }
 
 const app = initializeApp(firebaseConfig);
-const auth = getAuth();
-signInWithCustomToken(auth, profile.firebase_token).then((credential) => {
-
-});
-
+const auth = getAuth(app);
 const database = getDatabase(app);
+
+
+async function setupApp() {
+  const profile = await axios.get('/api/user/profile');
+  signInWithCustomToken(auth, profile.firebase_token);
+}
+setupApp();
 
 export function writeUser(profile) {
   profile.user.last_seen = new Date().toUTCString();
@@ -41,6 +46,8 @@ export function writeUser(profile) {
   rig.setAttribute('id', id);
   writeEntity({id: id, position: rig.object3D.position, rotation: rig.getAttribute('rotation'), text: profile.user.email, template: "#user-template"});
 }
+
+
 
 export function updateEntity(data) {
   update(ref(database, 'entities/' + data.id), data);
@@ -54,10 +61,10 @@ export function removeEntity(id) {
   remove(ref(database, 'entities/' + id));
 }
 
-const users = ref(database, 'users/' + profile.sub);
-onValue(users, (snapshot) => {
-  const data = snapshot.val();
-})
+//const users = ref(database, 'users/' + profile.sub);
+//onValue(users, (snapshot) => {
+  //const data = snapshot.val();
+//})
 
 
 const entities2 = ref(database, 'entities');
