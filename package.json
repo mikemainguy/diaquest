@@ -16,7 +16,7 @@
     "axios": "^0.27.2",
     "nunjucks": "^3.2.3",
     "aframe-extras": "^6.1.1",
-    "aframe-keyboard": "^0.0.1",
+    "aframe-super-keyboard": "^2.1.0",
     "aframe-template-component": "^3.2.1",
 
     "dotenv": "^16.0.1",

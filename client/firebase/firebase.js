@@ -34,9 +34,10 @@ const database = getDatabase(app);
 
 async function setupApp() {
   const profile = await axios.get('/api/user/profile');
-  signInWithCustomToken(auth, profile.firebase_token);
+  await signInWithCustomToken(auth, profile.data.firebase_token);
 }
 setupApp();
+
 
 export function writeUser(profile) {
   profile.user.last_seen = new Date().toUTCString();

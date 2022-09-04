@@ -1,8 +1,9 @@
-<html>
 <!DOCTYPE html>
-<html>
 <head>
-    <script src="/dist/main.js"></script>
+    <title>Immersive Design</title>
+    <script src="/dist/main.js" type="application/javascript"></script>
+  <!--  <script src="/dist/924.js" type="application/javascript"></script> -->
+
 <!--    <script src="/ext/aframe-extras.misc.min.js"></script>
     <script src="/ext/nunjucks.min.js"></script>
     <script src="/ext/aframe-keyboard.js"></script>
@@ -39,10 +40,7 @@
                  lookatme
                  text="color: #fff;  baseline: center; align: center; wrapCount: 30"
                  position="0 0.35 0"></a-mixin>
-        <img id="skybox" src="./assets/skybox.png">
-        <img id="nebula" src="./assets/8192.jpeg">
-        <img id="sky2" src="./assets/sky2.jpeg">
-        <img id="farm" src="./assets/farm.jpeg">
+
         <img id="grass" src="./assets/wild+grass-1024x1024.jpeg">
         <img id="woods" src="./assets/woods.jpeg">
         <a-asset-item id="emoji-asset" src="/assets/emoji.glb"></a-asset-item>
@@ -227,10 +225,7 @@
 
     </a-entity>
     <a-entity id="keyboard" visible="false" lookatme>
-        <a-sound id="click" src="src: url(/assets/KeyDown.mp3)" autoplay="false"></a-sound>
-        <a-plane position="-.01 0 0" color="#eee" key-listen width="1" height="0.2" rotation="0 0 0"
-                 text="color: #000; value: test; baseline: center; width: 1;align: center"></a-plane>
-        <a-entity position="-.25 -0.125 0" a-keyboard rotation="-10 0 0"></a-entity>
+        <a-entity position="-.25 -0.125 0" super-keyboard="imagePath: /assets/ " rotation="-10 0 0"></a-entity>
     </a-entity>
 
 
@@ -293,6 +288,7 @@
                      rotation="-75 10 0"></a-plane>
         </a-entity>
         <a-entity look-controls wasd-controls="fly: true" camera="active: true" id="camera" position="0 1.6 2">
+
 
         </a-entity>
         <a-entity animation="property: rotation; from: 0 0 0; to: 0 360 0; dur: 60000; loop: true">

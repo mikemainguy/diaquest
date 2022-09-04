@@ -63,7 +63,10 @@ AFRAME.registerComponent('connector', {
       if (this.packetPosition > distance) {
         this.packetPosition = 0;
       }
-      this.packet.position.z = this.packetPosition
+      if (this.packet && this.packet.position) {
+        this.packet.position.z = this.packetPosition
+      }
+
       this.connector.position.z = distance/2;
       this.label.position.z = distance/2;
       this.connector.scale.y = distance;

@@ -1,3 +1,4 @@
+
 AFRAME.registerSystem('key-listen', {
   init: function () {
     this.text = '';
@@ -7,8 +8,8 @@ AFRAME.registerSystem('key-listen', {
     document.addEventListener("key-listen-target", this.targetListener.bind(this));
   },
   targetListener: function (event) {
-    this.keyboard = this.targetEl.parentEl;
-    if (event.detail.id) {
+    this.keyboard = document.querySelector('#keyboard');
+    if (event.detail && event.detail.id) {
       this.id = event.detail.id;
       if (this.id) {
         const ele = document.querySelector('#' + this.id);
@@ -24,9 +25,19 @@ AFRAME.registerSystem('key-listen', {
         this.id = null;
         this.text = '';
       }
-    }
-    showKeyboard(this);
 
+    }
+    this.showKeyboard();
+
+  },
+  showKeyboard: function showKeyboard() {
+    this.keyboard.setAttribute('visible', true);
+    this.keyboard.setAttribute('position', getHUDPosition());
+    document.querySelector('#right-hand').setAttribute('raycaster', 'objects: .keyboardRaycastable');
+    document.querySelector('#left-hand').setAttribute('raycaster', 'objects: .keyboardRaycastable');
+    //if (this.targetEl) {
+    //  this.targetEl.setAttribute('text', 'value: ' + obj.text);
+   // }
   },
   keypress: function (event) {
     const code = parseInt(event.detail.code);
@@ -77,15 +88,7 @@ function hideKeyboard(obj) {
   buttons.mode.pop();
 }
 
-function showKeyboard(obj) {
-  obj.keyboard.setAttribute('visible', true);
-  obj.keyboard.setAttribute('position', getHUDPosition());
-  document.querySelector('#right-hand').setAttribute('raycaster', 'objects: .collidable');
-  document.querySelector('#left-hand').setAttribute('raycaster', 'objects: .collidable');
-  if (obj.targetEl) {
-    obj.targetEl.setAttribute('text', 'value: ' + obj.text);
-  }
-}
+
 AFRAME.registerComponent('key-listen', {
   init: function () {
     this.system.targetEl = this.el;
@@ -93,11 +96,20 @@ AFRAME.registerComponent('key-listen', {
   }
 });
 
-
 function createUUID() {
   return 'id' + ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
     (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
   )
 }
 
+function getHUDPosition(distance) {
+  let pos = new THREE.Vector3();
+  const c = document.querySelector('#camera').object3D;
+  c.getWorldPosition(pos);
+  let dir = new THREE.Vector3();
+  c.getWorldDirection(dir);
+  dir.multiplyScalar(distance ? distance : -1);
+  pos.add(dir);
+  return pos;
+}
 

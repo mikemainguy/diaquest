@@ -1,4 +1,4 @@
-const env = require('./env')
+const env = require('./env');
 
 const admin = require("firebase-admin");
 const { getAuth } = require("firebase-admin/auth");

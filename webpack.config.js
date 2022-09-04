@@ -1,6 +1,7 @@
 // Generated using webpack-cli https://github.com/webpack/webpack-cli
 
 const path = require('path');
+//const SplitChunksPlugin = require('')
 //const HtmlWebpackPlugin = require('html-webpack-plugin');
 //const WorkboxWebpackPlugin = require('workbox-webpack-plugin');
 
@@ -22,6 +23,7 @@ const config = {
     },
     devtool: 'source-map',
     plugins: [
+        //new Split
         /*new HtmlWebpackPlugin({
             template: 'index.html',
         }),

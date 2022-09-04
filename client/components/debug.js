@@ -1,4 +1,4 @@
-function debug(value) {
+export function debug(value) {
   const debug = document.querySelector("#debug")
   if (debug) {
     const lines = debug.getAttribute('text').value;

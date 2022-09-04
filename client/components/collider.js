@@ -39,7 +39,7 @@ AFRAME.registerSystem('collider', {
   }
 });
 
-function getHUDPosition(distance) {
+export function getHUDPosition(distance) {
   let pos = new THREE.Vector3();
   const c = document.querySelector('#camera').object3D;
   c.getWorldPosition(pos);
