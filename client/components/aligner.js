@@ -1,20 +1,20 @@
 AFRAME.registerComponent('aligner', {
   init: function () {
-    this.mover = document.querySelector('a-scene').systems['mover'];
+/*    this.mover = document.querySelector('a-scene').systems['mover'];
     this.mover.disable();
     this.handler = this.thumbstick.bind(this);
     this.el.addEventListener('thumbstickmoved', this.handler);
     this.triggered = false;
-    this.distance = null;
+    this.distance = null; */
   },
   remove: function () {
-    this.el.removeEventListener('thumbstickmoved', this.handler);
+    /*this.el.removeEventListener('thumbstickmoved', this.handler);
     const aligner = document.querySelector("#aligner");
     aligner.setAttribute('visible', false);
-    this.mover.enable();
+    this.mover.enable(); */
   },
   thumbstick: function (evt) {
-    if (this.triggered) {
+    /*if (this.triggered) {
       if (Math.abs(evt.detail.x) < .1 && Math.abs(evt.detail.y) < .1) {
         this.triggered = false;
       }
@@ -45,7 +45,7 @@ AFRAME.registerComponent('aligner', {
     endpoint.setAttribute('position', "0 " + this.distance + "0");
     aligner.querySelector('a-cylinder').setAttribute('height', this.distance * 2);
     const newPos = new THREE.Vector3(firstPos.x, this.distance + firstPos.y, firstPos.z);
-    secondEl.setAttribute('position', newPos);
+    secondEl.setAttribute('position', newPos); */
   }
 });
 

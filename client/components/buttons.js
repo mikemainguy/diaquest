@@ -1,5 +1,5 @@
 import {debug} from './debug';
-import {show} from './util';
+import {getHUDPosition, show} from './util';
 
 AFRAME.registerSystem('buttons', {
     init: function () {
@@ -8,17 +8,32 @@ AFRAME.registerSystem('buttons', {
         this.second = null;
         this.template = null;
         this.color = '#399';
+        document.addEventListener("bbuttondown", this.bbuttondown.bind(this));
+        document.addEventListener('triggerdown', this.triggerdown.bind(this));
+    },
+    bbuttondown: function (evt) {
+        show('#hud');
+    },
+    triggerdown: function (evt) {
+        switch (this.mode.slice(-1)[0]) {
+            case 'adding':
+                this.first = null;
+                this.mode.push('typing');
+                document.querySelector('#keyboard').setAttribute('position', getHUDPosition());
+                document.querySelector('#keyboard').setAttribute('super-keyboard', 'show', true);
+                document.querySelector('#keyboard').emit('show');
+                break;
+        }
+        debug(this.mode);
     }
 });
 
 AFRAME.registerComponent('buttons', {
     init: function () {
-        this.el.addEventListener("bbuttondown", this.bbuttondown.bind(this));
-        //this.el.addEventListener('triggerdown', this.triggerdown.bind(this));
+
     },
-    bbuttondown: function (evt) {
-        show('#hud');
-    },
+
+
     /*clickHandler: function (evt) {
         switch (this.system.mode.length > 0 ? this.system.mode.slice(-1)[0] : null) {
             case 'selecting-color-object':
@@ -57,14 +72,4 @@ AFRAME.registerComponent('buttons', {
 
     }
 });
-
-function disableAlignment() {
-    const hand = document.querySelector('#right-hand');
-    hand.removeAttribute('aligner');
-}
-
-function enableAlignment() {
-    const hand = document.querySelector('#right-hand');
-    hand.setAttribute('aligner', '');
-}
 

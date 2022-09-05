@@ -73,7 +73,7 @@ AFRAME.registerComponent('connector', {
 
     } else {
       //const id = this.el.getAttribute('id');
-      console.log(id + ' missing data, removing');
+      //console.log(id + ' missing data, removing');
       //import('../firebase/firebase.js').then((module) => {
       //  module.removeEntity(id);
       //});

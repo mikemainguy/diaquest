@@ -1,4 +1,5 @@
 import {debug} from './debug';
+import {getHUDPosition} from "./util";
 AFRAME.registerComponent('stuff', {
   schema: {
     text: {type: 'string'},
@@ -12,7 +13,6 @@ AFRAME.registerComponent('stuff', {
   },
   mouseEnter: function(evt) {
     const obj = evt.target;
-
     obj.setAttribute('base-color', obj.getAttribute('material').color);
     obj.setAttribute('material', 'wireframe: true');
     obj.setAttribute('material', 'color: #ff0');
@@ -37,18 +37,17 @@ AFRAME.registerComponent('stuff', {
         });
         break;
       case 'editing':
+        buttons.first = obj.id;
         buttons.mode.push('typing');
-        const selected = obj.id;
-        obj.emit('key-listen-target', {id: selected}, true);
+        const keyboard = document.querySelector('#keyboard');
+        keyboard.setAttribute('position', getHUDPosition());
+        keyboard.setAttribute('super-keyboard', 'show', true);
+        keyboard.setAttribute('super-keyboard', value, document.querySelector('#' + obj.id).getAttribute('super-keyboard').value);
+        keyboard.emit('show');
         break;
 
       case 'moving':
         buttons.first = obj.id;
-        break;
-      case 'adding':
-        buttons.first = null;
-        buttons.mode.push('typing');
-        obj.emit('key-listen-target', {id: null}, true);
         break;
       case 'select-first':
         buttons.first = obj.id;

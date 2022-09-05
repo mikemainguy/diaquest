@@ -29,7 +29,7 @@
 <body>
 <!--<script type="module" src="/firebase/firebase.js"></script>-->
 <!--<script src="/components/debug.js"></script>-->
-<a-scene buttons stats background="color: #003" fog="type: exponential; color: #fff; near: 20; far: 100">
+<a-scene stats background="color: #003" fog="type: exponential; color: #fff; near: 20; far: 100">
     <a-assets timeout="20000">
         <a-mixin id="hudPlane" material="color: #22a" width="1" height="1"
                  text="align: center; wrapCount: 10"
@@ -224,9 +224,9 @@
         </a-entity>
 
     </a-entity>
-    <a-entity id="keyboard" visible="false" lookatme>
-        <a-entity position="-.25 -0.125 0" super-keyboard="imagePath: /assets/ " rotation="-10 0 0"></a-entity>
-    </a-entity>
+
+    <a-entity id="keyboard" position="-.25 -0.125 0" lookatme super-keyboard="hand: #right-hand; imagePath: /assets/ " rotation="-10 0 0"></a-entity>
+
 
 
     <!-- <a-entity template="src: #user"  position="1 1 14"></a-entity> -->
@@ -245,13 +245,11 @@
                 oculus-touch-controls="hand: left"
                 laser-controls="hand: left"
                 raycaster="objects: .saveable, a-plane[widget]; lineColor: #f33; lineOpacity: 0.7; far: 100"
-                cursor
-                buttons
                 grabber
                 mover="forwardback: true; axis: y"
                 mover__2="strafe: true; axis: x">
-            <a-plane width="0.3"
-                     height=".3"
+            <a-plane width="0.2"
+                     height=".2"
                      color="#fff"
                      id="debug"
                      class="text"
@@ -261,12 +259,9 @@
         </a-entity>
         <a-entity id="right-hand"
                   laser-controls="hand: right"
-                  raycaster="objects: .saveable, a-plane[widget]; lineColor: #f33; lineOpacity: 0.7; far: 100"
-                  buttons
-                  grabber
-                  cursor
-                  super-hands sphere-collider="objects: [grabbable]"
                   oculus-touch-controls="hand: right"
+                  raycaster="objects: .saveable, a-plane[widget]; lineColor: #f33; lineOpacity: 0.7; far: 100"
+                  grabber
                   mover="elevate: true; axis: y"
                   mover__2="turn: true; axis: x">
             <a-plane width="0.2"
