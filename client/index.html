@@ -244,7 +244,8 @@
                 id="left-hand"
                 oculus-touch-controls="hand: left"
                 laser-controls="hand: left"
-                raycaster="objects: .saveable; lineColor: #f33; lineOpacity: 0.7; far: 100"
+                raycaster="objects: .saveable, a-plane[widget]; lineColor: #f33; lineOpacity: 0.7; far: 100"
+                cursor
                 buttons
                 grabber
                 mover="forwardback: true; axis: y"
@@ -260,10 +261,10 @@
         </a-entity>
         <a-entity id="right-hand"
                   laser-controls="hand: right"
-                  raycaster="objects: .saveable; lineColor: #f33; lineOpacity: 0.7; far: 100"
+                  raycaster="objects: .saveable, a-plane[widget]; lineColor: #f33; lineOpacity: 0.7; far: 100"
                   buttons
                   grabber
-
+                  cursor
                   super-hands sphere-collider="objects: [grabbable]"
                   oculus-touch-controls="hand: right"
                   mover="elevate: true; axis: y"

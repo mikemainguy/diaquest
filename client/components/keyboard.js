@@ -1,3 +1,4 @@
+import {getHUDPosition} from "./util";
 
 AFRAME.registerSystem('key-listen', {
   init: function () {
@@ -33,11 +34,7 @@ AFRAME.registerSystem('key-listen', {
   showKeyboard: function showKeyboard() {
     this.keyboard.setAttribute('visible', true);
     this.keyboard.setAttribute('position', getHUDPosition());
-    document.querySelector('#right-hand').setAttribute('raycaster', 'objects: .keyboardRaycastable');
-    document.querySelector('#left-hand').setAttribute('raycaster', 'objects: .keyboardRaycastable');
-    //if (this.targetEl) {
-    //  this.targetEl.setAttribute('text', 'value: ' + obj.text);
-   // }
+
   },
   keypress: function (event) {
     const code = parseInt(event.detail.code);
@@ -81,8 +78,8 @@ AFRAME.registerSystem('key-listen', {
 function hideKeyboard(obj) {
   obj.text = '';
   obj.id = null;
-  document.querySelector('#right-hand').setAttribute('raycaster', 'objects: .saveable');
-  document.querySelector('#left-hand').setAttribute('raycaster', 'objects: .saveable');
+  //document.querySelector('#right-hand').setAttribute('raycaster', 'objects: .saveable');
+  //document.querySelector('#left-hand').setAttribute('raycaster', 'objects: .saveable');
   obj.keyboard.setAttribute('visible', false);
   const buttons = document.querySelector('a-scene').systems['buttons'];
   buttons.mode.pop();
@@ -102,14 +99,4 @@ function createUUID() {
   )
 }
 
-function getHUDPosition(distance) {
-  let pos = new THREE.Vector3();
-  const c = document.querySelector('#camera').object3D;
-  c.getWorldPosition(pos);
-  let dir = new THREE.Vector3();
-  c.getWorldDirection(dir);
-  dir.multiplyScalar(distance ? distance : -1);
-  pos.add(dir);
-  return pos;
-}
 
