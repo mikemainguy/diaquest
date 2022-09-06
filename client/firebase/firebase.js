@@ -11,8 +11,7 @@ import {
   update,
   onChildRemoved,
   onChildAdded,
-  onChildChanged,
-  onValue
+  onChildChanged
 } from "firebase/database";
 
 

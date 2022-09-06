@@ -1,5 +1,5 @@
 import {debug} from './debug';
-import {getHUDPosition, show, hide} from './util';
+import {getHUDPosition, show} from './util';
 
 AFRAME.registerSystem('buttons', {
     init: function () {

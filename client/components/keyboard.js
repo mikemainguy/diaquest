@@ -1,5 +1,4 @@
 import {getHUDPosition, createUUID} from "./util";
-import {debug} from "./debug";
 
 AFRAME.registerSystem('key-listen', {
     init: function () {

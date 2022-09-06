@@ -1,5 +1,5 @@
 import {debug} from './debug';
-import {show, hide, getHUDPosition} from './util';
+import {show, hide} from './util';
 
 AFRAME.registerSystem('widget', {
     init: function () {
@@ -63,13 +63,6 @@ AFRAME.registerComponent('widget', {
 
         }
         debug(buttons.mode);
-    },
-
-    showColorPicker: function () {
-        function showColorPicker() {
-            show('#color-picker');
-        }
-
     }
 
 

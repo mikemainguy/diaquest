@@ -83,11 +83,3 @@ AFRAME.registerComponent('connector', {
   }
 
 });
-AFRAME.registerComponent('raycaster-debug', {
-
-  init: function () {
-    this.el.addEventListener('raycaster-intersected', (event) => {
-      debug(JSON.stringify(event.detail.getIntersection(event.target).point));
-    });
-  }
-});

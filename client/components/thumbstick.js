@@ -1,12 +1,6 @@
 AFRAME.registerSystem('mover', {
   init: function() {
     this.enabled = true;
-  },
-  disable: function() {
-    this.enabled = false;
-  },
-  enable: function() {
-    this.enabled = true;
   }
 });
 
@@ -30,12 +24,6 @@ AFRAME.registerComponent('mover', {
   },
   remove: function() {
     this.el.removeEventListener(this.handler);
-  },
-  play: function() {
-    this.system.enabled = true;
-  },
-  pause: function() {
-    this.system.enabled = false;
   },
   thumbstick: function(evt) {
     if (!this.system.enabled) {
