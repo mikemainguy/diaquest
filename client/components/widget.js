@@ -1,5 +1,5 @@
 import {debug} from './debug';
-import {show} from './util';
+import {show, hide, getHUDPosition} from './util';
 
 AFRAME.registerSystem('widget', {
     init: function () {
@@ -35,6 +35,13 @@ AFRAME.registerComponent('widget', {
                 buttons.template = '#box-template'
                 buttons.mode = ['adding'];
                 break;
+            case 'close':
+                hide('#hud');
+                break;
+            case 'edit-color':
+                buttons.mode= ['edit-color'];
+                show('#color-picker', -0.6);
+                break;
             case 'add-plane':
                 buttons.template = '#plane-template'
                 buttons.mode = ['adding'];
@@ -47,10 +54,6 @@ AFRAME.registerComponent('widget', {
                 break;
             case 'edit':
                 buttons.mode = ['editing'];
-                break;
-            case 'edit-color':
-                buttons.mode = ['editing-color'];
-                this.showColorPicker();
                 break;
             case 'align':
                 buttons.mode = ['aligning'];

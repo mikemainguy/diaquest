@@ -120,7 +120,8 @@ function createEntity(entity) {
       break;
     case '#connector-template':
       window.setTimeout(function () {
-        ele.setAttribute('connector', 'startEl: #' + entity.first + "; endEl: #" + entity.second + "; color: " + color + '; text: ' + text);
+        ele.setAttribute('stuff', 'text: ' + text + '; color: ' + color);
+        ele.setAttribute('connector', 'startEl: #' + entity.first + "; endEl: #" + entity.second);
       }, 200)
       break;
   }

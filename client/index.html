@@ -98,8 +98,8 @@
 
     </a-entity>
 
-    <a-entity position="0 1.6 3" id="hud" visible="false" lookatme scale="0.5 0.5 0.5">
-        <a-entity gridlayout position="0 0 0">
+    <a-entity position="0 1.6 3" id="hud" visible="false" lookatme scale="0.3 0.3 0.3">
+        <a-entity gridlayout position="0 -.5 0">
             <a-entity>
                 <a-plane text="value: Text" id='edit' mixin="hudPlane"></a-plane>
                 <a-entity>
@@ -214,7 +214,12 @@
                 </a-entity>
             </a-entity>
 
+            <a-entity>
+                <a-plane text="value: close" id='close' mixin="hudPlane"></a-plane>
+                <a-entity>
 
+                </a-entity>
+            </a-entity>
         </a-entity>
     </a-entity>
     <a-entity id="aligner" visible="false">
@@ -225,7 +230,7 @@
 
     </a-entity>
 
-    <a-entity id="keyboard" position="-.25 -0.125 0" lookatme super-keyboard="hand: #right-hand; imagePath: /assets/ " rotation="-10 0 0"></a-entity>
+    <a-entity id="keyboard" position="-.25 -0.125 0" lookatme super-keyboard="hand: #right-hand; imagePath: /assets/; show: false " rotation="-10 0 0"></a-entity>
 
 
 
@@ -244,7 +249,7 @@
                 id="left-hand"
                 oculus-touch-controls="hand: left"
                 laser-controls="hand: left"
-                raycaster="objects: .saveable, a-plane[widget]; lineColor: #f33; lineOpacity: 0.7; far: 100"
+                raycaster="objects: .saveable, a-plane[widget], a-plane[color-swatch]; lineColor: #f33; lineOpacity: 0.7; far: 100"
                 grabber
                 mover="forwardback: true; axis: y"
                 mover__2="strafe: true; axis: x">
@@ -260,7 +265,7 @@
         <a-entity id="right-hand"
                   laser-controls="hand: right"
                   oculus-touch-controls="hand: right"
-                  raycaster="objects: .saveable, a-plane[widget]; lineColor: #f33; lineOpacity: 0.7; far: 100"
+                  raycaster="objects: .saveable, a-plane[widget], a-plane[color-swatch]; lineColor: #f33; lineOpacity: 0.7; far: 100"
                   grabber
                   mover="elevate: true; axis: y"
                   mover__2="turn: true; axis: x">
@@ -287,25 +292,7 @@
 
 
         </a-entity>
-        <a-entity animation="property: rotation; from: 0 0 0; to: 0 360 0; dur: 60000; loop: true">
-            <a-entity animation="property: position; from: 0 -1 5; to: 0 -2 10; dur: 45000; dir: alternate; loop: true">
-                <a-sound id="ambient" src="url(/assets/frogs.mp3)" loop="true" volume=.5">
-
-                </a-sound>
-
-            </a-entity>
-
-        </a-entity>
-        <a-entity animation="property: rotation; from: 0 360 0; to: 0 0 0; dur: 60000; loop: true">
-            <a-entity
-                    animation="property: position; from: 0 -1 5; to: 0 -2 10; dur: 120000; dir: alternate; loop: true">
-                <a-sound id="ambient" src="url(/assets/frogs.mp3)" loop="true" volume=.2">
-
-                </a-sound>
-
-            </a-entity>
-
-        </a-entity>
+        <a-entity id="ambient" sound="src: url(/assets/frogs.mp3); loop: true; positional: false; volume: .5"></a-entitysound>
 
     </a-entity>
     <a-entity light="type: ambient; color: #BBB">
