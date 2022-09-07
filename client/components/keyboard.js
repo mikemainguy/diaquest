@@ -1,4 +1,5 @@
 import {getHUDPosition, createUUID} from "./util";
+import {debug} from "./debug";
 
 AFRAME.registerSystem('key-listen', {
     init: function () {
@@ -17,13 +18,16 @@ AFRAME.registerSystem('key-listen', {
             import('../firebase/firebase.js').then((module) => {
                 module.writeEntity(data);
             });
+            buttons.mode.pop();
         } else {
             data.id= buttons.first;
             import('../firebase/firebase.js').then((module) => {
                 module.updateEntity(data);
             });
+            buttons.mode.pop();
         }
         document.querySelector('#keyboard').setAttribute('super-keyboard', 'value', '');
+        debug(buttons.mode);
 
     }
 });

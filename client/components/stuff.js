@@ -14,6 +14,8 @@ AFRAME.registerComponent('stuff', {
     },
     mouseEnter: function (evt) {
         const obj = evt.target;
+
+
         obj.setAttribute('animation',  "property: material.color; from: #cc2; to: " + this.data.color + "; dur: 500; loop: true")
         //obj.setAttribute('material', 'wireframe: true');
 
@@ -22,6 +24,8 @@ AFRAME.registerComponent('stuff', {
         const obj = evt.target;
         obj.setAttribute('material', 'color', this.data.color);
         obj.removeAttribute('animation');
+
+
         //obj.setAttribute('material', 'wireframe: false');
     },
     clickHandler: function (evt) {

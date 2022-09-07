@@ -8,9 +8,10 @@ AFRAME.registerSystem('buttons', {
         this.second = null;
         this.template = null;
         this.color = '#399';
+        this.boundTriggerDown = this.triggerdown.bind(this);
         document.addEventListener("bbuttondown", this.bbuttondown.bind(this));
         document.addEventListener("bbuttonup", this.bbuttonup.bind(this));
-        document.addEventListener('triggerdown', this.triggerdown.bind(this));
+        document.addEventListener('triggerdown', this.boundTriggerDown);
     },
     bbuttondown: function (evt) {
         show('#hud');
@@ -19,6 +20,9 @@ AFRAME.registerSystem('buttons', {
 
     },
     triggerdown: function (evt) {
+        if (evt.target.states.includes('cursor-hovering')) {
+            return;
+        }
         switch (this.mode.slice(-1)[0]) {
             case 'adding':
                 this.first = null;
