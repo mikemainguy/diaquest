@@ -14,15 +14,15 @@ AFRAME.registerComponent('stuff', {
     },
     mouseEnter: function (evt) {
         const obj = evt.target;
-        obj.setAttribute('base-color', obj.getAttribute('material').color);
-        obj.setAttribute('material', 'wireframe: true');
-        obj.setAttribute('material', 'color: #ff0');
+        obj.setAttribute('animation',  "property: material.color; from: #cc2; to: " + this.data.color + "; dur: 500; loop: true")
+        //obj.setAttribute('material', 'wireframe: true');
+
     },
     mouseLeave: function (evt) {
         const obj = evt.target;
-        obj.setAttribute('material', 'color: ' + obj.getAttribute('base-color'));
-        obj.setAttribute('material', 'wireframe: false');
-
+        obj.setAttribute('material', 'color', this.data.color);
+        obj.removeAttribute('animation');
+        //obj.setAttribute('material', 'wireframe: false');
     },
     clickHandler: function (evt) {
         const buttons = document.querySelector('a-scene').systems['buttons'];

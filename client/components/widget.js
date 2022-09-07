@@ -10,15 +10,23 @@ AFRAME.registerSystem('widget', {
 
 AFRAME.registerComponent('widget', {
     init: function () {
-        this.el.addEventListener("click", this.clickHandler.bind(this));this.el.addEventListener("mouseenter", this.mouseEnter.bind(this));
+        this.color = '#11a';
+        this.el.setAttribute('material', 'color', this.color);
+        this.el.addEventListener("click", this.clickHandler.bind(this));
+        this.el.addEventListener("mouseenter", this.mouseEnter.bind(this));
         this.el.addEventListener("mouseleave", this.mouseLeave.bind(this));
     },
     mouseEnter: function(evt) {
-        evt.target.setAttribute('base-color', evt.target.getAttribute('material').color);
-        evt.target.setAttribute('material', 'color', '#ff0');
+        const target = evt.target;
+        if (!target.getAttribute('animation')) {
+            target.setAttribute('animation', 'from: #55b; to: #dd0; property: material.color; loop: true; direction: alternate; dur: 500');
+        }
+        //evt.target.setAttribute('base-color', evt.target.getAttribute('material').color);
+        //evt.target.setAttribute('material', 'color', '#ff0');
     },
     mouseLeave: function(evt) {
-        evt.target.setAttribute('material','color', evt.target.getAttribute('base-color'));
+        evt.target.removeAttribute('animation');
+        evt.target.setAttribute('material','color', this.color);
     },
     clickHandler: function (evt) {
         const buttons = document.querySelector('a-scene').systems['buttons'];
