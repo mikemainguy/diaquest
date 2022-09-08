@@ -16,7 +16,7 @@ AFRAME.registerComponent('stuff', {
         const obj = evt.target;
 
 
-        obj.setAttribute('animation',  "property: material.color; from: #cc2; to: " + this.data.color + "; dur: 500; loop: true")
+        obj.setAttribute('animation',  "property: material.color; from: #cc2; to: #ff2; dur: 200; loop: true")
         //obj.setAttribute('material', 'wireframe: true');
 
     },

@@ -5,7 +5,8 @@ export function getHUDPosition(distance) {
     let dir = new THREE.Vector3();
     c.getWorldDirection(dir);
     dir.multiplyScalar(distance ? distance : -1);
-    dir.y -= .5;
+    dir.y -= .6;
+    dir.x -= .4;
     pos.add(dir);
     return pos;
 }

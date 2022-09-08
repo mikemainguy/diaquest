@@ -19,7 +19,7 @@ AFRAME.registerComponent('widget', {
     mouseEnter: function(evt) {
         const target = evt.target;
         if (!target.getAttribute('animation')) {
-            target.setAttribute('animation', 'from: #55b; to: #dd0; property: material.color; loop: true; direction: alternate; dur: 500');
+            target.setAttribute('animation', 'from: #ff2; to: #cc2; property: material.color; loop: true; direction: alternate; dur: 200');
         }
         //evt.target.setAttribute('base-color', evt.target.getAttribute('material').color);
         //evt.target.setAttribute('material', 'color', '#ff0');
