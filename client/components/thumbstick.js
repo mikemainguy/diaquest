@@ -1,127 +1,137 @@
+import {debug} from "./debug";
+
 AFRAME.registerSystem('mover', {
-  init: function() {
-    this.enabled = true;
-  }
+    init: function () {
+        this.enabled = true;
+        this.velocity = new THREE.Vector3(0, 0, 0);
+    }
 });
 
 AFRAME.registerComponent('mover', {
-  multiple: true,
-  schema: {
-      axis: {type: 'string', default: 'x'},
-      forwardback: {type: 'boolean', default: false},
-      elevate: {type: 'boolean', default: false},
-      strafe: {type: 'boolean', default: false},
-      turn: {type: 'boolean', default: false},
-      moveIncrement: {type: 'float', default: 0.25},
-      turnIncrement: {type: 'float', default: 22.5}
-  },
-  init: function() {
-    this.sound = false;
-    this.running = false;
-    this.handler = this.thumbstick.bind(this);
-    this.el.addEventListener('thumbstickmoved', this.handler);
-    document.querySelector('#camera').setAttribute('camera', 'active', true);
-  },
-  remove: function() {
-    this.el.removeEventListener(this.handler);
-  },
-  thumbstick: function(evt) {
-    if (!this.system.enabled) {
-      return;
-    }
-
-
-      const ambient = document.querySelector('#ambient').components.sound;
-    if (ambient.loaded && ambient.listener.context.state != 'running') {
-      ambient.playSound();
-    }
-
-
-    const buttons = document.querySelector('a-scene').systems['buttons'];
-    const val = evt.detail[this.data.axis];
-    const sign = Math.sign(val);
-
-    const fastmove = Math.abs(val) > .9;
-      if (Math.abs(val) > 0.1) {
-        if (fastmove || !this.running) {
-          if (!fastmove) {
-            this.running = true;
-          }
-          if (this.data.forwardback) {
-            move(this.data.moveIncrement * sign, false);
-          }
-          if (this.data.elevate) {
-            elevate(this.data.moveIncrement * sign);
-          }
-          if (this.data.strafe) {
-            move(this.data.moveIncrement * sign, true);
-          }
-          if (this.data.turn) {
-            rotatey( (this.data.turnIncrement * sign)*-1);
-          }
-        }
-      } else {
+    multiple: true,
+    schema: {
+        axis: {type: 'string', default: 'x'},
+        stickaxis: {type: 'string', default: 'y'},
+        forwardback: {type: 'boolean', default: false},
+        elevate: {type: 'boolean', default: false},
+        strafe: {type: 'boolean', default: false},
+        turn: {type: 'boolean', default: false},
+        moveSpeed: {type: 'float', default: 0.25},
+        turnIncrement: {type: 'float', default: 0.3926991}
+    },
+    init: function () {
+        this.sound = false;
         this.running = false;
-      }
-  }
-});
+        this.rotate = 0;
+        this.handler = this.thumbstick.bind(this);
+        this.camera = document.querySelector("#camera");
 
-function rotatey(amount) {
-  const rig = getRig();
-  let rotation = rig.getAttribute("rotation");
-  rotation.y += amount;
-  rig.setAttribute("rotation", rotation);
-  updatePosition(rig, rig.getAttribute('position'));
-}
 
-function getRig() {
-  const buttons = document.querySelector('a-scene').systems['buttons'];
-  if (buttons && buttons.first && buttons.mode[0] == 'moving') {
-    return document.querySelector('#' + buttons.first);
-  } else {
-    return document.querySelector(".rig");
-  }
-}
+        this.rig = document.querySelector(".rig");
+        this.el.addEventListener('thumbstickmoved', this.handler);
+        this.rotateY = AFRAME.utils.throttleTick(this.rotateY, 100, this);
+        document.querySelector('#camera').setAttribute('camera', 'active', true);
+        document.addEventListener('rigChanged', this.rigChanged);
+    },
+    rigChanged: function (evt) {
+        const buttons = document.querySelector('a-scene').systems['buttons'];
+        if (buttons && buttons.first && buttons.mode[0] == 'moving') {
+            this.rig = document.querySelector('#' + buttons.first);
+        } else {
+            this.rig = document.querySelector(".rig");
+        }
+    },
+    remove: function () {
+        this.el.removeEventListener(this.handler);
+    },
+    tick: function (time, timeDelta) {
+        if (this.rig && this.rig.object3D  && this.camera && this.camera.object3D) {
 
-function getCamera() {
-  return document.querySelector( "#camera");
+            //this.rig.object3D.rotation.y = this.camera.object3D.getWorldRotation().y;
+
+
+            let direction = new THREE.Vector3();
+            //this.rig.object3D.getWorldDirection(direction);
+            //direction.multiply(this.velocity);
+            if (this.system.velocity.length() > 0) {
+                const newPos = this.rig.object3D.localToWorld(this.system.velocity.clone());
+                //const newPos = this.rig.object3D.position.translateOnAxis(direction);
+                this.rig.object3D.position.set(newPos.x, newPos.y, newPos.z);
+            }
+            this.rotateY(time, timeDelta);
+            // this.rig.object3D.position.set(this.rig.object3D.position.add(this.velocity));
+        }
+
+    },
+    thumbstick: function (evt) {
+        if (!this.system.enabled) {
+            return;
+        }
+
+        const ambient = document.querySelector('#ambient').components.sound;
+        if (ambient.loaded && ambient.listener.context.state != 'running') {
+            ambient.playSound();
+        }
+
+        const val = Math.round(evt.detail[this.data.stickaxis] * 8) / 8;
+        const sign = Math.sign(val);
+
+
+        if (Math.abs(val) > 0.1) {
+            if (this.data.forwardback ||
+                this.data.elevate ||
+                this.data.strafe) {
+
+                this.system.velocity[this.data.axis] = this.data.moveSpeed * val;
+            }
+            if (this.data.turn) {
+                if (Math.abs(val) > .3) {
+                    this.rotate = ((this.data.turnIncrement * sign) * -1);
+                } else {
+                    this.rotate = 0;
+                }
+
+            }
+        } else {
+            if (this.data.turn) {
+                this.rotate = 0;
+            } else {
+                this.system.velocity[this.data.axis] = 0;
+            }
+        }
+
+    },
+    rotateY: function (t, dt) {
+        if (this.rotate != 0) {
+            //let newRotation = this.rig.object3D.rotation.y + this.rotate;
+            this.rig.object3D.rotation.y += this.rotate;
+        }
+    }
+})
+;
+
+function degrees_to_radians(degrees) {
+    return degrees * (Math.PI / 180);
 }
 
 function move(amount, slide) {
-  const rig = getRig();
-  const c = getCamera();
-  let pos = rig.getAttribute("position");
-  let direction = new THREE.Vector3();
-  c.object3D.getWorldDirection(direction);
 
-  direction.y = 0;
-  if (slide) {
-      let axis = new THREE.Vector3( 0, 1, 0 );
-      let deg = 90;
-      let angle = deg * (Math.PI / 180);
-      direction.applyAxisAngle( axis, angle );
-  }
-  direction.multiplyScalar(amount);
-  pos.add(direction);
-  updatePosition(rig, pos);
-
+    updatePosition(this.rig, pos);
 }
 
 function elevate(amount) {
-  const rig = getRig();
-  let position = rig.getAttribute("position");
-  position.y -= amount;
-  updatePosition(rig, position);
+
+    updatePosition(this.rig, position);
 }
 
 function updatePosition(rig, position) {
-  import('../firebase/firebase.js').then((module) => {
-    const data = {
-      id: rig.getAttribute('id'),
-      position: position,
-      rotation: rig.getAttribute('rotation')
-    }
-    module.updateEntity(data);
-  });
+    import('../firebase/firebase.js').then((module) => {
+        const data = {
+            id: rig.getAttribute('id'),
+            position: position,
+            rotation: rig.getAttribute('rotation')
+        }
+        module.updateEntity(data);
+    });
 
 }

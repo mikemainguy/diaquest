@@ -56,8 +56,6 @@ AFRAME.registerComponent('connector', {
       }
 
       const distance = this.pos1.distanceTo(this.pos2);
-
-
       this.packetPosition = this.packetPosition + this.offset / (timeDelta / 1000) ;
 
       if (this.packetPosition > distance) {

@@ -252,8 +252,8 @@
                 laser-controls="hand: left"
                 raycaster="objects: .saveable, a-plane[widget], a-plane[color-swatch]; lineColor: #f33; lineOpacity: 0.7; far: 100"
                 grabber
-                mover="forwardback: true; axis: y"
-                mover__2="strafe: true; axis: x">
+                mover="forwardback: true; stickaxis: y; axis: z"
+                mover__2="strafe: true; stickaxis: x; axis: x">
             <a-plane width="0.2"
                      height=".2"
                      color="#fff"
@@ -268,8 +268,8 @@
                   oculus-touch-controls="hand: right"
                   raycaster="objects: .saveable, a-plane[widget], a-plane[color-swatch]; lineColor: #f33; lineOpacity: 0.7; far: 100"
                   grabber
-                  mover="elevate: true; axis: y"
-                  mover__2="turn: true; axis: x">
+                  mover="elevate: true; stickaxis: y; axis: y"
+                  mover__2="turn: true; stickaxis: x; axis: x">
             <a-plane width="0.2"
                      height="0.03"
                      color="#fff"
