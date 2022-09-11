@@ -243,10 +243,9 @@
         <a-sphere opacity="0.2" radius="0.25" color="#ff4"></a-sphere>
     </a-entity>
     <a-sphere radius="0.1" id="reticle" position="0 0 0"></a-sphere>
-
-    <a-entity class="rig" position="0 0 2">
+<!-- look-controls wasd-controls="fly: true" -->
+    <a-entity class="rig"  position="0 0 2">
         <a-entity
-
                 id="left-hand"
                 oculus-touch-controls="hand: left"
                 laser-controls="hand: left"
@@ -254,8 +253,8 @@
                 grabber
                 mover="forwardback: true; stickaxis: y; axis: z"
                 mover__2="strafe: true; stickaxis: x; axis: x">
-            <a-plane width="0.2"
-                     height=".2"
+            <a-plane width="0.1"
+                     height=".05"
                      color="#fff"
                      id="debug"
                      class="text"
@@ -268,7 +267,7 @@
                   oculus-touch-controls="hand: right"
                   raycaster="objects: .saveable, a-plane[widget], a-plane[color-swatch]; lineColor: #f33; lineOpacity: 0.7; far: 100"
                   grabber
-                  mover="elevate: true; stickaxis: y; axis: y"
+                  mover="elevate: true; stickaxis: y; axis: y; moveSpeed: -1"
                   mover__2="turn: true; stickaxis: x; axis: x">
             <a-plane width="0.2"
                      height="0.03"
@@ -289,9 +288,8 @@
                      position="-.035 0.008 .03"
                      rotation="-75 10 0"></a-plane>
         </a-entity>
-        <a-entity look-controls wasd-controls="fly: true" camera="active: true" id="camera" position="0 1.6 2">
-
-
+        <a-entity  camera="active: true" id="camera" position="0 1.6 2">
+            <a-plane material="opacity: 0.5; color: #222" position=".5 .5 -2" width="2" height="2" rotation="0 0 0" text="align: left; wrapCount: 35; value: test"></a-plane>
         </a-entity>
         <a-entity id="ambient" sound="src: url(/assets/frogs.mp3); loop: true; positional: false; volume: .2"></a-entity>
 

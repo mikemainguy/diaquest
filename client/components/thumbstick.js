@@ -16,20 +16,22 @@ AFRAME.registerComponent('mover', {
         elevate: {type: 'boolean', default: false},
         strafe: {type: 'boolean', default: false},
         turn: {type: 'boolean', default: false},
-        moveSpeed: {type: 'float', default: 0.25},
+        moveSpeed: {type: 'float', default: 1},
         turnIncrement: {type: 'float', default: 0.3926991}
     },
     init: function () {
         this.sound = false;
         this.running = false;
+        this.rotating = false;
         this.rotate = 0;
         this.handler = this.thumbstick.bind(this);
         this.camera = document.querySelector("#camera");
-
+        this.rigDir = new THREE.Vector3();
+        this.camDir = new THREE.Vector3();
 
         this.rig = document.querySelector(".rig");
         this.el.addEventListener('thumbstickmoved', this.handler);
-        this.rotateY = AFRAME.utils.throttleTick(this.rotateY, 100, this);
+
         document.querySelector('#camera').setAttribute('camera', 'active', true);
         document.addEventListener('rigChanged', this.rigChanged);
     },
@@ -54,12 +56,18 @@ AFRAME.registerComponent('mover', {
             //this.rig.object3D.getWorldDirection(direction);
             //direction.multiply(this.velocity);
             if (this.system.velocity.length() > 0) {
-                const newPos = this.rig.object3D.localToWorld(this.system.velocity.clone());
-                //const newPos = this.rig.object3D.position.translateOnAxis(direction);
-                this.rig.object3D.position.set(newPos.x, newPos.y, newPos.z);
+                const velocity = this.system.velocity.clone();
+                this.rig.object3D.getWorldDirection(this.rigDir);
+                this.camera.object3D.getWorldDirection(this.camDir);
+                this.camDir.y = 0;
+                this.rigDir.y = 0;
+                const angle = this.rigDir.angleTo(this.camDir);
+                //velocity.normalize();
+                velocity.applyAxisAngle(new THREE.Vector3(0,1,0), angle);
+                this.rig.object3D.translateOnAxis(velocity, this.system.velocity.length()/15);
             }
             this.rotateY(time, timeDelta);
-            // this.rig.object3D.position.set(this.rig.object3D.position.add(this.velocity));
+
         }
 
     },
@@ -77,12 +85,12 @@ AFRAME.registerComponent('mover', {
         const sign = Math.sign(val);
 
 
-        if (Math.abs(val) > 0.1) {
+        if (Math.abs(val) > 0.125) {
             if (this.data.forwardback ||
                 this.data.elevate ||
                 this.data.strafe) {
 
-                this.system.velocity[this.data.axis] = this.data.moveSpeed * val;
+                this.system.velocity[this.data.axis] = this.data.moveSpeed * (val - .125);
             }
             if (this.data.turn) {
                 if (Math.abs(val) > .3) {
@@ -102,9 +110,19 @@ AFRAME.registerComponent('mover', {
 
     },
     rotateY: function (t, dt) {
-        if (this.rotate != 0) {
+        if (!this.rotating) {
+            if (this.rotate != 0) {
+                this.rig.object3D.rotation.y += this.rotate;
+                this.rotating = true;
+            } else {
+                this.rotating = false;
+            }
             //let newRotation = this.rig.object3D.rotation.y + this.rotate;
-            this.rig.object3D.rotation.y += this.rotate;
+
+        } else {
+            if (this.rotate == 0) {
+                this.rotating = false;
+            }
         }
     }
 })
