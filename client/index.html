@@ -3,33 +3,9 @@
 <head>
     <title>Immersive Idea</title>
     <script src="/dist/main.js" type="application/javascript"></script>
-  <!--  <script src="/dist/924.js" type="application/javascript"></script> -->
-<!--    <script src="/ext/aframe-extras.misc.min.js"></script>
-    <script src="/ext/nunjucks.min.js"></script>
-    <script src="/ext/aframe-keyboard.js"></script>
-    <script src="/ext/nunjucks.min.js"></script>
-    <script src="/ext/aframe-template-component.min.js"></script>
-    <script src="/ext/superhands.min.js"></script>
-    <script src="/ext/oculus-thumbstick-controls.js"></script>
-    <script src="/components/aligner.js"></script>
-    <script src="/components/components.js"></script>
-    <script src="/components/keyboard.js"></script>
-    <script src="/components/thumbstick.js"></script>
-    <script src="/components/buttons.js"></script>
-    <script src="/components/collider.js"></script>
-    <script src="/components/stuff.js"></script>
-    <script src="/components/grabber.js"></script>
-    <script src="/components/debug.js"></script>
-    <script src="/components/connector.js"></script>
-    <script src="/components/gridLayout.js"></script>
-    <script src="/components/widget.js"></script>
-    <script src="/components/color-picker.js"></script>
--->
 </head>
 <body>
-<!--<script type="module" src="/firebase/firebase.js"></script>-->
-<!--<script src="/components/debug.js"></script>-->
-<a-scene stats background="color: #003" fog="type: exponential; color: #fff; near: 20; far: 100">
+<a-scene background="color: #003" fog="type: exponential; color: #fff; near: 20; far: 100">
     <a-assets timeout="20000">
         <a-mixin id="hudPlane" material="color: #22a" width="1" height="1"
                  text="align: center; wrapCount: 10"
@@ -57,7 +33,6 @@
         <a-entity id="widgetPoint" type="text/x-nunjucks-template">
             <a-cone radius-bottom="0.03" radius-top="0" height="0.1" mixin="widgetMaterial"></a-cone>
         </a-entity>
-
 
 
 
@@ -247,37 +222,43 @@
     <a-entity class="rig"  position="0 0 2">
         <a-entity
                 id="left-hand"
+                position="-.5 1.6 1.5"
+                rotation="90 0 0"
                 oculus-touch-controls="hand: left"
                 laser-controls="hand: left"
                 raycaster="objects: .saveable, a-plane[widget], a-plane[color-swatch]; lineColor: #f33; lineOpacity: 0.7; far: 100"
                 grabber
                 mover="forwardback: true; stickaxis: y; axis: z"
                 mover__2="strafe: true; stickaxis: x; axis: x">
-            <a-plane width="0.1"
-                     height=".05"
+            <a-plane width="0.2"
+                     height=".03"
                      color="#fff"
                      id="debug"
                      class="text"
                      text="color: #000; value: test; baseline: center; align: left"
-                     position=".1 0.07 0.06"
-                     rotation="-70 10 0"></a-plane>
+                     position=".005 0.01 0.17"
+                     rotation="-90 90 0"></a-plane>
         </a-entity>
         <a-entity id="right-hand"
                   laser-controls="hand: right"
                   oculus-touch-controls="hand: right"
                   raycaster="objects: .saveable, a-plane[widget], a-plane[color-swatch]; lineColor: #f33; lineOpacity: 0.7; far: 100"
+                  position=".5 1.6 1.5"
+                  rotation="90 0 0"
+
                   grabber
                   mover="elevate: true; stickaxis: y; axis: y; moveSpeed: -1"
                   mover__2="turn: true; stickaxis: x; axis: x">
             <a-plane width="0.2"
                      height="0.03"
                      color="#fff"
+
                      id="user"
                      user
                      class="text"
                      text="color: #000; value: test; baseline: center; width: 0.25; align: center"
-                     position=".1 0.07 0.06"
-                     rotation="-70 10 0"></a-plane>
+                     position=".005 0.01 0.17"
+                     rotation="-90 -90 0"></a-plane>
             <a-plane width="0.01"
                      height="0.01"
                      color="#fff"
@@ -289,10 +270,9 @@
                      rotation="-75 10 0"></a-plane>
         </a-entity>
         <a-entity  camera="active: true" id="camera" position="0 1.6 2">
-            <a-plane material="opacity: 0.5; color: #222" position=".5 .5 -2" width="2" height="2" rotation="0 0 0" text="align: left; wrapCount: 35; value: test"></a-plane>
+            <!--<a-plane material="opacity: 0.5; color: #222" position=".5 .5 -2" width="2" height="2" rotation="0 0 0" text="align: left; wrapCount: 35; value: test"></a-plane>-->
         </a-entity>
         <a-entity id="ambient" sound="src: url(/assets/frogs.mp3); loop: true; positional: false; volume: .2"></a-entity>
-
 
     </a-entity>
     <a-entity light="type: ambient; color: #BBB">
