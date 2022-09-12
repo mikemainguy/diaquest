@@ -58,6 +58,8 @@ AFRAME.registerComponent('stuff', {
                 break;
             case 'moving':
                 buttons.first = obj.id;
+                const event = new Event('rigChanged');
+                document.dispatchEvent(event);
                 break;
             case 'select-first':
                 buttons.first = obj.id;

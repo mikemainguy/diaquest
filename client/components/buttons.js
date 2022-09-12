@@ -32,6 +32,11 @@ AFRAME.registerSystem('buttons', {
                 document.querySelector('#keyboard').emit('show');
                 debug(this.mode);
                 break;
+            case 'moving':
+                this.first = null;
+                this.mode.pop();
+                const event = new Event('rigChanged');
+                document.dispatchEvent(event);
         }
 
     }

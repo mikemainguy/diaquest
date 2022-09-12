@@ -33,14 +33,17 @@ AFRAME.registerComponent('mover', {
         this.el.addEventListener('thumbstickmoved', this.handler);
 
         document.querySelector('#camera').setAttribute('camera', 'active', true);
-        document.addEventListener('rigChanged', this.rigChanged);
+        document.addEventListener('rigChanged', this.rigChanged.bind(this));
     },
     rigChanged: function (evt) {
         const buttons = document.querySelector('a-scene').systems['buttons'];
+        debug(buttons.mode);
         if (buttons && buttons.first && buttons.mode[0] == 'moving') {
             this.rig = document.querySelector('#' + buttons.first);
+            debug('first');
         } else {
             this.rig = document.querySelector(".rig");
+            debug('second');
         }
     },
     remove: function () {
