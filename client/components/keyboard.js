@@ -20,7 +20,8 @@ AFRAME.registerSystem('key-listen', {
                     {detail: data}));
             buttons.mode.pop();
         } else {
-            document.dispatchEvent( new CustomEvent('shareUpdate', {detail: {id: buttons.first}}));
+            data.id = buttons.first;
+            document.dispatchEvent( new CustomEvent('shareUpdate', {detail: data}));
             buttons.mode.pop();
         }
         document.querySelector('#keyboard').setAttribute('super-keyboard', 'value', '');
