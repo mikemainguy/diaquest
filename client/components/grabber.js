@@ -16,26 +16,29 @@ AFRAME.registerComponent('grabber', {
 
   },
   remove: function() {
-    this.el.removeEventListener('gripdown', this.grabHandler);
-    this.el.removeEventListener('gripup', this.releaseHandler);
+    //this.el.removeEventListener('gripdown', this.grabHandler);
+    //this.el.removeEventListener('gripup', this.releaseHandler);
 
   },
   grab: function(evt) {
-    if (evt.currentTarget.components['raycaster'].intersections[0].object.el.classList.contains('intersected')) {
+    /*if (evt.currentTarget.components['raycaster'].intersections[0].object.el.classList.contains('intersected')) {
       this.grabbed = evt.currentTarget.components['raycaster'].intersections[0].object.el.closest('[template]');
       evt.currentTarget.object3D.attach(this.grabbed.object3D);
     } else {
 
-    }
+    }*/
 
   },
   release: function(evt) {
     if (this.grabbed) {
       this.el.sceneEl.object3D.attach(this.grabbed.object3D);
       const data = {id: this.grabbed.id, position: this.grabbed.object3D.position};
-      import('../firebase/firebase.js').then((module) => {
+
+      /*import('../firebase/firebase.js').then((module) => {
         module.updateEntity(data);
       });
+
+       */
       this.grabbed = null;
       this.distance = null;
     }

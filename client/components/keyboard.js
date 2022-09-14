@@ -20,10 +20,7 @@ AFRAME.registerSystem('key-listen', {
             });
             buttons.mode.pop();
         } else {
-            data.id= buttons.first;
-            import('../firebase/firebase.js').then((module) => {
-                module.updateEntity(data);
-            });
+            document.dispatchEvent( new CustomEvent('rigUpdated', {detail: {id: buttons.first}}));
             buttons.mode.pop();
         }
         document.querySelector('#keyboard').setAttribute('super-keyboard', 'value', '');

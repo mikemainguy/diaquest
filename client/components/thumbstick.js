@@ -40,16 +40,17 @@ AFRAME.registerComponent('mover', {
         debug(buttons.mode);
         if (buttons && buttons.first && buttons.mode[0] == 'moving') {
             this.rig = document.querySelector('#' + buttons.first);
-            debug('first');
+
         } else {
             this.rig = document.querySelector(".rig");
-            debug('second');
+
         }
     },
     remove: function () {
         this.el.removeEventListener(this.handler);
     },
     tick: function (time, timeDelta) {
+        const changed = false;
         if (this.rig && this.rig.object3D  && this.camera && this.camera.object3D) {
 
             //this.rig.object3D.rotation.y = this.camera.object3D.getWorldRotation().y;
@@ -68,6 +69,8 @@ AFRAME.registerComponent('mover', {
                 //velocity.normalize();
                 velocity.applyAxisAngle(new THREE.Vector3(0,1,0), angle);
                 this.rig.object3D.translateOnAxis(velocity, this.system.velocity.length()/15);
+
+                updatePosition(this.rig.getAttribute('id'));
             }
             this.rotateY(time, timeDelta);
 
@@ -128,31 +131,10 @@ AFRAME.registerComponent('mover', {
             }
         }
     }
-})
-;
+});
 
-function degrees_to_radians(degrees) {
-    return degrees * (Math.PI / 180);
-}
+function updatePosition(eid) {
 
-function move(amount, slide) {
-
-    updatePosition(this.rig, pos);
-}
-
-function elevate(amount) {
-
-    updatePosition(this.rig, position);
-}
-
-function updatePosition(rig, position) {
-    import('../firebase/firebase.js').then((module) => {
-        const data = {
-            id: rig.getAttribute('id'),
-            position: position,
-            rotation: rig.getAttribute('rotation')
-        }
-        module.updateEntity(data);
-    });
+    document.dispatchEvent( new CustomEvent('rigUpdated', {detail: {id: eid}}));
 
 }

@@ -14,8 +14,6 @@ AFRAME.registerComponent('stuff', {
     },
     mouseEnter: function (evt) {
         const obj = evt.target;
-
-
         obj.setAttribute('animation',  "property: material.color; from: #cc2; to: #ff2; dur: 200; loop: true")
         //obj.setAttribute('material', 'wireframe: true');
 
@@ -41,11 +39,8 @@ AFRAME.registerComponent('stuff', {
                 });
                 break;
             case 'edit-color':
-                const data = {id: obj.id, color: document.querySelector('a-scene').systems['color-picker'].color};
-                debug(JSON.stringify(data));
-                import('../firebase/firebase.js').then((module) => {
-                    module.updateEntity(data);
-                });
+                const newColor = document.querySelector('a-scene').systems['color-picker'].color;
+                document.dispatchEvent( new CustomEvent('rigUpdated', {detail: {id: obj.id, color: newColor}}));
                 break;
             case 'editing':
                 buttons.first = obj.id;
@@ -87,9 +82,6 @@ AFRAME.registerComponent('stuff', {
                                 id: buttons.second,
                                 position: document.querySelector(buttons.second).getAttribute('position')
                             };
-                            import('../firebase/firebase.js').then((module) => {
-                                module.updateEntity(data);
-                            });
                             buttons.second = null;
                             buttons.mode.pop();
                         } else {

@@ -47,9 +47,24 @@ export function writeUser(profile) {
   writeEntity({id: id, position: rig.object3D.position, rotation: rig.getAttribute('rotation'), text: profile.user.email, template: "#user-template"});
 }
 
+document.addEventListener('rigUpdated', function(evt) {
+  const el = document.querySelector('#'+ evt.detail.id);
+  if (el) {
+    const data = {
+      id: el.getAttribute('id'),
+      rotation: el.getAttribute('rotation'),
+      position: el.getAttribute('position')
+      //text: el.getAtttribute('text');
+    }
+    if (evt.detail.color) {
+      data.color = evt.detail.color
+    }
+    updateEntity(data);
+    console.log(evt.detail.id + ' updated');
+  }
 
-
-export function updateEntity(data) {
+});
+function updateEntity(data) {
   update(ref(database, 'entities/' + data.id), data);
 }
 

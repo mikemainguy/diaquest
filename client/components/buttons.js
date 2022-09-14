@@ -35,6 +35,7 @@ AFRAME.registerSystem('buttons', {
             case 'moving':
                 this.first = null;
                 this.mode.pop();
+                debug(this.mode);
                 const event = new Event('rigChanged');
                 document.dispatchEvent(event);
         }
