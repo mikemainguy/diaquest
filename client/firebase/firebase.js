@@ -47,20 +47,41 @@ export function writeUser(profile) {
   writeEntity({id: id, position: rig.object3D.position, rotation: rig.getAttribute('rotation'), text: profile.user.email, template: "#user-template"});
 }
 
-document.addEventListener('rigUpdated', function(evt) {
+document.addEventListener('shareUpdate', function(evt) {
+  if (evt.detail.remove == true) {
+    removeEntity(evt.detail.id);
+    return;
+  }
+  const data = {
+    id: evt.detail.id
+  }
+  if (evt.detail.position) {
+    data.position = evt.detail.position
+  }
+  if (evt.detail.rotation) {
+    data.rotation = evt.detail.rotation
+  }
+  if (evt.detail.text) {
+    data.text = evt.detail.text
+  }
+  if (evt.detail.color) {
+    data.color = evt.detail.color
+  }
+  if (evt.detail.first) {
+    data.first = evt.detail.first
+  }
+  if (evt.detail.second) {
+    data.second = evt.detail.second
+  }
+  if (evt.detail.template) {
+    data.template = evt.detail.template
+  }
   const el = document.querySelector('#'+ evt.detail.id);
+
   if (el) {
-    const data = {
-      id: el.getAttribute('id'),
-      rotation: el.getAttribute('rotation'),
-      position: el.getAttribute('position')
-      //text: el.getAtttribute('text');
-    }
-    if (evt.detail.color) {
-      data.color = evt.detail.color
-    }
     updateEntity(data);
-    console.log(evt.detail.id + ' updated');
+  } else {
+    writeEntity(data);
   }
 
 });
@@ -68,11 +89,11 @@ function updateEntity(data) {
   update(ref(database, 'entities/' + data.id), data);
 }
 
-export function writeEntity(data) {
+function writeEntity(data) {
   set(ref(database, 'entities/' + data.id), data);
 }
 
-export function removeEntity(id) {
+function removeEntity(id) {
   remove(ref(database, 'entities/' + id));
 }
 
@@ -96,8 +117,6 @@ onChildRemoved(entities2, (snapshot) => {
 onChildChanged(entities2, (snapshot) => {
   createEntity(snapshot.val());
 });
-
-
 
 function createEntity(entity) {
   const me = document.querySelector('.rig')

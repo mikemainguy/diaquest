@@ -34,13 +34,11 @@ AFRAME.registerComponent('stuff', {
         const id = obj.id;
         switch (buttons.mode.slice(-1)[0]) {
             case 'removing':
-                import('../firebase/firebase.js').then((module) => {
-                    module.removeEntity(id);
-                });
+                document.dispatchEvent( new CustomEvent('shareUpdate', {detail: {id: obj.id, remove: true}}));
                 break;
             case 'edit-color':
                 const newColor = document.querySelector('a-scene').systems['color-picker'].color;
-                document.dispatchEvent( new CustomEvent('rigUpdated', {detail: {id: obj.id, color: newColor}}));
+                document.dispatchEvent( new CustomEvent('shareUpdate', {detail: {id: obj.id, color: newColor}}));
                 break;
             case 'editing':
                 buttons.first = obj.id;
@@ -71,9 +69,10 @@ AFRAME.registerComponent('stuff', {
                             color: buttons.color,
                             template: '#connector-template'
                         }
-                        import('../firebase/firebase.js').then((module) => {
-                            module.writeEntity(data);
-                        });
+                        document.dispatchEvent(
+                            new CustomEvent('shareUpdate',
+                                {detail: data}));
+
                         buttons.mode.pop();
                         break;
                     case 'aligning':
@@ -82,6 +81,9 @@ AFRAME.registerComponent('stuff', {
                                 id: buttons.second,
                                 position: document.querySelector(buttons.second).getAttribute('position')
                             };
+                            document.dispatchEvent(
+                                new CustomEvent('shareUpdate',
+                                    {detail: data}));
                             buttons.second = null;
                             buttons.mode.pop();
                         } else {

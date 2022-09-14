@@ -70,7 +70,7 @@ AFRAME.registerComponent('mover', {
                 velocity.applyAxisAngle(new THREE.Vector3(0,1,0), angle);
                 this.rig.object3D.translateOnAxis(velocity, this.system.velocity.length()/15);
 
-                updatePosition(this.rig.getAttribute('id'));
+                updatePosition(this.rig);
             }
             this.rotateY(time, timeDelta);
 
@@ -120,6 +120,7 @@ AFRAME.registerComponent('mover', {
             if (this.rotate != 0) {
                 this.rig.object3D.rotation.y += this.rotate;
                 this.rotating = true;
+
             } else {
                 this.rotating = false;
             }
@@ -133,8 +134,11 @@ AFRAME.registerComponent('mover', {
     }
 });
 
-function updatePosition(eid) {
-
-    document.dispatchEvent( new CustomEvent('rigUpdated', {detail: {id: eid}}));
-
+function updatePosition(el) {
+    const data = {
+        id: el.getAttribute('id'),
+        position: el.object3D.position
+    }
+    document.dispatchEvent(
+        new CustomEvent('shareUpdate', {detail: data}));
 }

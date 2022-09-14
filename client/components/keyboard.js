@@ -15,12 +15,12 @@ AFRAME.registerSystem('key-listen', {
             data.position = getHUDPosition();
             data.template = buttons.template;
             data.color = buttons.color;
-            import('../firebase/firebase.js').then((module) => {
-                module.writeEntity(data);
-            });
+            document.dispatchEvent(
+                new CustomEvent('shareUpdate',
+                    {detail: data}));
             buttons.mode.pop();
         } else {
-            document.dispatchEvent( new CustomEvent('rigUpdated', {detail: {id: buttons.first}}));
+            document.dispatchEvent( new CustomEvent('shareUpdate', {detail: {id: buttons.first}}));
             buttons.mode.pop();
         }
         document.querySelector('#keyboard').setAttribute('super-keyboard', 'value', '');
