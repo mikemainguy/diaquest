@@ -1,15 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Immersive Idea Alpha 20220916-2</title>
-
+    <title>Immersive Idea Revel Alpha 20220916-2</title>
     <script src="/dist/main.js" type="application/javascript"></script>
-
-
 </head>
 <body>
 <a-scene background="color: #003" fog="type: exponential; color: #fff; near: 20; far: 100">
     <a-assets timeout="20000">
+        <!--<video id="revelAnthem" autoplay loop="true" src="https://cdn.shopify.com/s/files/1/0605/1387/8262/files/revel-loop-compressed.mp4?v=1639597957"></video>
+        -->
         <a-mixin id="hudPlane" material="color: #22a" width="1" height="1"
                  text="align: center; wrapCount: 10"
                  position="0 0 -.25" widget></a-mixin>
@@ -20,8 +19,8 @@
                  text="color: #fff;  baseline: center; align: center; wrapCount: 30"
                  position="0 0.35 0"></a-mixin>
 
-        <img id="grass" src="./assets/wild+grass-1024x1024.jpeg">
-        <img id="woods" src="./assets/woods.jpeg">
+        <img id="grass" src="/assets/wild+grass-1024x1024.jpeg">
+        <img id="woods" src="/assets/woods.jpeg">
         <a-asset-item id="emoji-asset" src="/assets/emoji.glb"></a-asset-item>
         <a-asset-item id="deer-asset" src="/assets/toontown_deer.glb"></a-asset-item>
 
@@ -220,8 +219,9 @@
         <a-cylinder opacity="0.5" height="100" color="#00f" radius="0.01" rotation="0 0 90"></a-cylinder>
         <a-sphere opacity="0.2" radius="0.25" color="#ff4"></a-sphere>
     </a-entity>
+    <a-video src="https://cdn.shopify.com/s/files/1/0605/1387/8262/files/revel-loop-compressed.mp4?v=1639597957" width="16" autoplay height="9" position="0 0 5"></a-video>
     <a-sphere radius="0.1" id="reticle" position="0 0 0"></a-sphere>
-<!-- look-controls wasd-controls="fly: true" -->
+    <!-- look-controls wasd-controls="fly: true" -->
     <a-entity class="rig"  position="0 0 2">
         <a-entity
                 id="left-hand"
@@ -275,7 +275,7 @@
         <a-entity  camera="active: true" id="camera" position="0 1.6 2">
             <!--<a-plane material="opacity: 0.5; color: #222" position=".5 .5 -2" width="2" height="2" rotation="0 0 0" text="align: left; wrapCount: 35; value: test"></a-plane>-->
         </a-entity>
-        <a-entity id="ambient" sound="src: url(/assets/frogs.mp3); loop: true; positional: false; volume: .2"></a-entity>
+
 
     </a-entity>
     <a-entity light="type: ambient; color: #BBB">
@@ -284,8 +284,8 @@
     <a-entity position="0 20 0" light="type: point; color: #FFF; distance: 50; intensity: 1">
         <a-sphere material="opacity: 0.9;color: #ff0" radius=".2"></a-sphere>
     </a-entity>
-    <a-sky src="#woods" radius="100" material="fog: false"></a-sky>
-
+    <!--<a-sky src="#woods" radius="100" material="fog: false"></a-sky>
+-->
 </a-scene>
 </body>
 </html>

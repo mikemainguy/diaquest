@@ -50,7 +50,7 @@ AFRAME.registerComponent('mover', {
         this.el.removeEventListener(this.handler);
     },
     tick: function (time, timeDelta) {
-        const changed = false;
+        let changed = false;
         if (this.rig && this.rig.object3D  && this.camera && this.camera.object3D) {
 
             //this.rig.object3D.rotation.y = this.camera.object3D.getWorldRotation().y;
@@ -69,10 +69,13 @@ AFRAME.registerComponent('mover', {
                 //velocity.normalize();
                 velocity.applyAxisAngle(new THREE.Vector3(0,1,0), angle);
                 this.rig.object3D.translateOnAxis(velocity, this.system.velocity.length()/15);
+                changed = true;
 
+            }
+            changed = changed || this.rotateY(time, timeDelta)
+            if (changed) {
                 updatePosition(this.rig);
             }
-            this.rotateY(time, timeDelta);
 
         }
 
@@ -81,10 +84,13 @@ AFRAME.registerComponent('mover', {
         if (!this.system.enabled) {
             return;
         }
+        const a = document.querySelector('#ambient');
 
-        const ambient = document.querySelector('#ambient').components.sound;
-        if (ambient.loaded && ambient.listener.context.state != 'running') {
-            ambient.playSound();
+        if (a){
+            const ambient =  a.components.sound;
+            if (ambient.loaded && ambient.listener.context.state != 'running') {
+                ambient.playSound();
+            }
         }
 
         const val = Math.round(evt.detail[this.data.stickaxis] * 8) / 8;
@@ -120,6 +126,7 @@ AFRAME.registerComponent('mover', {
             if (this.rotate != 0) {
                 this.rig.object3D.rotation.y += this.rotate;
                 this.rotating = true;
+                return true;
 
             } else {
                 this.rotating = false;
@@ -137,7 +144,11 @@ AFRAME.registerComponent('mover', {
 function updatePosition(el) {
     const data = {
         id: el.getAttribute('id'),
-        position: el.object3D.position
+        position: el.object3D.position,
+        rotation: {x: THREE.MathUtils.radToDeg(el.object3D.rotation.x),
+            y: THREE.MathUtils.radToDeg(el.object3D.rotation.y),
+            z: THREE.MathUtils.radToDeg(el.object3D.rotation.z)
+        }
     }
     document.dispatchEvent(
         new CustomEvent('shareUpdate', {detail: data}));

@@ -7,6 +7,7 @@ const port = env.PORT;
 const firebase = require('./server/firebase');
 
 
+
 const maxAge = 60 * 60 * 4;
 if (env.NODE_ENV != 'development') {
     /**
