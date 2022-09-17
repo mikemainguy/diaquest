@@ -1,5 +1,5 @@
 import {debug} from './debug';
-import {getHUDPosition, show} from './util';
+import {getMenuPosition, show} from './util';
 
 AFRAME.registerSystem('buttons', {
     init: function () {
@@ -14,7 +14,7 @@ AFRAME.registerSystem('buttons', {
         document.addEventListener('triggerdown', this.boundTriggerDown);
     },
     bbuttondown: function (evt) {
-        show('#hud');
+        show('#menu');
     },
     bbuttonup: function(evt) {
 
@@ -27,7 +27,7 @@ AFRAME.registerSystem('buttons', {
             case 'adding':
                 this.first = null;
                 this.mode.push('typing');
-                document.querySelector('#keyboard').setAttribute('position', getHUDPosition());
+                document.querySelector('#keyboard').setAttribute('position', getMenuPosition());
                 document.querySelector('#keyboard').setAttribute('super-keyboard', 'show', true);
                 document.querySelector('#keyboard').emit('show');
                 debug(this.mode);

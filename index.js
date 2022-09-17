@@ -1,6 +1,7 @@
 const env = require('./server/env');
 const {expressLogger, logger} = require('./server/logging');
 const express = require('express');
+const  { engine } = require('express-handlebars');
 const {auth} = require('express-openid-connect');
 const app = express();
 const port = env.PORT;
@@ -47,8 +48,17 @@ const auth0Config = {
 };
 app.use(auth(auth0Config));
 app.use(expressLogger);
-app.use('/', express.static('client'));
 
+app.engine('.hbs', engine({extname: '.hbs'}));
+app.set('view engine', 'hbs');
+app.set('views', './server/views');
+
+app.get('/worlds/:worldId', (req, res) => {
+    res.render('world');
+})
+app.get('/', (req, res) => {
+    res.render('world');
+})
 app.get('/api/user/profile',
     (req, res, next) => {
         const firebasePromise = firebase.getAuth().createCustomToken(req.oidc.user.sub);

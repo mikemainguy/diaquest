@@ -64,36 +64,13 @@ document.addEventListener('shareUpdate', function (evt) {
         removeEntity(evt.detail.id);
         return;
     }
-    const data = {
-        id: evt.detail.id
-    }
-    if (evt.detail.position) {
-        data.position = evt.detail.position
-    }
-    if (evt.detail.rotation) {
-        data.rotation = evt.detail.rotation
-    }
-    if (evt.detail.text) {
-        data.text = evt.detail.text
-    }
-    if (evt.detail.color) {
-        data.color = evt.detail.color
-    }
-    if (evt.detail.first) {
-        data.first = evt.detail.first
-    }
-    if (evt.detail.second) {
-        data.second = evt.detail.second
-    }
-    if (evt.detail.template) {
-        data.template = evt.detail.template
-    }
+
     const el = document.querySelector('#' + evt.detail.id);
 
     if (el) {
-        updateEntity(data);
+        updateEntity(evt.detail);
     } else {
-        writeEntity(data);
+        writeEntity(evt.detail);
     }
 
 });
@@ -111,19 +88,18 @@ function removeEntity(id) {
 }
 
 
-
-const entities2 = ref(database, 'entities');
-onChildAdded(entities2, (snapshot) => {
+const entities = ref(database, 'entities');
+onChildAdded(entities, (snapshot) => {
     createEntity(snapshot.val());
-
 });
-onChildRemoved(entities2, (snapshot) => {
+
+onChildRemoved(entities, (snapshot) => {
     const ele = document.querySelector('#' + snapshot.val().id);
     if (ele) {
         ele.remove();
     }
 });
-onChildChanged(entities2, (snapshot) => {
+onChildChanged(entities, (snapshot) => {
     createEntity(snapshot.val());
 });
 

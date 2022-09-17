@@ -1,5 +1,5 @@
 import {debug} from './debug';
-import {createUUID, getHUDPosition} from "./util";
+import {createUUID, getMenuPosition} from "./util";
 
 AFRAME.registerComponent('stuff', {
     schema: {
@@ -44,7 +44,7 @@ AFRAME.registerComponent('stuff', {
                 buttons.first = obj.id;
                 buttons.mode.push('typing');
                 const keyboard = document.querySelector('#keyboard');
-                keyboard.setAttribute('position', getHUDPosition());
+                keyboard.setAttribute('position', getMenuPosition());
                 keyboard.setAttribute('super-keyboard', 'show', true);
                 keyboard.setAttribute('super-keyboard', 'value', this.data.text);
                 keyboard.emit('show');

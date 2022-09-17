@@ -1,4 +1,4 @@
-export function getHUDPosition(distance) {
+export function getMenuPosition(distance) {
     let pos = new THREE.Vector3();
     const c = document.querySelector('#camera').object3D;
     c.getWorldPosition(pos);
@@ -13,17 +13,22 @@ export function getHUDPosition(distance) {
 
 export function show(id, distance) {
     const obj = document.querySelector(id);
-    if (distance) {
-        obj.setAttribute('position', getHUDPosition(distance));
-    } else {
-        obj.setAttribute('position', getHUDPosition(-0.8));
-    }
     obj.setAttribute('visible', true);
+    const hands = document.querySelectorAll('[raycaster]');
+    for (const hand in hands) {
+        hand.setAttribute('raycaster', 'objects', 'id > a-plane');
+    }
+
 }
 
 export function hide(id) {
     const obj = document.querySelector(id);
     obj.setAttribute('visible', false);
+    const hands = document.querySelectorAll('[raycaster]');
+    for (const hand in hands) {
+        hand.setAttribute('raycaster', 'objects', '.saveable');
+    }
+
 }
 
 export function createUUID() {

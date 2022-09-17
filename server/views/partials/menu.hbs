@@ -1,0 +1,123 @@
+<a-entity position=".1 .15 0" rotation="0 -75 0" id="menu" visible="false"  scale="0.1 0.1 0.1">
+    <a-entity gridlayout position="0 -.5 0">
+        <a-entity>
+            <a-plane text="value: Text" id='edit' mixin="menuPlane"></a-plane>
+            <a-entity>
+                <a-box width=".05" height="0.05" depth="0.05" mixin="widgetMaterial"></a-box>
+                <a-box width=".05" position="-.1 0 0" height="0.05" depth="0.05" mixin="widgetMaterial"></a-box>
+                <a-box width=".05" position=".1 0 0" height="0.05" depth="0.05" mixin="widgetMaterial"></a-box>
+            </a-entity>
+        </a-entity>
+        <a-entity>
+            <a-entity>
+                <a-plane text="value: Color" id='edit-color' mixin="menuPlane"></a-plane>
+                <a-sphere mixin="widgetMaterial" radius=".1" position="0 0.05 0" material="color: #f00;"></a-sphere>
+                <a-sphere mixin="widgetMaterial" radius=".1" position="0.05 0 0" material="color: #040;"></a-sphere>
+                <a-sphere mixin="widgetMaterial" radius=".1" position="-0.05 0 0"
+                          material="color: #00f;"></a-sphere>
+                <a-entity position="0 .1 0.3" rotation="0 0 0" scale="10 10 10" id="color-picker" color-picker visible="false"></a-entity>
+            </a-entity>
+        </a-entity>
+
+        <a-entity>
+            <a-plane text="value: Move" id='move' mixin="menuPlane"></a-plane>
+            <a-entity>
+                <a-entity rotation="30 30 0">
+                    <a-cylinder radius=".01" height="0.3" mixin="widgetMaterial"></a-cylinder>
+                    <a-entity template="src: #widgetPoint" position="0 .2 0"></a-entity>
+                    <a-entity template="src: #widgetPoint" rotation="0 0 180" position="0 -.2 0"></a-entity>
+
+                </a-entity>
+                <a-entity rotation="30 30 90">
+                    <a-cylinder radius=".01" height="0.3" mixin="widgetMaterial"></a-cylinder>
+                    <a-entity template="src: #widgetPoint" position="0 .2 0" opacity="0.5"></a-entity>
+                    <a-entity template="src: #widgetPoint" rotation="0 0 180"
+                              position="0 -.2 0"></a-entity>
+                </a-entity>
+                <a-entity rotation="120 30 0">
+                    <a-cylinder radius=".01" height="0.3" color="#fff"></a-cylinder>
+                    <a-entity template="src: #widgetPoint" position="0 .2 0"></a-entity>
+                    <a-entity template="src: #widgetPoint" rotation="0 0 180"
+                              position="0 -.2 0"></a-entity>
+                </a-entity>
+            </a-entity>
+        </a-entity>
+        <a-entity>
+            <a-plane text="value: Align" id='align' mixin="menuPlane"></a-plane>
+            <a-entity>
+                <a-entity rotation="10 0 10">
+                    <a-cylinder radius=".01" height="0.3" mixin="widgetMaterial" color="#f00"></a-cylinder>
+                </a-entity>
+                <a-entity rotation="10 90 10">
+                    <a-cylinder radius=".01" height="0.3" mixin="widgetMaterial" color="#0f0"></a-cylinder>
+
+                </a-entity>
+                <a-entity rotation="10 0 100">
+                    <a-cylinder radius=".01" height="0.3" mixin="widgetMaterial" color="#00f"></a-cylinder>
+                </a-entity>
+            </a-entity>
+
+        </a-entity>
+
+        <a-entity>
+            <a-plane text="value: Remove" id='remove' mixin="menuPlane"></a-plane>
+            <a-entity>
+                <a-box mixin="widgetMaterial" width=".2" height="0.05" depth="0.05" color="#f55"></a-box>
+            </a-entity>
+
+        </a-entity>
+
+        <a-entity>
+            <a-plane text="value: Sphere" id='add-sphere' mixin="menuPlane"></a-plane>
+            <a-sphere radius="0.25"
+                      mixin="widgetMaterial">
+                <a-entity template="src: #plus"></a-entity>
+
+            </a-sphere>
+
+        </a-entity>
+        <a-entity>
+            <a-plane text="value: Box" id='add-box' mixin="menuPlane"></a-plane>
+            <a-box
+                    width="0.25"
+                    height="0.25"
+                    depth="0.25"
+                    mixin="widgetMaterial">
+                <a-entity template="src: #plus"></a-entity>
+            </a-box>
+
+        </a-entity>
+
+        <a-entity>
+            <a-plane text="value: Billboard" mixin="menuPlane" id="add-billboard"></a-plane>
+            <a-box mixin="widgetMaterial" width=".4" depth=".05" height=".4">
+                <a-entity template="src: #plus"></a-entity>
+            </a-box>
+
+        </a-entity>
+        <a-entity>
+            <a-plane text="value: Plane" id="add-plane" mixin="menuPlane"></a-plane>
+            <a-box mixin="widgetMaterial"
+                   width=".4" depth=".4" height=".05">
+                <a-entity template="src: #plus"></a-entity>
+            </a-box>
+
+        </a-entity>
+        <a-entity>
+            <a-entity>
+                <a-plane text="value: Connector" id='add-connector' mixin="menuPlane"></a-plane>
+                <a-entity template="src: #widgetPoint" position="0 0.2 0"></a-entity>
+                <a-cylinder radius=".01" height="0.3" color="#fff"></a-cylinder>
+                <a-entity template="src: #plus"></a-entity>
+
+            </a-entity>
+        </a-entity>
+
+        <a-entity>
+            <a-plane text="value: close" id='close' mixin="menuPlane"></a-plane>
+            <a-entity>
+
+            </a-entity>
+        </a-entity>
+    </a-entity>
+</a-entity>

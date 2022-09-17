@@ -44,14 +44,13 @@ AFRAME.registerComponent('widget', {
                 buttons.mode = ['adding'];
                 break;
             case 'close':
-                hide('#hud');
+                hide('#menu');
                 break;
             case 'edit-color':
                 buttons.mode= ['edit-color'];
                 show('#color-picker', -0.6);
                 break;
             case 'add-plane':
-                buttons.template = '#plane-template'
                 buttons.mode = ['adding'];
                 break;
             case 'remove':

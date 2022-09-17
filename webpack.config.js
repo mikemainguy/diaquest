@@ -25,7 +25,7 @@ const config = {
     plugins: [
         //new Split
         /*new HtmlWebpackPlugin({
-            template: 'index.html',
+            template: 'index.hbs',
         }),
 */
         // Add your plugins here

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Immersive Idea Alpha 20220916-2</title>
+    <title>Immersive Idea Alpha 20220916-3</title>
     <script src="/dist/main.js" type="application/javascript"></script>
 
 
@@ -9,7 +9,7 @@
 <body>
 <a-scene background="color: #003" fog="type: exponential; color: #fff; near: 20; far: 100">
     <a-assets timeout="20000">
-        <a-mixin id="hudPlane" material="color: #22a" width="1" height="1"
+        <a-mixin id="menuPlane" material="color: #22a" width="1" height="1"
                  text="align: center; wrapCount: 10"
                  position="0 0 -.25" widget></a-mixin>
         <a-mixin id="widgetMaterial" material="color: #aaa; opacity: 0.5"></a-mixin>
@@ -75,10 +75,10 @@
 
     </a-entity>
 
-    <a-entity position="0 1.6 3" id="hud" visible="false" lookatme scale="0.3 0.3 0.3">
+    <a-entity position="0 1.6 3" id="menu" visible="false" lookatme scale="0.3 0.3 0.3">
         <a-entity gridlayout position="0 -.5 0">
             <a-entity>
-                <a-plane text="value: Text" id='edit' mixin="hudPlane"></a-plane>
+                <a-plane text="value: Text" id='edit' mixin="menuPlane"></a-plane>
                 <a-entity>
                     <a-box width=".05" height="0.05" depth="0.05" mixin="widgetMaterial"></a-box>
                     <a-box width=".05" position="-.1 0 0" height="0.05" depth="0.05" mixin="widgetMaterial"></a-box>
@@ -87,7 +87,7 @@
             </a-entity>
             <a-entity>
                 <a-entity>
-                    <a-plane text="value: Color" id='edit-color' mixin="hudPlane"></a-plane>
+                    <a-plane text="value: Color" id='edit-color' mixin="menuPlane"></a-plane>
 
                     <a-sphere mixin="widgetMaterial" radius=".1" position="0 0.05 0" material="color: #f00;"></a-sphere>
                     <a-sphere mixin="widgetMaterial" radius=".1" position="0.05 0 0" material="color: #040;"></a-sphere>
@@ -98,7 +98,7 @@
             </a-entity>
 
             <a-entity>
-                <a-plane text="value: Move" id='move' mixin="hudPlane"></a-plane>
+                <a-plane text="value: Move" id='move' mixin="menuPlane"></a-plane>
                 <a-entity>
                     <a-entity rotation="30 30 0">
                         <a-cylinder radius=".01" height="0.3" mixin="widgetMaterial"></a-cylinder>
@@ -121,7 +121,7 @@
                 </a-entity>
             </a-entity>
             <a-entity>
-                <a-plane text="value: Align" id='align' mixin="hudPlane"></a-plane>
+                <a-plane text="value: Align" id='align' mixin="menuPlane"></a-plane>
                 <a-entity>
                     <a-entity rotation="10 0 10">
                         <a-cylinder radius=".01" height="0.3" mixin="widgetMaterial" color="#f00"></a-cylinder>
@@ -138,7 +138,7 @@
             </a-entity>
 
             <a-entity>
-                <a-plane text="value: Remove" id='remove' mixin="hudPlane"></a-plane>
+                <a-plane text="value: Remove" id='remove' mixin="menuPlane"></a-plane>
                 <a-entity>
                     <a-box mixin="widgetMaterial" width=".2" height="0.05" depth="0.05" color="#f55"></a-box>
                 </a-entity>
@@ -146,7 +146,7 @@
             </a-entity>
 
             <a-entity>
-                <a-plane text="value: Sphere" id='add-sphere' mixin="hudPlane"></a-plane>
+                <a-plane text="value: Sphere" id='add-sphere' mixin="menuPlane"></a-plane>
                 <a-sphere radius="0.25"
                           mixin="widgetMaterial">
                     <a-entity template="src: #plus"></a-entity>
@@ -155,7 +155,7 @@
 
             </a-entity>
             <a-entity>
-                <a-plane text="value: Box" id='add-box' mixin="hudPlane"></a-plane>
+                <a-plane text="value: Box" id='add-box' mixin="menuPlane"></a-plane>
                 <a-box
                         width="0.25"
                         height="0.25"
@@ -167,14 +167,14 @@
             </a-entity>
 
             <a-entity>
-                <a-plane text="value: Billboard" mixin="hudPlane" id="add-billboard"></a-plane>
+                <a-plane text="value: Billboard" mixin="menuPlane" id="add-billboard"></a-plane>
                 <a-box mixin="widgetMaterial" width=".4" depth=".05" height=".4">
                     <a-entity template="src: #plus"></a-entity>
                 </a-box>
 
             </a-entity>
             <a-entity>
-                <a-plane text="value: Plane" id="add-plane" mixin="hudPlane"></a-plane>
+                <a-plane text="value: Plane" id="add-plane" mixin="menuPlane"></a-plane>
                 <a-box mixin="widgetMaterial"
                        width=".4" depth=".4" height=".05">
                     <a-entity template="src: #plus"></a-entity>
@@ -183,7 +183,7 @@
             </a-entity>
             <a-entity>
                 <a-entity>
-                    <a-plane text="value: Connector" id='add-connector' mixin="hudPlane"></a-plane>
+                    <a-plane text="value: Connector" id='add-connector' mixin="menuPlane"></a-plane>
                     <a-entity template="src: #widgetPoint" position="0 0.2 0"></a-entity>
                     <a-cylinder radius=".01" height="0.3" color="#fff"></a-cylinder>
                     <a-entity template="src: #plus"></a-entity>
@@ -192,7 +192,7 @@
             </a-entity>
 
             <a-entity>
-                <a-plane text="value: close" id='close' mixin="hudPlane"></a-plane>
+                <a-plane text="value: close" id='close' mixin="menuPlane"></a-plane>
                 <a-entity>
 
                 </a-entity>

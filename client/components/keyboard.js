@@ -1,4 +1,4 @@
-import {getHUDPosition, createUUID} from "./util";
+import {getMenuPosition, createUUID} from "./util";
 import {debug} from "./debug";
 
 AFRAME.registerSystem('key-listen', {
@@ -12,7 +12,7 @@ AFRAME.registerSystem('key-listen', {
         const data = { text: event.detail.value};
         if (buttons.first == null) {
             data.id = createUUID();
-            data.position = getHUDPosition();
+            data.position = getMenuPosition();
             data.template = buttons.template;
             data.color = buttons.color;
             document.dispatchEvent(

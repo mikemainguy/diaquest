@@ -1,0 +1,63 @@
+<a-assets timeout="20000">
+    <a-mixin id="menuPlane" material="color: #22a" width="1" height="1"
+             text="align: center; wrapCount: 10"
+             position="0 0 -.25" widget></a-mixin>
+    <a-mixin id="widgetMaterial" material="color: #aaa; opacity: 0.5"></a-mixin>
+    <a-mixin id="labelMixin"
+             material="color: #222; opacity: 0.5"
+             lookatme
+             text="color: #fff;  baseline: center; align: center; wrapCount: 30"
+             position="0 0.35 0"></a-mixin>
+
+    <img id="grass" src="/assets/wild+grass-1024x1024.jpeg">
+    <img id="woods" src="/assets/woods.jpeg">
+    <a-asset-item id="emoji-asset" src="/assets/emoji.glb"></a-asset-item>
+    <a-asset-item id="deer-asset" src="/assets/toontown_deer.glb"></a-asset-item>
+
+
+    <a-entity id="plus" type="text/x-nunjucks-template">
+        <a-entity position="0 0 .1">
+            <a-box width="0.05" height=".2" depth="0.05" color="#5f5"></a-box>
+            <a-box width=".2" height="0.05" depth="0.05" color="#5f5"></a-box>
+        </a-entity>
+    </a-entity>
+
+    <a-entity id="widgetPoint" type="text/x-nunjucks-template">
+        <a-cone radius-bottom="0.03" radius-top="0" height="0.1" mixin="widgetMaterial"></a-cone>
+    </a-entity>
+
+
+
+    <a-entity id="connector-template" type="text/x-nunjucks-template">
+        <a-entity class="data-connector">
+            <a-sphere rotation="90 0 0" position="0 0 0" radius="0.04" class="data-packet" color="#111">
+            </a-sphere>
+            <a-cylinder class="saveable data-direction" rotation="90 0 0" position="0 0 0"
+                        material="opacity: 0.5; color: #33f" height="1" radius="0.05">
+            </a-cylinder>
+            <a-plane mixin="labelMixin" width="1.5" height="0.25"
+                     position="0 0.7 0"></a-plane>
+        </a-entity>
+    </a-entity>
+
+    <a-entity id="sphere-template" type="text/x-nunjucks-template">
+        <a-entity>
+            <a-sphere class="saveable collidable" material="color: #33f" radius="0.5"></a-sphere>
+            <a-plane mixin="labelMixin" width="1.5" height="0.25" position="0 0.7 0"></a-plane>
+        </a-entity>
+    </a-entity>
+    <a-entity id="box-template" type="text/x-nunjucks-template">
+        <a-entity grabbable>
+            <a-box class="saveable" color="#00f" width=".5" height=".5" depth="0.5"></a-box>
+            <a-plane mixin="labelMixin" width="1.5" height="0.25"
+                     position="0 0.7 0"></a-plane>
+        </a-entity>
+    </a-entity>
+    <a-entity id="user-template" type="text/x-nunjucks-template">
+        <a-entity>
+            <a-entity scale=".25 .25 .25" position="0 1.6 0" rotation="0 180 0" gltf-model="#deer-asset"></a-entity>
+            <a-plane mixin="labelMixin" lookatme width="1.5" height="0.25"
+                     position="0 2.0 0"></a-plane>
+        </a-entity>
+    </a-entity>
+</a-assets>
