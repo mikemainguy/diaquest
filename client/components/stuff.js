@@ -14,7 +14,7 @@ AFRAME.registerComponent('stuff', {
     },
     mouseEnter: function (evt) {
         const obj = evt.target;
-        obj.setAttribute('animation',  "property: material.color; from: #cc2; to: #ff2; dur: 200; loop: true")
+        obj.setAttribute('animation',  "property: material.color; from: #cc2; to: #ff2; dir: alternate; dur: 500; loop: true")
         //obj.setAttribute('material', 'wireframe: true');
 
     },
@@ -47,6 +47,11 @@ AFRAME.registerComponent('stuff', {
                 keyboard.setAttribute('position', getMenuPosition());
                 keyboard.setAttribute('super-keyboard', 'show', true);
                 keyboard.setAttribute('super-keyboard', 'value', this.data.text);
+                const hands = document.querySelectorAll('[raycaster]');
+                for (const hand of hands) {
+                    hand.setAttribute('raycaster', 'objects', '.keyboardRaycastable');
+                }
+
                 keyboard.emit('show');
                 break;
             case 'moving':

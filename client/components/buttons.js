@@ -1,5 +1,5 @@
 import {debug} from './debug';
-import {getMenuPosition, show} from './util';
+import {getMenuPosition, showMenu} from './util';
 
 AFRAME.registerSystem('buttons', {
     init: function () {
@@ -14,7 +14,7 @@ AFRAME.registerSystem('buttons', {
         document.addEventListener('triggerdown', this.boundTriggerDown);
     },
     bbuttondown: function (evt) {
-        show('#menu');
+        showMenu();
     },
     bbuttonup: function(evt) {
 
@@ -30,6 +30,11 @@ AFRAME.registerSystem('buttons', {
                 document.querySelector('#keyboard').setAttribute('position', getMenuPosition());
                 document.querySelector('#keyboard').setAttribute('super-keyboard', 'show', true);
                 document.querySelector('#keyboard').emit('show');
+                const hands = document.querySelectorAll('[raycaster]');
+                for (const hand of hands) {
+                    hand.setAttribute('raycaster', 'objects', '.keyboardRaycastable');
+                }
+
                 debug(this.mode);
                 break;
             case 'moving':

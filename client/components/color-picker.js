@@ -39,5 +39,6 @@ AFRAME.registerComponent('color-swatch', {
   clickHandler: function(evt) {
     document.querySelector('a-scene').systems['color-picker'].color = this.data.color;
     hide('#color-picker');
+    hide('#menu');
   }
 });

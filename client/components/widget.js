@@ -1,5 +1,5 @@
 import {debug} from './debug';
-import {show, hide} from './util';
+import {showColorPicker, hide} from './util';
 
 AFRAME.registerSystem('widget', {
     init: function () {
@@ -19,7 +19,7 @@ AFRAME.registerComponent('widget', {
     mouseEnter: function(evt) {
         const target = evt.target;
         if (!target.getAttribute('animation')) {
-            target.setAttribute('animation', 'from: #ff2; to: #cc2; property: material.color; loop: true; direction: alternate; dur: 200');
+            target.setAttribute('animation', 'from: #ff2; to: #cc2; property: material.color; loop: true; dir: alternate; dur: 500');
         }
         //evt.target.setAttribute('base-color', evt.target.getAttribute('material').color);
         //evt.target.setAttribute('material', 'color', '#ff0');
@@ -30,46 +30,58 @@ AFRAME.registerComponent('widget', {
     },
     clickHandler: function (evt) {
         const buttons = document.querySelector('a-scene').systems['buttons'];
+        buttons.first = null;
+        const event = new Event('rigChanged');
+        document.dispatchEvent(event);
         switch (evt.target.id) {
             case 'add-connector':
                 buttons.mode = ['connecting'];
                 buttons.mode.push('select-first');
+                hide('#menu');
                 break;
             case 'add-sphere':
                 buttons.template = '#sphere-template'
                 buttons.mode = ['adding'];
+                hide('#menu');
                 break;
             case 'add-box':
                 buttons.template = '#box-template'
                 buttons.mode = ['adding'];
+                hide('#menu');
                 break;
             case 'close':
                 hide('#menu');
                 break;
             case 'edit-color':
                 buttons.mode= ['edit-color'];
-                show('#color-picker', -0.6);
+                showColorPicker();
                 break;
             case 'add-plane':
                 buttons.mode = ['adding'];
+                hide('#menu');
                 break;
             case 'remove':
                 buttons.mode = ['removing'];
+                hide('#menu');
                 break;
             case 'move':
                 buttons.mode = ['moving'];
+                hide('#menu');
                 break;
             case 'edit':
                 buttons.mode = ['editing'];
+                hide('#menu');
                 break;
             case 'align':
                 buttons.mode = ['aligning'];
                 buttons.mode.push('select-first');
+                hide('#menu');
                 break;
             default:
 
         }
         debug(buttons.mode);
+
     }
 
 

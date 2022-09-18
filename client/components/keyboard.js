@@ -25,6 +25,12 @@ AFRAME.registerSystem('key-listen', {
             buttons.mode.pop();
         }
         document.querySelector('#keyboard').setAttribute('super-keyboard', 'value', '');
+        const hands = document.querySelectorAll('[raycaster]');
+        for (const hand of hands) {
+            hand.setAttribute('raycaster', 'objects', '.saveable');
+        }
+
+
         debug(buttons.mode);
 
     }
