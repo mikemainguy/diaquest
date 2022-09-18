@@ -27,11 +27,7 @@ AFRAME.registerComponent('mover', {
         this.dir = document.querySelector('#dir');
         this.handler = this.thumbstick.bind(this);
         this.camera = document.querySelector("#camera");
-        this.rigDir = new THREE.Vector3();
-        this.camDir = new THREE.Vector3();
-
         this.rig = document.querySelector(".rig");
-        this.mainRig = document.querySelector(".rig");
         this.el.addEventListener('thumbstickmoved', this.handler);
 
         document.querySelector('#camera').setAttribute('camera', 'active', true);
@@ -76,7 +72,7 @@ AFRAME.registerComponent('mover', {
         }
         const a = document.querySelector('#ambient');
 
-        if (false){
+        if (a){
             const ambient =  a.components.sound;
             if (ambient.loaded && ambient.listener.context.state != 'running') {
                 ambient.playSound();
