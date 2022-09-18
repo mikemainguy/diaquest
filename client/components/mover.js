@@ -24,12 +24,14 @@ AFRAME.registerComponent('mover', {
         this.running = false;
         this.rotating = false;
         this.rotate = 0;
+        this.dir = document.querySelector('#dir');
         this.handler = this.thumbstick.bind(this);
         this.camera = document.querySelector("#camera");
         this.rigDir = new THREE.Vector3();
         this.camDir = new THREE.Vector3();
 
         this.rig = document.querySelector(".rig");
+        this.mainRig = document.querySelector(".rig");
         this.el.addEventListener('thumbstickmoved', this.handler);
 
         document.querySelector('#camera').setAttribute('camera', 'active', true);
@@ -52,25 +54,13 @@ AFRAME.registerComponent('mover', {
     tick: function (time, timeDelta) {
         let changed = false;
         if (this.rig && this.rig.object3D  && this.camera && this.camera.object3D) {
-
-            //this.rig.object3D.rotation.y = this.camera.object3D.getWorldRotation().y;
-
-
-            let direction = new THREE.Vector3();
-            //this.rig.object3D.getWorldDirection(direction);
-            //direction.multiply(this.velocity);
             if (this.system.velocity.length() > 0) {
                 const velocity = this.system.velocity.clone();
-                this.rig.object3D.getWorldDirection(this.rigDir);
-                this.camera.object3D.getWorldDirection(this.camDir);
-                this.camDir.y = 0;
-                this.rigDir.y = 0;
-                const angle = this.rigDir.angleTo(this.camDir);
-                //velocity.normalize();
-                velocity.applyAxisAngle(new THREE.Vector3(0,1,0), angle);
-                this.rig.object3D.translateOnAxis(velocity, this.system.velocity.length()/15);
+                const camWorld = new THREE.Quaternion();
+                this.camera.object3D.getWorldQuaternion(camWorld);
+                velocity.applyQuaternion(camWorld);
+                this.rig.object3D.position.add(velocity.divideScalar(30));
                 changed = true;
-
             }
             changed = changed || this.rotateY(time, timeDelta)
             if (changed) {
@@ -86,7 +76,7 @@ AFRAME.registerComponent('mover', {
         }
         const a = document.querySelector('#ambient');
 
-        if (a){
+        if (false){
             const ambient =  a.components.sound;
             if (ambient.loaded && ambient.listener.context.state != 'running') {
                 ambient.playSound();
