@@ -34,8 +34,13 @@ const database = getDatabase(app);
 
 
 async function setupApp() {
-    const profile = await axios.get('/api/user/profile');
-    await signInWithCustomToken(auth, profile.data.firebase_token);
+    try {
+        const profile = await axios.get('/api/user/profile');
+        await signInWithCustomToken(auth, profile.data.firebase_token);
+    } catch (error) {
+        console.log(error);
+    }
+
 }
 
 setupApp();

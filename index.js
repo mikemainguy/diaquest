@@ -8,6 +8,7 @@ const port = env.PORT;
 const firebase = require('./server/firebase');
 
 
+app.use(expressLogger);
 
 const maxAge = 60 * 60 * 4;
 if (env.NODE_ENV != 'development') {
@@ -46,19 +47,24 @@ const auth0Config = {
     clientID: '7el4MeFi7147tNZlL9EbYI8hEBuzMTaB',
     issuerBaseURL: 'https://aardvarkguru.us.auth0.com'
 };
-app.use(auth(auth0Config));
-app.use(expressLogger);
-
 app.engine('.hbs', engine({extname: '.hbs'}));
 app.set('view engine', 'hbs');
 app.set('views', './server/views');
 
-app.get('/worlds/:worldId', (req, res) => {
-    res.render('world');
-})
 app.get('/', (req, res) => {
-    res.render('world');
+    res.render('landing', {
+        secure: false
+    });
 })
+
+app.use(auth(auth0Config));
+app.get('/login', (req, res) => res.oidc.login({ returnTo: '/worlds/1' }));
+
+
+app.get('/worlds/:worldId', (req, res) => {
+    res.render('world', {secure: true});
+})
+
 app.get('/api/user/profile',
     (req, res, next) => {
         const firebasePromise = firebase.getAuth().createCustomToken(req.oidc.user.sub);
