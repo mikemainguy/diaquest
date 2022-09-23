@@ -128,14 +128,5 @@ AFRAME.registerComponent('mover', {
 });
 
 function updatePosition(el) {
-    const data = {
-        id: el.getAttribute('id'),
-        position: el.object3D.position,
-        rotation: {x: THREE.MathUtils.radToDeg(el.object3D.rotation.x),
-            y: THREE.MathUtils.radToDeg(el.object3D.rotation.y),
-            z: THREE.MathUtils.radToDeg(el.object3D.rotation.z)
-        }
-    }
-    document.dispatchEvent(
-        new CustomEvent('shareUpdate', {detail: data}));
+
 }

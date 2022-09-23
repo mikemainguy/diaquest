@@ -33,6 +33,7 @@ AFRAME.registerComponent('widget', {
         buttons.first = null;
         const event = new Event('rigChanged');
         document.dispatchEvent(event);
+        debug(evt.target.id);
         switch (evt.target.id) {
             case 'add-connector':
                 buttons.mode = ['connecting'];
@@ -77,6 +78,10 @@ AFRAME.registerComponent('widget', {
                 buttons.mode.push('select-first');
                 hide('#menu');
                 break;
+            case 'point':
+                debug('point');
+                buttons.mode.push('pointing');
+                break;
             default:
 
         }
@@ -86,5 +91,4 @@ AFRAME.registerComponent('widget', {
 
 
 });
-
 

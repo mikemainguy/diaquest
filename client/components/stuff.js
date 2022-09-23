@@ -12,6 +12,9 @@ AFRAME.registerComponent('stuff', {
         this.el.addEventListener("mouseleave", this.mouseLeave.bind(this));
 
     },
+    tick: function(time, timeDelta) {
+
+    },
     mouseEnter: function (evt) {
         const obj = evt.target;
         obj.setAttribute('animation',  "property: material.color; from: #cc2; to: #ff2; dir: alternate; dur: 500; loop: true")
@@ -81,21 +84,7 @@ AFRAME.registerComponent('stuff', {
                         buttons.mode.pop();
                         break;
                     case 'aligning':
-                        if (!obj.id && buttons.second) {
-                            const data = {
-                                id: buttons.second,
-                                position: document.querySelector(buttons.second).getAttribute('position')
-                            };
-                            document.dispatchEvent(
-                                new CustomEvent('shareUpdate',
-                                    {detail: data}));
-                            buttons.second = null;
-                            buttons.mode.pop();
-                        } else {
-                            if (obj.id) {
-                                buttons.second = obj.id;
-                            }
-                        }
+
                         break;
                 }
         }

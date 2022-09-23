@@ -32,9 +32,9 @@ AFRAME.registerComponent('grabber', {
   release: function(evt) {
     if (this.grabbed) {
       this.el.sceneEl.object3D.attach(this.grabbed.object3D);
-      const data = {id: this.grabbed.id, position: this.grabbed.object3D.position};
-      document.dispatchEvent(
-          new CustomEvent('shareUpdate', {detail: data}));
+      //const data = {id: this.grabbed.id, position: this.grabbed.object3D.position};
+      //document.dispatchEvent(
+      //    new CustomEvent('shareUpdate', {detail: data}));
       this.grabbed = null;
       this.distance = null;
 

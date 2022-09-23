@@ -71,7 +71,8 @@ document.addEventListener('shareUpdate', function (evt) {
     }
 
     const el = document.querySelector('#' + evt.detail.id);
-
+    const me = document.querySelector('.rig').getAttribute('id');
+    evt.detail.updater = me;
     if (el) {
         updateEntity(evt.detail);
     } else {
@@ -111,16 +112,22 @@ onChildChanged(entities, (snapshot) => {
 function createEntity(entity) {
     const me = document.querySelector('.rig')
 
-    if (!entity || !entity.template || !entity.id || (me && (me.getAttribute('id') == entity.id))) {
+    if (!entity || !entity.template || !entity.id ||
+        (me && me.getAttribute('id') == entity.id)) {
         return;
     }
     const scene = document.querySelector("a-scene");
     let exists = document.querySelector('#' + entity.id);
+    if (exists && entity.updater && (me.getAttribute('id') == entity.updater)) {
+        return;
+    }
     const ele = exists ? exists : document.createElement('a-entity');
 
     ele.setAttribute('template', 'src: ' + entity.template);
     ele.setAttribute('id', entity.id);
-
+    if (entity.rotation || entity.position) {
+        ele.querySelector('[share-position]').components['share-position'].oldPosition = null;
+    }
     if (entity.rotation) {
         ele.setAttribute('rotation', entity.rotation);
     }
