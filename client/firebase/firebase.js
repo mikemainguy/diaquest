@@ -126,7 +126,11 @@ function createEntity(entity) {
     ele.setAttribute('template', 'src: ' + entity.template);
     ele.setAttribute('id', entity.id);
     if (entity.rotation || entity.position) {
-        ele.querySelector('[share-position]').components['share-position'].oldPosition = null;
+        const comp =ele.querySelector('[share-position]');
+        if ( comp && comp.components['share-position'] &&
+             comp.components['share-position'].oldPosition) {
+            ele.querySelector('[share-position]').oldPosition = null;
+        }
     }
     if (entity.rotation) {
         ele.setAttribute('rotation', entity.rotation);
