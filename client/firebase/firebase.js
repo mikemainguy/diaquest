@@ -127,7 +127,7 @@ function createEntity(entity) {
     ele.setAttribute('id', entity.id);
     if (entity.rotation || entity.position) {
         const comp =ele.querySelector('[share-position]');
-        if ( comp && comp.components['share-position'] &&
+        if ( comp && comp.components && comp.components['share-position'] &&
              comp.components['share-position'].oldPosition) {
             ele.querySelector('[share-position]').oldPosition = null;
         }
