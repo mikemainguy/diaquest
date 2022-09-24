@@ -41,6 +41,8 @@ AFRAME.registerComponent('stuff', {
                 break;
             case 'edit-color':
                 const newColor = document.querySelector('a-scene').systems['color-picker'].color;
+                this.data.color = newColor;
+                evt.target.setAttribute('material', 'color', this.data.color);
                 document.dispatchEvent( new CustomEvent('shareUpdate', {detail: {id: obj.id, color: newColor}}));
                 break;
             case 'editing':
