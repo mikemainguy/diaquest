@@ -125,11 +125,14 @@ function createEntity(entity) {
 
     ele.setAttribute('template', 'src: ' + entity.template);
     ele.setAttribute('id', entity.id);
+    const comp =ele.querySelector('[share-position]');
+
     if (entity.rotation || entity.position) {
-        const comp =ele.querySelector('[share-position]');
         if ( comp && comp.components && comp.components['share-position'] &&
              comp.components['share-position'].oldPosition) {
-            ele.querySelector('[share-position]').oldPosition = null;
+            comp.components['share-position'].pause();
+            comp.components['share-position'].oldPosition = null;
+
         }
     }
     if (entity.rotation) {
@@ -162,5 +165,12 @@ function createEntity(entity) {
 
     if (!exists) {
         scene.appendChild(ele);
+    }
+    if (entity.rotation || entity.position) {
+        if ( comp && comp.components && comp.components['share-position'] &&
+            comp.components['share-position'].oldPosition) {
+            comp.components['share-position'].play();
+
+        }
     }
 }

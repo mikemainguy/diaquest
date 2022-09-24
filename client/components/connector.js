@@ -19,10 +19,17 @@ AFRAME.registerComponent('connector', {
       this.obj2 = this.data.endEl.object3D;
       this.started = false;
       const distance = this.obj1.position.distanceTo(this.obj2.position);
+      if (this.el.querySelector('.data-packet')) {
+        this.packet = this.el.querySelector('.data-packet').object3D;
+      }
+      if (this.el.querySelector('.data-direction')) {
+        this.connector = this.el.querySelector('.data-direction').object3D;
+      }
+      if ( this.el.querySelector('a-plane')) {
+        this.label = this.el.querySelector('a-plane').object3D;
+      }
 
-      this.packet = this.el.querySelector('.data-packet').object3D;
-      this.connector = this.el.querySelector('.data-direction').object3D;
-      this.label = this.el.querySelector('a-plane').object3D;
+
       this.packetPosition = 0.1;
       //this.el.querySelector('.saveable').setAttribute('material', 'color', this.data.color);
       /*
@@ -45,7 +52,8 @@ AFRAME.registerComponent('connector', {
 
   },
   tick: function(time, timeDelta) {
-    if (this.obj1 && this.obj2) {
+    if (this.obj1 && this.obj2 && this.packet && this.connector &&
+     this.label) {
       this.obj1.getWorldPosition(this.pos1);
       this.obj2.getWorldPosition(this.pos2);
       if (!this.pos1.equals(this.oldPos1) || !this.pos2.equals(this.oldPos2) || !this.started) {
@@ -70,11 +78,16 @@ AFRAME.registerComponent('connector', {
       this.connector.scale.y = distance;
 
     } else {
-      //const id = this.el.getAttribute('id');
-      //console.log(id + ' missing data, removing');
-      //import('../firebase/firebase.js').then((module) => {
-      //  module.removeEntity(id);
-      //});
+      if (this.el.querySelector('.data-packet')) {
+        this.packet = this.el.querySelector('.data-packet').object3D;
+      }
+      if (this.el.querySelector('.data-direction')) {
+        this.connector = this.el.querySelector('.data-direction').object3D;
+      }
+      if ( this.el.querySelector('a-plane')) {
+        this.label = this.el.querySelector('a-plane').object3D;
+      }
+
 
     }
 
