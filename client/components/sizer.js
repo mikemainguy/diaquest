@@ -12,13 +12,15 @@ AFRAME.registerComponent('sizer', {
         const buttons = document.querySelector('a-scene').systems['buttons'];
         if (buttons.mode.slice(-1)[0]== 'change-size') {
             const ele = document.querySelector('#' + buttons.first);
+            const currStuff = ele.getAttribute('stuff').scale;
+            const currScale = new THREE.Vector3(currStuff.x, currStuff.y, currStuff.z);
             if (Math.abs(evt.detail.x)>.2) {
                 const v1 = AFRAME.utils.coordinates.parse(this.data.x);
                 const v = new THREE.Vector3(v1.x, v1.y, v1.z);
                 v.multiplyScalar(evt.detail.x);
-                const scale = ele.getAttribute('scale');
-                scale.add(v);
-                ele.setAttribute('scale',  scale);
+
+                currScale.add(v);
+                ele.setAttribute('stuff', 'scale',  currScale);
 
             }
             if (Math.abs(evt.detail.y)>.2) {
@@ -26,9 +28,9 @@ AFRAME.registerComponent('sizer', {
                 const v1 = AFRAME.utils.coordinates.parse(this.data.y);
                 const v = new THREE.Vector3(v1.x, v1.y, v1.z);
                 v.multiplyScalar(evt.detail.y);
-                const scale = ele.getAttribute('scale');
-                scale.add(v);
-                ele.setAttribute('scale',  scale);
+
+                currScale.add(v);
+                ele.setAttribute('stuff', 'scale',  currScale);
 
             }
         }

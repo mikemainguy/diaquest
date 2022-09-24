@@ -4,7 +4,8 @@ import {createUUID, getMenuPosition} from "./util";
 AFRAME.registerComponent('stuff', {
     schema: {
         text: {type: 'string'},
-        color: {type: 'string'}
+        color: {type: 'string'},
+        scale: {type: 'vec3', default: '1 1 1'}
     },
     init: function () {
         this.el.addEventListener("click", this.clickHandler.bind(this));
@@ -97,18 +98,20 @@ AFRAME.registerComponent('stuff', {
         }
     },
     update: function () {
-        if (this.el.querySelector('a-plane')) {
+        const textDisplay = this.el.querySelector('a-plane');
+        if (textDisplay) {
             if (this.data.text) {
-                this.el.querySelector('a-plane').setAttribute('visible', true);
-                this.el.querySelector('a-plane').setAttribute('text', 'value: ' + this.data.text);
+                textDisplay.setAttribute('visible', true);
+                textDisplay.setAttribute('text', 'value', this.data.text);
             } else {
-                this.el.querySelector('a-plane').setAttribute('visible', false);
+                textDisplay.setAttribute('visible', false);
             }
 
         }
-        if (this.el.querySelector('.saveable')) {
-            this.el.querySelector('.saveable').setAttribute('base-color', this.data.color);
-            this.el.querySelector('.saveable').setAttribute('material', 'color', this.data.color);
+        const saveable = this.el.querySelector('.saveable');
+        if (saveable) {
+            saveable.setAttribute('scale', this.data.scale);
+            saveable.setAttribute('material', 'color', this.data.color);
         }
     }
 });
