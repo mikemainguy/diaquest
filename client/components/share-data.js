@@ -1,64 +1,50 @@
 import {debug} from './debug';
 
 AFRAME.registerComponent('share-position', {
-    schema: {
-
-    },
+    schema: {},
     init: function () {
+        this.e = new THREE.Euler();
+
         const templateComponent = this.el.parentEl.components['template'];
         this.hasPosition = true;
         this.dirty = false;
         this.parent = this.el.parentEl.object3D;
-        if (this.el.id =='camera') {
+        if (this.el.id == 'camera') {
             this.parent = this.el.object3D;
         }
         this.updateShape = AFRAME.utils.throttleTick(this.updateShape, 200, this);
         if (templateComponent) {
-          if (templateComponent.data.src == '#connector-template') {
-              this.hasPosition = false;
-          }
+            if (templateComponent.data.src == '#connector-template') {
+                this.hasPosition = false;
+            }
         }
 
     },
-    resetPosition: function() {
+    resetPosition: function () {
 
     },
-    updateShape: function(time, timeDelta) {
+    updateShape: function (time, timeDelta) {
         if (this.dirty) {
-            if (this.el.id != 'camera') {
-                const data = {
-                    id: this.el.parentEl.getAttribute('id'),
-                    position: this.currentPosition,
-                    rotation: {x: THREE.MathUtils.radToDeg(this.parent.rotation.x),
-                        y: THREE.MathUtils.radToDeg(this.parent.rotation.y),
-                        z: THREE.MathUtils.radToDeg(this.parent.rotation.z)
-                    }
-                }
-                document.dispatchEvent(
-                    new CustomEvent('shareUpdate', {detail: data}));
-
-                this.dirty = false;
-            } else {
-                const e = new THREE.Euler();
-                e.setFromQuaternion(this.currentRotation);
-                const data = {
-                    id: this.el.parentEl.getAttribute('id'),
-                    position: this.currentPosition,
-                    rotation: {x: THREE.MathUtils.radToDeg(e.x),
-                        y: THREE.MathUtils.radToDeg(e.y),
-                        z: THREE.MathUtils.radToDeg(e.z)
-                    }
-                }
-                document.dispatchEvent(
-                    new CustomEvent('shareUpdate', {detail: data}));
-
-                this.dirty = false;
+            this.e = this.parent.rotation;
+            if (this.el.id == 'camera') {
+                this.e.setFromQuaternion(this.currentRotation);
             }
 
+            const data = {
+                id: this.el.parentEl.getAttribute('id'),
+                position: this.currentPosition,
+                rotation: {
+                    x: THREE.MathUtils.radToDeg(this.e.x),
+                    y: THREE.MathUtils.radToDeg(this.e.y),
+                    z: THREE.MathUtils.radToDeg(this.e.z)
+                }
+            }
+            document.dispatchEvent(
+                new CustomEvent('shareUpdate', {detail: data}));
+            this.dirty = false;
         }
-
     },
-    tick: function(time, timeDelta) {
+    tick: function (time, timeDelta) {
 
         if (this.hasPosition) {
 
@@ -77,14 +63,13 @@ AFRAME.registerComponent('share-position', {
                 this.parent.getWorldQuaternion(this.oldRotation);
 
 
-
             } else {
                 this.parent.getWorldPosition(this.currentPosition);
                 round100(this.currentPosition);
                 this.parent.getWorldQuaternion(this.currentRotation);
 
 
-                if (!this.oldPosition.equals(this.currentPosition)||
+                if (!this.oldPosition.equals(this.currentPosition) ||
                     (Math.abs(this.oldRotation.angleTo(this.currentRotation)) > .01)) {
                     this.parent.getWorldPosition(this.oldPosition);
                     round100(this.oldPosition);

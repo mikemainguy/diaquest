@@ -149,6 +149,7 @@ function createEntity(entity) {
         case '#user-template':
         case '#box-template':
         case '#pane-template':
+        case '#cylinder-template':
         case '#sphere-template':
             window.setTimeout(function () {
                 ele.setAttribute('stuff', 'text: ' + text + '; color: ' + color);

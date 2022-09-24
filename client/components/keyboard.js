@@ -21,6 +21,7 @@ AFRAME.registerSystem('key-listen', {
             buttons.mode.pop();
         } else {
             data.id = buttons.first;
+            document.querySelector('#'+data.id).setAttribute('stuff', 'text', data.text);
             document.dispatchEvent( new CustomEvent('shareUpdate', {detail: data}));
             buttons.mode.pop();
         }

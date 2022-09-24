@@ -43,6 +43,11 @@ AFRAME.registerSystem('buttons', {
                 debug(this.mode);
                 const event = new Event('rigChanged');
                 document.dispatchEvent(event);
+                break;
+            case 'scaling':
+                this.first = null;
+                this.mode.pop();
+                break;
         }
 
     }

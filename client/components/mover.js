@@ -2,6 +2,7 @@ import {debug} from "./debug";
 
 AFRAME.registerSystem('mover', {
     init: function () {
+        this.running = true;
         this.enabled = true;
         this.velocity = new THREE.Vector3(0, 0, 0);
     }
@@ -21,7 +22,7 @@ AFRAME.registerComponent('mover', {
     },
     init: function () {
         this.sound = false;
-        this.running = false;
+
         this.rotating = false;
         this.rotate = 0;
         this.dir = document.querySelector('#dir');
@@ -67,9 +68,6 @@ AFRAME.registerComponent('mover', {
 
     },
     thumbstick: function (evt) {
-        if (!this.system.enabled) {
-            return;
-        }
         const a = document.querySelector('#ambient');
 
         if (a){
@@ -77,6 +75,10 @@ AFRAME.registerComponent('mover', {
             if (ambient.loaded && ambient.listener.context.state != 'running') {
                 ambient.playSound();
             }
+        }
+        const buttons = document.querySelector('a-scene').systems['buttons'];
+        if (buttons.mode.slice(-1)[0]== 'change-size') {
+            return;
         }
 
         const val = Math.round(evt.detail[this.data.stickaxis] * 8) / 8;

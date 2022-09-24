@@ -40,6 +40,15 @@ AFRAME.registerComponent('widget', {
                 buttons.mode.push('select-first');
                 hide('#menu');
                 break;
+            case 'add-cylinder':
+                buttons.template = '#cylinder-template'
+                buttons.mode = ['adding'];
+                hide('#menu');
+                break;
+            case 'resize':
+                buttons.mode = ['resizing'];
+                hide('#menu');
+                break;
             case 'add-sphere':
                 buttons.template = '#sphere-template'
                 buttons.mode = ['adding'];

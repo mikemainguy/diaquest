@@ -45,6 +45,11 @@ AFRAME.registerComponent('stuff', {
                 evt.target.setAttribute('material', 'color', this.data.color);
                 document.dispatchEvent( new CustomEvent('shareUpdate', {detail: {id: obj.id, color: newColor}}));
                 break;
+            case 'resizing':
+                buttons.first = obj.id;
+                buttons.mode.push('change-size');
+
+                break;
             case 'editing':
                 buttons.first = obj.id;
                 buttons.mode.push('typing');
