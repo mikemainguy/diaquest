@@ -82,11 +82,6 @@ AFRAME.registerComponent('widget', {
                 buttons.mode = ['editing'];
                 hide('#menu');
                 break;
-            case 'align':
-                buttons.mode = ['aligning'];
-                buttons.mode.push('select-first');
-                hide('#menu');
-                break;
             case 'point':
                 debug('point');
                 buttons.mode.push('pointing');

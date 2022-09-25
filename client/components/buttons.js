@@ -1,5 +1,5 @@
 import {debug} from './debug';
-import {getMenuPosition, showMenu} from './util';
+import {changeRaycaster, getMenuPosition, showMenu} from './util';
 
 AFRAME.registerSystem('buttons', {
     init: function () {
@@ -30,17 +30,11 @@ AFRAME.registerSystem('buttons', {
                 document.querySelector('#keyboard').setAttribute('position', getMenuPosition());
                 document.querySelector('#keyboard').setAttribute('super-keyboard', 'show', true);
                 document.querySelector('#keyboard').emit('show');
-                const hands = document.querySelectorAll('[raycaster]');
-                for (const hand of hands) {
-                    hand.setAttribute('raycaster', 'objects', '.keyboardRaycastable');
-                }
-
-                debug(this.mode);
+                changeRaycaster('.keyboardRaycastable');
                 break;
             case 'moving':
                 this.first = null;
                 this.mode.pop();
-                debug(this.mode);
                 const event = new Event('rigChanged');
                 document.dispatchEvent(event);
                 break;
@@ -49,6 +43,7 @@ AFRAME.registerSystem('buttons', {
                 this.mode.pop();
                 break;
         }
+        debug(this.mode);
 
     }
 });

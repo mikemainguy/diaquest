@@ -1,12 +1,7 @@
 <a-scene background="color: #003" fog="type: exponential; color: #fff; near: 20; far: 100">
     {{> assets }}
 
-    <a-entity id="aligner" visible="false">
-        <a-entity id="aligner-axis">
-            <a-cylinder radius="0.1" opacity="0.1" rotation="0 0 0" height="1"></a-cylinder>
-            <a-sphere radius="0.1" rotation="0 0 0" position="0 0 .5"></a-sphere>
-        </a-entity>
-    </a-entity>
+
     <a-entity id="keyboard" position="-.25 -0.125 0" lookatme super-keyboard="hand: #right-hand; imagePath: /assets/; show: false " rotation="-10 0 0"></a-entity>
     <!-- <a-entity template="src: #user"  position="1 1 14"></a-entity> -->
 
@@ -18,6 +13,15 @@
     </a-entity>
     <a-sphere radius="0.1" id="reticle" position="0 0 0"></a-sphere>
 <!-- look-controls wasd-controls="fly: true" -->
+    <a-entity id="sizer" type="text/x-nunjucks-template">
+        <a-sphere mixin="sizeConnectorMixin" radius=".05" position="1 0 0"></a-sphere>
+        <a-sphere mixin="sizeConnectorMixin" radius=".05" position="-1 0 0"></a-sphere>
+        <a-sphere mixin="sizeConnectorMixin" radius=".05" position="0 1 0"></a-sphere>
+        <a-sphere mixin="sizeConnectorMixin" radius=".05" position="0 -1 0"></a-sphere>
+        <a-sphere mixin="sizeConnectorMixin" radius=".05" position="0 0 1"></a-sphere>
+        <a-sphere mixin="sizeConnectorMixin" radius=".05" position="0 0 -1"></a-sphere>
+    </a-entity>
+
     <a-entity class="rig"  position="0 0 2">
         <a-entity
                 id="left-hand"
@@ -48,7 +52,7 @@
 
                   grabber
                   sizer
-                  mover="elevate: true; stickaxis: y; axis: y; moveSpeed: -1"
+                  mover="elevate: true; stickaxis: y; axis: y;"
                   mover__2="turn: true; stickaxis: x; axis: x">
             <a-plane width="0.2"
                      height="0.03"

@@ -1,5 +1,5 @@
 import {debug} from './debug';
-import {createUUID, getMenuPosition} from "./util";
+import {getCurrentMode, getSystem, changeRaycaster, createUUID, getMenuPosition} from "./util";
 
 AFRAME.registerComponent('stuff', {
     schema: {
@@ -11,7 +11,6 @@ AFRAME.registerComponent('stuff', {
         this.el.addEventListener("click", this.clickHandler.bind(this));
         this.el.addEventListener("mouseenter", this.mouseEnter.bind(this));
         this.el.addEventListener("mouseleave", this.mouseLeave.bind(this));
-
     },
     tick: function(time, timeDelta) {
 
@@ -19,29 +18,21 @@ AFRAME.registerComponent('stuff', {
     mouseEnter: function (evt) {
         const obj = evt.target;
         obj.setAttribute('animation',  "property: material.color; from: #cc2; to: #ff2; dir: alternate; dur: 500; loop: true")
-        //obj.setAttribute('material', 'wireframe: true');
-
     },
     mouseLeave: function (evt) {
         const obj = evt.target;
         obj.setAttribute('material', 'color', this.data.color);
         obj.removeAttribute('animation');
-
-
-        //obj.setAttribute('material', 'wireframe: false');
     },
     clickHandler: function (evt) {
-        const buttons = document.querySelector('a-scene').systems['buttons'];
-
+        const buttons = getSystem('buttons');
         const obj = evt.target.closest('[template]');
-        debug(obj.id);
-        const id = obj.id;
-        switch (buttons.mode.slice(-1)[0]) {
+        switch (getCurrentMode()) {
             case 'removing':
                 document.dispatchEvent( new CustomEvent('shareUpdate', {detail: {id: obj.id, remove: true}}));
                 break;
             case 'edit-color':
-                const newColor = document.querySelector('a-scene').systems['color-picker'].color;
+                const newColor = getSystem('color-picker').color
                 this.data.color = newColor;
                 evt.target.setAttribute('material', 'color', this.data.color);
                 document.dispatchEvent( new CustomEvent('shareUpdate', {detail: {id: obj.id, color: newColor}}));
@@ -49,20 +40,15 @@ AFRAME.registerComponent('stuff', {
             case 'resizing':
                 buttons.first = obj.id;
                 buttons.mode.push('change-size');
-
                 break;
             case 'editing':
                 buttons.first = obj.id;
                 buttons.mode.push('typing');
                 const keyboard = document.querySelector('#keyboard');
+                keyboard.setAttribute('super-keyboard', 'value', this.data.text);
                 keyboard.setAttribute('position', getMenuPosition());
                 keyboard.setAttribute('super-keyboard', 'show', true);
-                keyboard.setAttribute('super-keyboard', 'value', this.data.text);
-                const hands = document.querySelectorAll('[raycaster]');
-                for (const hand of hands) {
-                    hand.setAttribute('raycaster', 'objects', '.keyboardRaycastable');
-                }
-
+                changeRaycaster('.keyboardRaycastable');
                 keyboard.emit('show');
                 break;
             case 'moving':
@@ -82,7 +68,7 @@ AFRAME.registerComponent('stuff', {
                             first: buttons.first,
                             second: obj.id,
                             text: '',
-                            color: buttons.color,
+                            color: getSystem('color-picker').color,
                             template: '#connector-template'
                         }
                         document.dispatchEvent(
@@ -91,9 +77,7 @@ AFRAME.registerComponent('stuff', {
 
                         buttons.mode.pop();
                         break;
-                    case 'aligning':
 
-                        break;
                 }
         }
     },
@@ -103,6 +87,7 @@ AFRAME.registerComponent('stuff', {
             if (this.data.text) {
                 textDisplay.setAttribute('visible', true);
                 textDisplay.setAttribute('text', 'value', this.data.text);
+                textDisplay.setAttribute('postion', '0 ' + (this.data.scale.y + .25) + ' 0');
             } else {
                 textDisplay.setAttribute('visible', false);
             }
@@ -110,7 +95,6 @@ AFRAME.registerComponent('stuff', {
         }
         const saveable = this.el.querySelector('.saveable');
         if (saveable) {
-            saveable.setAttribute('scale', this.data.scale);
             saveable.setAttribute('material', 'color', this.data.color);
         }
     }

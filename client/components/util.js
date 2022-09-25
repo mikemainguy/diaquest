@@ -18,30 +18,43 @@ export function showMenu() {
     for (const hand of hands) {
         hand.setAttribute('raycaster', 'objects', '#menu a-plane[mixin=menuPlane]');
     }
-
+}
+export function changeRaycaster(newObjects) {
+    const hands = document.querySelectorAll('[raycaster]');
+    for (const hand of hands) {
+        hand.setAttribute('raycaster', 'objects', newObjects);
+    }
 }
 export function showColorPicker() {
     const obj = document.querySelector('#color-picker');
     obj.setAttribute('visible', true);
-    const hands = document.querySelectorAll('[raycaster]');
-    for (const hand of hands) {
-        hand.setAttribute('raycaster', 'objects', '#menu a-plane[color-swatch]');
-    }
-
+    changeRaycaster('#menu a-plane[color-swatch]');
 }
 
 export function hide(id) {
     const obj = document.querySelector(id);
     obj.setAttribute('visible', false);
-    const hands = document.querySelectorAll('[raycaster]');
-    for (const hand of hands) {
-        hand.setAttribute('raycaster', 'objects', '.saveable');
-    }
-
+    changeRaycaster('.saveable');
 }
 
 export function createUUID() {
     return 'id' + ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
         (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
     )
+}
+
+export function getSystem(systemName) {
+    return document.querySelector('a-scene').systems[systemName];
+}
+export function getCurrentMode() {
+    return getSystem('buttons').mode.slice(-1)[0];
+}
+export function initSound() {
+    const a = document.querySelector('#ambient');
+    if (a) {
+        const ambient = a.components.sound;
+        if (ambient.loaded && ambient.listener.context.state != 'running') {
+            ambient.playSound();
+        }
+    }
 }

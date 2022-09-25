@@ -1,4 +1,5 @@
 import {debug} from "./debug";
+import {getCurrentMode, initSound, getSystem} from "./util";
 
 AFRAME.registerSystem('mover', {
     init: function () {
@@ -17,12 +18,9 @@ AFRAME.registerComponent('mover', {
         elevate: {type: 'boolean', default: false},
         strafe: {type: 'boolean', default: false},
         turn: {type: 'boolean', default: false},
-        moveSpeed: {type: 'float', default: 1},
         turnIncrement: {type: 'float', default: 0.3926991}
     },
     init: function () {
-        this.sound = false;
-
         this.rotating = false;
         this.rotate = 0;
         this.dir = document.querySelector('#dir');
@@ -35,62 +33,44 @@ AFRAME.registerComponent('mover', {
         document.addEventListener('rigChanged', this.rigChanged.bind(this));
     },
     rigChanged: function (evt) {
-        const buttons = document.querySelector('a-scene').systems['buttons'];
+        const buttons = getSystem('buttons');
         debug(buttons.mode);
         if (buttons && buttons.first && buttons.mode[0] == 'moving') {
             this.rig = document.querySelector('#' + buttons.first);
-
         } else {
             this.rig = document.querySelector(".rig");
-
         }
     },
     remove: function () {
         this.el.removeEventListener(this.handler);
     },
     tick: function (time, timeDelta) {
-        let changed = false;
-        if (this.rig && this.rig.object3D  && this.camera && this.camera.object3D) {
+        if (this.rig && this.rig.object3D && this.camera && this.camera.object3D) {
             if (this.system.velocity.length() > 0) {
                 const velocity = this.system.velocity.clone();
                 const camWorld = new THREE.Quaternion();
                 this.camera.object3D.getWorldQuaternion(camWorld);
                 velocity.applyQuaternion(camWorld);
-                this.rig.object3D.position.add(velocity.divideScalar(30));
-                changed = true;
+                this.rig.object3D.position.add(velocity.divideScalar(80));
             }
-            changed = changed || this.rotateY(time, timeDelta)
-            if (changed) {
-                updatePosition(this.rig);
-            }
-
+            this.rotateY(time, timeDelta)
         }
-
     },
     thumbstick: function (evt) {
-        const a = document.querySelector('#ambient');
-
-        if (a){
-            const ambient =  a.components.sound;
-            if (ambient.loaded && ambient.listener.context.state != 'running') {
-                ambient.playSound();
-            }
-        }
-        const buttons = document.querySelector('a-scene').systems['buttons'];
-        if (buttons.mode.slice(-1)[0]== 'change-size') {
+        initSound();
+        if (getCurrentMode() == 'change-size') {
             return;
         }
+        const thumbFactor = 10;
 
-        const val = Math.round(evt.detail[this.data.stickaxis] * 8) / 8;
+        const val = Math.round(evt.detail[this.data.stickaxis] * thumbFactor) / thumbFactor;
         const sign = Math.sign(val);
 
-
-        if (Math.abs(val) > 0.125) {
+        if (Math.abs(val) > (1/thumbFactor)) {
             if (this.data.forwardback ||
                 this.data.elevate ||
                 this.data.strafe) {
-
-                this.system.velocity[this.data.axis] = this.data.moveSpeed * (val - .125);
+                this.system.velocity[this.data.axis] = (val - (1/thumbFactor));
             }
             if (this.data.turn) {
                 if (Math.abs(val) > .3) {
@@ -98,7 +78,6 @@ AFRAME.registerComponent('mover', {
                 } else {
                     this.rotate = 0;
                 }
-
             }
         } else {
             if (this.data.turn) {
@@ -110,25 +89,14 @@ AFRAME.registerComponent('mover', {
 
     },
     rotateY: function (t, dt) {
-        if (!this.rotating) {
-            if (this.rotate != 0) {
-                this.rig.object3D.rotation.y += this.rotate;
-                this.rotating = true;
-                return true;
-
-            } else {
-                this.rotating = false;
-            }
-            //let newRotation = this.rig.object3D.rotation.y + this.rotate;
-
+        const nextRotate = (this.rotate != 0);
+        if (!this.rotating && nextRotate) {
+            this.rig.object3D.rotation.y += this.rotate;
+            this.rotating = true;
+            return true;
         } else {
-            if (this.rotate == 0) {
-                this.rotating = false;
-            }
+            this.rotating = nextRotate;
         }
     }
 });
 
-function updatePosition(el) {
-
-}

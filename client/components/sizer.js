@@ -1,39 +1,41 @@
-AFRAME.registerComponent('sizer', {
-    schema: {
-        x: {type: 'string', default: '1 0 0'},
-        y: {type: 'string', default: '0 1 0'}
-    },
+AFRAME.registerSystem('sizer', {
     init: function () {
-        this.running = false;
-        this.thumbstickmoved = this.thumbstickmoved.bind(this);
-        this.el.addEventListener('thumbstickmoved', this.thumbstickmoved);
-    },
-    thumbstickmoved: function(evt) {
-        const buttons = document.querySelector('a-scene').systems['buttons'];
-        if (buttons.mode.slice(-1)[0]== 'change-size') {
-            const ele = document.querySelector('#' + buttons.first);
-            const currStuff = ele.getAttribute('stuff').scale;
-            const currScale = new THREE.Vector3(currStuff.x, currStuff.y, currStuff.z);
-            if (Math.abs(evt.detail.x)>.2) {
-                const v1 = AFRAME.utils.coordinates.parse(this.data.x);
-                const v = new THREE.Vector3(v1.x, v1.y, v1.z);
-                v.multiplyScalar(evt.detail.x);
 
-                currScale.add(v);
-                ele.setAttribute('stuff', 'scale',  currScale);
-
-            }
-            if (Math.abs(evt.detail.y)>.2) {
-
-                const v1 = AFRAME.utils.coordinates.parse(this.data.y);
-                const v = new THREE.Vector3(v1.x, v1.y, v1.z);
-                v.multiplyScalar(evt.detail.y);
-
-                currScale.add(v);
-                ele.setAttribute('stuff', 'scale',  currScale);
-
-            }
-        }
     }
 });
 
+AFRAME.registerComponent('sizer', {
+    init: function () {
+        this.grabbed = null;
+        this.grabHandler = this.grab.bind(this);
+        this.releaseHandler = this.release.bind(this);
+        this.el.addEventListener('gripdown', this.grabHandler);
+        this.el.addEventListener('gripup', this.releaseHandler);
+
+    },
+    remove: function() {
+        this.el.removeEventListener('gripdown', this.grabHandler);
+        this.el.removeEventListener('gripup', this.releaseHandler);
+    },
+    grab: function(evt) {
+        const el = evt.currentTarget.components['raycaster'].intersections[0].object.el;
+        if (el.classList.contains('sizer')) {
+
+            this.grabbed = el.closest('[template]');
+            evt.currentTarget.object3D.attach(this.grabbed.object3D);
+        } else {
+
+        }
+
+    },
+    release: function(evt) {
+        if (this.grabbed) {
+            this.el.sceneEl.object3D.attach(this.grabbed.object3D);
+            this.grabbed = null;
+        }
+
+    },
+    tick: function() {
+
+    }
+});
