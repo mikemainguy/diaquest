@@ -5,30 +5,61 @@ AFRAME.registerSystem('mover', {
     init: function () {
         this.running = true;
         this.enabled = true;
+        this.directions = [];
         this.velocity = new THREE.Vector3(0, 0, 0);
     }
 });
 
 AFRAME.registerComponent('mover', {
-    multiple: true,
     schema: {
-        axis: {type: 'string', default: 'x'},
-        stickaxis: {type: 'string', default: 'y'},
-        forwardback: {type: 'boolean', default: false},
-        elevate: {type: 'boolean', default: false},
-        strafe: {type: 'boolean', default: false},
-        turn: {type: 'boolean', default: false},
-        turnIncrement: {type: 'float', default: 0.3926991}
+        x: {type: 'string', default: '0 0 0'},
+        y: {type: 'string', default: '0 0 0'}
     },
     init: function () {
+        this.x = {};
+        if (AFRAME.utils.coordinates.isCoordinates(this.data.x)) {
+            const x = AFRAME.utils.coordinates.parse(this.data.x);
+            this.x.direction = new THREE.Vector3(
+                x.x,
+                x.y,
+                x.z
+            );
+            this.x.scaledDirection = new THREE.Vector3();
+            this.system.directions.push(this.x.scaledDirection);
+            this.x.rotation = 0;
+
+
+        } else {
+            this.x.direction = new THREE.Vector3(0,0,0);
+            this.x.scaledDirection = new THREE.Vector3();
+            this.x.rotation = THREE.MathUtils.degToRad(this.data.x);
+        }
+        this.y = {};
+        if (AFRAME.utils.coordinates.isCoordinates(this.data.y)) {
+            const y = AFRAME.utils.coordinates.parse(this.data.y);
+            this.y.direction = new THREE.Vector3(
+                y.x,
+                y.y,
+                y.z
+            );
+            this.y.scaledDirection = new THREE.Vector3();
+            this.system.directions.push(this.y.scaledDirection);
+            this.y.rotation = 0;
+        } else {
+            this.y.direction = new THREE.Vector3(0,0,0);
+            this.y.scaledDirection = new THREE.Vector3(0,0,0);
+
+            this.y.rotation = THREE.MathUtils.degToRad(this.data.y);
+        }
+
+
+
         this.rotating = false;
         this.rotate = 0;
-        this.dir = document.querySelector('#dir');
         this.handler = this.thumbstick.bind(this);
         this.camera = document.querySelector("#camera");
         this.rig = document.querySelector(".rig");
         this.el.addEventListener('thumbstickmoved', this.handler);
-
         document.querySelector('#camera').setAttribute('camera', 'active', true);
         document.addEventListener('rigChanged', this.rigChanged.bind(this));
     },
@@ -46,12 +77,18 @@ AFRAME.registerComponent('mover', {
     },
     tick: function (time, timeDelta) {
         if (this.rig && this.rig.object3D && this.camera && this.camera.object3D) {
-            if (this.system.velocity.length() > 0) {
-                const velocity = this.system.velocity.clone();
+            if (this.system.directions.length > 0) {
+                const velocity = new THREE.Vector3();
+                for (const d of this.system.directions) {
+                    velocity.add(d);
+                }
+                const v = velocity.length();
+
                 const camWorld = new THREE.Quaternion();
                 this.camera.object3D.getWorldQuaternion(camWorld);
                 velocity.applyQuaternion(camWorld);
-                this.rig.object3D.position.add(velocity.divideScalar(80));
+                this.rig.object3D.position.add(velocity.multiplyScalar(v/40));
+
             }
             this.rotateY(time, timeDelta)
         }
@@ -61,31 +98,27 @@ AFRAME.registerComponent('mover', {
         if (getCurrentMode() == 'change-size') {
             return;
         }
-        const thumbFactor = 10;
 
-        const val = Math.round(evt.detail[this.data.stickaxis] * thumbFactor) / thumbFactor;
-        const sign = Math.sign(val);
 
-        if (Math.abs(val) > (1/thumbFactor)) {
-            if (this.data.forwardback ||
-                this.data.elevate ||
-                this.data.strafe) {
-                this.system.velocity[this.data.axis] = (val - (1/thumbFactor));
-            }
-            if (this.data.turn) {
-                if (Math.abs(val) > .3) {
-                    this.rotate = ((this.data.turnIncrement * sign) * -1);
-                } else {
-                    this.rotate = 0;
-                }
-            }
-        } else {
-            if (this.data.turn) {
-                this.rotate = 0;
+        this.x.scaledDirection.copy(this.x.direction.clone().multiplyScalar(evt.detail.x));
+        this.y.scaledDirection.copy(this.y.direction.clone().multiplyScalar(evt.detail.y));
+
+        if (this.x.rotation != 0) {
+            if (Math.abs(evt.detail.x) > .5) {
+                this.rotate = (this.x.rotation * Math.sign(evt.detail.x));
             } else {
-                this.system.velocity[this.data.axis] = 0;
+                this.rotate = 0;
             }
         }
+
+        if (this.y.rotation != 0) {
+            if (Math.abs(evt.detail.y) > .5) {
+                this.rotate = (this.y.rotation * Math.sign(evt.detail.y));
+            } else {
+                this.rotate = 0;
+            }
+        }
+
 
     },
     rotateY: function (t, dt) {
@@ -93,7 +126,6 @@ AFRAME.registerComponent('mover', {
         if (!this.rotating && nextRotate) {
             this.rig.object3D.rotation.y += this.rotate;
             this.rotating = true;
-            return true;
         } else {
             this.rotating = nextRotate;
         }
