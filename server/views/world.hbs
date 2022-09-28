@@ -31,9 +31,7 @@
                 laser-controls="hand: left"
                 raycaster="objects: .saveable; lineColor: #f33; lineOpacity: 0.7; far: 100"
                 grabber
-                sizer="y: 0 0 1; x: 0 0 0"
-                mover="forwardback: true; stickaxis: y; axis: z"
-                mover__2="strafe: true; stickaxis: x; axis: x">
+                mover="x: 1 0 0; y: 0 0 1">
             <a-plane width="0.2"
                      height=".03"
                      color="#fff"
@@ -49,11 +47,9 @@
                   raycaster="objects: .saveable; lineColor: #f33; lineOpacity: 0.7; far: 100"
                   position=".5 1.6 1.5"
                   rotation="90 0 0"
-
                   grabber
-                  sizer
-                  mover="elevate: true; stickaxis: y; axis: y;"
-                  mover__2="turn: true; stickaxis: x; axis: x">
+                  mover="x: -22.5; y: 0 -1 0"
+                  sizer>
             <a-plane width="0.2"
                      height="0.03"
                      color="#fff"
@@ -89,6 +85,9 @@
         <a-sphere material="opacity: 0.9;color: #ff0" radius=".2"></a-sphere>
     </a-entity>
     <a-sphere id="dir" radius=".05" color="#f00"></a-sphere>
-    <a-sky src="#woods" radius="100" material="fog: false"></a-sky>
+    <a-box id="backdrop" width="50" height="50" depth="50" material="color: #00f; side: back; opacity: 0.5">
+
+    </a-box>
+    <!--<a-sky src="#woods" radius="100" material="fog: false"></a-sky> -->
 
 </a-scene>

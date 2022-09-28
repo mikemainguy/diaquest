@@ -27,6 +27,7 @@
     "express-winston": "^4.2.0",
     "firebase-admin": "^11.0.0",
     "firebase": "^9.9.3",
+    "newrelic": "^9.1.0",
     "nunjucks": "^3.2.3",
     "webpack-cli": "^4.10.0",
     "webpack": "^5.74.0",

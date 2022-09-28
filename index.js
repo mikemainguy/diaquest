@@ -1,10 +1,16 @@
 const env = require('./server/env');
 const {expressLogger, logger} = require('./server/logging');
+const config = require('./newrelic').config;
+if (env.NR_LICENCE_KEY) {
+    require('newrelic');
+}
+
 const express = require('express');
 const  { engine } = require('express-handlebars');
 const {auth} = require('express-openid-connect');
 const app = express();
 const port = env.PORT;
+
 const firebase = require('./server/firebase');
 
 
