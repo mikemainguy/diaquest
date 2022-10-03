@@ -1,11 +1,16 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Immersive Idea Alpha 20220924-2</title>
-    {{> new-relic }}
-    {{#if secure}}
+    <title>Immersive Idea Alpha 20221003-1</title>
+
+    {{#if vrConnected}}
         <script src="/dist/main.js" type="application/javascript"></script>
     {{/if}}
+
+    {{#if vrLocal}}
+        <!--<script src="/dist/main.js" type="application/javascript"></script>-->
+    {{/if}}
+
 </head>
 <body>
 {{{body}}}

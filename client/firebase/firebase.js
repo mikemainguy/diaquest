@@ -1,4 +1,3 @@
-//import profile from "/api/user/profile" assert {type: 'json'};
 const axios = require('axios').default;
 
 import {getAuth, signInWithCustomToken} from "firebase/auth";
@@ -32,6 +31,27 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const database = getDatabase(app);
 
+function getDbPath(id) {
+    const loc = window.location.pathname.split('/');
+    if (loc.length < 3) {
+        return 'public/entities';
+    }
+    const pathId = id == null? '': '/'+id;
+
+    switch (loc[1]) {
+        case 'public':
+            return 'public/entities'+pathId;
+        case 'worlds':
+            if (loc.length ===3) {
+                return 'worlds/' + loc[2] + '/entities' + pathId;
+            } else {
+                return 'public/entities' + pathId;
+            }
+        default:
+            return 'public/entities' + pathId;
+    }
+}
+
 
 async function setupApp() {
     try {
@@ -52,7 +72,7 @@ export function writeUser(profile) {
         set(ref(database, 'users/' + profile.user.sub), profile);
         const rig = document.querySelector('.rig');
         rig.setAttribute('id', id);
-        writeEntity({
+        createEntity({
             id: id,
             last_seen: new Date().toUTCString(),
             position: rig.object3D.position,
@@ -60,43 +80,41 @@ export function writeUser(profile) {
             text: profile.user.email,
             template: "#user-template"
         });
-
     });
 }
 
 document.addEventListener('shareUpdate', function (evt) {
-    if (evt.detail.remove == true) {
+    if (evt.detail.remove === true) {
         removeEntity(evt.detail.id);
         return;
     }
 
     const el = document.querySelector('#' + evt.detail.id);
-    const me = document.querySelector('.rig').getAttribute('id');
-    evt.detail.updater = me;
+    evt.detail.updater = document.querySelector('.rig').getAttribute('id');
     if (el) {
         updateEntity(evt.detail);
     } else {
-        writeEntity(evt.detail);
+        createEntity(evt.detail);
     }
 
 });
 
 function updateEntity(data) {
-    update(ref(database, 'entities/' + data.id), data);
+    update(ref(database, getDbPath(data.id)), data);
 }
 
-function writeEntity(data) {
-    set(ref(database, 'entities/' + data.id), data);
+function createEntity(data) {
+    set(ref(database, getDbPath(data.id)), data);
 }
 
 function removeEntity(id) {
-    remove(ref(database, 'entities/' + id));
+    remove(ref(database, getDbPath(id)));
 }
 
 
-const entities = ref(database, 'entities');
+const entities = ref(database, getDbPath(null));
 onChildAdded(entities, (snapshot) => {
-    createEntity(snapshot.val());
+    createOrUpdateDom(snapshot.val());
 });
 
 onChildRemoved(entities, (snapshot) => {
@@ -106,19 +124,19 @@ onChildRemoved(entities, (snapshot) => {
     }
 });
 onChildChanged(entities, (snapshot) => {
-    createEntity(snapshot.val());
+    createOrUpdateDom(snapshot.val());
 });
 
-function createEntity(entity) {
+function createOrUpdateDom(entity) {
     const me = document.querySelector('.rig')
 
     if (!entity || !entity.template || !entity.id ||
-        (me && me.getAttribute('id') == entity.id)) {
+        (me && me.getAttribute('id') === entity.id)) {
         return;
     }
     const scene = document.querySelector("a-scene");
     let exists = document.querySelector('#' + entity.id);
-    if (exists && entity.updater && (me.getAttribute('id') == entity.updater)) {
+    if (exists && entity.updater && (me.getAttribute('id') === entity.updater)) {
         return;
     }
     const ele = exists ? exists : document.createElement('a-entity');

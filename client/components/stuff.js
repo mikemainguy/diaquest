@@ -4,8 +4,8 @@ import {getCurrentMode, getSystem, changeRaycaster, createUUID, getMenuPosition}
 AFRAME.registerComponent('stuff', {
     schema: {
         text: {type: 'string'},
-        color: {type: 'string'},
-        scale: {type: 'vec3', default: '1 1 1'}
+        color: {type: 'string'}
+
     },
     init: function () {
         this.el.addEventListener("click", this.clickHandler.bind(this));
@@ -87,7 +87,7 @@ AFRAME.registerComponent('stuff', {
             if (this.data.text) {
                 textDisplay.setAttribute('visible', true);
                 textDisplay.setAttribute('text', 'value', this.data.text);
-                textDisplay.setAttribute('postion', '0 ' + (this.data.scale.y + .25) + ' 0');
+                textDisplay.setAttribute('postion', '0 1.25 0');
             } else {
                 textDisplay.setAttribute('visible', false);
             }

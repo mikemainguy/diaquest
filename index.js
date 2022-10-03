@@ -59,16 +59,21 @@ app.set('views', './server/views');
 
 app.get('/', (req, res) => {
     res.render('landing', {
-        secure: false
+        html: true
     });
 })
-
+app.get('/local', (req, res) => {
+   res.render('world', {vrLocal: true});
+});
+app.get('/public', (req, res) => {
+    res.render('world', {vrConnected: true});
+});
 app.use(auth(auth0Config));
-app.get('/login', (req, res) => res.oidc.login({ returnTo: '/worlds/1' }));
+app.get('/login', (req, res) => res.oidc.login({ returnTo: '/' }));
 
 
 app.get('/worlds/:worldId', (req, res) => {
-    res.render('world', {secure: true});
+    res.render('world', {vrConnected: true});
 })
 
 app.get('/api/user/profile',
