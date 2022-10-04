@@ -57,13 +57,16 @@ async function setupApp() {
     try {
         const profile = await axios.get('/api/user/profile');
         await signInWithCustomToken(auth, profile.data.firebase_token);
+        return profile.data;
     } catch (error) {
         console.log(error);
     }
-
+    return null;
 }
 
-setupApp();
+setupApp().then((profile) => {
+    writeUser(profile);
+});
 
 export function writeUser(profile) {
     sha512(profile.user.sid).then((result) => {

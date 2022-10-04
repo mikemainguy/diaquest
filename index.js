@@ -78,10 +78,20 @@ app.get('/worlds/:worldId', (req, res) => {
 
 app.get('/api/user/profile',
     (req, res, next) => {
-        const firebasePromise = firebase.getAuth().createCustomToken(req.oidc.user.sub);
+        const claims = {};
+        if (req.oidc.idTokenClaims['immersiveRoles']) {
+            claims.roles = req.oidc.idTokenClaims['immersiveRoles'];
+            if (claims.roles.length > 0) {
+                claims.roles = claims.roles.reduce((a,v) => ({ ...a, [v]: true}), {})
+            }
+        }
+        const firebasePromise = firebase
+            .getAuth()
+            .createCustomToken(req.oidc.user.sub, claims.roles);
         Promise.all([firebasePromise]).then(data => {
             const obj = {}
             obj.user = req.oidc.user;
+
             obj.firebase_token = data[0];
             res.setHeader('content-type', 'application/json');
             res.send(JSON.stringify(obj));
