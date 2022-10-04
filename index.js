@@ -78,11 +78,13 @@ app.get('/worlds/:worldId', (req, res) => {
 
 app.get('/api/user/profile',
     (req, res, next) => {
-        const claims = {};
+        const claims = {"user": true};
         if (req.oidc.idTokenClaims['immersiveRoles']) {
             claims.roles = req.oidc.idTokenClaims['immersiveRoles'];
             if (claims.roles.length > 0) {
                 claims.roles = claims.roles.reduce((a,v) => ({ ...a, [v]: true}), {})
+            } else {
+                claims.roles = {"user": true};
             }
         }
         const firebasePromise = firebase

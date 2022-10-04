@@ -33,11 +33,11 @@ const database = getDatabase(app);
 
 function getDbPath(id) {
     const loc = window.location.pathname.split('/');
-    if (loc.length < 3) {
-        return 'public/entities';
-    }
-    const pathId = id == null? '': '/'+id;
 
+    const pathId = id == null? '': '/'+id;
+    if (loc.length < 3) {
+        return 'public/entities' + pathId;
+    }
     switch (loc[1]) {
         case 'public':
             return 'public/entities'+pathId;
