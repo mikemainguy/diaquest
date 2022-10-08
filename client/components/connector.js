@@ -25,9 +25,9 @@ AFRAME.registerComponent('connector', {
       if (this.el.querySelector('.data-direction')) {
         this.connector = this.el.querySelector('.data-direction').object3D;
       }
-      if ( this.el.querySelector('a-plane')) {
+      /*if ( this.el.querySelector('a-plane')) {
         this.label = this.el.querySelector('a-plane').object3D;
-      }
+      }*/
 
 
       this.packetPosition = 0.1;
@@ -52,8 +52,7 @@ AFRAME.registerComponent('connector', {
 
   },
   tick: function(time, timeDelta) {
-    if (this.obj1 && this.obj2 && this.packet && this.connector &&
-     this.label) {
+    if (this.obj1 && this.obj2 && this.packet && this.connector) {
       this.obj1.getWorldPosition(this.pos1);
       this.obj2.getWorldPosition(this.pos2);
       if (!this.pos1.equals(this.oldPos1) || !this.pos2.equals(this.oldPos2) || !this.started) {
@@ -74,7 +73,7 @@ AFRAME.registerComponent('connector', {
       }
 
       this.connector.position.z = distance/2;
-      this.label.position.z = distance/2;
+      //this.label.position.z = distance/2;
       this.connector.scale.y = distance;
 
     } else {
@@ -84,9 +83,9 @@ AFRAME.registerComponent('connector', {
       if (this.el.querySelector('.data-direction')) {
         this.connector = this.el.querySelector('.data-direction').object3D;
       }
-      if ( this.el.querySelector('a-plane')) {
+      /*if ( this.el.querySelector('a-plane')) {
         this.label = this.el.querySelector('a-plane').object3D;
-      }
+      }*/
 
 
     }
