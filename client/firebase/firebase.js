@@ -1,3 +1,4 @@
+
 const axios = require('axios').default;
 
 import {getAuth, signInWithCustomToken} from "firebase/auth";
@@ -63,10 +64,12 @@ async function setupApp() {
     }
     return null;
 }
+if (!VRLOCAL) {
+    setupApp().then((profile) => {
+        writeUser(profile);
+    });
 
-setupApp().then((profile) => {
-    writeUser(profile);
-});
+}
 
 export function writeUser(profile) {
     sha512(profile.user.sid).then((result) => {
@@ -87,18 +90,25 @@ export function writeUser(profile) {
 }
 
 document.addEventListener('shareUpdate', function (evt) {
-    if (evt.detail.remove === true) {
-        removeEntity(evt.detail.id);
-        return;
+    if (VRLOCAL) {
+        const el = document.querySelector('#' + evt.detail.id);
+        evt.detail.updater = document.querySelector('.rig').getAttribute('id');
+        createOrUpdateDom(evt.detail);
+    } else {
+        if (evt.detail.remove === true) {
+            removeEntity(evt.detail.id);
+            return;
+        }
+        const el = document.querySelector('#' + evt.detail.id);
+        evt.detail.updater = document.querySelector('.rig').getAttribute('id');
+        if (el) {
+            updateEntity(evt.detail);
+        } else {
+            createEntity(evt.detail);
+        }
+
     }
 
-    const el = document.querySelector('#' + evt.detail.id);
-    evt.detail.updater = document.querySelector('.rig').getAttribute('id');
-    if (el) {
-        updateEntity(evt.detail);
-    } else {
-        createEntity(evt.detail);
-    }
 
 });
 
@@ -114,21 +124,23 @@ function removeEntity(id) {
     remove(ref(database, getDbPath(id)));
 }
 
+if (!VRLOCAL) {
+    const entities = ref(database, getDbPath(null));
+    onChildAdded(entities, (snapshot) => {
+        createOrUpdateDom(snapshot.val());
+    });
 
-const entities = ref(database, getDbPath(null));
-onChildAdded(entities, (snapshot) => {
-    createOrUpdateDom(snapshot.val());
-});
+    onChildRemoved(entities, (snapshot) => {
+        const ele = document.querySelector('#' + snapshot.val().id);
+        if (ele) {
+            ele.remove();
+        }
+    });
+    onChildChanged(entities, (snapshot) => {
+        createOrUpdateDom(snapshot.val());
+    });
 
-onChildRemoved(entities, (snapshot) => {
-    const ele = document.querySelector('#' + snapshot.val().id);
-    if (ele) {
-        ele.remove();
-    }
-});
-onChildChanged(entities, (snapshot) => {
-    createOrUpdateDom(snapshot.val());
-});
+}
 
 function createOrUpdateDom(entity) {
     const me = document.querySelector('.rig')

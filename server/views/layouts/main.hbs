@@ -1,14 +1,21 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Immersive Idea Alpha 20221004-1</title>
+    <title>Immersive Idea Alpha 20221008-1</title>
 
     {{#if vrConnected}}
+        <script>
+            const VRLOCAL=false;
+        </script>
         <script src="/dist/main.js" type="application/javascript"></script>
     {{/if}}
 
     {{#if vrLocal}}
-        <!--<script src="/dist/main.js" type="application/javascript"></script>-->
+        <script>
+            const VRLOCAL = true;
+        </script>
+
+        <script src="/dist/main.js" type="application/javascript"></script>
     {{/if}}
 
 </head>
