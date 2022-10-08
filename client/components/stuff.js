@@ -82,11 +82,11 @@ AFRAME.registerComponent('stuff', {
         }
     },
     update: function () {
-        const textDisplay = this.el.querySelector('a-plane');
+        const textDisplay = this.el.querySelector('[text-geometry]');
         if (textDisplay) {
             if (this.data.text) {
                 textDisplay.setAttribute('visible', true);
-                textDisplay.setAttribute('text', 'value', this.data.text);
+                textDisplay.setAttribute('text-geometry', 'value', this.data.text);
                 textDisplay.setAttribute('postion', '0 1.25 0');
             } else {
                 textDisplay.setAttribute('visible', false);
