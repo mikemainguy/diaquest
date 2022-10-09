@@ -28,7 +28,6 @@ AFRAME.registerSystem('buttons', {
                 this.first = null;
                 this.mode.push('typing');
                 document.querySelector('#keyboard').setAttribute('position', getMenuPosition());
-                document.querySelector('#keyboard').setAttribute('super-keyboard', 'show', true);
                 document.querySelector('#keyboard').emit('show');
                 changeRaycaster('.keyboardRaycastable');
                 break;

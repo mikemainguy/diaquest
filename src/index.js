@@ -1,7 +1,7 @@
 require('aframe');
 require('aframe-extras');
 require('nunjucks');
-require('aframe-super-keyboard');
+
 require('aframe-template-component');
 
 

@@ -45,9 +45,8 @@ AFRAME.registerComponent('stuff', {
                 buttons.first = obj.id;
                 buttons.mode.push('typing');
                 const keyboard = document.querySelector('#keyboard');
-                keyboard.setAttribute('super-keyboard', 'value', this.data.text);
+                keyboard.setAttribute('3d-keyboard', 'value', this.data.text);
                 keyboard.setAttribute('position', getMenuPosition());
-                keyboard.setAttribute('super-keyboard', 'show', true);
                 changeRaycaster('.keyboardRaycastable');
                 keyboard.emit('show');
                 break;

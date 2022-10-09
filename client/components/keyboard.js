@@ -25,7 +25,7 @@ AFRAME.registerSystem('key-listen', {
             document.dispatchEvent( new CustomEvent('shareUpdate', {detail: data}));
             buttons.mode.pop();
         }
-        document.querySelector('#keyboard').setAttribute('super-keyboard', 'value', '');
+        document.querySelector('#keyboard').setAttribute('3d-keyboard', 'value', '');
         const hands = document.querySelectorAll('[raycaster]');
         for (const hand of hands) {
             hand.setAttribute('raycaster', 'objects', '.saveable');
