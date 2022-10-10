@@ -1,4 +1,4 @@
-import {getMenuPosition, createUUID} from "./util";
+import {createUUID} from "./util";
 import {debug} from "./debug";
 
 AFRAME.registerSystem('key-listen', {
@@ -12,7 +12,7 @@ AFRAME.registerSystem('key-listen', {
         const data = { text: event.detail.value};
         if (buttons.first == null) {
             data.id = createUUID();
-            data.position = getMenuPosition();
+            data.position = getPosition(-2);
             data.template = buttons.template;
             data.color = buttons.color;
             document.dispatchEvent(
@@ -36,7 +36,17 @@ AFRAME.registerSystem('key-listen', {
 
     }
 });
+function getPosition(distance)
+{
+    let pos = new THREE.Vector3();
+    const c = document.querySelector('#camera').object3D;
+    c.getWorldPosition(pos);
+    let dir = new THREE.Vector3();
+    c.getWorldDirection(dir);
+    dir.multiplyScalar(distance ? distance : -1);
+    dir.y -= 1.1;
 
-
-
+    pos.add(dir);
+    return pos;
+}
 

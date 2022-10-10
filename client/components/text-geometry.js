@@ -28,7 +28,7 @@ AFRAME.registerComponent('text-geometry', {
     update: function (oldData) {
         var data = this.data;
         var el = this.el;
-
+        this.offset = null;
         el.setObject3D('mesh', new THREE.Mesh());
         var mesh = el.getObject3D('mesh');
         if (data.font.constructor === String) {
@@ -45,6 +45,17 @@ AFRAME.registerComponent('text-geometry', {
 
         } else {
             error('Must provide `font` (typeface.json) or `fontPath` (string) to text component.');
+        }
+    },
+    tick: function (time) {
+        if (Math.abs(this.el.object3D.position.x) != this.offset) {
+            if (this.el.getObject3D('mesh').geometry.boundingSphere) {
+                this.offset = this.el.getObject3D('mesh').geometry.boundingSphere.radius;
+                this.el.object3D.position.setX(this.offset*-1);
+            }
+        }
+        if (time == 123) {
+            console.log('here');
         }
     }
 });

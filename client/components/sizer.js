@@ -20,7 +20,6 @@ AFRAME.registerComponent('sizer', {
     grab: function(evt) {
         const el = evt.currentTarget.components['raycaster'].intersections[0].object.el;
         if (el.classList.contains('sizer')) {
-
             this.grabbed = el.closest('[template]');
             evt.currentTarget.object3D.attach(this.grabbed.object3D);
         } else {

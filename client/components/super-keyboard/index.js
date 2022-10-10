@@ -6,7 +6,7 @@ AFRAME.registerComponent('3d-keyboard', {
   keys: [
       ['1','2','3','4','5','6','7','8','9','0','-','=','<-'],
       ['q','w','e','r','t','y','u','i','o','p','[',']','\\'],
-      ['a','s','d','f','h','j','k','l',';','\'','Enter'],
+      ['a','s','d','f','g','h','j','k','l',';','\'','Enter'],
       ['z','x','c','v','b','n','m',',','.','/'],
       [' ']
 
@@ -26,7 +26,7 @@ AFRAME.registerComponent('3d-keyboard', {
     this.keyboard = document.createElement('a-entity');
     this.keyboard.setAttribute('visible', this.data.visible);
     this.el.appendChild(this.keyboard);
-    this.keyboard.setAttribute('scale', '.1 .1 1');
+    this.keyboard.setAttribute('scale', '.08 .08 1');
     let y = 1.5;
     for(const row of this.keys) {
       let x = -7;

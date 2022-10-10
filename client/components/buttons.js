@@ -1,5 +1,5 @@
 import {debug} from './debug';
-import {changeRaycaster, getMenuPosition, showMenu} from './util';
+import {createUUID, getMenuPosition, showMenu} from './util';
 
 AFRAME.registerSystem('buttons', {
     init: function () {
@@ -26,24 +26,17 @@ AFRAME.registerSystem('buttons', {
         switch (this.mode.slice(-1)[0]) {
             case 'adding':
                 this.first = null;
-                this.mode.push('typing');
-                document.querySelector('#keyboard').setAttribute('position', getMenuPosition());
-                document.querySelector('#keyboard').emit('show');
-                changeRaycaster('.keyboardRaycastable');
-                break;
-            case 'moving':
-                this.first = null;
-                this.mode.pop();
-                const event = new Event('rigChanged');
-                document.dispatchEvent(event);
-                break;
-            case 'scaling':
-                this.first = null;
-                this.mode.pop();
+                const data = {};
+                data.id = createUUID();
+                data.position = getMenuPosition();
+                data.template = this.template;
+                data.color = this.color;
+                document.dispatchEvent(
+                    new CustomEvent('shareUpdate',
+                        {detail: data}));
                 break;
         }
         debug(this.mode);
-
     }
 });
 
