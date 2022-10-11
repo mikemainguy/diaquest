@@ -18,75 +18,37 @@ AFRAME.registerComponent('connector', {
       this.obj1 = this.data.startEl.object3D;
       this.obj2 = this.data.endEl.object3D;
       this.started = false;
-      const distance = this.obj1.position.distanceTo(this.obj2.position);
-      if (this.el.querySelector('.data-packet')) {
-        this.packet = this.el.querySelector('.data-packet').object3D;
-      }
+      this.el.setAttribute('position', this.obj1.position);
+      this.obj1.getWorldPosition(this.oldPos1);
+      this.obj2.getWorldPosition(this.oldPos2);
       if (this.el.querySelector('.data-direction')) {
         this.connector = this.el.querySelector('.data-direction').object3D;
       }
-      /*if ( this.el.querySelector('a-plane')) {
-        this.label = this.el.querySelector('a-plane').object3D;
-      }*/
-
-
-      this.packetPosition = 0.1;
-      //this.el.querySelector('.saveable').setAttribute('material', 'color', this.data.color);
-      /*
-      if (this.data.text) {
-
-        this.el.querySelector('a-plane').setAttribute('visible', true);
-        this.el.querySelector('a-plane').setAttribute('text', 'value', this.data.text);
-
-      } else {
-        this.el.querySelector('a-plane').setAttribute('visible', false);
-      } */
-      this.el.setAttribute('position', this.obj1.position);
-      this.offset = this.data.speed /1000;
-      this.obj1.getWorldPosition(this.oldPos1);
-      this.obj2.getWorldPosition(this.oldPos2);
-
     } else {
-      //debug(JSON.stringify(this.data));
+
     }
 
   },
   tick: function(time, timeDelta) {
-    if (this.obj1 && this.obj2 && this.packet && this.connector) {
+    if (this.obj1 && this.obj2 && this.connector) {
       this.obj1.getWorldPosition(this.pos1);
       this.obj2.getWorldPosition(this.pos2);
-      if (!this.pos1.equals(this.oldPos1) || !this.pos2.equals(this.oldPos2) || !this.started) {
+      if (!this.pos1.equals(this.oldPos1) ||
+          !this.pos2.equals(this.oldPos2) || !this.started) {
         this.el.object3D.position.set(this.pos1.x, this.pos1.y, this.pos1.z);
         this.el.object3D.lookAt(this.pos2);
         this.oldPos1.copy(this.pos1);
         this.oldPos2.copy(this.pos2);
+        this.started = true;
       }
-
       const distance = this.pos1.distanceTo(this.pos2);
-      this.packetPosition = this.packetPosition + this.offset / (timeDelta / 1000) ;
-
-      if (this.packetPosition > distance) {
-        this.packetPosition = 0;
-      }
-      if (this.packet && this.packet.position) {
-        this.packet.position.z = this.packetPosition
-      }
-
       this.connector.position.z = distance/2;
-      //this.label.position.z = distance/2;
       this.connector.scale.y = distance;
 
     } else {
-      if (this.el.querySelector('.data-packet')) {
-        this.packet = this.el.querySelector('.data-packet').object3D;
-      }
       if (this.el.querySelector('.data-direction')) {
         this.connector = this.el.querySelector('.data-direction').object3D;
       }
-      /*if ( this.el.querySelector('a-plane')) {
-        this.label = this.el.querySelector('a-plane').object3D;
-      }*/
-
 
     }
 

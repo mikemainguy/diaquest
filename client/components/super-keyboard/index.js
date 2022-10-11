@@ -88,7 +88,7 @@ AFRAME.registerComponent('3d-keyboard', {
     this.label.setAttribute('height', '1');
     this.label.setAttribute('height', '1');
 
-    document.addEventListener('show', this.open.bind(this));
+    this.el.addEventListener('show', this.show.bind(this));
 
   },
 

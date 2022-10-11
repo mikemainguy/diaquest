@@ -1,5 +1,4 @@
-import {debug} from './debug';
-import {getCurrentMode, getSystem, changeRaycaster, createUUID, getMenuPosition} from "./util";
+import {getCurrentMode, getSystem, changeRaycaster, createUUID} from "./util";
 
 AFRAME.registerComponent('stuff', {
     schema: {
@@ -46,7 +45,12 @@ AFRAME.registerComponent('stuff', {
                 buttons.mode.push('typing');
                 const keyboard = document.querySelector('#keyboard');
                 keyboard.setAttribute('3d-keyboard', 'value', this.data.text);
-                keyboard.setAttribute('position', getMenuPosition());
+                keyboard.setAttribute('position', getKeyboardPosition(-1));
+                const c = document.querySelector('#camera').object3D;
+                const v = new THREE.Vector3();
+                c.getWorldPosition(v);
+                keyboard.object3D.lookAt(v);
+
                 changeRaycaster('.keyboardRaycastable');
                 keyboard.emit('show');
                 break;
@@ -86,7 +90,7 @@ AFRAME.registerComponent('stuff', {
             if (this.data.text) {
                 textDisplay.setAttribute('visible', true);
                 textDisplay.setAttribute('text-geometry', 'value', this.data.text);
-                textDisplay.setAttribute('postion', '0 1.25 0');
+               // textDisplay.setAttribute('position', '0 0 0');
             } else {
                 textDisplay.setAttribute('visible', false);
             }
@@ -98,3 +102,16 @@ AFRAME.registerComponent('stuff', {
         }
     }
 });
+
+function getKeyboardPosition(distance) {
+    let pos = new THREE.Vector3();
+    const c = document.querySelector('#camera').object3D;
+    c.getWorldPosition(pos);
+    let dir = new THREE.Vector3();
+    c.getWorldDirection(dir);
+    dir.multiplyScalar(distance ? distance : -1);
+    dir.y -= .3;
+
+    pos.add(dir);
+    return pos;
+}

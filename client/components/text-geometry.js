@@ -48,14 +48,14 @@ AFRAME.registerComponent('text-geometry', {
         }
     },
     tick: function (time) {
-        if (Math.abs(this.el.object3D.position.x) != this.offset) {
-            if (this.el.getObject3D('mesh').geometry.boundingSphere) {
-                this.offset = this.el.getObject3D('mesh').geometry.boundingSphere.radius;
-                this.el.object3D.position.setX(this.offset*-1);
+        const m = this.el.getObject3D('mesh');
+
+       if (Math.abs(m.position.x) != this.offset) {
+            if (m.geometry.boundingSphere) {
+                this.offset = m.geometry.boundingSphere.radius;
+                m.position.setX(this.offset*-1);
+
             }
-        }
-        if (time == 123) {
-            console.log('here');
         }
     }
 });
