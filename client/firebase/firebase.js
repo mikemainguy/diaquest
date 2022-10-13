@@ -1,9 +1,12 @@
+import {WebRTC} from "@signalwire/js";
 
 const axios = require('axios').default;
 
 import {getAuth, signInWithCustomToken} from "firebase/auth";
 import {initializeApp} from 'firebase/app';
 import {sha512} from 'crypto-hash';
+
+import * as SignalWire from '@signalwire/js';
 
 import {
     getDatabase,
@@ -58,6 +61,17 @@ async function setupApp() {
     try {
         const profile = await axios.get('/api/user/profile');
         await signInWithCustomToken(auth, profile.data.firebase_token);
+        console.log('setup');
+        const roomSession = new SignalWire.Video.RoomSession({
+            token: profile.data.signalwire_token,
+            rootElement: document.getElementById('room'),
+
+        });
+        try {
+            await roomSession.join({audio: true, video: false});
+        } catch (error) {
+            console.error("Error", error);
+        }
         return profile.data;
     } catch (error) {
         console.log(error);

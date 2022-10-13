@@ -1,12 +1,13 @@
 const env = require('./server/env');
 const {expressLogger, logger} = require('./server/logging');
 const config = require('./newrelic').config;
+const axios = require('axios');
 if (env.NR_LICENCE_KEY) {
     require('newrelic');
 }
 
 const express = require('express');
-const  { engine } = require('express-handlebars');
+const {engine} = require('express-handlebars');
 const {auth} = require('express-openid-connect');
 const app = express();
 const port = env.PORT;
@@ -50,8 +51,8 @@ const auth0Config = {
     auth0Logout: true,
     secret: env.AUTH0_SECRET,
     baseURL: env.AUTH0_BASE_URL,
-    clientID: '7el4MeFi7147tNZlL9EbYI8hEBuzMTaB',
-    issuerBaseURL: 'https://aardvarkguru.us.auth0.com'
+    clientID: env.AUTH0_CLIENT_ID,
+    issuerBaseURL: env.AUTH0_ISSUER_BASE_URL
 };
 app.engine('.hbs', engine({extname: '.hbs'}));
 app.set('view engine', 'hbs');
@@ -63,13 +64,13 @@ app.get('/', (req, res) => {
     });
 })
 app.get('/local', (req, res) => {
-   res.render('world', {vrLocal: true});
+    res.render('world', {vrLocal: true});
 });
 app.get('/public', (req, res) => {
     res.render('world', {vrConnected: true});
 });
 app.use(auth(auth0Config));
-app.get('/login', (req, res) => res.oidc.login({ returnTo: '/' }));
+app.get('/login', (req, res) => res.oidc.login({returnTo: '/'}));
 
 
 app.get('/worlds/:worldId', (req, res) => {
@@ -82,19 +83,44 @@ app.get('/api/user/profile',
         if (req.oidc.idTokenClaims['immersiveRoles']) {
             claims.roles = req.oidc.idTokenClaims['immersiveRoles'];
             if (claims.roles.length > 0) {
-                claims.roles = claims.roles.reduce((a,v) => ({ ...a, [v]: true}), {})
+                claims.roles = claims.roles.reduce((a, v) => ({...a, [v]: true}), {})
             } else {
                 claims.roles = {"user": true};
             }
         }
+        const signalwirePromise = axios.post('https://diaquest.signalwire.com/api/video/room_tokens',
+            {
+                room_name: 'test',
+                user_name: 'text',
+                permissions: [
+                    "room.self.audio_mute",
+                    "room.self.audio_unmute"
+                ],
+                join_video_muted: true,
+                auto_create_room: false
+
+            }, {
+            auth: {
+                username: env.SIGNALWIRE_USER,
+                password: env.SIGNALWIRE_TOKEN
+            }
+            });
+
         const firebasePromise = firebase
             .getAuth()
             .createCustomToken(req.oidc.user.sub, claims.roles);
-        Promise.all([firebasePromise]).then(data => {
-            const obj = {}
-            obj.user = req.oidc.user;
+        const obj = {};
+        obj.user = req.oidc.user;
 
-            obj.firebase_token = data[0];
+        Promise.all([firebasePromise, signalwirePromise]).then(data => {
+            for (const i of data) {
+                if (i.data) {
+                    obj.signalwire_token = i.data.token;
+                } else {
+                    obj.firebase_token = i;
+                }
+            }
+
             res.setHeader('content-type', 'application/json');
             res.send(JSON.stringify(obj));
         });

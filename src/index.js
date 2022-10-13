@@ -4,7 +4,7 @@ require('nunjucks');
 
 require('aframe-template-component');
 
-
+import * as SignalWire from '@signalwire/js';
 
 import Analytics from 'analytics';
 import googleTagManager from '@analytics/google-tag-manager';
