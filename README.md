@@ -7,10 +7,17 @@ RUnning without Auth0 isn't currently supported, but I would welcome a PR to all
 
 ## Notably, you're going to need the following things in an .env file.
 
-AUTH0_BASE_URL:       http://localhost:3000/
-AUTH0_SECRET:         bunchofrandomstuff==
-FIREBASE_PRIVATE_KEY: -----BEGIN PRIVATE KEY-----\n-----END PRIVATE KEY-----\n
-
+```
+AUTH0_BASE_URL: https://localhost:3000
+AUTH0_SECRET:  <<Secret obtained from auth0>>
+AUTH0_ISSUER_BASE_URL: <<Issuer basae url from auth0>>
+FIREBASE_PRIVATE_KEY: <<firebase realtime private key -----BEGIN PRIVATE KEY-----
+NR_LICENCE_KEY: <<new relic license key>>
+NR_ACCOUNT_ID: <<new relic account #>>
+SIGNALWIRE_TOKEN: <<signal wire secret (for backend rest api to generate token)>>
+SIGNALWIRE_USER: <<signalwire user>>
+AUTH0_CLIENT_ID: <<auth0 client id>>
+```
 Once you have those configured, you should be good to go, just run npm start.
 
 Tested Configuration:
