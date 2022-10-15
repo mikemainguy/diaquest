@@ -76,13 +76,13 @@ app.get('/login', (req, res) => res.oidc.login({returnTo: '/'}));
 
 app.get('/worlds/:worldId', (req, res) => {
     res.render('world', {vrConnected: true});
-})
+});
 app.get('/api/user/signalwireToken', (req, res, next) => {
-    if( req.query && req.query.room) {
+    if (req.query && req.query.room) {
         const signalwirePromise = axios.post('https://diaquest.signalwire.com/api/video/room_tokens',
             {
                 room_name: req.query.room,
-                user_name: 'mike',
+                user_name: req.oidc.user.name,
                 permissions: [
                     "room.self.audio_mute",
                     "room.self.audio_unmute"
@@ -98,14 +98,14 @@ app.get('/api/user/signalwireToken', (req, res, next) => {
             });
 
 
-    signalwirePromise.then((data) => {
-        const obj = {};
-        obj.signalwire_token = data.data.token;
-        res.setHeader('content-type', 'application/json');
-        res.send(JSON.stringify(obj));
-    }).catch((err) => {
-        res.status(500).send(err);
-    });
+        signalwirePromise.then((data) => {
+            const obj = {};
+            obj.signalwire_token = data.data.token;
+            res.setHeader('content-type', 'application/json');
+            res.send(JSON.stringify(obj));
+        }).catch((err) => {
+            res.status(500).send(err);
+        });
     } else {
         res.status(404).send("No Room Found");
     }
