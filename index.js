@@ -6,6 +6,7 @@ if (env.NR_LICENCE_KEY) {
     require('newrelic');
 }
 
+
 const express = require('express');
 const {engine} = require('express-handlebars');
 const {auth} = require('express-openid-connect');
@@ -76,6 +77,39 @@ app.get('/login', (req, res) => res.oidc.login({returnTo: '/'}));
 app.get('/worlds/:worldId', (req, res) => {
     res.render('world', {vrConnected: true});
 })
+app.get('/api/user/signalwireToken', (req, res, next) => {
+    if( req.query && req.query.room) {
+        const signalwirePromise = axios.post('https://diaquest.signalwire.com/api/video/room_tokens',
+            {
+                room_name: req.query.room,
+                user_name: 'mike',
+                permissions: [
+                    "room.self.audio_mute",
+                    "room.self.audio_unmute"
+                ],
+                join_video_muted: true,
+                auto_create_room: false
+
+            }, {
+                auth: {
+                    username: env.SIGNALWIRE_USER,
+                    password: env.SIGNALWIRE_TOKEN
+                }
+            });
+
+
+    signalwirePromise.then((data) => {
+        const obj = {};
+        obj.signalwire_token = data.data.token;
+        res.setHeader('content-type', 'application/json');
+        res.send(JSON.stringify(obj));
+    }).catch((err) => {
+        res.status(500).send(err);
+    });
+    } else {
+        res.status(404).send("No Room Found");
+    }
+});
 
 app.get('/api/user/profile',
     (req, res, next) => {
@@ -88,23 +122,6 @@ app.get('/api/user/profile',
                 claims.roles = {"user": true};
             }
         }
-        const signalwirePromise = axios.post('https://diaquest.signalwire.com/api/video/room_tokens',
-            {
-                room_name: 'test',
-                user_name: 'text',
-                permissions: [
-                    "room.self.audio_mute",
-                    "room.self.audio_unmute"
-                ],
-                join_video_muted: true,
-                auto_create_room: false
-
-            }, {
-            auth: {
-                username: env.SIGNALWIRE_USER,
-                password: env.SIGNALWIRE_TOKEN
-            }
-            });
 
         const firebasePromise = firebase
             .getAuth()
@@ -112,18 +129,13 @@ app.get('/api/user/profile',
         const obj = {};
         obj.user = req.oidc.user;
 
-        Promise.all([firebasePromise, signalwirePromise]).then(data => {
-            for (const i of data) {
-                if (i.data) {
-                    obj.signalwire_token = i.data.token;
-                } else {
-                    obj.firebase_token = i;
-                }
-            }
-
+        firebasePromise.then(data => {
+            obj.firebase_token = data;
             res.setHeader('content-type', 'application/json');
             res.send(JSON.stringify(obj));
-        });
+        })
+            .catch((err) => res.status(500).send(err));
+
     });
 logger.log({level: "info", message: "server start on port: " + port});
 app.listen(port, () => {

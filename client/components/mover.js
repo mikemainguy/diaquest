@@ -7,6 +7,10 @@ AFRAME.registerSystem('mover', {
         this.enabled = true;
         this.directions = [];
         this.velocity = new THREE.Vector3(0, 0, 0);
+        document.dispatchEvent(
+            new CustomEvent('connectSignalwire',
+                {detail: 'OK'}));
+
     }
 });
 
