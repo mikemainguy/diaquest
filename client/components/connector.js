@@ -13,6 +13,7 @@ AFRAME.registerComponent('connector', {
     this.oldPos1 = new THREE.Vector3();
     this.oldPos2 = new THREE.Vector3();
 
+
     if (this.data.startEl && this.data.startEl.object3D &&
       this.data.endEl && this.data.endEl.object3D ) {
       this.obj1 = this.data.startEl.object3D;

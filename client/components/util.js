@@ -11,14 +11,6 @@ export function getMenuPosition(distance) {
     return pos;
 }
 
-export function showMenu() {
-    const obj = document.querySelector('#menu');
-    obj.setAttribute('visible', true);
-    const hands = document.querySelectorAll('[raycaster]');
-    for (const hand of hands) {
-        hand.setAttribute('raycaster', 'objects', '#menu a-plane[mixin=menuPlane]');
-    }
-}
 export function changeRaycaster(newObjects) {
     const hands = document.querySelectorAll('[raycaster]');
     for (const hand of hands) {
@@ -31,11 +23,6 @@ export function showColorPicker() {
     changeRaycaster('#menu a-plane[color-swatch]');
 }
 
-export function hide(id) {
-    const obj = document.querySelector(id);
-    obj.setAttribute('visible', false);
-    changeRaycaster('.saveable');
-}
 
 export function createUUID() {
     return 'id' + ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>

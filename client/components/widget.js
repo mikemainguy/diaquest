@@ -1,5 +1,5 @@
 import {debug} from './debug';
-import {showColorPicker, hide} from './util';
+
 
 AFRAME.registerSystem('widget', {
     init: function () {
@@ -38,29 +38,30 @@ AFRAME.registerComponent('widget', {
             case 'add-connector':
                 buttons.mode = ['connecting'];
                 buttons.mode.push('select-first');
-                hide('#menu');
+
+                hideMenu();
                 break;
             case 'add-cylinder':
                 buttons.template = '#cylinder-template'
                 buttons.mode = ['adding'];
-                hide('#menu');
+                hideMenu();
                 break;
             case 'resize':
                 buttons.mode = ['resizing'];
-                hide('#menu');
+                hideMenu();
                 break;
             case 'add-sphere':
                 buttons.template = '#sphere-template'
                 buttons.mode = ['adding'];
-                hide('#menu');
+                hideMenu();
                 break;
             case 'add-box':
                 buttons.template = '#box-template'
                 buttons.mode = ['adding'];
-                hide('#menu');
+                hideMenu();
                 break;
             case 'close':
-                hide('#menu');
+                hideMenu();
                 break;
             case 'edit-color':
                 buttons.mode= ['edit-color'];
@@ -68,19 +69,19 @@ AFRAME.registerComponent('widget', {
                 break;
             case 'add-plane':
                 buttons.mode = ['adding'];
-                hide('#menu');
+                hideMenu();
                 break;
             case 'remove':
                 buttons.mode = ['removing'];
-                hide('#menu');
+                hideMenu();
                 break;
             case 'move':
                 buttons.mode = ['moving'];
-                hide('#menu');
+                hideMenu();
                 break;
             case 'edit':
                 buttons.mode = ['editing'];
-                hide('#menu');
+                hideMenu();
                 break;
             case 'point':
                 debug('point');
@@ -96,3 +97,9 @@ AFRAME.registerComponent('widget', {
 
 });
 
+function hideMenu() {
+    document.dispatchEvent( new CustomEvent('hideMenu', {detail: {id: '#menu'}}));
+}
+function showColorPicker() {
+    document.dispatchEvent( new CustomEvent('showMenu', {detail: {id: '#color-picker', objects: '[color-swatch], .saveable'}}));
+}

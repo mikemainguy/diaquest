@@ -1,19 +1,16 @@
 import * as SignalWire from '@signalwire/js';
 import {default as axios} from "axios";
 
-document.addEventListener('connectSignalwire', (evt) => {
-    setupRoom().then((results)=> {
-        if (results != null) {
-            this.roomSession = results;
-            console.log('session established');
-        } else {
-            console.error('session initiation failed');
-            this.roomSession = null;
-        }
-
-    });
+AFRAME.registerSystem('signalwire', {
+    init: function () {
+        document.addEventListener('connectSignalwire', (evt) => {
+            setupRoom().then((results)=> {
+                console.log('done');
+                this.roomSession = results;
+            });
+        });
+    }
 });
-
 async function setupRoom() {
     const room = window.location.pathname;
     if (room.startsWith('/worlds/')) {
@@ -36,7 +33,7 @@ async function setupRoom() {
         } else {
             console.error('No Room Found');
         }
-        return null;
-    }
-}
 
+    }
+    return null;
+}

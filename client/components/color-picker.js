@@ -1,5 +1,3 @@
-import { hide } from './util';
-
 AFRAME.registerSystem('color-picker', {
   init: function() {
     this.color = "#66f";
@@ -38,7 +36,8 @@ AFRAME.registerComponent('color-swatch', {
   },
   clickHandler: function(evt) {
     document.querySelector('a-scene').systems['color-picker'].color = this.data.color;
-    hide('#color-picker');
-    hide('#menu');
+
+    document.dispatchEvent( new CustomEvent('hideMenu', {detail: {id: '#menu'}}));
+    document.dispatchEvent( new CustomEvent('hideMenu', {detail: {id: '#color-picker'}}));
   }
 });
