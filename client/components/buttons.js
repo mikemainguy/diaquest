@@ -1,5 +1,5 @@
 import {debug} from './debug';
-import {changeRaycaster, createUUID, getMenuPosition} from './util';
+import {createUUID, getMenuPosition} from './util';
 
 
 AFRAME.registerSystem('buttons', {
