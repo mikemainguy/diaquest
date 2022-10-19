@@ -20,7 +20,7 @@ export function changeRaycaster(newObjects) {
 export function showColorPicker() {
     const obj = document.querySelector('#color-picker');
     obj.setAttribute('visible', true);
-    changeRaycaster('#menu a-plane[color-swatch]');
+    changeRaycaster('#bmenu a-plane[color-swatch]');
 }
 
 

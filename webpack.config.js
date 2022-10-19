@@ -17,6 +17,9 @@ const config = {
     output: {
         path: path.resolve(__dirname, 'client/dist'),
     },
+    optimization: {
+        usedExports: true
+    },
     devServer: {
         open: true,
         host: 'localhost',
@@ -55,8 +58,6 @@ const config = {
 module.exports = () => {
     if (isProduction) {
         config.mode = 'production';
-        
-        
   //      config.plugins.push(new WorkboxWebpackPlugin.GenerateSW());
         
     } else {

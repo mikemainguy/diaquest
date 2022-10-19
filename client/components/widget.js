@@ -87,6 +87,26 @@ AFRAME.registerComponent('widget', {
                 debug('point');
                 buttons.mode.push('pointing');
                 break;
+            case 'joinConference':
+                document.dispatchEvent(
+                    new CustomEvent('connectSignalwire',
+                        {detail: 'OK'}));
+                break;
+            case 'leaveConference':
+                document.dispatchEvent(
+                    new CustomEvent('disconnectSignalwire',
+                        {detail: 'OK'}));
+                break;
+            case 'mute':
+                document.dispatchEvent(
+                    new CustomEvent('mute',
+                        {detail: 'OK'}));
+                break;
+            case 'unmute':
+                document.dispatchEvent(
+                    new CustomEvent('unmute',
+                        {detail: 'OK'}));
+                break;
             default:
 
         }
@@ -98,7 +118,7 @@ AFRAME.registerComponent('widget', {
 });
 
 function hideMenu() {
-    document.dispatchEvent( new CustomEvent('hideMenu', {detail: {id: '#menu'}}));
+    document.dispatchEvent( new CustomEvent('hideMenu', {detail: {id: '#bmenu'}}));
 }
 function showColorPicker() {
     document.dispatchEvent( new CustomEvent('showMenu', {detail: {id: '#color-picker', objects: '[color-swatch], .saveable'}}));

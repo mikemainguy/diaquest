@@ -9,31 +9,35 @@ AFRAME.registerSystem('buttons', {
         this.first = null;
         this.second = null;
         this.template = null;
-        this.menuShowing = false;
+        this.bmenuShowing = false;
+        this.ymenuShowing = false;
         this.color = '#399';
-        this.boundTriggerDown = this.triggerdown.bind(this);
         document.addEventListener("hideMenu", this.hideMenu.bind(this));
         document.addEventListener("showMenu", this.showMenu.bind(this));
         document.addEventListener("ybuttondown", this.ybuttondown.bind(this));
         document.addEventListener("bbuttondown", this.bbuttondown.bind(this));
-        document.addEventListener("bbuttonup", this.bbuttonup.bind(this));
-        document.addEventListener('triggerdown', this.boundTriggerDown);
+        document.addEventListener('triggerdown', this.triggerdown.bind(this));
     },
     bbuttondown: function (evt) {
-
-        if (this.menuShowing) {
-            this.hideMenu({detail: {id: '#menu'}});
+        if (this.bmenuShowing) {
+            this.hideMenu({detail: {id: '#bmenu'}});
+            this.bmenuShowing = false;
         } else {
-            this.showMenu({detail: {id: '#menu'}});
+            this.showMenu({detail: {id: '#bmenu', objects: '#bmenu a-plane[mixin=menuPlane], .saveable'}});
+            this.bmenuShowing = true;
         }
     },
-    bbuttonup: function (evt) {
-
-    },
     ybuttondown: function (evt) {
-        document.dispatchEvent(
+        if (this.ymenuShowing) {
+            this.hideMenu({detail: {id: '#ymenu'}});
+            this.ymenuShowing = true;
+        } else {
+            this.showMenu({detail: {id: '#ymenu', objects: '#ymenu a-plane[mixin=menuPlane], .saveable'}});
+            this.ymenuShowing = false;
+        }
+       /* document.dispatchEvent(
             new CustomEvent('connectSignalwire',
-                {detail: 'OK'}));
+                {detail: 'OK'})); */
     },
     triggerdown: function (evt) {
         if (evt.target.states.includes('cursor-hovering')) {
@@ -55,30 +59,21 @@ AFRAME.registerSystem('buttons', {
         debug(this.mode);
     },
     showMenu: function (evt) {
-        const obj = document.querySelector(evt.detail.id);
-        let objs = '#menu a-plane[mixin=menuPlane], .saveable'
-        if (evt.detail.objects) {
-            objs = evt.detail.objects;
-        }
-        obj.setAttribute('visible', true);
-        const hands = document.querySelectorAll('[raycaster]');
-        for (const hand of hands) {
-            hand.setAttribute('raycaster', 'objects', objs);
-        }
-        this.menuShowing = true;
+        this.changeMenu(evt.detail.id, true, evt.detail.objects);
     },
-
-
-    hideMenu: function hideMenu(evt) {
-        const obj = document.querySelector(evt.detail.id);
-        obj.setAttribute('visible', false);
-        const hands = document.querySelectorAll('[raycaster]');
-        for (const hand of hands) {
-            hand.setAttribute('raycaster', 'objects', '.saveable');
+    hideMenu: function(evt) {
+        this.changeMenu(evt.detail.id, false, '.saveable')
+    },
+    changeMenu: function(id, visible, objects) {
+        const obj = document.querySelector(id);
+        obj.setAttribute('visible', visible);
+        for (const hand of this.getRaycasters()) {
+            hand.setAttribute('raycaster', 'objects', objects);
         }
-        this.menuShowing = false;
+    },
+    getRaycasters: function() {
+        return document.querySelectorAll('[raycaster]');
     }
 
-})
-;
+});
 

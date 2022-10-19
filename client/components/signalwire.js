@@ -1,16 +1,61 @@
 import * as SignalWire from '@signalwire/js';
 import {default as axios} from "axios";
+import { debug } from './debug';
 
 AFRAME.registerSystem('signalwire', {
     init: function () {
         document.addEventListener('connectSignalwire', (evt) => {
-            setupRoom().then((results)=> {
-                console.log('done');
-                this.roomSession = results;
-            });
+            if (this.roomSession && this.roomSession.active) {
+                debug('already in session');
+            } else {
+                setupRoom().then((results)=> {
+                    debug('connected to conference');
+                    this.roomSession = results;
+                });
+            }
+
         });
+        document.addEventListener('disconnectSignalwire', (evt) => {
+            if (this.roomSession) {
+                if (this.roomSession.active) {
+                    this.roomSession.leave().then((data) => {
+                        debug('left session');
+                        this.roomSession.dispose();
+                    });
+
+                }
+            }
+        });
+        document.addEventListener('mute', this.mute.bind(this));
+        document.addEventListener('unmute', this.unmute.bind(this));
+
+    },
+    disconnect: function(evt) {
+
+    },
+    mute: function(evt) {
+        if (this.roomSession) {
+            this.roomSession.audioMute().then(() => {
+                debug('muted');
+            });
+
+        } else {
+            debug('no room session');
+        }
+    },
+    unmute: function(evt) {
+        if (this.roomSession) {
+            this.roomSession.audioUnmute().then(() => {
+                debug('unmuted');
+            });
+
+        } else {
+            debug('no room session');
+        }
+
     }
 });
+
 async function setupRoom() {
     const room = window.location.pathname;
     if (room.startsWith('/worlds/')) {
