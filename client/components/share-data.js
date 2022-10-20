@@ -39,6 +39,7 @@ AFRAME.registerComponent('share-position', {
                     z: THREE.MathUtils.radToDeg(this.e.z)
                 }
             }
+            data.last_seen = new Date().toUTCString();
             document.dispatchEvent(
                 new CustomEvent('shareUpdate', {detail: data}));
             this.dirty = false;

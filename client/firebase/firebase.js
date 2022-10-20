@@ -69,6 +69,22 @@ async function setupApp() {
 if (!VRLOCAL) {
     setupApp().then((profile) => {
         writeUser(profile);
+        console.log(database);
+        const entities = ref(database, getDbPath(null));
+
+        onChildAdded(entities, (snapshot) => {
+            createOrUpdateDom(snapshot.val());
+        });
+
+        onChildRemoved(entities, (snapshot) => {
+            const ele = document.querySelector('#' + snapshot.val().id);
+            if (ele) {
+                ele.remove();
+            }
+        });
+        onChildChanged(entities, (snapshot) => {
+            createOrUpdateDom(snapshot.val());
+        });
     });
 }
 
@@ -102,6 +118,7 @@ document.addEventListener('shareUpdate', function (evt) {
         }
         const el = document.querySelector('#' + evt.detail.id);
         evt.detail.updater = document.querySelector('.rig').getAttribute('id');
+
         if (el) {
             updateEntity(evt.detail);
         } else {
@@ -126,20 +143,7 @@ function removeEntity(id) {
 }
 
 if (!VRLOCAL) {
-    const entities = ref(database, getDbPath(null));
-    onChildAdded(entities, (snapshot) => {
-        createOrUpdateDom(snapshot.val());
-    });
 
-    onChildRemoved(entities, (snapshot) => {
-        const ele = document.querySelector('#' + snapshot.val().id);
-        if (ele) {
-            ele.remove();
-        }
-    });
-    onChildChanged(entities, (snapshot) => {
-        createOrUpdateDom(snapshot.val());
-    });
 
 }
 
