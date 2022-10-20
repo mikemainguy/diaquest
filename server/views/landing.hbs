@@ -1,15 +1,42 @@
-<h1>Welcome</h1>
-<ul>
-    <li><a href="/login">Log In</a></li>
-    <li><a href="/logout">Log Out</a></li>
-    <!--<li><a href="/demo">Demo</a> Read only demo space where users can read and move around, but not actually create or edit anything.</li>-->
-    <li><a href="/worlds/public">Playground</a> Any authenticated user can create, edit, manipulate objects in this space.</li>
-
-</ul>
-<div id="room">
-
+<h1>Welcome to Your Immersive Idea</h1>
+<div>
+    This is a tool to create immersive 3d diagrams and collaborate in real time with other users.  It is in very early stages of development,
+    but currently there is a public space where multiple users can gather and co-edit environments.  Additionally there is a private area where you can
+    experiment with the controls and learn...note the private area all diagrams are lost when you close your browser.
+    <p>
+        Currently this works best on oculus quest, though there is limited "view only" capability for desktop browsers and mobile phones.
+    </p>
 </div>
+<div id="leftDiv">
+    <ul id="mainmenu">
+        <li><a href="/login">Log In</a>
+            <p>Log in or create a new account to use the multiuser collaborative experience</p></li>
+        <li><a href="/logout">Log Out</a>
+            <p>Log out</p></li>
+        <!--<li><a href="/demo">Demo</a> Read only demo space where users can read and move around, but not actually create or edit anything.</li>-->
+        <li><a href="/worlds/public">Public Playground</a>
+            <p>Any authenticated user can create, edit, manipulate objects in this space.</p>
+        </li>
+        <li><a href="/private">Private Space</a>
+            <p>Edit objects in a private space.  Stored only in memory, not shared with anyone, will be erased when you close your browser.</p>
+        </li>
 
-<script>
-
-</script>
+    </ul>
+</div>
+<h1>Overview of controller buttons</h1>
+<div id="controllers">
+    <img width="1024" height="768" src="/assets/Quest2_controller.png"/>
+</div>
+<div>
+    <h2>Tips</h2>
+    <ul>
+        <li>Audio conferencing is currently "opt-in".  If you don't join the audio conference, you won't hear other people and they can't hear you.</li>
+        <li>Movement is a little choppy right now.</li>
+        <li>There is an "immersive AR" mode that is unintentional.  Not sure if this will stick around as we haven't figured out if it's useful or not</li>
+        <li>To join the immersive experience, click the "VR" button in the bottom right side of your window.  This really is only useful on Quest rigth now as it
+        simply brings up a full screen view of browser on desktop.</li>
+        <li>This is designed to be inherently secure, the public space can only be accessed if you are authenticated and the private link is a local in memory only
+        experience (you may be able to join audio, there are some kinks there that are being worked out)</li>
+        <li>Bug reports/feature requests/general questions can be sent to <a href="mailto:support@immersiveidea.com">support@immersiveidea.com</a> </li>
+    </ul>
+</div>
