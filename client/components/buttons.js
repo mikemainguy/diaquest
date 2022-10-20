@@ -30,10 +30,10 @@ AFRAME.registerSystem('buttons', {
     ybuttondown: function (evt) {
         if (this.ymenuShowing) {
             this.hideMenu({detail: {id: '#ymenu'}});
-            this.ymenuShowing = true;
+            this.ymenuShowing = false;
         } else {
             this.showMenu({detail: {id: '#ymenu', objects: '#ymenu a-plane[mixin=menuPlane], .saveable'}});
-            this.ymenuShowing = false;
+            this.ymenuShowing = true;
         }
        /* document.dispatchEvent(
             new CustomEvent('connectSignalwire',
