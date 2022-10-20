@@ -1,0 +1,33 @@
+div.nonvr {
+    position: absolute;
+    width: 50%;
+    height: 50px;
+    border-radius: 8px;
+    z-index: 9999;
+    bottom: 20px;
+    left: 20px;
+    background-color: #fff;
+}
+div.nonvr  button {
+    width: 96px;
+    height: 48px;
+    margin: 1px;
+    border-radius: 8px;
+}
+div.nonvr  button div {
+    font-size: xx-small;
+}
+#unmuteButton, #leaveButton, #muteButton {
+    display: none;
+
+}
+#muteButton, #leaveButton {
+    background-color: #cfc;
+}
+#unmuteButton, #joinButton {
+    background-color: #fcc;
+}
+
+div.nonvr button:hover {
+    background-color: #ccf
+}
