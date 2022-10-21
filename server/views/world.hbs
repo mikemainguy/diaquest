@@ -4,7 +4,7 @@
 
 
     <a-entity id="keyboard" position="-.25 -0.125 0" 3d-keyboard="visible: false" rotation="-10 0 0"></a-entity>
-
+    <a-entity id="clock" clock lookatme position="0 5 -23" scale="3 3 3"></a-entity>
     <!-- <a-entity template="src: #user"  position="1 1 14"></a-entity> -->
 
     <a-entity>
@@ -85,13 +85,19 @@
     <a-entity light="type: ambient; color: #BBB">
 
     </a-entity>
-    <a-entity position="0 20 0" light="type: point; color: #FFF; distance: 50; intensity: 1">
-        <a-sphere material="opacity: 0.9;color: #ff0" radius=".2"></a-sphere>
-    </a-entity>
-    <a-sphere id="dir" radius=".05" color="#f00"></a-sphere>
-    <a-box id="backdrop" width="50" height="50" depth="50" material="color: #00f; side: back; opacity: 0.5">
+    <a-entity animation="property: rotation; loop: true; dur: 60000; easing: linear; from: 0 0 0; to: 0 360 0">
+        <a-entity position="20 100 -200" light="type: point; color: #FF9; distance: 350; intensity: 1">
+            <a-sphere radius="5"  material="src: /assets/sky2.jpeg; color: #ff2; opacity: 0.2" animation="property: rotation; loop: true; dur: 15000; easing: linear; from: 0 0 0; to: 0 360 0"></a-sphere>
+        </a-entity>
 
-    </a-box>
+    </a-entity>
+
+    <a-sky position="0 100 0" src="/assets/8192.jpeg">
+
+    </a-sky>
+    <a-box width="40" height="2" depth="0.2" position="0 1 20" material="repeat: 7; src: /assets/cardboard.jpg"></a-box>
+    <a-box width="40" height="2" depth="0.2" position="0 1 -20" material="repeat: 7; src: /assets/cardboard.jpg"></a-box>
+    <a-plane width="40" height="40" rotation="-90 0 0" material="opacity: 0.8; src: /assets/sky2.jpeg"></a-plane>
     <!--<a-sky src="#woods" radius="100" material="fog: false"></a-sky> -->
     {{> nonvr }}
 </a-scene>

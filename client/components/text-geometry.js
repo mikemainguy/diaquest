@@ -26,9 +26,10 @@ AFRAME.registerComponent('text-geometry', {
      * Generally modifies the entity based on the data.
      */
     update: function (oldData) {
+
         var data = this.data;
         var el = this.el;
-        this.offset = null;
+
         el.setObject3D('mesh', new THREE.Mesh());
         var mesh = el.getObject3D('mesh');
         if (data.font.constructor === String) {
@@ -36,7 +37,11 @@ AFRAME.registerComponent('text-geometry', {
             fontLoader.load(data.font, function (response) {
                 var textData = AFRAME.utils.clone(data);
                 textData.font = response;
-                mesh.geometry = new THREE.TextGeometry(data.value, textData);
+                const geo = new THREE.TextGeometry(data.value, textData);
+                geo.computeBoundingSphere();
+                this.offset = geo.boundingSphere.radius;
+                mesh.position.setX(this.offset*-1);
+                mesh.geometry = geo;
 
             });
         } else if (data.font.constructor === Object) {
@@ -46,6 +51,7 @@ AFRAME.registerComponent('text-geometry', {
         } else {
             error('Must provide `font` (typeface.json) or `fontPath` (string) to text component.');
         }
+
     },
     tick: function (time) {
         const m = this.el.getObject3D('mesh');
