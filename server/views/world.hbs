@@ -79,18 +79,19 @@
         <a-entity  look-controls wasd-controls="fly: true" share-position camera="active: true" id="camera" position="0 1.6 2">
             <!--<a-plane material="opacity: 0.5; color: #222" position=".5 .5 -2" width="2" height="2" rotation="0 0 0" text="align: left; wrapCount: 35; value: test"></a-plane>-->
         </a-entity>
-        <a-entity id="ambient" sound="src: url(/assets/ambient.m4a); loop: true; positional: false; volume: .2"></a-entity>
+
 
     </a-entity>
     <a-entity light="type: ambient; color: #BBB">
 
     </a-entity>
-    <a-entity animation="property: rotation; loop: true; dur: 60000; easing: linear; from: 0 0 0; to: 0 360 0">
-        <a-entity position="20 100 -200" light="type: point; color: #FF9; distance: 350; intensity: 1">
+
+        <a-entity position="50 50 -100" light="type: point; color: #FF9; distance: 200; intensity: 1">
+            <a-entity id="ambient" sound="src: /assets/brown.mp3; loop: true; volume: 1"></a-entity>
             <a-sphere radius="5"  material="src: /assets/sky2.jpeg; color: #ff2; opacity: 0.2" animation="property: rotation; loop: true; dur: 15000; easing: linear; from: 0 0 0; to: 0 360 0"></a-sphere>
         </a-entity>
 
-    </a-entity>
+
 
     <a-sky position="0 100 0" src="/assets/8192.jpeg">
 
