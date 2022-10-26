@@ -24,7 +24,7 @@ AFRAME.registerComponent('stuff', {
       if (this.textDisplay  && this.saveable) {
           this.saveable.object3D.children[0].geometry.computeBoundingBox()
           const radius = this.saveable.object3D.children[0].geometry.boundingBox.max.y;
-          this.textDisplay.position.set(0,radius * this.saveable.object3D.scale.y,0);
+          this.textDisplay.position.set(0,(radius * this.saveable.object3D.scale.y) + 0.05, 0);
       }
     },
     grabHandler: function(evt) {
