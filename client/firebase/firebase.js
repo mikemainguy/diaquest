@@ -91,7 +91,7 @@ if (!VRLOCAL) {
 export function writeUser(profile) {
     sha512(profile.user.sid).then((result) => {
         profile.user.last_seen = new Date().toUTCString();
-        const id = 'session' + result
+        const id = 'session' + result;
         set(ref(database, 'users/' + profile.user.sub), profile);
         const rig = document.querySelector('.rig');
         rig.setAttribute('id', id);
