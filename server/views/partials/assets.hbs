@@ -43,19 +43,19 @@
 
     <a-entity id="sphere-template" type="text/x-nunjucks-template">
         <a-entity share-position>
-            <a-sphere class="saveable" material="color: #33f" radius=".2"></a-sphere>
+            <a-sphere class="saveable" material="color: #33f" radius="1"></a-sphere>
             <a-entity mixin="labelMixin" position="0 0.3 0"></a-entity>
         </a-entity>
     </a-entity>
     <a-entity id="cylinder-template" type="text/x-nunjucks-template">
         <a-entity share-position>
-            <a-cylinder class="saveable" material="color: #33f" radius="0.2" height="0.2"></a-cylinder>
+            <a-cylinder class="saveable" material="color: #33f" radius="1" height="1"></a-cylinder>
             <a-entity mixin="labelMixin" position="0 0.3 0"></a-entity>
         </a-entity>
     </a-entity>
     <a-entity id="box-template" type="text/x-nunjucks-template">
         <a-entity grabbable share-position>
-            <a-box class="saveable" color="#00f" width=".4" height=".4" depth="0.4"></a-box>
+            <a-box class="saveable" color="#00f" width="1" height="1" depth="1"></a-box>
             <a-entity mixin="labelMixin" position="0 0.3 0"></a-entity>
         </a-entity>
     </a-entity>

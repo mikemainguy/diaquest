@@ -3,7 +3,8 @@ import {getCurrentMode, getSystem, changeRaycaster, createUUID} from "./util";
 AFRAME.registerComponent('stuff', {
     schema: {
         text: {type: 'string'},
-        color: {type: 'string'}
+        color: {type: 'string'},
+        scale: {type: 'string', default: '.2 .2 .2'}
 
     },
     init: function () {
@@ -12,9 +13,19 @@ AFRAME.registerComponent('stuff', {
         this.el.addEventListener("mouseleave", this.mouseLeave.bind(this));
         this.el.addEventListener("grabbed", this.grabHandler.bind(this));
         this.el.addEventListener("released", this.releaseHandler.bind(this));
+        this.saveable = this.el.querySelector('.saveable');
+        if (this.saveable) {
+            this.scale = AFRAME.utils.coordinates.parse(this.data.scale);
+            this.saveable.object3D.scale.set(this.scale.x, this.scale.y, this.scale.z);
+        }
+
     },
     tick: function(time, timeDelta) {
-
+      if (this.textDisplay  && this.saveable) {
+          this.saveable.object3D.children[0].geometry.computeBoundingBox()
+          const radius = this.saveable.object3D.children[0].geometry.boundingBox.max.y;
+          this.textDisplay.position.set(0,radius * this.saveable.object3D.scale.y,0);
+      }
     },
     grabHandler: function(evt) {
         this.grabbed = this.el.closest('[template]');
@@ -97,16 +108,24 @@ AFRAME.registerComponent('stuff', {
     },
     update: function () {
         const textDisplay = this.el.querySelector('[text-geometry]');
+        this.saveable = this.el.querySelector('.saveable');
+        if (this.saveable) {
+            this.scale = AFRAME.utils.coordinates.parse(this.data.scale);
+            this.saveable.object3D.scale.set(this.scale.x, this.scale.y, this.scale.z);
+        }
         if (textDisplay) {
             if (this.data.text) {
+                this.textDisplay = textDisplay.object3D;
                 textDisplay.setAttribute('visible', true);
                 textDisplay.setAttribute('text-geometry', 'value', this.data.text);
                // textDisplay.setAttribute('position', '0 0 0');
             } else {
+                this.textDisplay = null;
                 textDisplay.setAttribute('visible', false);
             }
 
         }
+
         const saveable = this.el.querySelector('.saveable');
         if (saveable) {
             saveable.setAttribute('material', 'color', this.data.color);

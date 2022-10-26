@@ -66,14 +66,31 @@ AFRAME.registerComponent('sizer', {
         this.el.addEventListener("released", this.released.bind(this));
         this.start = new THREE.Vector3();
         this.sizing = false;
+        this.position = AFRAME.utils.coordinates.parse(this.data.position);
     },
     grabbed: function(evt){
-        evt.detail.hand.object3D.getWorldPosition(this.start);
+        this.start.copy(this.el.object3D.position);
+        //evt.detail.hand.object3D.getWorldPosition(this.start);
+        if (Math.abs(this.position.x) > 0) {
+            document.querySelector('#xySize').setAttribute('rotation', '0 0 90');
+        }
+        if (Math.abs(this.position.y) > 0) {
+            document.querySelector('#xySize').setAttribute('rotation', '0 0 0');
+        }
+        if (Math.abs(this.position.z) > 0) {
+            document.querySelector('#xySize').setAttribute('rotation', '90 0 0');
+        }
+
+
+        evt.detail.hand.setAttribute('raycaster', 'objects', '#xySize');
         this.sizing=true;
+        this.hand = evt.detail.hand;
         debug('grabbed');
     },
     released: function(evt){
         this.start = new THREE.Vector3();
+        evt.detail.hand.setAttribute('raycaster', 'objects', '[mixin="sizeConnectorMixin"]');
+        this.hand=null;
         debug('released');
     },
     update: function() {
@@ -93,7 +110,25 @@ AFRAME.registerComponent('sizer', {
 
             //debug(this.system.handle.object3D.position)
         }
-        if (this.sizing) {
+        if (this.sizing && this.hand && this.hand.components['raycaster'] &&
+        this.hand.components['raycaster'].intersections.length > 0) {
+            const v = new THREE.Vector3();
+            v.copy(this.start);
+          //  this.hand.components('raycaster').intersections[0];
+            const v2 = new THREE.Vector3();
+            v2.copy(this.hand.components['raycaster'].intersections[0].point);
+            this.el.object3D.parent.worldToLocal(v2);
+
+            if (Math.abs(this.position.y) > 0) {
+                this.system.saveable.object3D.scale.setY(v2.y*2);
+            }
+            if (Math.abs(this.position.x) > 0) {
+                this.system.saveable.object3D.scale.setX(v2.x*2);
+            }
+            if (Math.abs(this.position.z) > 0) {
+                this.system.saveable.object3D.scale.setZ(v2.z*2);
+            }
+            console.log(JSON.stringify(v) + " " + JSON.stringify(v2) + " " + v.z/v2.z);
 
         }
         if (this.system.saveable) {
@@ -104,12 +139,17 @@ AFRAME.registerComponent('sizer', {
             const v = new THREE.Vector3();
             if (this.position.x > 0 || this.position.y > 0 || this.position.z > 0) {
                 v.multiplyVectors(this.position, bounds.max);
+                v.multiply(this.system.saveable.object3D.scale);
             } else {
                 v.multiplyVectors(this.position, bounds.min);
+                v.multiply(this.system.saveable.object3D.scale);
                 v.multiplyScalar(-1);
             }
             this.el.object3D.position.set(v.x, v.y, v.z);
+
         }
+
+
 
 
     }

@@ -26,7 +26,7 @@ AFRAME.registerComponent('grabber', {
   },
   release: function(evt) {
     if (this.grabbed) {
-      this.grabbed.emit('released');
+      this.grabbed.emit('released', {hand: evt.currentTarget});
       this.grabbed = null;
     }
   },

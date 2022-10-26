@@ -16,7 +16,9 @@
     <a-sphere radius="0.1" id="reticle" position="0 0 0"></a-sphere>
 <!-- look-controls wasd-controls="fly: true" -->
     <a-entity id="sizer">
+        <a-cylinder id="xySize" radius=".1" height="50" visible="false" ,position="0 0 0" rotation="0 0 0" opacity="0.3" color="#fff"></a-cylinder>
         <a-sphere sizer="position: 1 0 0" mixin="sizeConnectorMixin" radius=".05" position="1 0 0"></a-sphere>
+
         <a-sphere sizer="position: -1 0 0" mixin="sizeConnectorMixin" radius=".05" position="-1 0 0"></a-sphere>
         <a-sphere sizer="position: 0 1 0" mixin="sizeConnectorMixin" radius=".05" position="0 1 0"></a-sphere>
         <a-sphere sizer="position: 0 -1 0" mixin="sizeConnectorMixin" radius=".05" position="0 -1 0"></a-sphere>
