@@ -99,10 +99,6 @@ AFRAME.registerComponent('mover', {
     },
     thumbstick: function (evt) {
         initSound();
-        if (getCurrentMode() == 'change-size') {
-            return;
-        }
-
 
         this.x.scaledDirection.copy(this.x.direction.clone().multiplyScalar(evt.detail.x));
         this.y.scaledDirection.copy(this.y.direction.clone().multiplyScalar(evt.detail.y));

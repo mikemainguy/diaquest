@@ -10,9 +10,19 @@ AFRAME.registerComponent('stuff', {
         this.el.addEventListener("click", this.clickHandler.bind(this));
         this.el.addEventListener("mouseenter", this.mouseEnter.bind(this));
         this.el.addEventListener("mouseleave", this.mouseLeave.bind(this));
+        this.el.addEventListener("grabbed", this.grabHandler.bind(this));
+        this.el.addEventListener("released", this.releaseHandler.bind(this));
     },
     tick: function(time, timeDelta) {
 
+    },
+    grabHandler: function(evt) {
+        this.grabbed = this.el.closest('[template]');
+        evt.detail.hand.object3D.attach(this.grabbed.object3D);
+    },
+    releaseHandler: function(evt) {
+        this.el.sceneEl.object3D.attach(this.grabbed.object3D);
+        this.grabbed = null;
     },
     mouseEnter: function (evt) {
         const obj = evt.target;
@@ -39,6 +49,7 @@ AFRAME.registerComponent('stuff', {
             case 'resizing':
                 buttons.first = obj.id;
                 buttons.mode.push('change-size');
+                document.dispatchEvent( new CustomEvent('resizing', {detail: {id: obj.id}}));
                 break;
             case 'editing':
                 buttons.first = obj.id;

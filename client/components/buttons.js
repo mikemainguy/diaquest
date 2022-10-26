@@ -19,25 +19,20 @@ AFRAME.registerSystem('buttons', {
         document.addEventListener('triggerdown', this.triggerdown.bind(this));
     },
     bbuttondown: function (evt) {
-        if (this.bmenuShowing) {
+        const bMenuShowing = document.querySelector('#bmenu').getAttribute('visible');
+        if (bMenuShowing) {
             this.hideMenu({detail: {id: '#bmenu'}});
-            this.bmenuShowing = false;
         } else {
             this.showMenu({detail: {id: '#bmenu', objects: '#bmenu a-plane[mixin=menuPlane], .saveable'}});
-            this.bmenuShowing = true;
         }
     },
     ybuttondown: function (evt) {
-        if (this.ymenuShowing) {
+        const yMenuShowing = document.querySelector('#ymenu').getAttribute('visible');
+        if (ymenuShowing) {
             this.hideMenu({detail: {id: '#ymenu'}});
-            this.ymenuShowing = false;
         } else {
             this.showMenu({detail: {id: '#ymenu', objects: '#ymenu a-plane[mixin=menuPlane], .saveable'}});
-            this.ymenuShowing = true;
         }
-       /* document.dispatchEvent(
-            new CustomEvent('connectSignalwire',
-                {detail: 'OK'})); */
     },
     triggerdown: function (evt) {
         if (evt.target.states.includes('cursor-hovering')) {
@@ -65,8 +60,8 @@ AFRAME.registerSystem('buttons', {
         this.changeMenu(evt.detail.id, false, '.saveable')
     },
     changeMenu: function(id, visible, objects) {
-        const obj = document.querySelector(id);
-        obj.setAttribute('visible', visible);
+        const el = document.querySelector(id);
+        el.setAttribute('visible', visible);
         for (const hand of this.getRaycasters()) {
             hand.setAttribute('raycaster', 'objects', objects);
         }

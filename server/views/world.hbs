@@ -15,13 +15,13 @@
     </a-entity>
     <a-sphere radius="0.1" id="reticle" position="0 0 0"></a-sphere>
 <!-- look-controls wasd-controls="fly: true" -->
-    <a-entity id="sizer" type="text/x-nunjucks-template">
-        <a-sphere mixin="sizeConnectorMixin" radius=".05" position="1 0 0"></a-sphere>
-        <a-sphere mixin="sizeConnectorMixin" radius=".05" position="-1 0 0"></a-sphere>
-        <a-sphere mixin="sizeConnectorMixin" radius=".05" position="0 1 0"></a-sphere>
-        <a-sphere mixin="sizeConnectorMixin" radius=".05" position="0 -1 0"></a-sphere>
-        <a-sphere mixin="sizeConnectorMixin" radius=".05" position="0 0 1"></a-sphere>
-        <a-sphere mixin="sizeConnectorMixin" radius=".05" position="0 0 -1"></a-sphere>
+    <a-entity id="sizer">
+        <a-sphere sizer="position: 1 0 0" mixin="sizeConnectorMixin" radius=".05" position="1 0 0"></a-sphere>
+        <a-sphere sizer="position: -1 0 0" mixin="sizeConnectorMixin" radius=".05" position="-1 0 0"></a-sphere>
+        <a-sphere sizer="position: 0 1 0" mixin="sizeConnectorMixin" radius=".05" position="0 1 0"></a-sphere>
+        <a-sphere sizer="position: 0 -1 0" mixin="sizeConnectorMixin" radius=".05" position="0 -1 0"></a-sphere>
+        <a-sphere sizer="position: 0 0 1" mixin="sizeConnectorMixin" radius=".05" position="0 0 1"></a-sphere>
+        <a-sphere sizer="position: 0 0 -1" mixin="sizeConnectorMixin" radius=".05" position="0 0 -1"></a-sphere>
     </a-entity>
 
     <a-entity class="rig"  position="0 0 2">
@@ -31,11 +31,11 @@
                 rotation="90 0 0"
                 oculus-touch-controls="hand: left"
                 laser-controls="hand: left"
-                raycaster="objects: .saveable; lineColor: #f33; lineOpacity: 0.7; far: 100"
+                raycaster="objects: .saveable,a-link; lineColor: #f33; lineOpacity: 0.7; far: 5"
                 grabber
                 mover="x: 1 0 0; y: 0 0 1">
             <a-plane width="0.2"
-                     height=".03"
+                     height=".03"o
                      color="#fff"
                      id="debug"
                      class="text"
@@ -47,12 +47,11 @@
         <a-entity id="right-hand"
                   laser-controls="hand: right"
                   oculus-touch-controls="hand: right"
-                  raycaster="objects: .saveable; lineColor: #f33; lineOpacity: 0.7; far: 100"
+                  raycaster="objects: .saveable,a-link; lineColor: #f33; lineOpacity: 0.7; far: 5"
                   position=".5 1.6 1.5"
                   rotation="90 0 0"
                   grabber
-                  mover="x: -22.5; y: 0 -1 0"
-                  sizer>
+                  mover="x: -22.5; y: 0 -1 0">
             <a-plane width="0.2"
                      height="0.03"
                      color="#fff"
@@ -86,9 +85,10 @@
 
     </a-entity>
 
-        <a-entity position="50 50 -100" light="type: point; color: #FF9; distance: 200; intensity: 1">
+
+        <a-entity position="20 20 -30" light="type: point; color: #FF9; distance: 200; intensity: 1;">
             <a-entity id="ambient" sound="src: /assets/brown.mp3; loop: true; volume: 1"></a-entity>
-            <a-sphere radius="5"  material="src: /assets/sky2.jpeg; color: #ff2; opacity: 0.2" animation="property: rotation; loop: true; dur: 15000; easing: linear; from: 0 0 0; to: 0 360 0"></a-sphere>
+            <!--<a-sphere radius="5"  material="src: /assets/sky2.jpeg; color: #ff2; opacity: 0.2" animation="property: rotation; loop: true; dur: 15000; easing: linear; from: 0 0 0; to: 0 360 0"></a-sphere>-->
         </a-entity>
 
 
@@ -98,7 +98,7 @@
     </a-sky>
     <a-box width="40" height="2" depth="0.2" position="0 1 20" material="repeat: 7; src: /assets/cardboard.jpg"></a-box>
     <a-box width="40" height="2" depth="0.2" position="0 1 -20" material="repeat: 7; src: /assets/cardboard.jpg"></a-box>
-    <a-plane width="40" height="40" rotation="-90 0 0" material="opacity: 0.8; src: /assets/sky2.jpeg"></a-plane>
+    <a-plane width="40" height="40" rotation="-90 0 0"  material="opacity: 0.9; src: /assets/sky2.jpeg"></a-plane>
     <!--<a-sky src="#woods" radius="100" material="fog: false"></a-sky> -->
     {{> nonvr }}
 </a-scene>

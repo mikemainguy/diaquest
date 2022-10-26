@@ -18,22 +18,19 @@ AFRAME.registerComponent('grabber', {
     this.el.removeEventListener('gripup', this.releaseHandler);
   },
   grab: function(evt) {
-    const el = evt.currentTarget.components['raycaster'].intersections[0].object.el;
-    if (el.classList.contains('saveable')) {
-      this.grabbed = el.closest('[template]');
-      evt.currentTarget.object3D.attach(this.grabbed.object3D);
-    } else {
-
+    if (evt.currentTarget.components['raycaster'].intersections.length>0) {
+      this.grabbed = evt.currentTarget.components['raycaster'].intersections[0].object.el;
+      this.grabbed.emit('grabbed', {hand: evt.currentTarget});
     }
 
   },
   release: function(evt) {
     if (this.grabbed) {
-      this.el.sceneEl.object3D.attach(this.grabbed.object3D);
+      this.grabbed.emit('released');
       this.grabbed = null;
     }
-
   },
+
   tick: function() {
 
   }
