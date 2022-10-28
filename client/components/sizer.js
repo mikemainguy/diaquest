@@ -129,7 +129,11 @@ AFRAME.registerComponent('sizer', {
                 this.system.saveable.object3D.scale.setZ(v2.z*2);
             }
             console.log(JSON.stringify(v) + " " + JSON.stringify(v2) + " " + v.z/v2.z);
-
+            document.dispatchEvent( new CustomEvent('shareUpdate', {detail: {id: this.system.saveable.closest('[template]').getAttribute('id'),
+                    scale: this.system.saveable.object3D.scale.x + ' ' +
+                        this.system.saveable.object3D.scale.y + ' ' +
+                        this.system.saveable.object3D.scale.z
+                        }}));
         }
         if (this.system.saveable) {
             const geometry = this.system.saveable.getObject3D('mesh').geometry;

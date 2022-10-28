@@ -23,7 +23,13 @@ export function showColorPicker() {
     changeRaycaster('#bmenu a-plane[color-swatch]');
 }
 
-
+export function round(vec, amount) {
+    const v = new THREE.Vector3(vec.x, vec.y, vec.z);
+    v.divideScalar(amount)
+        v.round()
+            v.multiplyScalar(amount);
+    return v;
+}
 export function createUUID() {
     return 'id' + ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
         (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)

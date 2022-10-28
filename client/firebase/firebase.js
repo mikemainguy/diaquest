@@ -180,6 +180,7 @@ function createOrUpdateDom(entity) {
     if (entity.position) {
         ele.setAttribute('position', entity.position);
     }
+    const scale = entity.scale ? entity.scale : '0.2 0.2 0.2';
 
     const color = entity.color ? entity.color : '#669';
     const text = entity.text ? entity.text : '';
@@ -190,7 +191,7 @@ function createOrUpdateDom(entity) {
         case '#cylinder-template':
         case '#sphere-template':
             window.setTimeout(function () {
-                ele.setAttribute('stuff', 'text: ' + text + '; color: ' + color);
+                ele.setAttribute('stuff', 'text: ' + text + '; color: ' + color + '; scale: ' + scale);
             }, 500);
 
             break;

@@ -1,4 +1,4 @@
-import {getCurrentMode, getSystem, changeRaycaster, createUUID} from "./util";
+import {round, getCurrentMode, getSystem, changeRaycaster, createUUID} from "./util";
 
 AFRAME.registerComponent('stuff', {
     schema: {
@@ -14,15 +14,38 @@ AFRAME.registerComponent('stuff', {
         this.el.addEventListener("grabbed", this.grabHandler.bind(this));
         this.el.addEventListener("released", this.releaseHandler.bind(this));
         this.saveable = this.el.querySelector('.saveable');
+
+    },
+    update: function () {
+
+        const textDisplay = this.el.querySelector('[text-geometry]');
+        this.saveable = this.el.querySelector('.saveable');
         if (this.saveable) {
             this.scale = AFRAME.utils.coordinates.parse(this.data.scale);
             this.saveable.object3D.scale.set(this.scale.x, this.scale.y, this.scale.z);
+            this.saveable.object3D.children[0].geometry.computeBoundingBox();
+            this.saveable.setAttribute('visible', true);
+        }
+        if (textDisplay) {
+            if (this.data.text) {
+                this.textDisplay = textDisplay.object3D;
+                textDisplay.setAttribute('visible', true);
+                textDisplay.setAttribute('text-geometry', 'value', this.data.text);
+                // textDisplay.setAttribute('position', '0 0 0');
+            } else {
+                this.textDisplay = null;
+                textDisplay.setAttribute('visible', false);
+            }
+
         }
 
+        const saveable = this.el.querySelector('.saveable');
+        if (saveable) {
+            saveable.setAttribute('material', 'color', this.data.color);
+        }
     },
     tick: function(time, timeDelta) {
       if (this.textDisplay  && this.saveable) {
-          this.saveable.object3D.children[0].geometry.computeBoundingBox()
           const radius = this.saveable.object3D.children[0].geometry.boundingBox.max.y;
           this.textDisplay.position.set(0,(radius * this.saveable.object3D.scale.y) + 0.05, 0);
       }
@@ -33,6 +56,11 @@ AFRAME.registerComponent('stuff', {
     },
     releaseHandler: function(evt) {
         this.el.sceneEl.object3D.attach(this.grabbed.object3D);
+
+        const newPos = round(this.grabbed.object3D.position, .1);
+        this.grabbed.object3D.position.set(newPos.x,newPos.y,newPos.z);
+        const ang= AFRAME.utils.coordinates.parse(this.grabbed.getAttribute('rotation'));
+        this.grabbed.setAttribute('rotation', AFRAME.utils.coordinates.stringify(round(ang, 45)));
         this.grabbed = null;
     },
     mouseEnter: function (evt) {
@@ -105,32 +133,8 @@ AFRAME.registerComponent('stuff', {
 
                 }
         }
-    },
-    update: function () {
-        const textDisplay = this.el.querySelector('[text-geometry]');
-        this.saveable = this.el.querySelector('.saveable');
-        if (this.saveable) {
-            this.scale = AFRAME.utils.coordinates.parse(this.data.scale);
-            this.saveable.object3D.scale.set(this.scale.x, this.scale.y, this.scale.z);
-        }
-        if (textDisplay) {
-            if (this.data.text) {
-                this.textDisplay = textDisplay.object3D;
-                textDisplay.setAttribute('visible', true);
-                textDisplay.setAttribute('text-geometry', 'value', this.data.text);
-               // textDisplay.setAttribute('position', '0 0 0');
-            } else {
-                this.textDisplay = null;
-                textDisplay.setAttribute('visible', false);
-            }
-
-        }
-
-        const saveable = this.el.querySelector('.saveable');
-        if (saveable) {
-            saveable.setAttribute('material', 'color', this.data.color);
-        }
     }
+
 });
 
 function getKeyboardPosition(distance) {

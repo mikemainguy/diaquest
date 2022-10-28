@@ -5,6 +5,7 @@ async function run() {
     let db = await fb.getDatabase();
     const ref = await db.ref('/worlds/')
     const cur_date = new Date(new Date() - (60000*5));
+    const nodeList = [];
     await ref.once('value', (snapshot) => {
         snapshot.forEach((world) => {
             console.log(world.key);
@@ -17,11 +18,9 @@ async function run() {
 
                         const dt = new Date(new Date(entity.val().last_seen));
                         if (entity.val().template === '#user-template') {
-                            if (dt < cur_date) {
-                                db.ref(node).remove();
-                                console.log('delete');
-                                console.log(entity.val().last_seen);
 
+                            if (dt < cur_date) {
+                                nodeList.push(node);
                             } else {
                                 console.log('keep');
                                 console.log(entity.val().last_seen);
@@ -36,9 +35,12 @@ async function run() {
         })
 
     });
+    for (node of nodeList) {
+        console.log('removing ' + node);
+        await db.ref(node).remove();
+    }
     await ref.off();
     db.goOffline();
-
 
 }
 run().then(() => {
