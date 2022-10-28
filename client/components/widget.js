@@ -79,6 +79,10 @@ AFRAME.registerComponent('widget', {
                 buttons.mode = ['moving'];
                 hideMenu();
                 break;
+            case 'copy':
+                buttons.mode = ['copying'];
+                hideMenu();
+                break;
             case 'edit':
                 buttons.mode = ['editing'];
                 hideMenu();

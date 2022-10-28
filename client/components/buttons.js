@@ -1,5 +1,5 @@
 import {debug} from './debug';
-import {createUUID, getMenuPosition} from './util';
+import {createUUID, getMenuPosition, round} from './util';
 
 
 AFRAME.registerSystem('buttons', {
@@ -38,12 +38,27 @@ AFRAME.registerSystem('buttons', {
         if (evt.target.states.includes('cursor-hovering')) {
             return;
         }
+        const data = {};
         switch (this.mode.slice(-1)[0]) {
+            case 'copying':
+
+                data.id = createUUID();
+                data.position = round(getMenuPosition(), .1);
+                const ele = document.querySelector('#' + this.first);
+                data.template = ele.getAttribute('template').src;
+
+                data.text = ele.components['stuff'].data.text;
+                data.color = ele.components['stuff'].data.color;
+                data.scale = ele.components['stuff'].data.scale;
+                document.dispatchEvent(
+                    new CustomEvent('shareUpdate',
+                        {detail: data}));
+                break;
             case 'adding':
                 this.first = null;
-                const data = {};
                 data.id = createUUID();
-                data.position = getMenuPosition();
+                //const newPos = round(this.grabbed.object3D.position, .1);
+                data.position = round(getMenuPosition(), .1);
                 data.template = this.template;
                 data.color = this.color;
                 document.dispatchEvent(

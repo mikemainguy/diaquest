@@ -109,6 +109,9 @@ AFRAME.registerComponent('stuff', {
                 const event = new Event('rigChanged');
                 document.dispatchEvent(event);
                 break;
+            case 'copying':
+                buttons.first = obj.id;
+                break;
             case 'select-first':
                 buttons.first = obj.id;
                 buttons.mode.push('select-second');
