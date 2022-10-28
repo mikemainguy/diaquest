@@ -1,9 +1,9 @@
 import {debug} from './debug';
+import {round} from './util';
+
 AFRAME.registerSystem('sizer', {
     schema: {
         color: {type: 'string', value: '#550'}
-
-
     },
     eventListener: function(evt) {
         const el = document.querySelector('#' + evt.detail.id);
@@ -23,6 +23,7 @@ AFRAME.registerSystem('sizer', {
                 debug('sizer model missing');
                 return;
             }
+
         }
         el.object3D.add(this.sizer.object3D);
 
@@ -31,6 +32,7 @@ AFRAME.registerSystem('sizer', {
         this.saveable = this.sized.querySelector('.saveable');
 
         this.changeRaycaster();
+        this.sizer.setAttribute('visible', true);
 
     },
     init: function () {
@@ -89,8 +91,16 @@ AFRAME.registerComponent('sizer', {
     },
     released: function(evt){
         this.start = new THREE.Vector3();
-        evt.detail.hand.setAttribute('raycaster', 'objects', '[mixin="sizeConnectorMixin"]');
+        const scale = round(this.system.saveable.object3D.scale, .1);
+        this.system.sized.setAttribute('stuff', 'scale' , AFRAME.utils.coordinates.stringify(scale));
+        document.dispatchEvent( new CustomEvent('shareUpdate', {detail: {id: this.system.saveable.closest('[template]').getAttribute('id'),
+                scale: scale.x + ' ' +
+                    scale.y + ' ' +
+                    scale.z
+            }}));
+        evt.detail.hand.setAttribute('raycaster', 'objects', '[mixin="sizeConnectorMixin"], .saveable');
         this.hand=null;
+
         debug('released');
     },
     update: function() {
@@ -129,11 +139,7 @@ AFRAME.registerComponent('sizer', {
                 this.system.saveable.object3D.scale.setZ(v2.z*2);
             }
             console.log(JSON.stringify(v) + " " + JSON.stringify(v2) + " " + v.z/v2.z);
-            document.dispatchEvent( new CustomEvent('shareUpdate', {detail: {id: this.system.saveable.closest('[template]').getAttribute('id'),
-                    scale: this.system.saveable.object3D.scale.x + ' ' +
-                        this.system.saveable.object3D.scale.y + ' ' +
-                        this.system.saveable.object3D.scale.z
-                        }}));
+
         }
         if (this.system.saveable) {
             const geometry = this.system.saveable.getObject3D('mesh').geometry;

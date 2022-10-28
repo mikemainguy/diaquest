@@ -13,6 +13,7 @@ AFRAME.registerComponent('stuff', {
         this.el.addEventListener("mouseleave", this.mouseLeave.bind(this));
         this.el.addEventListener("grabbed", this.grabHandler.bind(this));
         this.el.addEventListener("released", this.releaseHandler.bind(this));
+        this.el.setAttribute('sound', 'src: url(/assets/KeyIn.mp3); on: mouseenter;');
         this.saveable = this.el.querySelector('.saveable');
 
     },

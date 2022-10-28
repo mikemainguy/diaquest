@@ -21,14 +21,13 @@ AFRAME.registerComponent('widget', {
         if (!target.getAttribute('animation')) {
             target.setAttribute('animation', 'from: #ff2; to: #cc2; property: material.color; loop: true; dir: alternate; dur: 500');
         }
-        //evt.target.setAttribute('base-color', evt.target.getAttribute('material').color);
-        //evt.target.setAttribute('material', 'color', '#ff0');
     },
     mouseLeave: function(evt) {
         evt.target.removeAttribute('animation');
         evt.target.setAttribute('material','color', this.color);
     },
     clickHandler: function (evt) {
+        document.querySelector('#sizer').setAttribute('visible', false);
         const buttons = document.querySelector('a-scene').systems['buttons'];
         buttons.first = null;
         const event = new Event('rigChanged');
@@ -38,30 +37,23 @@ AFRAME.registerComponent('widget', {
             case 'add-connector':
                 buttons.mode = ['connecting'];
                 buttons.mode.push('select-first');
-
-                hideMenu();
                 break;
             case 'add-cylinder':
                 buttons.template = '#cylinder-template'
                 buttons.mode = ['adding'];
-                hideMenu();
                 break;
             case 'resize':
                 buttons.mode = ['resizing'];
-                hideMenu();
                 break;
             case 'add-sphere':
                 buttons.template = '#sphere-template'
                 buttons.mode = ['adding'];
-                hideMenu();
                 break;
             case 'add-box':
                 buttons.template = '#box-template'
                 buttons.mode = ['adding'];
-                hideMenu();
                 break;
             case 'close':
-                hideMenu();
                 break;
             case 'edit-color':
                 buttons.mode= ['edit-color'];
@@ -69,27 +61,18 @@ AFRAME.registerComponent('widget', {
                 break;
             case 'add-plane':
                 buttons.mode = ['adding'];
-                hideMenu();
                 break;
             case 'remove':
                 buttons.mode = ['removing'];
-                hideMenu();
                 break;
             case 'move':
                 buttons.mode = ['moving'];
-                hideMenu();
                 break;
             case 'copy':
                 buttons.mode = ['copying'];
-                hideMenu();
                 break;
             case 'edit':
                 buttons.mode = ['editing'];
-                hideMenu();
-                break;
-            case 'point':
-                debug('point');
-                buttons.mode.push('pointing');
                 break;
             case 'joinConference':
                 document.dispatchEvent(

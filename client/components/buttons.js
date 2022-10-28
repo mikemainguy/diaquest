@@ -28,7 +28,7 @@ AFRAME.registerSystem('buttons', {
     },
     ybuttondown: function (evt) {
         const yMenuShowing = document.querySelector('#ymenu').getAttribute('visible');
-        if (ymenuShowing) {
+        if (yMenuShowing) {
             this.hideMenu({detail: {id: '#ymenu'}});
         } else {
             this.showMenu({detail: {id: '#ymenu', objects: '#ymenu a-plane[mixin=menuPlane], .saveable'}});
@@ -76,6 +76,7 @@ AFRAME.registerSystem('buttons', {
     },
     changeMenu: function(id, visible, objects) {
         const el = document.querySelector(id);
+
         el.setAttribute('visible', visible);
         for (const hand of this.getRaycasters()) {
             hand.setAttribute('raycaster', 'objects', objects);
