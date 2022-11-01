@@ -5,13 +5,13 @@ import {initializeApp} from 'firebase/app';
 import {sha512} from 'crypto-hash';
 
 
-
 import {
     getDatabase,
     remove,
     ref,
     set,
     update,
+    onValue,
     onChildRemoved,
     onChildAdded,
     onChildChanged
@@ -36,16 +36,17 @@ const database = getDatabase(app);
 function getDbPath(id) {
     const loc = window.location.pathname.split('/');
 
-    const pathId = id == null? '': '/'+id;
+    const pathId = id == null ? '' : '/' + id;
     if (loc.length < 3) {
         return 'public/entities' + pathId;
     }
     switch (loc[1]) {
         case 'public':
-            return 'public/entities'+pathId;
+            return 'public/entities' + pathId;
         case 'worlds':
-            if (loc.length ===3) {
-                return 'worlds/' + loc[2] + '/entities' + pathId;
+            if (loc.length === 3) {
+                const myLoc = decodeURIComponent(window.location).split('/').pop()
+                return 'worlds/' + myLoc + '/entities' + pathId;
             } else {
                 return 'public/entities' + pathId;
             }
@@ -69,7 +70,8 @@ async function setupApp() {
 if (!VRLOCAL) {
     setupApp().then((profile) => {
         writeUser(profile);
-        console.log(database);
+
+
         const entities = ref(database, getDbPath(null));
 
         onChildAdded(entities, (snapshot) => {
@@ -92,7 +94,7 @@ export function writeUser(profile) {
     sha512(profile.user.sid).then((result) => {
         profile.user.last_seen = new Date().toUTCString();
         const id = 'session' + result;
-        set(ref(database, 'users/' + profile.user.sub), profile);
+        update(ref(database, 'users/' + profile.user.sub), profile);
         const rig = document.querySelector('.rig');
         rig.setAttribute('id', id);
         createEntity({
@@ -103,6 +105,34 @@ export function writeUser(profile) {
             text: profile.user.email,
             template: "#user-template"
         });
+    });
+    const directory = ref(database, "/users/" + profile.user.sub + "/directory/worlds");
+
+    onValue(directory, (snap) => {
+        const el = document.querySelector('#directory');
+
+        console.log(snap.val());
+        snap.forEach((data) => {
+            const val = data.val();
+            const key = data.key;
+            const name = val.name ? val.name : key;
+
+
+            const entry = document.querySelector('a-link[data-world-id="'+ key + '"]');
+            if (entry) {
+                entry.setAttribute('name', name);
+            } else {
+                const newEl = document.createElement('a-link');
+                newEl.setAttribute('data-world-id', key);
+                newEl.setAttribute('href', '/worlds/' + key);
+                newEl.setAttribute('title', name);
+                document.querySelector('#navigation').appendChild(newEl);
+            }
+        });
+        window.setTimeout(function() {
+            document.querySelector('#navigation').components['navigation'].update();
+        }, 200);
+
     });
 }
 
@@ -163,11 +193,11 @@ function createOrUpdateDom(entity) {
 
     ele.setAttribute('template', 'src: ' + entity.template);
     ele.setAttribute('id', entity.id);
-    const comp =ele.querySelector('[share-position]');
+    const comp = ele.querySelector('[share-position]');
 
     if (entity.rotation || entity.position) {
-        if ( comp && comp.components && comp.components['share-position'] &&
-             comp.components['share-position'].oldPosition) {
+        if (comp && comp.components && comp.components['share-position'] &&
+            comp.components['share-position'].oldPosition) {
             comp.components['share-position'].pause();
             comp.components['share-position'].oldPosition = null;
 
@@ -207,7 +237,7 @@ function createOrUpdateDom(entity) {
         scene.appendChild(ele);
     }
     if (entity.rotation || entity.position) {
-        if ( comp && comp.components && comp.components['share-position'] &&
+        if (comp && comp.components && comp.components['share-position'] &&
             comp.components['share-position'].oldPosition) {
             comp.components['share-position'].play();
 

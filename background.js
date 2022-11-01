@@ -39,6 +39,7 @@ async function run() {
         console.log('removing ' + node);
         await db.ref(node).remove();
     }
+
     await ref.off();
     db.goOffline();
 

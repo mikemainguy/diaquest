@@ -35,6 +35,7 @@ if (env.NODE_ENV != 'development') {
         res.set('Cache-control', 'public, max-age=' + maxAge);
         next();
     });
+
 }
 /**
  * Serve these routes without authentication required
@@ -59,21 +60,22 @@ app.engine('.hbs', engine({extname: '.hbs'}));
 app.set('view engine', 'hbs');
 app.set('views', './server/views');
 
-app.get('/', (req, res) => {
+app.get('/', async (req, res) => {
     res.render('landing', {
         html: true
     });
-})
+});
+
 app.get('/local', (req, res) => {
     res.render('world', {vrLocal: true});
 });
-app.get('/public', (req, res) => {
-    res.render('world', {vrConnected: true});
-});
+
 app.use(auth(auth0Config));
-app.get('/login', (req, res) => res.oidc.login({returnTo: '/'}));
-
-
+app.get('/login', (req, res) => res.oidc.login({returnTo: '/worlds/public'}));
+app.get('/home', async (req, res) => {
+   const userInfo = req.oidc.user;
+   res.redirect('/worlds/' + userInfo.sub);
+});
 app.get('/worlds/:worldId', (req, res) => {
     res.render('world', {vrConnected: true});
 });
@@ -137,6 +139,7 @@ app.get('/api/user/profile',
             .catch((err) => res.status(500).send(err));
 
     });
+
 logger.log({level: "info", message: "server start on port: " + port});
 app.listen(port, () => {
 
