@@ -7,15 +7,21 @@ AFRAME.registerComponent('connector', {
     twoWay: {type: 'boolean', default: false}
 
   },
+  events: {
+
+  }
+  ,
   update: function() {
     this.pos1 = new THREE.Vector3();
     this.pos2 = new THREE.Vector3();
     this.oldPos1 = new THREE.Vector3();
     this.oldPos2 = new THREE.Vector3();
-
-
+    this.el.emit('registerupdate', {}, true);
     if (this.data.startEl && this.data.startEl.object3D &&
       this.data.endEl && this.data.endEl.object3D ) {
+      //this.data.startEl.components['connections'].push(this.el);
+      //this.data.endEl.components['connections'].push(this.el);
+
       this.obj1 = this.data.startEl.object3D;
       this.obj2 = this.data.endEl.object3D;
       this.started = false;
@@ -29,6 +35,14 @@ AFRAME.registerComponent('connector', {
 
     }
 
+  },
+  remove: function() {
+    if (this.data.startEl) {
+      //this.data.startEl.components['connections'].push(this.el);
+    }
+    if (this.data.startEl) {
+      //this.data.endEl.components['connections'].push(this.el);
+    }
   },
   tick: function(time, timeDelta) {
     if (this.obj1 && this.obj2 && this.connector) {
