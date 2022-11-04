@@ -27,7 +27,7 @@ AFRAME.registerComponent('widget', {
         evt.target.setAttribute('material','color', this.color);
     },
     clickHandler: function (evt) {
-        document.querySelector('#sizer').setAttribute('visible', false);
+        document.getElementById('sizer').setAttribute('visible', false);
         const buttons = document.querySelector('a-scene').systems['buttons'];
         buttons.first = null;
         const event = new Event('rigChanged');

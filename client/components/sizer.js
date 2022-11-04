@@ -6,7 +6,7 @@ AFRAME.registerSystem('sizer', {
         color: {type: 'string', value: '#550'}
     },
     eventListener: function(evt) {
-        const el = document.querySelector('#' + evt.detail.id);
+        const el = document.getElementById(evt.detail.id);
         if (!el) {
             return;
         } else {
@@ -18,7 +18,7 @@ AFRAME.registerSystem('sizer', {
         }
         debug('sizing ' + evt.detail.id);
         if (!this.sizer) {
-            this.sizer = document.querySelector('#sizer');
+            this.sizer = document.getElementById('sizer');
             if (!this.sizer) {
                 debug('sizer model missing');
                 return;
@@ -39,7 +39,7 @@ AFRAME.registerSystem('sizer', {
         this.bounds = new THREE.Box3();
         this.sized = null;
         this.handle = null;
-        this.sizer = document.querySelector('#sizer');
+        this.sizer = document.getElementById('sizer');
         document.addEventListener('resizing', this.eventListener.bind(this));
     },
 
@@ -74,13 +74,13 @@ AFRAME.registerComponent('sizer', {
         this.start.copy(this.el.object3D.position);
         //evt.detail.hand.object3D.getWorldPosition(this.start);
         if (Math.abs(this.position.x) > 0) {
-            document.querySelector('#xySize').setAttribute('rotation', '0 0 90');
+            document.getElementById('xySize').setAttribute('rotation', '0 0 90');
         }
         if (Math.abs(this.position.y) > 0) {
-            document.querySelector('#xySize').setAttribute('rotation', '0 0 0');
+            document.getElementById('xySize').setAttribute('rotation', '0 0 0');
         }
         if (Math.abs(this.position.z) > 0) {
-            document.querySelector('#xySize').setAttribute('rotation', '90 0 0');
+            document.getElementById('xySize').setAttribute('rotation', '90 0 0');
         }
 
 

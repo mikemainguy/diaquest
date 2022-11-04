@@ -4,7 +4,8 @@ AFRAME.registerComponent('stuff', {
     schema: {
         text: {type: 'string'},
         color: {type: 'string'},
-        scale: {type: 'string', default: '.2 .2 .2'}
+        scale: {type: 'string', default: '.2 .2 .2'},
+        connections: {type: 'array', default: []}
 
     },
     init: function () {
@@ -18,7 +19,10 @@ AFRAME.registerComponent('stuff', {
 
     },
     update: function () {
-
+        this.connections = new Set();
+        //for (const d of this.data) {
+        //    this.connections.add(d);
+        //}
         const textDisplay = this.el.querySelector('[text-geometry]');
         this.saveable = this.el.querySelector('.saveable');
         if (this.saveable) {
@@ -94,10 +98,10 @@ AFRAME.registerComponent('stuff', {
             case 'editing':
                 buttons.first = obj.id;
                 buttons.mode.push('typing');
-                const keyboard = document.querySelector('#keyboard');
+                const keyboard = document.getElementById('keyboard');
                 keyboard.setAttribute('3d-keyboard', 'value', this.data.text);
                 keyboard.setAttribute('position', getKeyboardPosition(-1));
-                const c = document.querySelector('#camera').object3D;
+                const c = document.getElementById('camera').object3D;
                 const v = new THREE.Vector3();
                 c.getWorldPosition(v);
                 keyboard.object3D.lookAt(v);
@@ -143,7 +147,7 @@ AFRAME.registerComponent('stuff', {
 
 function getKeyboardPosition(distance) {
     let pos = new THREE.Vector3();
-    const c = document.querySelector('#camera').object3D;
+    const c = document.getElementById('camera').object3D;
     c.getWorldPosition(pos);
     let dir = new THREE.Vector3();
     c.getWorldDirection(dir);

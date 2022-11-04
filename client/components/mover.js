@@ -59,10 +59,10 @@ AFRAME.registerComponent('mover', {
         this.rotating = false;
         this.rotate = 0;
         this.handler = this.thumbstick.bind(this);
-        this.camera = document.querySelector("#camera");
+        this.camera = document.getElementById("camera");
         this.rig = document.querySelector(".rig");
         this.el.addEventListener('thumbstickmoved', this.handler);
-        document.querySelector('#camera').setAttribute('camera', 'active', true);
+        document.getElementById('camera').setAttribute('camera', 'active', true);
         this.rigChanged = this.rigChanged.bind(this)
         document.addEventListener('rigChanged', this.rigChanged);
     },
@@ -70,7 +70,7 @@ AFRAME.registerComponent('mover', {
         const buttons = getSystem('buttons');
         debug(buttons.mode);
         if (buttons && buttons.first && buttons.mode[0] == 'moving') {
-            this.rig = document.querySelector('#' + buttons.first);
+            this.rig = document.getElementById(buttons.first);
         } else {
             this.rig = document.querySelector(".rig");
         }

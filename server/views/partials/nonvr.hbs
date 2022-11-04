@@ -10,38 +10,38 @@
         <div>Click to Talk</div></button>
 </div>
 <script>
-    document.querySelector('#joinButton').addEventListener('click', (evt) => {
+    document.getElementById('joinButton').addEventListener('click', (evt) => {
         document.dispatchEvent(
                 new CustomEvent('connectSignalwire',
                         {detail: 'OK'}));
-        document.querySelector('#leaveButton').style.display='inline-block';
-        document.querySelector('#joinButton').style.display='none';
-        document.querySelector('#muteButton').style.display='inline-block';
+        document.getElementById('leaveButton').style.display='inline-block';
+        document.getElementById('joinButton').style.display='none';
+        document.getElementById('muteButton').style.display='inline-block';
 
     });
-    document.querySelector('#leaveButton').addEventListener('click', (evt) => {
+    document.getElementById('leaveButton').addEventListener('click', (evt) => {
         document.dispatchEvent(
                 new CustomEvent('disconnectSignalwire',
                         {detail: 'OK'}));
-        document.querySelector('#leaveButton').style.display='none';
-        document.querySelector('#joinButton').style.display='inline-block';
-        document.querySelector('#muteButton').style.display='none';
-        document.querySelector('#unmuteButton').style.display='none';
+        document.getElementById('leaveButton').style.display='none';
+        document.getElementById('joinButton').style.display='inline-block';
+        document.getElementById('muteButton').style.display='none';
+        document.getElementById('unmuteButton').style.display='none';
 
     });
-    document.querySelector('#muteButton').addEventListener('click', (evt) => {
+    document.getElementById('muteButton').addEventListener('click', (evt) => {
         document.dispatchEvent(
                 new CustomEvent('mute',
                         {detail: 'OK'}));
-        document.querySelector('#muteButton').style.display='none';
-        document.querySelector('#unmuteButton').style.display='inline-block';
+        document.getElementById('muteButton').style.display='none';
+        document.getElementById('unmuteButton').style.display='inline-block';
 
     });
-    document.querySelector('#unmuteButton').addEventListener('click', (evt) => {
+    document.getElementById('unmuteButton').addEventListener('click', (evt) => {
         document.dispatchEvent(
                 new CustomEvent('unmute',
                         {detail: 'OK'}));
-        document.querySelector('#muteButton').style.display='inline-block';
-        document.querySelector('#unmuteButton').style.display='none';
+        document.getElementById('muteButton').style.display='inline-block';
+        document.getElementById('unmuteButton').style.display='none';
     });
 </script>

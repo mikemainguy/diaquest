@@ -19,7 +19,7 @@ AFRAME.registerSystem('buttons', {
         document.addEventListener('triggerdown', this.triggerdown.bind(this));
     },
     bbuttondown: function (evt) {
-        const bMenuShowing = document.querySelector('#bmenu').getAttribute('visible');
+        const bMenuShowing = document.getElementById('bmenu').getAttribute('visible');
         if (bMenuShowing) {
             this.hideMenu({detail: {id: '#bmenu'}});
         } else {
@@ -27,7 +27,7 @@ AFRAME.registerSystem('buttons', {
         }
     },
     ybuttondown: function (evt) {
-        const yMenuShowing = document.querySelector('#ymenu').getAttribute('visible');
+        const yMenuShowing = document.getElementById('ymenu').getAttribute('visible');
         if (yMenuShowing) {
             this.hideMenu({detail: {id: '#ymenu'}});
         } else {
@@ -44,7 +44,7 @@ AFRAME.registerSystem('buttons', {
 
                 data.id = createUUID();
                 data.position = round(getMenuPosition(), .1);
-                const ele = document.querySelector('#' + this.first);
+                const ele = document.getElementById(this.first);
                 data.template = ele.getAttribute('template').src;
 
                 data.text = ele.components['stuff'].data.text;

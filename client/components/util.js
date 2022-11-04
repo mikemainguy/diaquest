@@ -1,6 +1,6 @@
 export function getMenuPosition(distance) {
     let pos = new THREE.Vector3();
-    const c = document.querySelector('#camera').object3D;
+    const c = document.getElementById('camera').object3D;
     c.getWorldPosition(pos);
     let dir = new THREE.Vector3();
     c.getWorldDirection(dir);
@@ -18,7 +18,7 @@ export function changeRaycaster(newObjects) {
     }
 }
 export function showColorPicker() {
-    const obj = document.querySelector('#color-picker');
+    const obj = document.getElementById('color-picker');
     obj.setAttribute('visible', true);
     changeRaycaster('#bmenu a-plane[color-swatch]');
 }
@@ -43,7 +43,7 @@ export function getCurrentMode() {
     return getSystem('buttons').mode.slice(-1)[0];
 }
 export function initSound() {
-    const a = document.querySelector('#ambient');
+    const a = document.getElementById('ambient');
     if (a) {
         const ambient = a.components.sound;
         if (ambient.loaded && ambient.listener.context.state != 'running') {

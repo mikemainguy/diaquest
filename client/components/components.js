@@ -16,10 +16,10 @@ AFRAME.registerComponent('user', {
 
 AFRAME.registerComponent('lookatme', {
   init: function() {
-    const cam = document.querySelector('#camera');
+    const cam = document.getElementById('camera');
     if (cam) {
       this.pos = new THREE.Vector3();
-      this.camera = document.querySelector('#camera').object3D;
+      this.camera = document.getElementById('camera').object3D;
     } else {
 
     }

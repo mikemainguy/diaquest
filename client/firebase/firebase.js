@@ -79,7 +79,7 @@ if (!VRLOCAL) {
         });
 
         onChildRemoved(entities, (snapshot) => {
-            const ele = document.querySelector('#' + snapshot.val().id);
+            const ele = document.getElementById(snapshot.val().id);
             if (ele) {
                 ele.remove();
             }
@@ -109,7 +109,7 @@ export function writeUser(profile) {
     const directory = ref(database, "/users/" + profile.user.sub + "/directory/worlds");
 
     onValue(directory, (snap) => {
-        const el = document.querySelector('#directory');
+        const el = document.getElementById('directory');
 
         console.log(snap.val());
         snap.forEach((data) => {
@@ -126,11 +126,11 @@ export function writeUser(profile) {
                 newEl.setAttribute('data-world-id', key);
                 newEl.setAttribute('href', '/worlds/' + key);
                 newEl.setAttribute('title', name);
-                document.querySelector('#navigation').appendChild(newEl);
+                document.getElementById('navigation').appendChild(newEl);
             }
         });
         window.setTimeout(function() {
-            document.querySelector('#navigation').components['navigation'].update();
+            document.getElementById('navigation').components['navigation'].update();
         }, 200);
 
     });
@@ -138,7 +138,7 @@ export function writeUser(profile) {
 
 document.addEventListener('shareUpdate', function (evt) {
     if (VRLOCAL) {
-        const el = document.querySelector('#' + evt.detail.id);
+        const el = document.getElementById(evt.detail.id);
         evt.detail.updater = document.querySelector('.rig').getAttribute('id');
         createOrUpdateDom(evt.detail);
     } else {
@@ -146,7 +146,7 @@ document.addEventListener('shareUpdate', function (evt) {
             removeEntity(evt.detail.id);
             return;
         }
-        const el = document.querySelector('#' + evt.detail.id);
+        const el = document.getElementById(evt.detail.id);
         evt.detail.updater = document.querySelector('.rig').getAttribute('id');
 
         if (el) {
@@ -185,7 +185,7 @@ function createOrUpdateDom(entity) {
         return;
     }
     const scene = document.querySelector("a-scene");
-    let exists = document.querySelector('#' + entity.id);
+    let exists = document.getElementById(entity.id);
     if (exists && entity.updater && (me.getAttribute('id') === entity.updater)) {
         return;
     }

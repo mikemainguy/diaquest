@@ -21,11 +21,11 @@ AFRAME.registerSystem('key-listen', {
             buttons.mode.pop();
         } else {
             data.id = buttons.first;
-            document.querySelector('#'+data.id).setAttribute('stuff', 'text', data.text);
+            document.getElementById(data.id).setAttribute('stuff', 'text', data.text);
             document.dispatchEvent( new CustomEvent('shareUpdate', {detail: data}));
             buttons.mode.pop();
         }
-        document.querySelector('#keyboard').setAttribute('3d-keyboard', 'value', '');
+        document.getElementById('keyboard').setAttribute('3d-keyboard', 'value', '');
         const hands = document.querySelectorAll('[raycaster]');
         for (const hand of hands) {
             hand.setAttribute('raycaster', 'objects', '.saveable');
@@ -39,7 +39,7 @@ AFRAME.registerSystem('key-listen', {
 function getPosition(distance)
 {
     let pos = new THREE.Vector3();
-    const c = document.querySelector('#camera').object3D;
+    const c = document.getElementById('camera').object3D;
     c.getWorldPosition(pos);
     let dir = new THREE.Vector3();
     c.getWorldDirection(dir);
