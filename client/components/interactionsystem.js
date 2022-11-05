@@ -20,7 +20,7 @@ AFRAME.registerSystem('interaction-system', {
         'interactionEvent': function(evt) {
             if (this.stuff.has(evt.target)) {
                 if (this.sources.has(evt.target)) {
-                    console.log(evt.detail.message);
+
 
                 }
             }

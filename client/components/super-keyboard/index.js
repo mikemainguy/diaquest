@@ -13,7 +13,8 @@ AFRAME.registerComponent('3d-keyboard', {
   ],
   schema: {
     value: {type: 'string'},
-    visible: {type: 'boolean', default: false}
+    visible: {type: 'boolean', default: false},
+    elId: {type: 'string'}
 
   },
 
@@ -119,7 +120,7 @@ AFRAME.registerComponent('3d-keyboard', {
     if (k){
       switch(k) {
         case 'Enter':
-          this.el.emit('superkeyboardinput', {value: this.data.value});
+          this.el.emit('superkeyboardinput', {value: this.data.value, elId: this.data.elId});
           this.close();
           break;
         case '<-':

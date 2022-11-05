@@ -28,51 +28,51 @@ AFRAME.registerComponent('widget', {
     },
     clickHandler: function (evt) {
         document.getElementById('sizer').setAttribute('visible', false);
-        const buttons = document.querySelector('a-scene').systems['buttons'];
-        buttons.first = null;
+        //const buttons = document.querySelector('a-scene').systems['buttons'];
+        const buttonState = {}
+        buttonState.first = null;
         const event = new Event('rigChanged');
         document.dispatchEvent(event);
         debug(evt.target.id);
         switch (evt.target.id) {
             case 'add-connector':
-                buttons.mode = ['connecting'];
-                buttons.mode.push('select-first');
+                buttonState.mode = ['connecting', 'select-first'];
                 break;
             case 'add-cylinder':
-                buttons.template = '#cylinder-template'
-                buttons.mode = ['adding'];
+                buttonState.template = '#cylinder-template'
+                buttonState.mode = ['adding'];
                 break;
             case 'resize':
-                buttons.mode = ['resizing'];
+                buttonState.mode = ['resizing'];
                 break;
             case 'add-sphere':
-                buttons.template = '#sphere-template'
-                buttons.mode = ['adding'];
+                buttonState.template = '#sphere-template'
+                buttonState.mode = ['adding'];
                 break;
             case 'add-box':
-                buttons.template = '#box-template'
-                buttons.mode = ['adding'];
+                buttonState.template = '#box-template'
+                buttonState.mode = ['adding'];
                 break;
             case 'close':
                 break;
             case 'edit-color':
-                buttons.mode= ['edit-color'];
-                showColorPicker();
+                buttonState.mode= ['edit-color'];
+                this.el.emit('showMenu', {id: '#color-picker', objects: '[color-swatch], .saveable'});
                 break;
             case 'add-plane':
-                buttons.mode = ['adding'];
+                buttonState.mode = ['adding'];
                 break;
             case 'remove':
-                buttons.mode = ['removing'];
+                buttonState.mode = ['removing'];
                 break;
             case 'move':
-                buttons.mode = ['moving'];
+                buttonState.mode = ['moving'];
                 break;
             case 'copy':
-                buttons.mode = ['copying'];
+                buttonState.mode = ['copying'];
                 break;
             case 'edit':
-                buttons.mode = ['editing'];
+                buttonState.mode = ['editing'];
                 break;
             case 'joinConference':
                 document.dispatchEvent(
@@ -97,16 +97,6 @@ AFRAME.registerComponent('widget', {
             default:
 
         }
-        debug(buttons.mode);
-
+        this.el.emit('buttonstate', buttonState, true);
     }
-
-
 });
-
-function hideMenu() {
-    document.dispatchEvent( new CustomEvent('hideMenu', {detail: {id: '#bmenu'}}));
-}
-function showColorPicker() {
-    document.dispatchEvent( new CustomEvent('showMenu', {detail: {id: '#color-picker', objects: '[color-swatch], .saveable'}}));
-}

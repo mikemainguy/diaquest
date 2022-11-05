@@ -1,5 +1,10 @@
 import {changeRaycaster, createUUID, getCurrentMode, getSystem, round} from "./util";
 
+AFRAME.registerSystem('stuff', {
+   init: function() {
+       this.first=null;
+   }
+});
 AFRAME.registerComponent('stuff', {
     schema: {
         text: {type: 'string'},
@@ -44,12 +49,9 @@ AFRAME.registerComponent('stuff', {
             this.textDisplay.position.set(0, (radius * this.saveable.object3D.scale.y) + 0.05, 0);
         }
     },
-
     events: {
         click: function (evt) {
-            const buttons = getSystem('buttons');
             const obj = evt.target.closest('[template]');
-
             switch (getCurrentMode()) {
                 case 'removing':
                     document.dispatchEvent(new CustomEvent('shareUpdate', {detail: {id: obj.id, remove: true}}));
@@ -61,15 +63,14 @@ AFRAME.registerComponent('stuff', {
                     document.dispatchEvent(new CustomEvent('shareUpdate', {detail: {id: obj.id, color: newColor}}));
                     break;
                 case 'resizing':
-                    buttons.first = obj.id;
-                    buttons.mode.push('change-size');
+                    this.el.emit('buttonstate', {mode: ['change-size'], first: obj.id}, true);
                     document.dispatchEvent(new CustomEvent('resizing', {detail: {id: obj.id}}));
                     break;
                 case 'editing':
-                    buttons.first = obj.id;
-                    buttons.mode.push('typing');
+                    this.el.emit('buttonstate', {mode: ['typing'], first: obj.id}, true);
                     const keyboard = document.getElementById('keyboard');
                     keyboard.setAttribute('3d-keyboard', 'value', this.data.text);
+                    keyboard.setAttribute('3d-keyboard', 'elId', obj.id);
                     keyboard.setAttribute('position', getKeyboardPosition(-1));
                     const c = document.getElementById('camera').object3D;
                     const v = new THREE.Vector3();
@@ -79,37 +80,28 @@ AFRAME.registerComponent('stuff', {
                     changeRaycaster('.keyboardRaycastable');
                     keyboard.emit('show');
                     break;
-                case 'moving':
-                    buttons.first = obj.id;
-                    const event = new Event('rigChanged');
-                    document.dispatchEvent(event);
-                    break;
                 case 'copying':
-                    buttons.first = obj.id;
+                    this.el.emit('buttonstate', {mode: ['copying'], first: obj.id}, true);
                     break;
                 case 'select-first':
-                    buttons.first = obj.id;
-                    buttons.mode.push('select-second');
+                    this.el.emit('buttonstate', {mode: ['select-second'], first: obj.id}, true);
+                    this.system.first = obj.id;
                     break;
                 case 'select-second':
-                    switch (buttons.mode[0]) {
-                        case 'connecting':
-                            const data = {
-                                id: createUUID(),
-                                first: buttons.first,
-                                second: obj.id,
-                                text: '',
-                                color: getSystem('color-picker').color,
-                                template: '#connector-template'
-                            }
-                            document.dispatchEvent(
-                                new CustomEvent('shareUpdate',
-                                    {detail: data}));
-
-                            buttons.mode.pop();
-                            break;
-
+                    this.el.emit('buttonstate', {mode: ['select-first'], first: null}, true);
+                    const data = {
+                        id: createUUID(),
+                        first: this.system.first,
+                        second: obj.id,
+                        text: '',
+                        color: getSystem('color-picker').color,
+                        template: '#connector-template'
                     }
+                    document.dispatchEvent(
+                        new CustomEvent('shareUpdate',
+                            {detail: data}));
+
+
             }
         },
         mouseenter: function (evt) {
