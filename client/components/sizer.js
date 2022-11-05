@@ -62,61 +62,57 @@ AFRAME.registerComponent('sizer', {
     },
     init: function () {
         this.el.setAttribute('material', 'color', this.data.color);
-        this.el.addEventListener("mouseenter", this.mouseEnter.bind(this));
-        this.el.addEventListener("mouseleave", this.mouseLeave.bind(this));
-        this.el.addEventListener("grabbed", this.grabbed.bind(this));
-        this.el.addEventListener("released", this.released.bind(this));
         this.start = new THREE.Vector3();
         this.sizing = false;
         this.position = AFRAME.utils.coordinates.parse(this.data.position);
     },
-    grabbed: function (evt) {
-        this.start.copy(this.el.object3D.position);
-        //evt.detail.hand.object3D.getWorldPosition(this.start);
-        if (Math.abs(this.position.x) > 0) {
-            document.getElementById('xySize').setAttribute('rotation', '0 0 90');
-        }
-        if (Math.abs(this.position.y) > 0) {
-            document.getElementById('xySize').setAttribute('rotation', '0 0 0');
-        }
-        if (Math.abs(this.position.z) > 0) {
-            document.getElementById('xySize').setAttribute('rotation', '90 0 0');
-        }
-
-
-        evt.detail.hand.setAttribute('raycaster', 'objects', '#xySize');
-        this.sizing = true;
-        this.hand = evt.detail.hand;
-        debug('grabbed');
-    },
-    released: function (evt) {
-        this.start = new THREE.Vector3();
-        const scale = round(this.system.saveable.object3D.scale, .1);
-        this.system.sized.setAttribute('stuff', 'scale', AFRAME.utils.coordinates.stringify(scale));
-        document.dispatchEvent(new CustomEvent('shareUpdate', {
-            detail: {
-                id: this.system.saveable.closest('[template]').getAttribute('id'),
-                scale: scale.x + ' ' +
-                    scale.y + ' ' +
-                    scale.z
+    events: {
+        mouseenter: function (evt) {
+            const obj = evt.target;
+            obj.setAttribute('animation', "property: material.color; from: #cc2; to: #ff2; dir: alternate; dur: 500; loop: true")
+        },
+        grabbed: function (evt) {
+            this.start.copy(this.el.object3D.position);
+            //evt.detail.hand.object3D.getWorldPosition(this.start);
+            if (Math.abs(this.position.x) > 0) {
+                document.getElementById('xySize').setAttribute('rotation', '0 0 90');
             }
-        }));
-        evt.detail.hand.setAttribute('raycaster', 'objects', '[mixin="sizeConnectorMixin"], .saveable');
-        this.hand = null;
+            if (Math.abs(this.position.y) > 0) {
+                document.getElementById('xySize').setAttribute('rotation', '0 0 0');
+            }
+            if (Math.abs(this.position.z) > 0) {
+                document.getElementById('xySize').setAttribute('rotation', '90 0 0');
+            }
+            evt.detail.hand.setAttribute('raycaster', 'objects', '#xySize');
+            this.sizing = true;
+            this.hand = evt.detail.hand;
+            debug('grabbed');
+        },
+        released: function (evt) {
+            this.start = new THREE.Vector3();
+            const scale = round(this.system.saveable.object3D.scale, .1);
+            this.system.sized.setAttribute('stuff', 'scale', AFRAME.utils.coordinates.stringify(scale));
+            document.dispatchEvent(new CustomEvent('shareUpdate', {
+                detail: {
+                    id: this.system.saveable.closest('[template]').getAttribute('id'),
+                    scale: scale.x + ' ' +
+                        scale.y + ' ' +
+                        scale.z
+                }
+            }));
+            evt.detail.hand.setAttribute('raycaster', 'objects', '[mixin="sizeConnectorMixin"], .saveable');
+            this.hand = null;
 
-        debug('released');
+            debug('released');
+        },
+        mouseLeave: function (evt) {
+            const obj = evt.target;
+            obj.setAttribute('material', 'color', this.data.color);
+            obj.removeAttribute('animation');
+        }
     },
     update: function () {
         this.position = AFRAME.utils.coordinates.parse(this.data.position);
-    },
-    mouseEnter: function (evt) {
-        const obj = evt.target;
-        obj.setAttribute('animation', "property: material.color; from: #cc2; to: #ff2; dir: alternate; dur: 500; loop: true")
-    },
-    mouseLeave: function (evt) {
-        const obj = evt.target;
-        obj.setAttribute('material', 'color', this.data.color);
-        obj.removeAttribute('animation');
     },
     tick: function (time) {
         if (this.system.handle && this.system.sized) {
