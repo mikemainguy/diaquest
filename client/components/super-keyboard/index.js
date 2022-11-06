@@ -20,14 +20,15 @@ AFRAME.registerComponent('3d-keyboard', {
   },
 
   init: function () {
-
+    this.el.addEventListener('show', this.show.bind(this));
     this.el.addEventListener('mousedown', this.click.bind(this));
     this.el.addEventListener('mouseenter', this.hover.bind(this));
     this.el.addEventListener('mouseleave', this.blur.bind(this));
-    this.el.addEventListener('show', this.show.bind(this));
+
     this.keyboard = document.createElement('a-entity');
     this.keyboard.setAttribute('visible', this.data.visible);
-    this.keyboard.setAttribute('sound', 'src: url(/assets/KeyIn.mp3); on: mouseenter;');
+    this.keyboard.setAttribute('sound', 'src: #keyin; volume: 0.1; on: mouseenter;');
+    this.el.setAttribute('sound', 'src: #keydown; on: mousedown;');
     this.el.appendChild(this.keyboard);
     this.keyboard.setAttribute('scale', this.data.scale);
     let y = 1.5;
@@ -35,8 +36,6 @@ AFRAME.registerComponent('3d-keyboard', {
       let x = -7;
       for(const key of row) {
         const k = document.createElement('a-plane');
-
-        k.setAttribute('sound', 'src: url(/assets/KeyDown.mp3); on: click;');
         this.keyboard.appendChild(k);
         k.classList.add('keyboardRaycastable');
         k.setAttribute('key', key);
@@ -53,7 +52,6 @@ AFRAME.registerComponent('3d-keyboard', {
               x+=5;
               k.setAttribute('position', x + ' '+ y + ' .001');
               break;
-
           default:
             k.setAttribute('width', '.95');
             k.setAttribute('text', 'wrapCount', '2');
@@ -61,16 +59,10 @@ AFRAME.registerComponent('3d-keyboard', {
             k.setAttribute('position', x + ' '+ y + ' .001');
           }
 
-
         k.setAttribute('height', '.95');
         k.setAttribute('text', 'value', key);
         k.setAttribute('text', 'align', 'center');
-
-
         k.setAttribute('material', 'color','#222');
-
-
-
       }
       y-=1;
     }
@@ -93,7 +85,7 @@ AFRAME.registerComponent('3d-keyboard', {
     this.label.setAttribute('height', '1');
     this.label.setAttribute('height', '1');
 
-    this.el.addEventListener('show', this.show.bind(this));
+
 
   },
 
@@ -134,8 +126,6 @@ AFRAME.registerComponent('3d-keyboard', {
       }
       this.label.setAttribute('text','value' , this.data.value);
     }
-
-    console.log(ev.detail);
   },
 
   show: function (evt) {

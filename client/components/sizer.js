@@ -61,6 +61,8 @@ AFRAME.registerComponent('sizer', {
     },
     init: function () {
         this.el.setAttribute('material', 'color', this.data.color);
+        this.el.setAttribute('sound', 'src: #keyin; on: mouseenter');
+
         this.start = new THREE.Vector3();
         this.sizing = false;
         this.position = AFRAME.utils.coordinates.parse(this.data.position);
@@ -104,7 +106,7 @@ AFRAME.registerComponent('sizer', {
 
             debug('released');
         },
-        mouseLeave: function (evt) {
+        mouseleave: function (evt) {
             const obj = evt.target;
             obj.setAttribute('material', 'color', this.data.color);
             obj.removeAttribute('animation');

@@ -13,18 +13,20 @@ AFRAME.registerComponent('stuff', {
         action: {type: 'string'}
     },
     init: function () {
-        this.el.setAttribute('sound', 'src: url(/assets/KeyIn.mp3); on: mouseenter;');
+        this.el.setAttribute('sound', 'src: #keyin; volume: 0.2; on: mouseenter;');
         this.saveable = this.el.querySelector('.saveable');
     },
     update: function () {
         const textDisplay = this.el.querySelector('[text-geometry]');
         this.saveable = this.el.querySelector('.saveable');
+
         this.el.emit('registerupdate', {}, true);
         if (this.saveable) {
             this.scale = AFRAME.utils.coordinates.parse(this.data.scale);
             this.saveable.object3D.scale.set(this.scale.x, this.scale.y, this.scale.z);
             this.saveable.object3D.children[0].geometry.computeBoundingBox();
             this.saveable.setAttribute('visible', true);
+            this.saveable.setAttribute('sound', 'src: #keydown; on: click;');
         }
         if (textDisplay) {
             if (this.data.text) {
