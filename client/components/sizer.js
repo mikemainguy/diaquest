@@ -36,7 +36,6 @@ AFRAME.registerSystem('sizer', {
 
     },
     init: function () {
-        this.bounds = new THREE.Box3();
         this.sized = null;
         this.handle = null;
         this.sizer = document.getElementById('sizer');
@@ -46,7 +45,7 @@ AFRAME.registerSystem('sizer', {
     remove: function () {
 
     },
-    changeRaycaster: function (evt) {
+    changeRaycaster: function () {
         for (const hand of this.getRaycasters()) {
             hand.setAttribute('raycaster', 'objects', '[mixin="sizeConnectorMixin"]');
         }
@@ -114,7 +113,7 @@ AFRAME.registerComponent('sizer', {
     update: function () {
         this.position = AFRAME.utils.coordinates.parse(this.data.position);
     },
-    tick: function (time) {
+    tick: function () {
         if (this.system.handle && this.system.sized) {
 
             //debug(this.system.handle.object3D.position)
@@ -143,7 +142,7 @@ AFRAME.registerComponent('sizer', {
             const geometry = this.system.saveable.getObject3D('mesh').geometry;
             geometry.computeBoundingBox();
             const bounds = geometry.boundingBox;
-            const myFactor = this.position;
+
             const v = new THREE.Vector3();
             if (this.position.x > 0 || this.position.y > 0 || this.position.z > 0) {
                 v.multiplyVectors(this.position, bounds.max);

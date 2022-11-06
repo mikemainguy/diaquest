@@ -51,6 +51,9 @@ AFRAME.registerComponent('stuff', {
     },
     events: {
         click: function (evt) {
+            evt.detail.cursorEl.components['tracked-controls-webxr'].controller.gamepad.hapticActuators[0].pulse(.5, 100);
+
+
             const obj = evt.target.closest('[template]');
             switch (getCurrentMode()) {
                 case 'removing':
@@ -69,16 +72,8 @@ AFRAME.registerComponent('stuff', {
                 case 'editing':
                     this.el.emit('buttonstate', {mode: ['typing'], first: obj.id}, true);
                     const keyboard = document.getElementById('keyboard');
-                    keyboard.setAttribute('3d-keyboard', 'value', this.data.text);
-                    keyboard.setAttribute('3d-keyboard', 'elId', obj.id);
-                    keyboard.setAttribute('position', getKeyboardPosition(-1));
-                    const c = document.getElementById('camera').object3D;
-                    const v = new THREE.Vector3();
-                    c.getWorldPosition(v);
-                    keyboard.object3D.lookAt(v);
-
                     changeRaycaster('.keyboardRaycastable');
-                    keyboard.emit('show');
+                    keyboard.emit('show', {value: this.data.text, elId: obj.id});
                     break;
                 case 'copying':
                     this.el.emit('buttonstate', {mode: ['copying'], first: obj.id}, true);
@@ -105,6 +100,7 @@ AFRAME.registerComponent('stuff', {
             }
         },
         mouseenter: function (evt) {
+            evt.detail.cursorEl.components['tracked-controls-webxr'].controller.gamepad.hapticActuators[0].pulse(.05, 25);
             const obj = evt.target;
             obj.setAttribute('animation', "property: material.color; from: #cc2; to: #ff2; dir: alternate; dur: 500; loop: true")
         },

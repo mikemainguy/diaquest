@@ -96,7 +96,9 @@ function hideMenu(evt) {
 
 function changeMenu(id, visible, objects) {
     const el = document.querySelector(id);
-    el.setAttribute('visible', visible);
+    if (el) {
+        el.setAttribute('visible', visible);
+    }
     for (const hand of getRaycasters()) {
         hand.setAttribute('raycaster', 'objects', objects);
     }

@@ -1,11 +1,7 @@
 <div id="room"></div>
 <a-scene interaction-system background="color: #003" fog="type: exponential; color: #fff; near: 20; far: 100">
     {{> assets }}
-
-
-    <a-entity id="keyboard" position="-.25 -0.125 0" 3d-keyboard="visible: false" rotation="-10 0 0"></a-entity>
     <a-entity id="clock" clock lookatme position="0 5 -23" scale="3 3 3"></a-entity>
-    <!-- <a-entity template="src: #user"  position="1 1 14"></a-entity> -->
     <a-entity id="navigation" lookatme navigation position="23 2 0"></a-entity>
     <a-entity>
         <a-cylinder opacity="0.5" height="100" color="#f00" radius="0.01"></a-cylinder>
@@ -13,10 +9,10 @@
         <a-cylinder opacity="0.5" height="100" color="#00f" radius="0.01" rotation="0 0 90"></a-cylinder>
         <a-sphere opacity="0.2" radius="0.25" color="#ff4"></a-sphere>
     </a-entity>
-    <a-sphere radius="0.1" id="reticle" position="0 0 0"></a-sphere>
 <!-- look-controls wasd-controls="fly: true" -->
-    <a-entity id="sizer">
-        <a-cylinder id="xySize" radius=".1" height="50" visible="false" ,position="0 0 0" rotation="0 0 0" opacity="0.3" color="#fff"></a-cylinder>
+    <a-entity id="sizer" visible="false">
+        <a-cylinder id="xySize" radius=".1" height="50" visible="false" ,position="0 0 0"
+                    rotation="0 0 0" opacity="0.3" color="#fff"></a-cylinder>
         <a-sphere sizer="position: 1 0 0" mixin="sizeConnectorMixin" radius=".05" position="1 0 0"></a-sphere>
 
         <a-sphere sizer="position: -1 0 0" mixin="sizeConnectorMixin" radius=".05" position="-1 0 0"></a-sphere>
@@ -26,65 +22,7 @@
         <a-sphere sizer="position: 0 0 -1" mixin="sizeConnectorMixin" radius=".05" position="0 0 -1"></a-sphere>
     </a-entity>
 
-    <a-entity class="rig"  position="0 0 2">
-        <a-entity
-                id="left-hand"
-                position="-.5 1.6 1.5"
-                rotation="90 0 0"
-                buttons
-                oculus-touch-controls="hand: left"
-                laser-controls="hand: left"
-                raycaster="objects: .saveable,a-link; lineColor: #f33; lineOpacity: 0.7; far: 5"
-                grabber
-                mover="x: 1 0 0; y: 0 0 1">
-            <a-plane width="0.2"
-                     height=".03"o
-                     color="#fff"
-                     id="debug"
-                     class="text"
-                     text="color: #000; value: test; baseline: center; align: left"
-                     position=".005 0.01 0.17"
-                     rotation="-90 90 0"></a-plane>
-            {{> y-menu }}
-        </a-entity>
-        <a-entity id="right-hand"
-                  laser-controls="hand: right"
-                  buttons
-                  oculus-touch-controls="hand: right"
-                  raycaster="objects: .saveable,a-link; lineColor: #f33; lineOpacity: 0.7; far: 5"
-                  position=".5 1.6 1.5"
-                  rotation="90 0 0"
-                  grabber
-                  mover="x: -22.5; y: 0 -1 0">
-            <a-plane width="0.2"
-                     height="0.03"
-                     color="#fff"
-
-                     id="user"
-                     user
-                     class="text"
-                     text="color: #000; value: test; baseline: center; width: 0.25; align: center"
-                     position=".005 0.01 0.17"
-                     rotation="-90 -90 0"></a-plane>
-            <a-plane width="0.01"
-                     height="0.01"
-                     color="#fff"
-                     id="menu-help"
-                     user
-                     class="text"
-                     text="color: #000; value: menu; baseline: center; align: center; wrap: 5"
-                     position="-.035 0.008 .03"
-                     rotation="-75 10 0"></a-plane>
-            {{> menu }}
-
-
-        </a-entity>
-        <a-entity  look-controls wasd-controls="fly: true" share-position camera="active: true" id="camera" position="0 1.6 2">
-            <!--<a-plane material="opacity: 0.5; color: #222" position=".5 .5 -2" width="2" height="2" rotation="0 0 0" text="align: left; wrapCount: 35; value: test"></a-plane>-->
-        </a-entity>
-
-
-    </a-entity>
+    {{> rig }}
     <a-entity light="type: ambient; color: #BBB">
 
     </a-entity>

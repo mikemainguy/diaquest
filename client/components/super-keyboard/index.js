@@ -14,13 +14,14 @@ AFRAME.registerComponent('3d-keyboard', {
   schema: {
     value: {type: 'string'},
     visible: {type: 'boolean', default: false},
+    scale: {type: 'string', default: '.08 .08 1'},
     elId: {type: 'string'}
 
   },
 
   init: function () {
 
-    this.el.addEventListener('click', this.click.bind(this));
+    this.el.addEventListener('mousedown', this.click.bind(this));
     this.el.addEventListener('mouseenter', this.hover.bind(this));
     this.el.addEventListener('mouseleave', this.blur.bind(this));
     this.el.addEventListener('show', this.show.bind(this));
@@ -28,7 +29,7 @@ AFRAME.registerComponent('3d-keyboard', {
     this.keyboard.setAttribute('visible', this.data.visible);
     this.keyboard.setAttribute('sound', 'src: url(/assets/KeyIn.mp3); on: mouseenter;');
     this.el.appendChild(this.keyboard);
-    this.keyboard.setAttribute('scale', '.08 .08 1');
+    this.keyboard.setAttribute('scale', this.data.scale);
     let y = 1.5;
     for(const row of this.keys) {
       let x = -7;
@@ -137,7 +138,13 @@ AFRAME.registerComponent('3d-keyboard', {
     console.log(ev.detail);
   },
 
-  show: function () {
+  show: function (evt) {
+    if (evt.detail.value) {
+      this.data.value = evt.detail.value;
+    }
+    if (evt.detail.elId) {
+      this.data.elId = evt.detail.elId;
+    }
     this.label.setAttribute('text','value' , this.data.value);
     const hands = document.querySelectorAll('[raycaster]');
     for (const hand of hands) {

@@ -1,0 +1,69 @@
+<a-entity class="rig" position="0 0 2">
+    <a-entity
+            id="keyboard"
+            position="0 1 -1"
+            3d-keyboard="visible: false; scale: .06 .06 .6"
+            rotation="-20 0 0">
+
+    </a-entity>
+    <a-entity
+            id="left-hand"
+            position="-.5 1.6 1.5"
+            rotation="90 0 0"
+            buttons
+            oculus-touch-controls="hand: left"
+            laser-controls="hand: left"
+            raycaster="objects: .saveable,a-link; lineColor: #f33; lineOpacity: 0.7; far: 5"
+            grabber
+            mover="x: 1 0 0; y: 0 0 1">
+        <a-plane width="0.2"
+                 height=".03"
+                 color="#fff"
+                 id="debug"
+                 class="text"
+                 text="color: #000; value: test; baseline: center; align: left"
+                 position=".005 0.01 0.17"
+                 visible="false"
+                 rotation="-90 90 0"></a-plane>
+        {{> y-menu }}
+    </a-entity>
+    <a-entity id="right-hand"
+              laser-controls="hand: right"
+              buttons
+              oculus-touch-controls="hand: right"
+              raycaster="objects: .saveable,a-link; lineColor: #f33; lineOpacity: 0.7; far: 5"
+              position=".5 1.6 1.5"
+              rotation="90 0 0"
+              grabber
+              mover="x: -22.5; y: 0 -1 0">
+        <a-plane width="0.2"
+                 height="0.03"
+                 color="#fff"
+
+                 id="user"
+                 user
+                 class="text"
+                 text="color: #000; value: test; baseline: center; width: 0.25; align: center"
+                 position=".005 0.01 0.17"
+                 rotation="-90 -90 0"></a-plane>
+        <a-plane width="0.01"
+                 height="0.01"
+                 color="#fff"
+                 id="menu-help"
+                 user
+                 class="text"
+                 text="color: #000; value: menu; baseline: center; align: center; wrap: 5"
+                 position="-.035 0.008 .03"
+                 rotation="-75 10 0"></a-plane>
+        {{> menu }}
+
+
+    </a-entity>
+    <a-entity
+            look-controls wasd-controls="fly: true"
+            share-position camera="active: true"
+            id="camera"
+            position="0 1.6 2">
+        <!--<a-plane material="opacity: 0.5; color: #222" position=".5 .5 -2" width="2" height="2" rotation="0 0 0" text="align: left; wrapCount: 35; value: test"></a-plane>-->
+    </a-entity>
+</a-entity>
