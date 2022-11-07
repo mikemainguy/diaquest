@@ -22,7 +22,6 @@ AFRAME.registerComponent('grabber', {
       this.grabbed = evt.currentTarget.components['raycaster'].intersections[0].object.el;
       this.grabbed.emit('grabbed', {hand: evt.currentTarget});
     }
-
   },
   release: function(evt) {
     if (this.grabbed) {

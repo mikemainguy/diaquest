@@ -46,17 +46,19 @@ AFRAME.registerComponent('stuff', {
         }
     },
     tick: function () {
-        if (this.textDisplay && this.saveable) {
-            const radius = this.saveable.object3D.children[0].geometry.boundingBox.max.y;
-            this.textDisplay.position.set(0, (radius * this.saveable.object3D.scale.y) + 0.05, 0);
+        if (this.textDisplay) {
+            if (this.saveable) {
+                const radius = this.saveable.object3D.children[0].geometry.boundingBox.max.y;
+                this.textDisplay.position.set(0, (radius * this.saveable.object3D.scale.y) + 0.05, 0);
+            }
+
         }
     },
     events: {
         click: function (evt) {
             evt.detail.cursorEl.components['tracked-controls-webxr'].controller.gamepad.hapticActuators[0].pulse(.5, 100);
-
-
             const obj = evt.target.closest('[template]');
+            newrelic.addPageAction('click', {id: obj.id});
             switch (getCurrentMode()) {
                 case 'removing':
                     document.dispatchEvent(new CustomEvent('shareUpdate', {detail: {id: obj.id, remove: true}}));
@@ -113,11 +115,12 @@ AFRAME.registerComponent('stuff', {
         },
         grabbed: function (evt) {
             this.grabbed = this.el.closest('[template]');
+            newrelic.addPageAction('grab', {id: this.grabbed.id});
             evt.detail.hand.object3D.attach(this.grabbed.object3D);
         },
         released: function () {
+            newrelic.addPageAction('release', {id: this.grabbed.id});
             this.el.sceneEl.object3D.attach(this.grabbed.object3D);
-
             const newPos = round(this.grabbed.object3D.position, .1);
             this.grabbed.object3D.position.set(newPos.x, newPos.y, newPos.z);
             const ang = AFRAME.utils.coordinates.parse(this.grabbed.getAttribute('rotation'));
