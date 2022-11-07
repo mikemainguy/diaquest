@@ -118,7 +118,7 @@ export function writeUser(profile) {
             const name = val.name ? val.name : key;
 
 
-            const entry = document.querySelector('a-link[data-world-id="'+ key + '"]');
+            /*const entry = document.querySelector('a-link[data-world-id="'+ key + '"]');
             if (entry) {
                 entry.setAttribute('name', name);
             } else {
@@ -127,11 +127,13 @@ export function writeUser(profile) {
                 newEl.setAttribute('href', '/worlds/' + key);
                 newEl.setAttribute('title', name);
                 document.getElementById('navigation').appendChild(newEl);
-            }
+            }*/
         });
-        window.setTimeout(function() {
+
+
+        /*window.setTimeout(function() {
             document.getElementById('navigation').components['navigation'].update();
-        }, 200);
+        }, 200); */
 
     });
 }
