@@ -1,10 +1,11 @@
 <a-entity class="rig" position="0 0 2">
-    <a-entity
-            id="keyboard"
-            position="0 1 -1"
-            3d-keyboard="visible: false; scale: .06 .06 .6"
-            rotation="-20 0 0">
-
+    <a-entity id="keyboard-rotation">
+        <a-entity
+                id="keyboard"
+                position="0 1 -1"
+                3d-keyboard="visible: false; scale: .06 .06 .6"
+                rotation="-20 0 0">
+        </a-entity>
     </a-entity>
     <a-entity
             id="left-hand"
@@ -13,9 +14,10 @@
             buttons
             oculus-touch-controls="hand: left"
             laser-controls="hand: left"
-            raycaster="objects: .saveable,a-link; lineColor: #f33; lineOpacity: 0.7; far: 5"
+            raycaster="objects: .saveable,a-link; lineColor: #fff; lineOpacity: 0.01; far: 1"
             grabber
             mover="x: 1 0 0; y: 0 0 1">
+
         <a-plane width="0.2"
                  height=".03"
                  color="#fff"
@@ -31,7 +33,7 @@
               laser-controls="hand: right"
               buttons
               oculus-touch-controls="hand: right"
-              raycaster="objects: .saveable,a-link; lineColor: #f33; lineOpacity: 0.7; far: 5"
+              raycaster="objects: .saveable,a-link; lineColor: #fff; lineOpacity: 0.01; far: 1"
               position=".5 1.6 1.5"
               rotation="90 0 0"
               grabber
@@ -46,6 +48,7 @@
                  text="color: #000; value: test; baseline: center; width: 0.25; align: center"
                  position=".005 0.01 0.17"
                  rotation="-90 -90 0"></a-plane>
+
         <a-plane width="0.01"
                  height="0.01"
                  color="#fff"

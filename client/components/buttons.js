@@ -30,6 +30,41 @@ AFRAME.registerComponent('buttons', {
         this.second = null;
         this.template = null;
         this.color = '#399';
+        this.snapmodes = ['copying','adding'];
+        const pointer = document.createElement('a-sphere');
+        this.gridpointer = false;
+        pointer.setAttribute('material', 'color: #fff; opacity: 0.6; emissive: #fff');
+        pointer.setAttribute('radius', '0.008');
+        this.el.appendChild(pointer);
+        this.pointer = pointer;
+
+    },
+    update: function() {
+
+    },
+    tock: function() {
+        if (!this.raycaster) {
+            const ray = this.el.components['raycaster'];
+            if (ray) {
+                this.raycaster = ray;
+                this.pointer.setAttribute('position', this.raycaster.lineData.end);
+            }
+        } else {
+            if (this.gridpointer) {
+                const v = this.raycaster.lineData.end.clone();
+                this.el.object3D.localToWorld(v);
+                const rounded = round(v, .1);
+                this.el.object3D.worldToLocal(rounded)
+                this.pointer.object3D.position.set(rounded.x, rounded.y, rounded.z);
+            } else {
+                this.pointer.object3D.position.set(
+                    this.raycaster.lineData.end.x,
+                    this.raycaster.lineData.end.y,
+                    this.raycaster.lineData.end.z);
+            }
+
+        }
+
     },
     events: {
         bbuttondown: function (evt) {
@@ -53,11 +88,13 @@ AFRAME.registerComponent('buttons', {
                 return;
             }
             const data = {};
+            const v = this.pointer.object3D.position.clone();
+            this.el.object3D.localToWorld(v);
+            data.position = v;
+
             switch (this.system.mode.slice(-1)[0]) {
                 case 'copying':
-
                     data.id = createUUID();
-                    data.position = round(getMenuPosition(), .1);
                     const ele = document.getElementById(this.system.first);
                     data.template = ele.getAttribute('template').src;
                     const stuffData = ele.components['stuff'].data;
@@ -72,8 +109,6 @@ AFRAME.registerComponent('buttons', {
                     this.system.first = null;
                     data.id = createUUID();
                     //const newPos = round(this.grabbed.object3D.position, .1);
-
-                    data.position = round(getMenuPosition(), .1);
                     data.template = this.system.template;
                     data.color = this.system.color;
                     document.dispatchEvent(

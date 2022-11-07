@@ -27,8 +27,8 @@ AFRAME.registerComponent('3d-keyboard', {
 
     this.keyboard = document.createElement('a-entity');
     this.keyboard.setAttribute('visible', this.data.visible);
-    this.keyboard.setAttribute('sound', 'src: #keyin; volume: 0.1; on: mouseenter;');
-    this.el.setAttribute('sound', 'src: #keydown; on: mousedown;');
+    this.keyboard.setAttribute('sound', 'src: #keyin; volume: 0.1; on: mouseenter; poolSize: 5');
+    this.el.setAttribute('sound', 'src: #keydown; on: mousedown; poolSize: 5');
     this.el.appendChild(this.keyboard);
     this.keyboard.setAttribute('scale', this.data.scale);
     let y = 1.5;
