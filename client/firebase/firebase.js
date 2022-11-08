@@ -111,7 +111,7 @@ export function writeUser(profile) {
     onValue(directory, (snap) => {
         const el = document.getElementById('directory');
 
-        console.log(snap.val());
+
         snap.forEach((data) => {
             const val = data.val();
             const key = data.key;
