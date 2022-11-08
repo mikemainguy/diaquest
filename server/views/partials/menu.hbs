@@ -1,4 +1,4 @@
-<a-entity position=".1 .15 0" rotation="0 -75 0" id="bmenu" visible="false"  scale="0.1 0.1 0.1">
+<a-entity position=".1 .15 0" rotation="0 -75 0" id="bmenu" visible="false" scale="0.1 0.1 0.1">
     <a-entity sound="src: #inputclick; on: click; poolSize: 5" gridlayout position="0 -.5 0">
         <a-entity>
             <a-plane text="value: Text" id='edit' mixin="menuPlane"></a-plane>
@@ -15,12 +15,20 @@
                 <a-sphere mixin="widgetMaterial" radius=".1" position="0.05 0 0" material="color: #040;"></a-sphere>
                 <a-sphere mixin="widgetMaterial" radius=".1" position="-0.05 0 0"
                           material="color: #00f;"></a-sphere>
-                <a-entity position="0 .1 0.3" rotation="0 0 0" scale="10 10 10" id="color-picker" color-picker visible="false"></a-entity>
+                <a-entity position="0 .1 0.3" rotation="0 0 0" scale="10 10 10" id="color-picker" color-picker
+                          visible="false"></a-entity>
             </a-entity>
         </a-entity>
 
         <a-entity>
-            <a-plane text="value: Move" id='move' mixin="menuPlane"></a-plane>
+            <a-plane text="value: Remove" id='remove' mixin="menuPlane"></a-plane>
+            <a-entity>
+                <a-box mixin="widgetMaterial" width=".2" height="0.05" depth="0.05" color="#f55"></a-box>
+            </a-entity>
+
+        </a-entity>
+        <a-entity>
+            <a-plane text="value: Edit Size" id='resize' mixin="menuPlane"></a-plane>
             <a-entity>
                 <a-entity rotation="30 30 0">
                     <a-cylinder radius=".01" height="0.3" mixin="widgetMaterial"></a-cylinder>
@@ -40,43 +48,17 @@
                     <a-entity template="src: #widgetPoint" rotation="0 0 180"
                               position="0 -.2 0"></a-entity>
                 </a-entity>
-            </a-entity>
-        </a-entity>
-        <!--<a-entity>
-            <a-plane text="value: Align" id='align' mixin="menuPlane"></a-plane>
-            <a-entity>
-                <a-entity rotation="10 0 10">
-                    <a-cylinder radius=".01" height="0.3" mixin="widgetMaterial" color="#f00"></a-cylinder>
-                </a-entity>
-                <a-entity rotation="10 90 10">
-                    <a-cylinder radius=".01" height="0.3" mixin="widgetMaterial" color="#0f0"></a-cylinder>
 
-                </a-entity>
-                <a-entity rotation="10 0 100">
-                    <a-cylinder radius=".01" height="0.3" mixin="widgetMaterial" color="#00f"></a-cylinder>
-                </a-entity>
-            </a-entity>
 
-        </a-entity>
--->
-        <a-entity>
-            <a-plane text="value: Remove" id='remove' mixin="menuPlane"></a-plane>
-            <a-entity>
-                <a-box mixin="widgetMaterial" width=".2" height="0.05" depth="0.05" color="#f55"></a-box>
             </a-entity>
-
-        </a-entity>
-        <a-entity>
-            <a-plane text="value: Edit Size" id='resize' mixin="menuPlane"></a-plane>
-            <a-entity>
-                <a-box mixin="widgetMaterial" width=".2" height="0.05" depth="0.05" color="#f55"></a-box>
-            </a-entity>
-
         </a-entity>
         <a-entity>
             <a-plane text="value: Copy" id='copy' mixin="menuPlane"></a-plane>
             <a-entity>
-                <a-box mixin="widgetMaterial" width=".2" height="0.05" depth="0.05" color="#f55"></a-box>
+                <a-sphere mixin="widgetMaterial" radius=".1" position="-0.05 0 0"
+                          material="color: #fff;"></a-sphere>
+                <a-sphere mixin="widgetMaterial" radius=".1" position="0.05 0 0"
+                          material="color: #fff; opacity: 0.5"></a-sphere>
             </a-entity>
 
         </a-entity>
@@ -104,7 +86,7 @@
         <a-entity>
             <a-plane text="value: Add Cylinder" id='add-cylinder' mixin="menuPlane"></a-plane>
             <a-cylinder radius="0.25" height=".25"
-                      mixin="widgetMaterial">
+                        mixin="widgetMaterial">
                 <a-entity template="src: #plus"></a-entity>
             </a-cylinder>
 
