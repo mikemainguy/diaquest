@@ -193,6 +193,7 @@ function createOrUpdateDom(entity) {
     }
     const ele = exists ? exists : document.createElement('a-entity');
 
+
     ele.setAttribute('template', 'src: ' + entity.template);
     ele.setAttribute('id', entity.id);
     const comp = ele.querySelector('[share-position]');
@@ -222,21 +223,15 @@ function createOrUpdateDom(entity) {
         case '#pane-template':
         case '#cylinder-template':
         case '#sphere-template':
-            window.setTimeout(function () {
-                ele.setAttribute('stuff', 'text: ' + text + '; color: ' + color + '; scale: ' + scale);
-            }, 500);
-
+            ele.setAttribute('stuff', 'text: ' + text + '; color: ' + color + '; scale: ' + scale);
             break;
         case '#connector-template':
-            window.setTimeout(function () {
-                ele.setAttribute('stuff', 'text: ' + text + '; color: ' + color);
-                ele.setAttribute('connector', 'startEl: #' + entity.first + "; endEl: #" + entity.second);
-            }, 200)
+            ele.setAttribute('stuff', 'text: ' + text + '; color: ' + color);
+            ele.setAttribute('connector', 'startEl: #' + entity.first + "; endEl: #" + entity.second);
             break;
     }
-
     if (!exists) {
-        scene.appendChild(ele);
+        scene.append(ele);
     }
     if (entity.rotation || entity.position) {
         if (comp && comp.components && comp.components['share-position'] &&

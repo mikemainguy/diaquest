@@ -3,6 +3,7 @@ import {createUUID, getMenuPosition, round} from './util';
 
 AFRAME.registerSystem('buttons', {
     init: function () {
+
         this.first = null;
         this.mode = [];
         this.color = '#399';
@@ -16,6 +17,7 @@ AFRAME.registerSystem('buttons', {
         this.el.addEventListener('showMenu', this.showMenu);
     },
     buttonstate: function (evt) {
+
         this.template = evt.detail.template ? evt.detail.template : null;
         this.mode = evt.detail.mode;
         this.id = evt.detail.id ? evt.detail.id : null;
@@ -40,13 +42,19 @@ AFRAME.registerComponent('buttons', {
 
     },
     update: function() {
-
+        this.sizerplane = document.getElementById('sizerplane');
     },
     tock: function() {
         if (!this.raycaster) {
             const ray = this.el.components['raycaster'];
             if (ray) {
                 this.raycaster = ray;
+                /*if (this.first) {
+                    this.sizerplane
+                        .setAttribute('text',
+                        'value',
+                            JSON.stringify(this.first.components['stuff'].data));
+                }*/
                 this.pointer.setAttribute('position', this.raycaster.lineData.end);
             }
         } else {

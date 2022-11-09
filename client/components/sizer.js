@@ -38,6 +38,8 @@ AFRAME.registerSystem('sizer', {
     init: function () {
         this.sized = null;
         this.handle = null;
+
+
         this.sizer = document.getElementById('sizer');
         document.addEventListener('resizing', this.eventListener.bind(this));
     },
@@ -58,6 +60,7 @@ AFRAME.registerComponent('sizer', {
     schema: {
         color: {type: 'string', value: '#550'},
         position: {type: 'string'}
+
     },
     init: function () {
         this.el.setAttribute('material', 'color', this.data.color);
@@ -129,15 +132,17 @@ AFRAME.registerComponent('sizer', {
             v2.copy(this.hand.components['raycaster'].intersections[0].point);
             this.el.object3D.parent.worldToLocal(v2);
 
-            if (Math.abs(this.position.y) > 0) {
+            if (Math.abs(this.position.y) > 0 && v2.y > 0) {
                 this.system.saveable.object3D.scale.setY(v2.y * 2);
             }
-            if (Math.abs(this.position.x) > 0) {
+            if (Math.abs(this.position.x ) > 0 && v2.x > 0) {
                 this.system.saveable.object3D.scale.setX(v2.x * 2);
             }
-            if (Math.abs(this.position.z) > 0) {
+            if (Math.abs(this.position.z && v2.z > 0) > 0) {
                 this.system.saveable.object3D.scale.setZ(v2.z * 2);
             }
+
+
 
         }
         if (this.system.saveable) {
@@ -146,6 +151,7 @@ AFRAME.registerComponent('sizer', {
             const bounds = geometry.boundingBox;
 
             const v = new THREE.Vector3();
+
             if (this.position.x > 0 || this.position.y > 0 || this.position.z > 0) {
                 v.multiplyVectors(this.position, bounds.max);
                 v.multiply(this.system.saveable.object3D.scale);

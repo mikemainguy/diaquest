@@ -1,9 +1,9 @@
 import {changeRaycaster, createUUID, getCurrentMode, getSystem, round} from "./util";
 
 AFRAME.registerSystem('stuff', {
-   init: function() {
-       this.first=null;
-   }
+    init: function () {
+        this.first = null;
+    }
 });
 AFRAME.registerComponent('stuff', {
     schema: {
@@ -14,42 +14,48 @@ AFRAME.registerComponent('stuff', {
     },
     init: function () {
         this.el.setAttribute('sound', 'src: #keyin; volume: 0.2; on: mouseenter;');
-        this.saveable = this.el.querySelector('.saveable');
     },
     update: function () {
-        const textDisplay = this.el.querySelector('[text-geometry]');
-        this.saveable = this.el.querySelector('.saveable');
 
         this.el.emit('registerupdate', {}, true);
-        if (this.saveable) {
+
+    },
+    tock: function () {
+
+        if (!this.textDisplay) {
+            this.textDisplay = this.el.querySelector('[text-geometry]');
+        } else {
+
+            if (this.data.text) {
+                this.textDisplay.setAttribute('visible', true);
+                this.textDisplay.setAttribute('text-geometry', 'value', this.data.text);
+            } else {
+                this.textDisplay.setAttribute('visible', false);
+            }
+
+        }
+
+        if (!this.saveable) {
+            this.saveable = this.el.querySelector('.saveable');
+        } else {
             this.scale = AFRAME.utils.coordinates.parse(this.data.scale);
             this.saveable.object3D.scale.set(this.scale.x, this.scale.y, this.scale.z);
             this.saveable.object3D.children[0].geometry.computeBoundingBox();
             this.saveable.setAttribute('visible', true);
             this.saveable.setAttribute('sound', 'src: #keydown; on: click;');
-        }
-        if (textDisplay) {
-            if (this.data.text) {
-                this.textDisplay = textDisplay.object3D;
-                textDisplay.setAttribute('visible', true);
-                textDisplay.setAttribute('text-geometry', 'value', this.data.text);
-            } else {
-                this.textDisplay = null;
-                textDisplay.setAttribute('visible', false);
-            }
+            this.saveable.setAttribute('material', 'color', this.data.color);
 
         }
 
-        const saveable = this.el.querySelector('.saveable');
-        if (saveable) {
-            saveable.setAttribute('material', 'color', this.data.color);
-        }
     },
     tick: function () {
-        if (this.textDisplay) {
-            if (this.saveable) {
+        if (this.textDisplay && this.saveable) {
+            if (this.saveable.object3D.children[0].geometry.boundingBox) {
                 const radius = this.saveable.object3D.children[0].geometry.boundingBox.max.y;
-                this.textDisplay.position.set(0, (radius * this.saveable.object3D.scale.y) + 0.05, 0);
+                if (this.textDisplay.position) {
+                    this.textDisplay.position.set(0, (radius * this.saveable.object3D.scale.y) + 0.05, 0);
+                }
+
             }
 
         }
