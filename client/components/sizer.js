@@ -77,19 +77,9 @@ AFRAME.registerComponent('sizer', {
         },
         grabbed: function (evt) {
             this.start.copy(this.el.object3D.position);
-            //evt.detail.hand.object3D.getWorldPosition(this.start);
-            if (Math.abs(this.position.x) > 0) {
-                document.getElementById('xySize').setAttribute('rotation', '0 0 90');
-            }
-            if (Math.abs(this.position.y) > 0) {
-                document.getElementById('xySize').setAttribute('rotation', '0 0 0');
-            }
-            if (Math.abs(this.position.z) > 0) {
-                document.getElementById('xySize').setAttribute('rotation', '90 0 0');
-            }
-            evt.detail.hand.setAttribute('raycaster', 'objects', '#xySize');
             this.sizing = true;
             this.hand = evt.detail.hand;
+            evt.detail.hand.setAttribute('raycaster', 'objects', '');
             debug('grabbed');
         },
         released: function (evt) {
@@ -123,13 +113,12 @@ AFRAME.registerComponent('sizer', {
 
             //debug(this.system.handle.object3D.position)
         }
-        if (this.sizing && this.hand && this.hand.components['raycaster'] &&
-            this.hand.components['raycaster'].intersections.length > 0) {
+        if (this.sizing && this.hand && this.hand.components['raycaster']) {
             const v = new THREE.Vector3();
             v.copy(this.start);
-            //  this.hand.components('raycaster').intersections[0];
+
             const v2 = new THREE.Vector3();
-            v2.copy(this.hand.components['raycaster'].intersections[0].point);
+            this.hand.components['buttons'].pointer.object3D.getWorldPosition(v2);
             this.el.object3D.parent.worldToLocal(v2);
 
             if (Math.abs(this.position.y) > 0 && v2.y > 0) {

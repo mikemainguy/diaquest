@@ -9,16 +9,12 @@
              lookatme
              text-geometry="height: .05; size: .1; value: ...; font: #helvetiker"
              ></a-mixin>
-    <audio id="keydown" src="/assets/KeyDown2.mp3" preload="auto"></audio>
-    <audio id="keyin" src="/assets/KeyIn2.mp3" preload="auto"></audio>
-    <audio id="inputclick" src="/assets/KeyDown2.mp3" preload="auto"></audio>
+    <audio id="keydown" src="/assets/sounds/KeyDown2.mp3" preload="auto"></audio>
+    <audio id="keyin" src="/assets/sounds/KeyIn2.mp3" preload="auto"></audio>
+    <audio id="inputclick" src="/assets/sounds/KeyDown2.mp3" preload="auto"></audio>
     <a-asset-item id="helvetiker" src="/assets/helvetiker_regular.typeface.json"></a-asset-item>
-
     <a-asset-item id="emoji-asset" src="/assets/emoji.glb"></a-asset-item>
     <a-asset-item id="deer-asset" src="/assets/toontown_deer.glb"></a-asset-item>
-    <img id="woods" src="/assets/woods.jpeg"/>
-
-
     <a-entity id="plus" type="text/x-nunjucks-template">
         <a-entity position="0 0 .1">
             <a-box width="0.05" height=".2" depth="0.05" color="#5f5"></a-box>
@@ -29,9 +25,6 @@
     <a-entity id="widgetPoint" type="text/x-nunjucks-template">
         <a-cone radius-bottom="0.03" radius-top="0" height="0.1" mixin="widgetMaterial"></a-cone>
     </a-entity>
-
-
-
     <a-entity id="connector-template" type="text/x-nunjucks-template">
         <a-entity class="data-connector" share-position>
             <a-sphere rotation="90 0 0" position="0 0 0" radius="0.04" class="data-packet" color="#111">
