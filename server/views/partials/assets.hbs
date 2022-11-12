@@ -27,12 +27,12 @@
     </a-entity>
     <a-entity id="connector-template" type="text/x-nunjucks-template">
         <a-entity class="data-connector" share-position>
-            <a-sphere rotation="90 0 0" position="0 0 0" radius="0.04" class="data-packet" color="#111">
+            <a-sphere rotation="90 0 0" position="0 0 0" radius="0.02" class="data-packet" color="#111">
             </a-sphere>
             <a-cylinder class="saveable data-direction" rotation="90 0 0" position="0 0 0"
-                        material="opacity: 0.5; color: #33f" height="1" radius="0.2" visible="false">
+                        material="opacity: 0.5; color: #33f" height="1" radius="0.06" visible="false">
             </a-cylinder>
-            <a-entity mixin="labelMixin" position="0 0.3 0"></a-entity>
+            <a-entity class="label" mixin="labelMixin" position="0 0.3 0"></a-entity>
         </a-entity>
     </a-entity>
 

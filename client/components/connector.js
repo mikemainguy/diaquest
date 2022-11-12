@@ -31,6 +31,12 @@ AFRAME.registerComponent('connector', {
       if (this.el.querySelector('.data-direction')) {
         this.connector = this.el.querySelector('.data-direction').object3D;
       }
+      if (this.el.querySelector('.label')) {
+        this.label = this.el.querySelector('.label').object3D;
+      }
+      if (this.el.querySelector('.data-packet')) {
+        this.dataPacket = this.el.querySelector('.data-packet').object3D;
+      }
     } else {
 
     }
@@ -58,6 +64,11 @@ AFRAME.registerComponent('connector', {
       }
       const distance = this.pos1.distanceTo(this.pos2);
       this.connector.position.z = distance/2;
+      if (this.label) {
+        this.label.position.z = distance/2;
+      } else {
+        this.label = this.el.querySelector('.label').object3D;
+      }
       this.connector.scale.y = distance;
 
     } else {
