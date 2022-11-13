@@ -64,7 +64,9 @@ AFRAME.registerComponent('stuff', {
         click: function (evt) {
             evt.detail.cursorEl.components['tracked-controls-webxr'].controller.gamepad.hapticActuators[0].pulse(.5, 100);
             const obj = evt.target.closest('[template]');
-            newrelic.addPageAction('click', {id: obj.id});
+            if (typeof newrelic !== 'undefined') {
+                newrelic.addPageAction('click', {id: obj.id});
+            }
             switch (getCurrentMode()) {
                 case 'removing':
                     document.dispatchEvent(new CustomEvent('shareUpdate', {detail: {id: obj.id, remove: true}}));
@@ -121,11 +123,15 @@ AFRAME.registerComponent('stuff', {
         },
         grabbed: function (evt) {
             this.grabbed = this.el.closest('[template]');
-            newrelic.addPageAction('grab', {id: this.grabbed.id});
+            if (typeof newrelic !== 'undefined') {
+                newrelic.addPageAction('grab', {id: this.grabbed.id});
+            }
             evt.detail.hand.object3D.attach(this.grabbed.object3D);
         },
         released: function () {
-            newrelic.addPageAction('release', {id: this.grabbed.id});
+            if (typeof newrelic !== 'undefined') {
+                newrelic.addPageAction('release', {id: this.grabbed.id});
+            }
             this.el.sceneEl.object3D.attach(this.grabbed.object3D);
             const newPos = round(this.grabbed.object3D.position, .1);
             this.grabbed.object3D.position.set(newPos.x, newPos.y, newPos.z);
@@ -137,15 +143,3 @@ AFRAME.registerComponent('stuff', {
 });
 
 
-function getKeyboardPosition(distance) {
-    let pos = new THREE.Vector3();
-    const c = document.getElementById('camera').object3D;
-    c.getWorldPosition(pos);
-    let dir = new THREE.Vector3();
-    c.getWorldDirection(dir);
-    dir.multiplyScalar(distance ? distance : -1);
-    dir.y -= .3;
-
-    pos.add(dir);
-    return pos;
-}

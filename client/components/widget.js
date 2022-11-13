@@ -34,7 +34,9 @@ AFRAME.registerComponent('widget', {
         const event = new Event('rigChanged');
         document.dispatchEvent(event);
         debug(evt.target.id);
-        newrelic.addPageAction(evt.target.id);
+        if (typeof newrelic !== 'undefined') {
+            newrelic.addPageAction(evt.target.id);
+        }
         switch (evt.target.id) {
             case 'add-connector':
                 buttonState.mode = ['connecting', 'select-first'];
