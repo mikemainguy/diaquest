@@ -1,6 +1,12 @@
 <div id="room"></div>
 <a-scene interaction-system background="color: #003" fog="type: exponential; color: #fff; near: 20; far: 100">
+    <script>
+        newrelic.addPageAction('load assets');
+    </script>
     {{> assets }}
+    <script>
+        newrelic.addPageAction('assets loaded');
+    </script>
     <a-entity id="clock" clock lookatme position="0 5 -23" scale="3 3 3"></a-entity>
     <a-entity id="navigation" lookatme navigation position="23 2 0"></a-entity>
     <a-entity>

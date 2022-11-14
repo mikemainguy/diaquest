@@ -11,7 +11,7 @@ AFRAME.registerSystem('buttons', {
         this.buttonstate = this.buttonstate.bind(this);
         this.hideMenu = hideMenu.bind(this);
         this.showMenu = showMenu.bind(this);
-
+        this.pointers = [];
         this.el.addEventListener('buttonstate', this.buttonstate);
         this.el.addEventListener('hideMenu', this.hideMenu);
         this.el.addEventListener('showMenu', this.showMenu);
@@ -39,22 +39,17 @@ AFRAME.registerComponent('buttons', {
         pointer.setAttribute('radius', '0.008');
         this.el.appendChild(pointer);
         this.pointer = pointer;
+        this.system.pointers.push(pointer);
 
     },
     update: function() {
-        this.sizerplane = document.getElementById('sizerplane');
+
     },
     tock: function() {
         if (!this.raycaster) {
             const ray = this.el.components['raycaster'];
             if (ray) {
                 this.raycaster = ray;
-                /*if (this.first) {
-                    this.sizerplane
-                        .setAttribute('text',
-                        'value',
-                            JSON.stringify(this.first.components['stuff'].data));
-                }*/
                 this.pointer.setAttribute('position', this.raycaster.lineData.end);
             }
         } else {
@@ -75,6 +70,26 @@ AFRAME.registerComponent('buttons', {
 
     },
     events: {
+        abuttondown: function(evt) {
+
+            const rays = getRaycasters();
+            for (const caster of rays) {
+                caster.setAttribute('raycaster', 'far', 8);
+            }
+            for (const pointer of this.system.pointers) {
+                pointer.setAttribute('radius', .1);
+            }
+        },
+        abuttonup: function(evt){
+            for (const pointer of this.system.pointers) {
+                pointer.setAttribute('radius', .008);
+            }
+            const rays = getRaycasters();
+            for (const caster of rays) {
+                caster.setAttribute('raycaster', 'far', .1);
+            }
+
+        },
         bbuttondown: function (evt) {
             const bMenuShowing = document.getElementById('bmenu').getAttribute('visible');
             if (bMenuShowing) {

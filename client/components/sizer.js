@@ -79,7 +79,7 @@ AFRAME.registerComponent('sizer', {
             this.start.copy(this.el.object3D.position);
             this.sizing = true;
             this.hand = evt.detail.hand;
-            evt.detail.hand.setAttribute('raycaster', 'objects', '');
+            evt.detail.hand.setAttribute('raycaster', 'objects', '[mixin="sizeConnectorMixin"]');
             debug('grabbed');
         },
         released: function (evt) {

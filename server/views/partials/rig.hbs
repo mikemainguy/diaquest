@@ -2,8 +2,8 @@
     <a-entity id="keyboard-rotation">
         <a-entity
                 id="keyboard"
-                position="0 1 -1"
-                3d-keyboard="visible: false; scale: .06 .06 .6"
+                position="0 1 -.4"
+                3d-keyboard="visible: false; scale: .04 .04 .4"
                 rotation="-20 0 0">
         </a-entity>
     </a-entity>
@@ -15,7 +15,7 @@
             buttons
             oculus-touch-controls="hand: left"
             laser-controls="hand: left"
-            raycaster="objects: .saveable,a-link; lineColor: #fff; lineOpacity: 0.01; far: 1"
+            raycaster="objects: .saveable,a-link; lineColor: #fff; lineOpacity: 0.01; far: .1"
             grabber
             mover="x: 1 0 0; y: 0 0 1">
 
@@ -34,7 +34,7 @@
               laser-controls="hand: right"
               buttons
               oculus-touch-controls="hand: right"
-              raycaster="objects: .saveable,a-link; lineColor: #fff; lineOpacity: 0.01; far: 1"
+              raycaster="objects: .saveable,a-link; lineColor: #fff; lineOpacity: 0.01; far: .1"
               position=".5 1.6 1.5"
               rotation="90 0 0"
               grabber
