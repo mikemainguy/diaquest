@@ -56,6 +56,10 @@ AFRAME.registerComponent('widget', {
                 buttonState.template = '#box-template'
                 buttonState.mode = ['adding'];
                 break;
+            case 'add-light':
+                buttonState.template = '#light-template'
+                buttonState.mode = ['adding'];
+                break;
             case 'close':
                 break;
             case 'edit-color':

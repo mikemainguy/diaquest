@@ -74,6 +74,9 @@ AFRAME.registerComponent('buttons', {
 
             const rays = getRaycasters();
             for (const caster of rays) {
+                const flashlight = document.createElement('a-entity');
+
+
                 caster.setAttribute('raycaster', 'far', 8);
             }
             for (const pointer of this.system.pointers) {
@@ -86,6 +89,7 @@ AFRAME.registerComponent('buttons', {
             }
             const rays = getRaycasters();
             for (const caster of rays) {
+
                 caster.setAttribute('raycaster', 'far', .1);
             }
 

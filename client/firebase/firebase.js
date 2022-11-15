@@ -7,14 +7,14 @@ import {sha512} from 'crypto-hash';
 
 import {
     getDatabase,
-    remove,
-    ref,
-    set,
-    update,
-    onValue,
-    onChildRemoved,
     onChildAdded,
-    onChildChanged
+    onChildChanged,
+    onChildRemoved,
+    onValue,
+    ref,
+    remove,
+    set,
+    update
 } from "firebase/database";
 
 
@@ -68,9 +68,11 @@ async function setupApp() {
 }
 
 if (!VRLOCAL) {
+    newrelic.addPageAction('initializing firebase');
+
     setupApp().then((profile) => {
         writeUser(profile);
-
+        newrelic.addPageAction('firebase db setup');
 
         const entities = ref(database, getDbPath(null));
 
@@ -88,7 +90,9 @@ if (!VRLOCAL) {
             createOrUpdateDom(snapshot.val());
         });
     });
+
 }
+
 
 export function writeUser(profile) {
     sha512(profile.user.sid).then((result) => {
@@ -222,6 +226,7 @@ function createOrUpdateDom(entity) {
         case '#box-template':
         case '#pane-template':
         case '#cylinder-template':
+        case '#light-template':
         case '#sphere-template':
             ele.setAttribute('stuff', 'text: ' + text + '; color: ' + color + '; scale: ' + scale);
             break;

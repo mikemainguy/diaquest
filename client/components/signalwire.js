@@ -1,14 +1,16 @@
 import * as SignalWire from '@signalwire/js';
 import {default as axios} from "axios";
-import { debug } from './debug';
+import {debug} from './debug';
 
 AFRAME.registerSystem('signalwire', {
     init: function () {
+
+
         document.addEventListener('connectSignalwire', (evt) => {
             if (this.roomSession && this.roomSession.active) {
                 debug('already in session');
             } else {
-                setupRoom().then((results)=> {
+                setupRoom().then((results) => {
                     debug('connected to conference');
                     newrelic.addPageAction('room session started');
                     this.roomSession = results;
@@ -32,10 +34,10 @@ AFRAME.registerSystem('signalwire', {
         document.addEventListener('unmute', this.unmute.bind(this));
 
     },
-    disconnect: function(evt) {
+    disconnect: function (evt) {
 
     },
-    mute: function(evt) {
+    mute: function (evt) {
 
         if (this.roomSession) {
             newrelic.addPageAction('mute');
@@ -47,7 +49,7 @@ AFRAME.registerSystem('signalwire', {
             debug('no room session');
         }
     },
-    unmute: function(evt) {
+    unmute: function (evt) {
 
         if (this.roomSession) {
             newrelic.addPageAction('unmute');

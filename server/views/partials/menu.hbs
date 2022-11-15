@@ -28,6 +28,13 @@
 
         </a-entity>
         <a-entity>
+            <a-plane text="value: Light" id='add-light' mixin="menuPlane"></a-plane>
+            <a-entity>
+                <a-cylinder mixin="widgetMaterial" radius=".01" height="0.05" color="#fff"></a-cylinder>
+            </a-entity>
+        </a-entity>
+
+        <a-entity>
             <a-plane text="value: Edit Size" id='resize' mixin="menuPlane"></a-plane>
             <a-entity>
                 <a-entity rotation="30 30 0">

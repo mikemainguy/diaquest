@@ -35,7 +35,16 @@
             <a-entity class="label" mixin="labelMixin" position="0 0.3 0"></a-entity>
         </a-entity>
     </a-entity>
-
+    <a-entity id="light-template" type="text/x-nunjucks-template">
+        <a-entity share-position>
+            <a-cylinder radius=".1" height=".5" class="saveable">
+                <a-entity light="type: point" position="0 0 -1"></a-entity>
+                <a-entity rotation="90 0 0" light="type: spot; angle: 2; distance: 40">
+                </a-entity>
+            </a-cylinder>
+            <a-entity mixin="labelMixin" position="0 0.3 0"></a-entity>
+        </a-entity>
+    </a-entity>
     <a-entity id="sphere-template" type="text/x-nunjucks-template">
         <a-entity share-position>
             <a-sphere class="saveable" material="color: #33f" radius="1" visible="false"></a-sphere>
