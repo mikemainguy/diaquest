@@ -5,7 +5,9 @@ require('aframe-template-component');
 
 import * as SignalWire from '@signalwire/js';
 
+/*
 import Analytics from 'analytics';
+
 import googleTagManager from '@analytics/google-tag-manager';
 const analytics = Analytics(
     { app: 'immersive-idea',
@@ -16,7 +18,7 @@ const analytics = Analytics(
         ]}
 );
 analytics.page();
-
+ */
 
 function requireAll(r) { r.keys().forEach(r); }
 requireAll(require.context('../client/jslibs/', true, /\.js$/));
