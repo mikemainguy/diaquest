@@ -16,7 +16,6 @@ AFRAME.registerComponent('stuff', {
         this.el.setAttribute('sound', 'src: #keyin; volume: 0.2; on: mouseenter;');
     },
     update: function () {
-
         this.el.emit('registerupdate', {}, true);
 
     },
@@ -45,24 +44,9 @@ AFRAME.registerComponent('stuff', {
             }
             this.saveable.setAttribute('visible', true);
             this.saveable.setAttribute('sound', 'src: #keydown; on: click;');
-
-                // Grab the mesh / scene.
-            const obj = this.saveable.getObject3D('mesh');
-                // Go over the submeshes and modify materials we want.
-            if (obj) {
-                obj.traverse(node => {
-                        if (node.material && this.data.color) {
-                            node.material.color.set(this.data.color);
-                        } else {
-                            //console.log ('error');
-                            //TODO we need to figure out how to set materials of gltf models
-                        }
-
-
-                });
+            if (!this.saveable.getAttribute('animation')) {
+                this.saveable.setAttribute('material', 'color', this.data.color);
             }
-
-            this.saveable.setAttribute('material', 'color', this.data.color);
 
         }
 
@@ -70,13 +54,20 @@ AFRAME.registerComponent('stuff', {
     tick: function () {
         if (this.textDisplay && this.saveable) {
             if (this.saveable?.object3D?.children[0]?.geometry?.boundingBox) {
-                const radius = this.saveable.object3D.children[0].geometry.boundingBox.max.y;
-                if (this.textDisplay.position) {
-                    this.textDisplay.position.set(0, (radius * this.saveable.object3D.scale.y) + 0.05, 0);
+                const radius = this.saveable
+                    .object3D
+                    .children[0]
+                    .geometry
+                    .boundingBox
+                    .max
+                    .y;
+                if (this.textDisplay.object3D?.position) {
+                    this.textDisplay
+                        .object3D
+                        .position
+                        .set(0, (radius * this.saveable.object3D.scale.y) + 0.05, 0);
                 }
-
             }
-
         }
     },
     events: {

@@ -1,30 +1,71 @@
-<a-assets timeout="20000">
-    <a-mixin id="menuPlane" material="color: #22a" width="1" height="1"
+<a-assets timeout="40000">
+    <a-mixin id="menuPlane"
+             material="color: #22a"
+             width="1"
+             height="1"
              text="align: center; wrapCount: 10"
-             position="0 0 -.25" widget></a-mixin>
-    <a-mixin id="widgetMaterial" material="color: #aaa; opacity: 0.5"></a-mixin>
-    <a-mixin id="sizeConnectorMixin" class="sizeHandle" material="color: #ff0; opacity: 0.5"></a-mixin>
+             position="0 0 -.25" widget>
+    </a-mixin>
+    <a-mixin id="widgetMaterial"
+             material="color: #aaa; opacity: 0.5">
+    </a-mixin>
+    <a-mixin id="sizeConnectorMixin"
+             class="sizeHandle"
+             material="color: #ff0; opacity: 0.5">
+    </a-mixin>
     <a-mixin id="labelMixin"
              material="color: #eee;"
              lookatme
              text-geometry="height: .05; size: .1; value: ...; font: #helvetiker"
              ></a-mixin>
-    <audio id="keydown" src="/assets/sounds/KeyDown2.mp3" preload="auto"></audio>
-    <audio id="keyin" src="/assets/sounds/KeyIn2.mp3" preload="auto"></audio>
-    <audio id="inputclick" src="/assets/sounds/KeyDown2.mp3" preload="auto"></audio>
-    <a-asset-item id="helvetiker" src="/assets/helvetiker_regular.typeface.json"></a-asset-item>
-    <a-asset-item id="emoji-asset" src="/assets/emoji.glb"></a-asset-item>
-    <a-asset-item id="deer-asset" src="/assets/toontown_deer.glb"></a-asset-item>
+    <audio id="keydown"
+           src="/assets/sounds/KeyDown2.mp3">
+    </audio>
+    <audio id="keyin"
+           src="/assets/sounds/KeyIn2.mp3">
+    </audio>
+    <audio id="inputclick"
+           src="/assets/sounds/KeyDown2.mp3">
+    </audio>
+
+    <a-asset-item id="helvetiker"
+                  src="/assets/helvetiker_regular.typeface.json">
+    </a-asset-item>
+    <a-asset-item id="emoji-asset"
+                  src="/assets/emoji.glb">
+    </a-asset-item>
+    <a-asset-item id="deer-asset"
+                  src="/assets/toontown_deer.glb">
+    </a-asset-item>
+
     <a-entity id="plus" type="text/x-nunjucks-template">
         <a-entity position="0 0 .1">
-            <a-box width="0.05" height=".2" depth="0.05" color="#5f5"></a-box>
-            <a-box width=".2" height="0.05" depth="0.05" color="#5f5"></a-box>
+            <a-box
+                    width="0.05"
+                    height=".2"
+                    depth="0.05"
+                    color="#5f5">
+
+            </a-box>
+            <a-box
+                    width=".2"
+                    height="0.05"
+                    depth="0.05"
+                    color="#5f5">
+
+            </a-box>
         </a-entity>
     </a-entity>
 
     <a-entity id="widgetPoint" type="text/x-nunjucks-template">
-        <a-cone radius-bottom="0.03" radius-top="0" height="0.1" mixin="widgetMaterial"></a-cone>
+        <a-cone
+                radius-bottom="0.03"
+                radius-top="0"
+                height="0.1"
+                mixin="widgetMaterial">
+        </a-cone>
     </a-entity>
+
     <a-entity id="connector-template" type="text/x-nunjucks-template">
         <a-entity class="data-connector" share-position>
             <a-cone rotation="-90 0 0" position="0 0 0" radius-top="0" radius-bottom="0.02" height=".04" class="data-packet" color="#111">
@@ -36,43 +77,81 @@
         </a-entity>
     </a-entity>
     <a-entity id="light-template" type="text/x-nunjucks-template">
-        <a-entity share-position>
-            <a-entity scale=".1 .1 .1"
-                      position="0 0 0"
-                      rotation="s0 0 0"
-                      gltf-model="obj: url(/assets/flashlight.glb)"
-                      class="saveable"></a-entity>
 
-            <!--<a-entity light="type: point" position="0 1 0"></a-entity> -->
-            <a-sphere radius=".05" position="0 .5 0" color="#f00"></a-sphere>
-
-            <a-entity rotation="90 0 0" light="type: spot; angle: 4; distance: 40">
+            <a-cylinder
+                    share-position
+                    radius=".01"
+                    height=".1"
+                    class="saveable">
+            </a-cylinder>
+            <a-entity
+                    rotation="90 0 0"
+                    light="type: spot; angle: 10; distance: 40">
             </a-entity>
-            <a-entity mixin="labelMixin" position="0 0.3 0"></a-entity>
+            <a-entity
+                    mixin="labelMixin"
+                    position="0 0.3 0">
+            </a-entity>
+
+    </a-entity>
+
+    <a-entity
+            id="sphere-template"
+            type="text/x-nunjucks-template">
+        <a-entity share-position>
+            <a-sphere
+                    class="saveable"
+                    material="color: #33f"
+                    radius=".5"
+                    visible="false">
+            </a-sphere>
+            <a-entity
+                    mixin="labelMixin"
+                    position="0 0.3 0">
+            </a-entity>
         </a-entity>
     </a-entity>
-    <a-entity id="sphere-template" type="text/x-nunjucks-template">
+
+    <a-entity
+            id="cylinder-template"
+            type="text/x-nunjucks-template">
         <a-entity share-position>
-            <a-sphere class="saveable" material="color: #33f" radius="1" visible="false"></a-sphere>
-            <a-entity mixin="labelMixin" position="0 0.3 0"></a-entity>
-        </a-entity>
-    </a-entity>
-    <a-entity id="cylinder-template" type="text/x-nunjucks-template">
-        <a-entity share-position>
-            <a-cylinder class="saveable" material="color: #33f" radius="1" height="1" visible="false"></a-cylinder>
+            <a-cylinder
+                    class="saveable"
+                    material="color: #33f"
+                    radius=".5"
+                    height="1"
+                    visible="false">
+            </a-cylinder>
             <a-entity mixin="labelMixin" position="0 0.3 0"></a-entity>
         </a-entity>
     </a-entity>
     <a-entity id="box-template" type="text/x-nunjucks-template">
         <a-entity grabbable share-position>
-            <a-box class="saveable" color="#00f" width="1" height="1" depth="1" visible="false"></a-box>
+            <a-box
+                    class="saveable"
+                    color="#00f"
+                    width="1"
+                    height="1"
+                    depth="1"
+                    visible="false">
+
+            </a-box>
             <a-entity mixin="labelMixin" position="0 0.3 0"></a-entity>
         </a-entity>
     </a-entity>
     <a-entity id="user-template" type="text/x-nunjucks-template">
         <a-entity share-position>
-            <a-entity scale=".2 .2 .2" position="0 0 0" rotation="0 180 0" gltf-model="#deer-asset"></a-entity>
-            <a-entity mixin="labelMixin" position="0 0.3 0"></a-entity>
+            <a-entity
+                    scale=".2 .2 .2"
+                    position="0 0 0"
+                    rotation="0 180 0"
+                    gltf-model="#deer-asset">
+            </a-entity>
+            <a-entity
+                    mixin="labelMixin"
+                    position="0 0.3 0">
+            </a-entity>
         </a-entity>
     </a-entity>
 
