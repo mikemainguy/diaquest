@@ -40,17 +40,36 @@ AFRAME.registerComponent('stuff', {
         } else {
             this.scale = AFRAME.utils.coordinates.parse(this.data.scale);
             this.saveable.object3D.scale.set(this.scale.x, this.scale.y, this.scale.z);
-            this.saveable.object3D.children[0].geometry.computeBoundingBox();
+            if (this.saveable?.object3D?.children[0]?.geometry) {
+                this.saveable.object3D.children[0].geometry.computeBoundingBox();
+            }
             this.saveable.setAttribute('visible', true);
             this.saveable.setAttribute('sound', 'src: #keydown; on: click;');
-            this.saveable.setAttribute('material', 'color', this.data.color);
+
+                // Grab the mesh / scene.
+            const obj = this.saveable.getObject3D('mesh');
+                // Go over the submeshes and modify materials we want.
+            if (obj) {
+                obj.traverse(node => {
+                        if (node.material && this.data.color) {
+                            node.material.color.set(this.data.color);
+                        } else {
+                            //console.log ('error');
+                            //TODO we need to figure out how to set materials of gltf models
+                        }
+
+
+                });
+            }
+
+            //this.saveable.setAttribute('material', 'color', this.data.color);
 
         }
 
     },
     tick: function () {
         if (this.textDisplay && this.saveable) {
-            if (this.saveable.object3D.children[0].geometry.boundingBox) {
+            if (this.saveable?.object3D?.children[0]?.geometry?.boundingBox) {
                 const radius = this.saveable.object3D.children[0].geometry.boundingBox.max.y;
                 if (this.textDisplay.position) {
                     this.textDisplay.position.set(0, (radius * this.saveable.object3D.scale.y) + 0.05, 0);

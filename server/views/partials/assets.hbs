@@ -37,9 +37,12 @@
     </a-entity>
     <a-entity id="light-template" type="text/x-nunjucks-template">
         <a-entity share-position>
-            <a-cylinder radius=".1" height=".5" class="saveable">
+            <a-entity scale=".1 .1 .1"
+                      position="0 0 0"
+                      rotation="s0 0 0"
+                      gltf-model="obj: url(/assets/flashlight.glb)"
+                      class="saveable"></a-entity>
 
-            </a-cylinder>
             <!--<a-entity light="type: point" position="0 1 0"></a-entity> -->
             <a-sphere radius=".05" position="0 .5 0" color="#f00"></a-sphere>
 
