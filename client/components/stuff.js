@@ -62,7 +62,7 @@ AFRAME.registerComponent('stuff', {
                 });
             }
 
-            //this.saveable.setAttribute('material', 'color', this.data.color);
+            this.saveable.setAttribute('material', 'color', this.data.color);
 
         }
 
