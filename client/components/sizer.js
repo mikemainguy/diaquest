@@ -121,13 +121,13 @@ AFRAME.registerComponent('sizer', {
             this.hand.components['buttons'].pointer.object3D.getWorldPosition(v2);
             this.el.object3D.parent.worldToLocal(v2);
 
-            if (Math.abs(this.position.y) > 0 && v2.y > 0) {
+            if (Math.abs(this.position.y) > 0 && (v2.y != 0)) {
                 this.system.saveable.object3D.scale.setY(v2.y * 2);
             }
-            if (Math.abs(this.position.x ) > 0 && v2.x > 0) {
+            if (Math.abs(this.position.x ) > 0 && (v2.x != 0)) {
                 this.system.saveable.object3D.scale.setX(v2.x * 2);
             }
-            if (Math.abs(this.position.z && v2.z > 0) > 0) {
+            if (Math.abs(this.position.z) > 0 && (v2.z != 0)) {
                 this.system.saveable.object3D.scale.setZ(v2.z * 2);
             }
 
