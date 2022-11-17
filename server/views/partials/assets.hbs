@@ -38,7 +38,7 @@
                   src="/assets/toontown_deer.glb">
     </a-asset-item>
 
-    <a-entity id="plus" type="text/x-nunjucks-template">
+    <a-entity id="plus" type="html">
         <a-entity position="0 0 .1">
             <a-box
                     width="0.05"
@@ -57,7 +57,7 @@
         </a-entity>
     </a-entity>
 
-    <a-entity id="widgetPoint" type="text/x-nunjucks-template">
+    <a-entity id="widgetPoint" type="html">
         <a-cone
                 radius-bottom="0.03"
                 radius-top="0"
@@ -66,7 +66,7 @@
         </a-cone>
     </a-entity>
 
-    <a-entity id="connector-template" type="text/x-nunjucks-template">
+    <a-entity id="connector-template" type="html">
         <a-entity class="data-connector" share-position>
             <a-cone rotation="-90 0 0" position="0 0 0" radius-top="0" radius-bottom="0.02" height=".04" class="data-packet" color="#111">
             </a-cone>
@@ -76,7 +76,7 @@
             <a-entity class="label" mixin="labelMixin" position="0 0.3 0"></a-entity>
         </a-entity>
     </a-entity>
-    <a-entity id="light-template" type="text/x-nunjucks-template">
+    <a-entity id="light-template" type="html">
 
             <a-cylinder
                     share-position
@@ -97,7 +97,7 @@
 
     <a-entity
             id="sphere-template"
-            type="text/x-nunjucks-template">
+            type="html">
         <a-entity share-position>
             <a-sphere
                     class="saveable"
@@ -114,7 +114,7 @@
 
     <a-entity
             id="cylinder-template"
-            type="text/x-nunjucks-template">
+            type="html">
         <a-entity share-position>
             <a-cylinder
                     class="saveable"
@@ -126,7 +126,7 @@
             <a-entity mixin="labelMixin" position="0 0.3 0"></a-entity>
         </a-entity>
     </a-entity>
-    <a-entity id="box-template" type="text/x-nunjucks-template">
+    <a-entity id="box-template" type="html">
         <a-entity grabbable share-position>
             <a-box
                     class="saveable"
@@ -140,7 +140,7 @@
             <a-entity mixin="labelMixin" position="0 0.3 0"></a-entity>
         </a-entity>
     </a-entity>
-    <a-entity id="user-template" type="text/x-nunjucks-template">
+    <a-entity id="user-template" type="html">
         <a-entity share-position>
             <a-entity
                     scale=".2 .2 .2"

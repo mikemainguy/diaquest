@@ -20,8 +20,5 @@ const analytics = Analytics(
 analytics.page();
  */
 
-function requireAll(r) { r.keys().forEach(r); }
-requireAll(require.context('../client/jslibs/', true, /\.js$/));
-requireAll(require.context('../client/components/', true, /\.js$/));
-requireAll(require.context('../client/firebase/', true, /\.js$/));
+//requireAll(require.context('../client/firebase/', true, /\.js$/));
 

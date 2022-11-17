@@ -71,23 +71,47 @@ if (!VRLOCAL) {
     newrelic.addPageAction('initializing firebase');
 
     setupApp().then((profile) => {
-        writeUser(profile);
+        const scene = document.querySelector('a-scene');
+        if (scene && scene.hasLoaded) {
+            writeUser(profile);
+        } else {
+            document.addEventListener('aframeReady', (evt) => {
+                writeUser(profile)
+            });
+        }
+
+
         newrelic.addPageAction('firebase db setup');
 
         const entities = ref(database, getDbPath(null));
 
         onChildAdded(entities, (snapshot) => {
-            createOrUpdateDom(snapshot.val());
+            const scene = document.querySelector('a-scene');
+            if (scene && scene.hasLoaded) {
+                createOrUpdateDom(snapshot.val());
+            } else {
+                document.addEventListener('aframeReady', (evt) => {
+                    createOrUpdateDom(snapshot.val());
+                });
+            }
+
         });
 
         onChildRemoved(entities, (snapshot) => {
+            const scene = document.querySelector('a-scene');
             const ele = document.getElementById(snapshot.val().id);
             if (ele) {
                 ele.remove();
             }
         });
         onChildChanged(entities, (snapshot) => {
-            createOrUpdateDom(snapshot.val());
+            if (scene && scene.hasLoaded) {
+                createOrUpdateDom(snapshot.val());
+            } else {
+                document.addEventListener('aframeReady', (evt) => {
+                    createOrUpdateDom(snapshot.val());
+                });
+            }
         });
     });
 
@@ -99,48 +123,30 @@ export function writeUser(profile) {
         profile.user.last_seen = new Date().toUTCString();
         const id = 'session' + result;
         update(ref(database, 'users/' + profile.user.sub), profile);
+
+
         const rig = document.querySelector('.rig');
-        rig.setAttribute('id', id);
-        createEntity({
-            id: id,
-            last_seen: new Date().toUTCString(),
-            position: rig.object3D.position,
-            rotation: rig.getAttribute('rotation'),
-            text: profile.user.email,
-            template: "#user-template"
-        });
+        if (rig) {
+            rig.setAttribute('id', id);
+            createEntity({
+                id: id,
+                last_seen: new Date().toUTCString(),
+                position: rig.object3D.position,
+                rotation: rig.getAttribute('rotation'),
+                text: profile.user.email,
+                template: "#user-template"
+            });
+        }
+
+
     });
     const directory = ref(database, "/users/" + profile.user.sub + "/directory/worlds");
 
     onValue(directory, (snap) => {
         const el = document.getElementById('directory');
-
-
-        snap.forEach((data) => {
-            const val = data.val();
-            const key = data.key;
-            const name = val.name ? val.name : key;
-
-
-            /*const entry = document.querySelector('a-link[data-world-id="'+ key + '"]');
-            if (entry) {
-                entry.setAttribute('name', name);
-            } else {
-                const newEl = document.createElement('a-link');
-                newEl.setAttribute('data-world-id', key);
-                newEl.setAttribute('href', '/worlds/' + key);
-                newEl.setAttribute('title', name);
-                document.getElementById('navigation').appendChild(newEl);
-            }*/
-        });
-
-
-        /*window.setTimeout(function() {
-            document.getElementById('navigation').components['navigation'].update();
-        }, 200); */
-
     });
 }
+
 
 document.addEventListener('shareUpdate', function (evt) {
     if (VRLOCAL) {

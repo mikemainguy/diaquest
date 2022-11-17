@@ -29,5 +29,10 @@ AFRAME.registerSystem('interaction-system', {
     init: function() {
         this.sources = new Map();
         this.stuff = new Map();
+
+        this.el.addEventListener('loaded', () => {
+            const readyEvent = new Event('aframeReady');
+            document.dispatchEvent(readyEvent);
+        });
     }
 });

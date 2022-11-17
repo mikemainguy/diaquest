@@ -13,9 +13,14 @@ const stylesHandler = 'style-loader';
 
 
 const config = {
-    entry: './src/index.js',
+    entry: {
+        index: './src/index.js',
+        db: './src/db.js',
+        components: './src/components.js'
+    },
     output: {
-        path: path.resolve(__dirname, 'client/dist'),
+        filename: '[name].bundle.js',
+        path: path.resolve(__dirname, 'client/dist')
     },
     optimization: {
         usedExports: true
