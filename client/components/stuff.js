@@ -16,29 +16,31 @@ AFRAME.registerComponent('stuff', {
         this.el.setAttribute('sound', 'src: #keyin; volume: 0.2; on: mouseenter;');
     },
     update: function () {
+        const v = AFRAME.utils.coordinates.parse(this.data.scale);
+        this.scale = new THREE.Vector3(v.x, v.y, v.z);
         this.el.emit('registerupdate', {}, true);
 
     },
     tock: function () {
-
         if (!this.textDisplay) {
             this.textDisplay = this.el.querySelector('[text-geometry]');
         } else {
-
             if (this.data.text) {
                 this.textDisplay.setAttribute('visible', true);
                 this.textDisplay.setAttribute('text-geometry', 'value', this.data.text);
             } else {
                 this.textDisplay.setAttribute('visible', false);
             }
-
         }
 
         if (!this.saveable) {
             this.saveable = this.el.querySelector('.saveable');
-        } else {
-            this.scale = AFRAME.utils.coordinates.parse(this.data.scale);
-            this.saveable.object3D.scale.set(this.scale.x, this.scale.y, this.scale.z);
+        }
+        if (this.saveable) {
+            if (!this.scale.equals(this.saveable.object3D.scale)) {
+                this.saveable.object3D.scale.set(this.scale.x, this.scale.y, this.scale.z);
+            }
+
             if (this.saveable?.object3D?.children[0]?.geometry) {
                 this.saveable.object3D.children[0].geometry.computeBoundingBox();
             }

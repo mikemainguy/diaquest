@@ -136,6 +136,15 @@ AFRAME.registerComponent('3d-keyboard', {
       this.data.elId = evt.detail.elId;
     }
     this.label.setAttribute('text','value' , this.data.value);
+    const cam = document.querySelector('#camera').object3D;
+    //const keyboard = this.el.object3D;
+    const pos = new THREE.Vector3();
+    pos.copy(cam.position);
+    const rig = document.querySelector('.rig').object3D;
+    //rig.worldToLocal(pos);
+    this.el.object3D.position.set(pos.x, pos.y -.2, pos.z-.5);
+
+
     const hands = document.querySelectorAll('[raycaster]');
     for (const hand of hands) {
       hand.setAttribute('raycaster', 'objects', '.keyboardRaycastable');
