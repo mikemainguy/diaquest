@@ -38,6 +38,9 @@ AFRAME.registerComponent('widget', {
             newrelic.addPageAction(evt.target.id);
         }
         switch (evt.target.id) {
+            case 'align':
+                buttonState.mode = ['aligning'];
+                break;
             case 'add-connector':
                 buttonState.mode = ['connecting', 'select-first'];
                 break;

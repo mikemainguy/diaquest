@@ -3,11 +3,16 @@ AFRAME.registerComponent('user', {
     //keyboard: {default: '#keyboard', type: 'selector'}
   },
   init: function () {
-    fetch('/api/user/profile')
-      .then((res)=> res.json())
-      .then((data) => {
-          this.el.setAttribute('text','value: ' + data.user.email);
-      });
+    if (!VRLOCAL) {
+      fetch('/api/user/profile')
+          .then((res)=> res.json())
+          .then((data) => {
+            this.el.setAttribute('text','value: ' + data.user.email);
+          });
+    } else {
+      this.el.setAttribute('text', 'value: Local User');
+    }
+
   },
   tick: function () {
 

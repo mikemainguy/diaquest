@@ -42,6 +42,7 @@ if (env.NODE_ENV != 'development') {
  */
 app.use('/dist', express.static('client/dist'));
 app.use('/assets', express.static('client/assets'));
+app.use('/favicon.ico', express.static('client/favicon.ico'));
 
 
 /**********************************************************

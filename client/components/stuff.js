@@ -80,6 +80,9 @@ AFRAME.registerComponent('stuff', {
                 newrelic.addPageAction('click', {id: obj.id});
             }
             switch (getCurrentMode()) {
+                case 'aligning':
+                    document.dispatchEvent(new CustomEvent('align', {detail: {id: obj.id}}));
+                    break;
                 case 'removing':
                     document.dispatchEvent(new CustomEvent('shareUpdate', {detail: {id: obj.id, remove: true}}));
                     break;

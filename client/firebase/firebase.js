@@ -68,7 +68,9 @@ async function setupApp() {
 }
 
 if (!VRLOCAL) {
-    newrelic.addPageAction('initializing firebase');
+    if (typeof newrelic !== 'undefined') {
+        newrelic.addPageAction('initializing firebase');
+    }
 
     setupApp().then((profile) => {
         const scene = document.querySelector('a-scene');
@@ -81,7 +83,9 @@ if (!VRLOCAL) {
         }
 
 
-        newrelic.addPageAction('firebase db setup');
+        if (typeof newrelic !== 'undefined') {
+            newrelic.addPageAction('firebase db setup');
+        }
 
         const entities = ref(database, getDbPath(null));
 
