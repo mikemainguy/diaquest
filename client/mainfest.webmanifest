@@ -1,0 +1,6 @@
+{
+    "name": "Immersive Idea",
+    "display": "standalone",
+    "start_url": "https://immersiveidea.ngrok.io/",
+    "scope": "https://immersiveidea.ngrok.io/"
+    }

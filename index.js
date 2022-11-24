@@ -43,6 +43,7 @@ if (env.NODE_ENV != 'development') {
 app.use('/dist', express.static('client/dist'));
 app.use('/assets', express.static('client/assets'));
 app.use('/favicon.ico', express.static('client/favicon.ico'));
+app.use('/manifest.webmanifest', express.static('client/manifest.webmanifest'));
 
 
 /**********************************************************
@@ -90,7 +91,7 @@ app.get('/api/user/signalwireToken', (req, res, next) => {
                     "room.self.audio_mute",
                     "room.self.audio_unmute"
                 ],
-                join_video_muted: true,
+                join_video_muted: false,
                 auto_create_room: false
 
             }, {

@@ -8,6 +8,26 @@ AFRAME.registerSystem('aligner', {
         const geometry = o.getObject3D('mesh').geometry;
         geometry.computeBoundingBox();
         return geometry.boundingBox;
+    },
+    calculateOffset(src, dest, dim) {
+        const srcBox = this.getBounds(src);
+
+        const srcPos = src
+            .object3D
+            .getWorldPosition(
+                src.object3D.position
+            );
+        const destBox = this.getBounds(dest);
+        const destPos = dest
+            .object3D
+            .getWorldPosition(
+                dest.object3D.position
+            )
+        const dist= srcPos.distanceTo(destPos);
+        if (dist != 0) {
+            dest.object3D.translateOnAxis(dim, dist);
+        }
+
 
     },
     align: function(evt) {
@@ -20,27 +40,9 @@ AFRAME.registerSystem('aligner', {
             if (saveable) {
                 if (this.saveable != null && this.direction != null) {
                     const dir = this.direction;
-                    const srcBox = this.getBounds(saveable);
-                    const destBox = this.getBounds(this.saveable);
-
-                    if (Math.abs(dir.x)> 0) {
-                        if (dir.x > 0) {
-                            const offset = destBox.max.x - srcBox.max.x;
-                            obj.translateX(offset);
-                        }   else {
-                            const offset = destBox.min.x - srcBox.min.x;
-                            obj.translateX(offset);
-                        }
-                    }
-                    if (Math.abs(dir.y)> 0) {
-
-                    }
-                    if (Math.abs(dir.z)> 0) {
-
-                    }
-
+                    this.calculateOffset(saveable, this.saveable, dir);
                 } else {
-                    this.saveable = saveable.object3D;
+                    this.saveable = saveable;
                 }
             } else {
                 this.saveable = null;

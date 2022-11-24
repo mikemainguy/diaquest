@@ -12,7 +12,10 @@ AFRAME.registerSystem('signalwire', {
             } else {
                 setupRoom().then((results) => {
                     debug('connected to conference');
-                    newrelic.addPageAction('room session started');
+                    if (typeof newrelic !== 'undefined') {
+                        newrelic.addPageAction('room session started');
+                    }
+
                     this.roomSession = results;
                 });
             }
@@ -23,7 +26,10 @@ AFRAME.registerSystem('signalwire', {
                 if (this.roomSession.active) {
                     this.roomSession.leave().then((data) => {
                         debug('left session');
-                        newrelic.addPageAction('left session');
+                        if (typeof newrelic !== 'undefined') {
+                            newrelic.addPageAction('left session');
+                        }
+
                         this.roomSession.dispose();
                     });
 
@@ -40,7 +46,10 @@ AFRAME.registerSystem('signalwire', {
     mute: function (evt) {
 
         if (this.roomSession) {
-            newrelic.addPageAction('mute');
+            if (typeof newrelic !== 'undefined') {
+                newrelic.addPageAction('mute');
+            }
+
             this.roomSession.audioMute().then(() => {
                 debug('muted');
             });
@@ -52,7 +61,10 @@ AFRAME.registerSystem('signalwire', {
     unmute: function (evt) {
 
         if (this.roomSession) {
-            newrelic.addPageAction('unmute');
+            if (newrelic !== 'undefined') {
+                newrelic.addPageAction('unmute');
+            }
+            this.roomSession.videoUnmute();
             this.roomSession.audioUnmute().then(() => {
                 debug('unmuted');
             });
@@ -69,10 +81,13 @@ async function setupRoom() {
     if (room.startsWith('/worlds/')) {
         const data = await axios.get('/api/user/signalwireToken?room=' + room.split('/')[2]);
         if (data.status == 200) {
-            newrelic.addPageAction('session started', {path: room});
+            if (typeof newrelic !== 'undefined') {
+                newrelic.addPageAction('session started', {path: room});
+            }
+
             const roomSession = new SignalWire.Video.RoomSession({
                 token: data.data.signalwire_token,
-                video: false,
+                video: true,
                 audio: true,
                 rootElement: document.getElementById('room'),
 
@@ -82,7 +97,11 @@ async function setupRoom() {
                 await roomSession.join({audio: true, video: false});
                 return roomSession;
             } catch (error) {
-                newrelic.addPageAction('session start failed', {path: room, error: error});
+                if (typeof newrelic !== 'undefined') {
+                    newrelic.addPageAction('session start failed', {path: room, error: error});
+
+                }
+
                 console.error("Error", error);
             }
         } else {
