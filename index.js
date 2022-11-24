@@ -91,7 +91,7 @@ app.get('/api/user/signalwireToken', (req, res, next) => {
                     "room.self.audio_mute",
                     "room.self.audio_unmute"
                 ],
-                join_video_muted: false,
+                join_video_muted: true,
                 auto_create_room: false
 
             }, {

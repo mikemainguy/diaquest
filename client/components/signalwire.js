@@ -87,7 +87,7 @@ async function setupRoom() {
 
             const roomSession = new SignalWire.Video.RoomSession({
                 token: data.data.signalwire_token,
-                video: true,
+                video: false,
                 audio: true,
                 rootElement: document.getElementById('room'),
 
