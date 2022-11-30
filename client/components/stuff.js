@@ -14,6 +14,7 @@ AFRAME.registerComponent('stuff', {
     },
     init: function () {
         this.el.setAttribute('sound', 'src: #keyin; volume: 0.2; on: mouseenter;');
+        this.aligning = false;
     },
     update: function () {
         const v = AFRAME.utils.coordinates.parse(this.data.scale);
@@ -79,6 +80,7 @@ AFRAME.registerComponent('stuff', {
             if (typeof newrelic !== 'undefined') {
                 newrelic.addPageAction('click', {id: obj.id});
             }
+
             switch (getCurrentMode()) {
                 case 'aligning':
                     document.dispatchEvent(new CustomEvent('align', {detail: {id: obj.id}}));
@@ -130,11 +132,13 @@ AFRAME.registerComponent('stuff', {
             evt.detail.cursorEl.components['tracked-controls-webxr'].controller.gamepad.hapticActuators[0].pulse(.05, 25);
             const obj = evt.target;
             obj.setAttribute('animation', "property: material.color; from: #cc2; to: #ff2; dir: alternate; dur: 500; loop: true")
+
         },
         mouseleave: function (evt) {
             const obj = evt.target;
             obj.setAttribute('material', 'color', this.data.color);
             obj.removeAttribute('animation');
+
         },
         grabbed: function (evt) {
             this.grabbed = this.el.closest('[template]');
