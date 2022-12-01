@@ -81,6 +81,19 @@ app.get('/home', async (req, res) => {
 app.get('/worlds/:worldId', (req, res) => {
     res.render('world', {vrConnected: true});
 });
+app.get('/api/voice/token', async (req, res) => {
+    try {
+        const response = await axios.post('https://api.assemblyai.com/v2/realtime/token', // use account token to get a temp user token
+            { expires_in: 3600 }, // can set a TTL timer in seconds.
+            { headers: { authorization: env.VOICE_TOKEN } });
+        const {data} = response;
+        res.json(data)
+    } catch (error) {
+        res.json(`Error: ${error}`);
+    }
+
+});
+
 app.get('/api/user/signalwireToken', (req, res, next) => {
     if (req.query && req.query.room) {
         const signalwirePromise = axios.post('https://diaquest.signalwire.com/api/video/room_tokens',

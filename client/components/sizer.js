@@ -1,5 +1,5 @@
 import {debug} from './debug';
-import {round} from './util';
+import {round, changeRaycaster} from './util';
 
 AFRAME.registerSystem('sizer', {
     schema: {
@@ -48,12 +48,7 @@ AFRAME.registerSystem('sizer', {
 
     },
     changeRaycaster: function () {
-        for (const hand of this.getRaycasters()) {
-            hand.setAttribute('raycaster', 'objects', '[mixin="sizeConnectorMixin"]');
-        }
-    },
-    getRaycasters: function () {
-        return document.querySelectorAll('[raycaster]');
+        changeRaycaster('[mixin="sizeConnectorMixin"]');
     }
 });
 AFRAME.registerComponent('sizer', {

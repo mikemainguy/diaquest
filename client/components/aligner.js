@@ -1,3 +1,5 @@
+import {changeRaycaster} from "./util";
+
 AFRAME.registerSystem('aligner', {
     init: function () {
         this.direction = null;
@@ -96,12 +98,7 @@ AFRAME.registerSystem('aligner', {
         }
     },
     changeRaycaster: function (value) {
-        for (const hand of this.getRaycasters()) {
-            hand.setAttribute('raycaster', 'objects', value + '.saveable');
-        }
-    },
-    getRaycasters: function () {
-        return document.querySelectorAll('[raycaster]');
+        changeRaycaster(value + '.saveable');
     }
 });
 AFRAME.registerComponent('aligner', {

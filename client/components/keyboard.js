@@ -1,5 +1,4 @@
 
-
 AFRAME.registerSystem('key-listen', {
     init: function () {
         this.text = '';

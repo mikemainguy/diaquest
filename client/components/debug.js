@@ -1,6 +1,7 @@
 export function debug(value) {
-  if (false) {
-    const debug = document.getElementById("debug")
+  if (true) {
+    const debug = document.getElementById("debug");
+
     if (debug) {
       const lines = debug.getAttribute('text').value;
       const data = lines.split('\n').slice(-20);

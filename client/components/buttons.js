@@ -1,5 +1,7 @@
 import {debug} from './debug';
-import {createUUID, getMenuPosition, round} from './util';
+import {createUUID, round, changeRaycaster} from './util';
+import * as RecordRTC from 'recordrtc';
+
 
 AFRAME.registerSystem('buttons', {
     init: function () {
@@ -32,7 +34,7 @@ AFRAME.registerComponent('buttons', {
         this.second = null;
         this.template = null;
         this.color = '#399';
-        this.snapmodes = ['copying','adding'];
+        this.snapmodes = ['copying', 'adding'];
         const pointer = document.createElement('a-sphere');
         this.gridpointer = false;
         pointer.setAttribute('material', 'color: #fff; opacity: 0.6; emissive: #fff');
@@ -42,10 +44,10 @@ AFRAME.registerComponent('buttons', {
         this.system.pointers.push(pointer);
 
     },
-    update: function() {
+    update: function () {
 
     },
-    tock: function() {
+    tock: function () {
         if (!this.raycaster) {
             const ray = this.el.components['raycaster'];
             if (ray) {
@@ -70,26 +72,44 @@ AFRAME.registerComponent('buttons', {
 
     },
     events: {
-        abuttondown: function(evt) {
+        /*surfacetouchstart: function (evt) {
+            debug('Start Transcription');
+            startRecording(this);
+        },
+        surfacetouchend: function (evt) {
+            stopRecording(this);
+            debug('Stop Transcription');
+        },*/
+        thumbstickdown: function(evt) {
+            document.dispatchEvent(
+                new CustomEvent('inspect',
+                    {detail: 'data'}));
+        },
+        xbuttondown: function (evt) {
+            const debug = document.querySelector('#debug');
+            if (debug.getAttribute('visible')) {
+                debug.setAttribute('visible', false);
+            } else {
+                debug.setAttribute('visible', true);
+            }
 
+        },
+        abuttondown: function (evt) {
             const rays = getRaycasters();
             for (const caster of rays) {
                 const flashlight = document.createElement('a-entity');
-
-
                 caster.setAttribute('raycaster', 'far', 8);
             }
             for (const pointer of this.system.pointers) {
                 pointer.setAttribute('radius', .1);
             }
         },
-        abuttonup: function(evt){
+        abuttonup: function (evt) {
             for (const pointer of this.system.pointers) {
                 pointer.setAttribute('radius', .008);
             }
             const rays = getRaycasters();
             for (const caster of rays) {
-
                 caster.setAttribute('raycaster', 'far', .1);
             }
 
@@ -152,6 +172,9 @@ function showMenu(evt) {
     changeMenu(evt.detail.id, true, evt.detail.objects);
 }
 
+
+
+
 function hideMenu(evt) {
     changeMenu(evt.detail.id, false, '.saveable')
 }
@@ -161,9 +184,7 @@ function changeMenu(id, visible, objects) {
     if (el) {
         el.setAttribute('visible', visible);
     }
-    for (const hand of getRaycasters()) {
-        hand.setAttribute('raycaster', 'objects', objects);
-    }
+    changeRaycaster(objects);
 }
 
 function getRaycasters() {
