@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node ./index.js",
     "background": "node ./background.js",
-    "test": "mocha",
+    "test": "mocha --recursive",
     "build": "webpack --mode=production --node-env=production",
     "build:dev": "webpack --mode=development",
     "build:prod": "webpack --mode=production --node-env=production",
@@ -45,6 +45,7 @@
   },
   "devDependencies": {
     "@webpack-cli/generators": "^2.5.0",
+    "@babel/register": "^7.18.9",
     "selenium-webdriver": "^4.6.1",
     "mocha": "^10.1.0",
     "chai": "^4.3.7",
