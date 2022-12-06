@@ -10,7 +10,9 @@ AFRAME.registerSystem('mover', {
 AFRAME.registerComponent('mover', {
     schema: {
         x: {type: 'string', default: '0 0 0'},
-        y: {type: 'string', default: '0 0 0'}
+        y: {type: 'string', default: '0 0 0'},
+        rig: {type: 'selector', default: '#rig'},
+        camera: {type: 'selector', default: '#camera'}
     },
     init: function () {
         this.x = {};
@@ -50,9 +52,9 @@ AFRAME.registerComponent('mover', {
         this.rotate = 0;
         this.handler = this.thumbstick.bind(this);
         this.camera = document.getElementById("camera");
-        this.rig = document.querySelector(".rig");
+        this.rig = this.data.rig;
         this.el.addEventListener('thumbstickmoved', this.handler);
-        document.getElementById('camera').setAttribute('camera', 'active', true);
+        this.data.camera.setAttribute('camera', 'active', true);
     },
     remove: function () {
         this.el.removeEventListener('thumbstickmoved', this.handler);

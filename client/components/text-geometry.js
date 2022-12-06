@@ -1,12 +1,4 @@
-/**
- * TextGeometry component for A-Frame.
- */
-var debug = AFRAME.utils.debug;
-
-var error = debug('aframe-text-component:error');
-
 var fontLoader = new THREE.FontLoader();
-
 AFRAME.registerComponent('text-geometry', {
     schema: {
         bevelEnabled: {default: false},
@@ -40,7 +32,7 @@ AFRAME.registerComponent('text-geometry', {
                 const geo = new THREE.TextGeometry(data.value, textData);
                 geo.computeBoundingSphere();
                 this.offset = geo.boundingSphere.radius;
-                mesh.position.setX(this.offset*-1);
+                mesh.position.setX(this.offset * -1);
                 mesh.geometry = geo;
 
             });
@@ -56,10 +48,10 @@ AFRAME.registerComponent('text-geometry', {
     tick: function (time) {
         const m = this.el.getObject3D('mesh');
 
-       if (Math.abs(m.position.x) != this.offset) {
+        if (Math.abs(m.position.x) != this.offset) {
             if (m.geometry.boundingSphere) {
                 this.offset = m.geometry.boundingSphere.radius;
-                m.position.setX(this.offset*-1);
+                m.position.setX(this.offset * -1);
 
             }
         }

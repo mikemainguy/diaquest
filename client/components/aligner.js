@@ -106,8 +106,8 @@ AFRAME.registerComponent('aligner', {
         plane: {type: 'string'}
     },
     init: function () {
-        this.el.setAttribute('sound', 'src: #keyin; volume: 0.2; on: mouseenter;');
-        this.el.setAttribute('sound', 'src: #keyin; volume: 0.5; on: click;');
+        this.el.setAttribute('sound', 'src: /assets/sounds/KeyInLow.mp3; volume: 0.2; on: mouseenter;');
+        this.el.setAttribute('sound', 'src: /assets/sounds/KeyInLow.mp3; volume: 0.5; on: click;');
     },
     events: {
         click: function (evt) {
