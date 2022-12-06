@@ -1,17 +1,12 @@
-import {debug} from "./debug";
-import {getCurrentMode, initSound, getSystem} from "./util";
+import {initSound} from "./util";
 
 AFRAME.registerSystem('mover', {
     init: function () {
         this.running = true;
         this.enabled = true;
         this.directions = [];
-        this.velocity = new THREE.Vector3(0, 0, 0);
-
-
     }
 });
-
 AFRAME.registerComponent('mover', {
     schema: {
         x: {type: 'string', default: '0 0 0'},
@@ -29,10 +24,8 @@ AFRAME.registerComponent('mover', {
             this.x.scaledDirection = new THREE.Vector3();
             this.system.directions.push(this.x.scaledDirection);
             this.x.rotation = 0;
-
-
         } else {
-            this.x.direction = new THREE.Vector3(0,0,0);
+            this.x.direction = new THREE.Vector3(0, 0, 0);
             this.x.scaledDirection = new THREE.Vector3();
             this.x.rotation = THREE.MathUtils.degToRad(this.data.x);
         }
@@ -48,14 +41,11 @@ AFRAME.registerComponent('mover', {
             this.system.directions.push(this.y.scaledDirection);
             this.y.rotation = 0;
         } else {
-            this.y.direction = new THREE.Vector3(0,0,0);
-            this.y.scaledDirection = new THREE.Vector3(0,0,0);
+            this.y.direction = new THREE.Vector3(0, 0, 0);
+            this.y.scaledDirection = new THREE.Vector3(0, 0, 0);
 
             this.y.rotation = THREE.MathUtils.degToRad(this.data.y);
         }
-
-
-
         this.rotating = false;
         this.rotate = 0;
         this.handler = this.thumbstick.bind(this);
@@ -63,24 +53,15 @@ AFRAME.registerComponent('mover', {
         this.rig = document.querySelector(".rig");
         this.el.addEventListener('thumbstickmoved', this.handler);
         document.getElementById('camera').setAttribute('camera', 'active', true);
-        this.rigChanged = this.rigChanged.bind(this)
-        document.addEventListener('rigChanged', this.rigChanged);
-    },
-    rigChanged: function (evt) {
-        const buttons = getSystem('buttons');
-        debug(buttons.mode);
-        if (buttons && buttons.first && buttons.mode[0] == 'moving') {
-            this.rig = document.getElementById(buttons.first);
-        } else {
-            this.rig = document.querySelector(".rig");
-        }
     },
     remove: function () {
         this.el.removeEventListener('thumbstickmoved', this.handler);
-        document.removeEventListener('rigChanged', this.rigChanged);
     },
     tick: function (time, timeDelta) {
-        if (this.rig && this.rig.object3D && this.camera && this.camera.object3D) {
+        if (this.rig &&
+            this.rig.object3D &&
+            this.camera &&
+            this.camera.object3D) {
             if (this.system.directions.length > 0) {
                 const velocity = new THREE.Vector3();
                 for (const d of this.system.directions) {
@@ -91,7 +72,7 @@ AFRAME.registerComponent('mover', {
                 const camWorld = new THREE.Quaternion();
                 this.camera.object3D.getWorldQuaternion(camWorld);
                 velocity.applyQuaternion(camWorld);
-                this.rig.object3D.position.add(velocity.multiplyScalar(v/40));
+                this.rig.object3D.position.add(velocity.multiplyScalar(v / 40));
 
             }
             this.rotateY(time, timeDelta)
@@ -131,4 +112,3 @@ AFRAME.registerComponent('mover', {
         }
     }
 });
-

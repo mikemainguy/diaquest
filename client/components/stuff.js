@@ -89,7 +89,7 @@ AFRAME.registerComponent('stuff', {
                     document.dispatchEvent(new CustomEvent('shareUpdate', {detail: {id: obj.id, remove: true}}));
                     break;
                 case 'edit-color':
-                    const newColor = getSystem('color-picker').color
+                    const newColor = getSystem('buttons').color
                     this.data.color = newColor;
                     evt.target.setAttribute('material', 'color', this.data.color);
                     document.dispatchEvent(new CustomEvent('shareUpdate', {detail: {id: obj.id, color: newColor}}));
@@ -118,7 +118,7 @@ AFRAME.registerComponent('stuff', {
                         first: this.system.first,
                         second: obj.id,
                         text: '',
-                        color: getSystem('color-picker').color,
+                        color: getSystem('buttons').color,
                         template: '#connector-template'
                     }
                     document.dispatchEvent(

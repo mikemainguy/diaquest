@@ -1,8 +1,11 @@
 require('aframe');
 require('aframe-extras');
+require('aframe-lookatme');
 require('nunjucks');
 require('aframe-template-component');
 require('recordrtc');
+
+
 
 import * as SignalWire from '@signalwire/js';
 

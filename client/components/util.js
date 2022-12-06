@@ -17,11 +17,6 @@ export function changeRaycaster(newObjects) {
         hand.setAttribute('raycaster', 'objects', newObjects);
     }
 }
-export function showColorPicker() {
-    const obj = document.getElementById('color-picker');
-    obj.setAttribute('visible', true);
-    changeRaycaster('#bmenu a-plane[color-swatch]');
-}
 
 export function round(vec, amount) {
     const v = new THREE.Vector3(vec.x, vec.y, vec.z);
