@@ -35,8 +35,9 @@ AFRAME.registerComponent('color-swatch', {
     this.el.addEventListener("click", this.clickHandler.bind(this));
   },
   clickHandler: function(evt) {
-    document.querySelector('a-scene').systems['color-picker'].color = this.data.color;
+
     this.el.emit('hideMenu', {id: '#bmenu'}, true);
     this.el.emit('hideMenu', {id: '#color-picker'}, true);
+    this.el.emit('buttonstate', {color: this.data.color}, true);
   }
 });

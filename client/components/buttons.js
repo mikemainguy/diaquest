@@ -1,11 +1,8 @@
 import {debug} from './debug';
 import {createUUID, round, changeRaycaster} from './util';
-import * as RecordRTC from 'recordrtc';
-
 
 AFRAME.registerSystem('buttons', {
     init: function () {
-
         this.first = null;
         this.mode = [];
         this.color = '#399';
@@ -19,7 +16,6 @@ AFRAME.registerSystem('buttons', {
         this.el.addEventListener('showMenu', this.showMenu);
     },
     buttonstate: function (evt) {
-
         this.template = evt.detail.template ? evt.detail.template : null;
         this.mode = evt.detail.mode;
         this.id = evt.detail.id ? evt.detail.id : null;
@@ -72,14 +68,6 @@ AFRAME.registerComponent('buttons', {
 
     },
     events: {
-        /*surfacetouchstart: function (evt) {
-            debug('Start Transcription');
-            startRecording(this);
-        },
-        surfacetouchend: function (evt) {
-            stopRecording(this);
-            debug('Stop Transcription');
-        },*/
         thumbstickdown: function(evt) {
             document.dispatchEvent(
                 new CustomEvent('inspect',
@@ -155,7 +143,6 @@ AFRAME.registerComponent('buttons', {
                 case 'adding':
                     this.system.first = null;
                     data.id = createUUID();
-                    //const newPos = round(this.grabbed.object3D.position, .1);
                     data.template = this.system.template;
                     data.color = this.system.color;
                     document.dispatchEvent(
