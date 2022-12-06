@@ -59,7 +59,7 @@ AFRAME.registerComponent('sizer', {
     },
     init: function () {
         this.el.setAttribute('material', 'color', this.data.color);
-        this.el.setAttribute('sound', 'src: /assets/sounds/KeyInLow.mp3; on: mouseenter');
+        this.el.setAttribute('sound', 'src: url(/assets/sounds/KeyInLow.mp3); on: mouseenter');
 
         this.start = new THREE.Vector3();
         this.sizing = false;
