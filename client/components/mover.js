@@ -54,12 +54,21 @@ AFRAME.registerComponent('mover', {
         this.camera = document.getElementById("camera");
         this.rig = this.data.rig;
         this.el.addEventListener('thumbstickmoved', this.handler);
-        this.data.camera.setAttribute('camera', 'active', true);
+        try {
+            this.data.camera.setAttribute('camera', 'active', true);
+        } catch (e) {
+            console.log(e);
+        }
+
     },
     remove: function () {
         this.el.removeEventListener('thumbstickmoved', this.handler);
     },
     tick: function (time, timeDelta) {
+        if (!this.camera && this.data.camera) {
+            this.camera = this.data.camera;
+            this.camera.setAttribute('camera', 'active', true);
+        }
         if (this.rig &&
             this.rig.object3D &&
             this.camera &&
@@ -82,7 +91,9 @@ AFRAME.registerComponent('mover', {
     },
     thumbstick: function (evt) {
         initSound();
-
+        if (this.data.camera) {
+            this.data.camera.setAttribute('active', true);
+        }
         this.x.scaledDirection.copy(this.x.direction.clone().multiplyScalar(evt.detail.x));
         this.y.scaledDirection.copy(this.y.direction.clone().multiplyScalar(evt.detail.y));
 

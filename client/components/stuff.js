@@ -13,7 +13,7 @@ AFRAME.registerComponent('stuff', {
         action: {type: 'string'}
     },
     init: function () {
-        this.el.setAttribute('sound', 'src: /assets/sounds/KeyInLow.mp3; volume: 0.2; on: mouseenter;');
+        this.el.setAttribute('sound', 'src: url(/assets/sounds/KeyInLow.mp3); volume: 0.2; on: mouseenter;');
         this.aligning = false;
     },
     update: function () {
@@ -46,7 +46,7 @@ AFRAME.registerComponent('stuff', {
                 this.saveable.object3D.children[0].geometry.computeBoundingBox();
             }
             this.saveable.setAttribute('visible', true);
-            this.saveable.setAttribute('sound', 'src: /assets/sounds/ButtonClick.mp3; on: click;');
+            this.saveable.setAttribute('sound', 'src: url(/assets/sounds/ButtonClick.mp3); on: click;');
             if (!this.saveable.getAttribute('animation')) {
                 this.saveable.setAttribute('material', 'color', this.data.color);
             }
