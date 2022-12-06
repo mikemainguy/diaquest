@@ -16,30 +16,11 @@
     <a-mixin id="labelMixin"
              material="color: #eee;"
              lookatme
-             text-geometry="height: .05; size: .1; value: ...; font: #helvetiker"
+             text-geometry="height: .05; size: .1; value: ...; font: /assets/helvetiker_regular.typeface.json"
              ></a-mixin>
-    <audio id="big"
-           src="/assets/sounds/click.mp3">
-    </audio>
-    <audio id="keyin"
-           src="/assets/sounds/KeyInLow.mp3">
-    </audio>
-    <audio id="inputclick"
-           src="/assets/sounds/KeyIn.mp3">
-    </audio>
-    <audio id="keydown"
-           src="/assets/sounds/ButtonClick.mp3">
-    </audio>
 
-    <a-asset-item id="helvetiker"
-                  src="/assets/helvetiker_regular.typeface.json">
-    </a-asset-item>
-    <a-asset-item id="emoji-asset"
-                  src="/assets/emoji.glb">
-    </a-asset-item>
-    <a-asset-item id="deer-asset"
-                  src="/assets/toontown_deer.glb">
-    </a-asset-item>
+
+
 
     <a-entity id="plus" type="html">
         <a-entity position="0 0 .1">
@@ -148,7 +129,7 @@
                     scale=".2 .2 .2"
                     position="0 0 0"
                     rotation="0 180 0"
-                    gltf-model="#deer-asset">
+                    gltf-model="/assets/toontown_deer.glb">
             </a-entity>
             <a-entity
                     mixin="labelMixin"
