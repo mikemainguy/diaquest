@@ -1,7 +1,4 @@
 AFRAME.registerComponent('user', {
-  schema: {
-
-  },
   init: function () {
     if (!VRLOCAL) {
       fetch('/api/user/profile')

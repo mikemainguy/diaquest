@@ -10,9 +10,7 @@ AFRAME.registerSystem('mover', {
 AFRAME.registerComponent('mover', {
     schema: {
         x: {type: 'string', default: '0 0 0'},
-        y: {type: 'string', default: '0 0 0'},
-        rig: {type: 'selector', default: '#rig'},
-        camera: {type: 'selector', default: '#camera'}
+        y: {type: 'string', default: '0 0 0'}
     },
     init: function () {
         this.x = {};
@@ -51,23 +49,23 @@ AFRAME.registerComponent('mover', {
         this.rotating = false;
         this.rotate = 0;
         this.handler = this.thumbstick.bind(this);
-        this.camera = document.getElementById("camera");
-        this.rig = this.data.rig;
+        this.rig = document.querySelector(".rig");
         this.el.addEventListener('thumbstickmoved', this.handler);
-        try {
-            this.data.camera.setAttribute('camera', 'active', true);
-        } catch (e) {
-            console.log(e);
-        }
 
     },
     remove: function () {
         this.el.removeEventListener('thumbstickmoved', this.handler);
     },
     tick: function (time, timeDelta) {
-        if (!this.camera && this.data.camera) {
-            this.camera = this.data.camera;
-            this.camera.setAttribute('camera', 'active', true);
+        if (!this.camera) {
+            this.camera = document.getElementById("camera");
+            if (this.camera) {
+                this.camera.setAttribute('camera', 'active', true);
+                console.log('camera updated');
+            }
+        }
+        if (!this.rig) {
+            this.rig = document.querySelector('.rig');
         }
         if (this.rig &&
             this.rig.object3D &&
@@ -79,7 +77,6 @@ AFRAME.registerComponent('mover', {
                     velocity.add(d);
                 }
                 const v = velocity.length();
-
                 const camWorld = new THREE.Quaternion();
                 this.camera.object3D.getWorldQuaternion(camWorld);
                 velocity.applyQuaternion(camWorld);
