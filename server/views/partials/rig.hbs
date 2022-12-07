@@ -22,7 +22,7 @@
             laser-controls="hand: left"
             raycaster="objects: .saveable,a-link; lineColor: #fff; lineOpacity: 0.01; far: .1"
             grabber
-            mover="x: 1 0 0; y: 0 0 1; rig: .rig">
+            mover="x: 1 0 0; y: 0 0 1">
 
 
         {{> y-menu }}
@@ -35,7 +35,7 @@
               position=".5 1.6 1.5"
               rotation="90 0 0"
               grabber
-              mover="x: -22.5; y: 0 -1 0; rig: .rig">
+              mover="x: -22.5; y: 0 -1 0">
 
         <a-plane width="0.2"
                  height="0.03"
@@ -62,9 +62,8 @@
 
     </a-entity>
     <a-entity
-            camera="active: true"
             look-controls wasd-controls="fly: true"
-            share-position
+            share-position camera="active: true"
             id="camera"
             position="0 1.6 2">
 

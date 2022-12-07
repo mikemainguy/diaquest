@@ -38,6 +38,6 @@ AFRAME.registerComponent('color-swatch', {
 
     this.el.emit('hideMenu', {id: '#bmenu'}, true);
     this.el.emit('hideMenu', {id: '#color-picker'}, true);
-    this.el.emit('buttonstate', {color: this.data.color}, true);
+    this.el.emit('buttonstate', {mode: ['edit-color'], color: this.data.color}, true);
   }
 });
