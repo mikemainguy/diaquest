@@ -208,8 +208,13 @@ function createEntity(data) {
 
 function removeEntity(id) {
     try {
-        const path = getDbPath(data.id);
-        remove(ref(database, path));
+        if (id) {
+            const path = getDbPath(id);
+            remove(ref(database, path));
+        } else {
+            console.error ("no id passed to remove");
+        }
+
     } catch (err) {
         console.log(err);
     }
