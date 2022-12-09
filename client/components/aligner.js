@@ -6,12 +6,10 @@ AFRAME.registerSystem('aligner', {
         this.saveable = null;
         document.addEventListener('align', this.align.bind(this));
         document.addEventListener('stopalign', this.stopalign.bind(this));
-
     },
     stopalign: function() {
         this.saveable.removeAttribute('animation');
         this.saveable.setAttribute('color', this.saveable.components['stuff'].data.color);
-
     },
     getBounds: function (o) {
         const geometry = o.getObject3D('mesh').geometry;
@@ -20,14 +18,12 @@ AFRAME.registerSystem('aligner', {
     },
     calculateOffset(src, dest, dim) {
         const srcBox = this.getBounds(src);
-
         const srcPos = src.object3D.position.clone();
         src
             .object3D
             .getWorldPosition(
                 srcPos
             );
-
 
         const destBox = this.getBounds(dest);
         const destPos = dest.object3D.position.clone();
@@ -47,10 +43,7 @@ AFRAME.registerSystem('aligner', {
             src.closest('[template]').object3D.position.setZ(destPos.z);
         }
         const obj = src.closest('[template]');
-        /*document.dispatchEvent(
-            new CustomEvent('shareUpdate', {
-                detail: {id: obj.id, position: obj.object3D.position}}));
-*/
+
     },
     align: function (evt) {
         this.changeRaycaster('#aligner a-plane, ');

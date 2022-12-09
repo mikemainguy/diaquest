@@ -37,21 +37,22 @@ function getDbPath(id) {
     const loc = window.location.pathname.split('/');
 
     const pathId = id == null ? '' : '/' + id;
+
     if (loc.length < 3) {
-        return 'public/entities' + pathId;
+        return 'worlds/public/entities' + pathId;
     }
     switch (loc[1]) {
         case 'public':
-            return 'public/entities' + pathId;
+            return 'worlds/public/entities' + pathId;
         case 'worlds':
             if (loc.length === 3) {
                 const myLoc = decodeURIComponent(window.location).split('/').pop()
                 return 'worlds/' + myLoc + '/entities' + pathId;
             } else {
-                return 'public/entities' + pathId;
+                return 'worlds/public/entities' + pathId;
             }
         default:
-            return 'public/entities' + pathId;
+            return 'worlds/public/entities' + pathId;
     }
 }
 
@@ -153,14 +154,23 @@ export function writeUser(profile) {
 
 
 document.addEventListener('shareUpdate', function (evt) {
+    if (!evt.detail && !evt.detail.id) {
+        console.error("Missing Id to update " + JSON.stringify(evt.detail));
+        return;
+    }
     if (VRLOCAL) {
         const el = document.getElementById(evt.detail.id);
         evt.detail.updater = document.querySelector('.rig').getAttribute('id');
         createOrUpdateDom(evt.detail);
     } else {
         if (evt.detail.remove === true) {
-            removeEntity(evt.detail.id);
-            return;
+            if (evt.detail && evt.detail.id) {
+                removeEntity(evt.detail.id);
+                return;
+            } else {
+                console.error("cannot remove " + JSON.stringify(evt.detail));
+            }
+
         }
         const el = document.getElementById(evt.detail.id);
         evt.detail.updater = document.querySelector('.rig').getAttribute('id');
@@ -177,15 +187,32 @@ document.addEventListener('shareUpdate', function (evt) {
 });
 
 function updateEntity(data) {
-    update(ref(database, getDbPath(data.id)), data);
+    try {
+        const path = getDbPath(data.id);
+        update(ref(database, path), data);
+    } catch (err) {
+        console.log(err);
+    }
+
+
 }
 
 function createEntity(data) {
-    set(ref(database, getDbPath(data.id)), data);
+    try {
+        const path = getDbPath(data.id);
+        set(ref(database, path), data);
+    } catch(err){
+        console.log(err);
+    }
 }
 
 function removeEntity(id) {
-    remove(ref(database, getDbPath(id)));
+    try {
+        const path = getDbPath(data.id);
+        remove(ref(database, path));
+    } catch (err) {
+        console.log(err);
+    }
 }
 
 if (!VRLOCAL) {
