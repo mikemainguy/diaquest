@@ -16,7 +16,7 @@
     <a-mixin id="labelMixin"
              material="color: #eee;"
              lookatme
-             text-geometry="height: .05; size: .1; value: ...; font: /assets/helvetiker_regular.typeface.json"
+             text-geometry="height: .05; size: .1; value: ...; font: url(/assets/helvetiker_regular.typeface.json)"
              ></a-mixin>
 
 
@@ -129,7 +129,7 @@
                     scale=".2 .2 .2"
                     position="0 0 0"
                     rotation="0 180 0"
-                    gltf-model="/assets/toontown_deer.glb">
+                    gltf-model="url(/assets/toontown_deer.glb)">
             </a-entity>
             <a-entity
                     mixin="labelMixin"

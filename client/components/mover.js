@@ -51,7 +51,6 @@ AFRAME.registerComponent('mover', {
         this.handler = this.thumbstick.bind(this);
         this.rig = document.querySelector(".rig");
         this.el.addEventListener('thumbstickmoved', this.handler);
-
     },
     remove: function () {
         this.el.removeEventListener('thumbstickmoved', this.handler);

@@ -28,11 +28,8 @@ AFRAME.registerComponent('widget', {
     },
     clickHandler: function (evt) {
         document.getElementById('sizer').setAttribute('visible', false);
-        //const buttons = document.querySelector('a-scene').systems['buttons'];
         const buttonState = {}
         buttonState.first = null;
-        const event = new Event('rigChanged');
-        document.dispatchEvent(event);
         debug(evt.target.id);
         if (typeof newrelic !== 'undefined') {
             newrelic.addPageAction(evt.target.id);

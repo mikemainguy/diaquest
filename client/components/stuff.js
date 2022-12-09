@@ -75,7 +75,7 @@ AFRAME.registerComponent('stuff', {
     },
     events: {
         click: function (evt) {
-            evt.detail.cursorEl.components['tracked-controls-webxr'].controller.gamepad.hapticActuators[0].pulse(.5, 100);
+            evt.detail.cursorEl.components['tracked-controls-webxr'].controller.gamepad.hapticActuators[0].pulse(.8, 100);
             const obj = evt.target.closest('[template]');
             if (typeof newrelic !== 'undefined') {
                 newrelic.addPageAction('click', {id: obj.id});

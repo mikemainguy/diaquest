@@ -20,7 +20,7 @@
         <a-cylinder opacity="0.5" height="100" color="#00f" radius="0.01" rotation="0 0 90"></a-cylinder>
         <a-sphere opacity="0.2" radius="0.25" color="#ff4"></a-sphere>
     </a-entity>
-<!-- look-controls wasd-controls="fly: true" -->
+    <!-- look-controls wasd-controls="fly: true" -->
     <a-entity id="sizer" visible="false">
 
         <a-cylinder id="xySize" radius=".1" height="50" visible="false" ,position="0 0 0"
@@ -38,12 +38,19 @@
     <a-entity light="type: ambient; color: #BBB">
 
     </a-entity>
-        <a-entity position="-80 2 100" light="type: point; color: #FB9; distance: 200; intensity: 1;">
-            <a-entity id="ambient" sound="src: url(/assets/sounds/brown.mp3); loop: true; volume: 1"></a-entity>
-            <!--<a-sphere radius="5"  material="src: /assets/sky2.jpeg; color: #ff2; opacity: 0.2" animation="property: rotation; loop: true; dur: 15000; easing: linear; from: 0 0 0; to: 0 360 0"></a-sphere>-->
-        </a-entity>
-
-
+    <a-entity position="-80 2 100" light="type: point; color: #FB9; distance: 200; intensity: 1;">
+        <a-entity id="ambient" sound="src: url(/assets/sounds/brown.mp3); loop: true; volume: 1"></a-entity>
+        <!--<a-sphere radius="5"  material="src: /assets/sky2.jpeg; color: #ff2; opacity: 0.2" animation="property: rotation; loop: true; dur: 15000; easing: linear; from: 0 0 0; to: 0 360 0"></a-sphere>-->
+    </a-entity>
+    <!--
+    <a-entity
+            id="man"
+            scale="1 1 1"
+            position="0 0 0"
+            rotation="0 0 0"
+            gltf-model="url(/assets/pose1.glb)">
+    </a-entity>
+    -->
     <a-plane width="4"
              height="4"
              color="#fff"
@@ -56,7 +63,7 @@
     <a-sky position="0 0 0" color="#204" src="/assets/8192.jpeg">
 
     </a-sky>
-    <a-plane width="40" height="40" rotation="-90 0 0"  material="opacity: 0.9; color: #33f;"></a-plane>
+    <a-plane width="40" height="40" rotation="-90 0 0" material="opacity: 0.9; color: #33f;"></a-plane>
 
     {{> nonvr }}
 </a-scene>
