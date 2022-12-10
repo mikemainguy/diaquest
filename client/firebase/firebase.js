@@ -59,7 +59,12 @@ function getDbPath(id) {
 async function setupApp() {
     try {
         const profile = await axios.get('/api/user/profile');
-        await signInWithCustomToken(auth, profile.data.firebase_token);
+        if (profile && profile.data) {
+            await signInWithCustomToken(auth, profile.data.firebase_token);
+        } else {
+            window.location.href = "/";
+        }
+
 
         return profile.data;
     } catch (error) {
