@@ -1,3 +1,4 @@
+const gitCommitId = require('git-commit-id');
 require('dotenv').config();
 const env =
     {
@@ -13,7 +14,7 @@ const env =
         SIGNALWIRE_USER: process.env.SIGNALWIRE_USER || false,
         AUTH0_CLIENT_ID: process.env.AUTH0_CLIENT_ID || false,
         VOICE_TOKEN: process.env.VOICE_TOKEN || false,
-        SOURCE_VERSION: process.env.SOURCE_VERSION || 'dev'
+        SOURCE_VERSION: process.env.SOURCE_VERSION || gitCommitId()
     }
 module.exports = env;
 

@@ -29,6 +29,7 @@
     "express-handlebars": "^6.0.6",
     "express-openid-connect": "^2.8.0",
     "express-winston": "^4.2.0",
+    "git-commit-id": "^2.0.1",
     "firebase": "^9.9.3",
     "firebase-admin": "^11.0.0",
     "newrelic": "^9.1.0",
