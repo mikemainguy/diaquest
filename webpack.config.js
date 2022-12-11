@@ -1,9 +1,4 @@
-// Generated using webpack-cli https://github.com/webpack/webpack-cli
-
 const path = require('path');
-//const SplitChunksPlugin = require('')
-//const HtmlWebpackPlugin = require('html-webpack-plugin');
-//const WorkboxWebpackPlugin = require('workbox-webpack-plugin');
 const fs = require('fs');
 const version = fs.readFileSync('./VERSION');
 const isProduction = process.env.NODE_ENV == 'production';
@@ -32,13 +27,6 @@ const config = {
     devtool: 'source-map',
     plugins: [
 
-        //new Split
-        /*new HtmlWebpackPlugin({
-            template: 'index.hbs',
-        }),
-*/
-        // Add your plugins here
-        // Learn more about plugins from https://webpack.js.org/configuration/plugins/
     ],
     module: {
         rules: [
