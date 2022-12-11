@@ -1,6 +1,7 @@
 const gitCommitId = require('git-commit-id');
 const fs=require("fs");
-const commit = gitCommitId();
+const commit = '';
+//gitCommitId();
 if (commit) {
     fs.writeFileSync('./client/dist/version.txt', commit);
 } else {
