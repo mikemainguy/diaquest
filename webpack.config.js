@@ -4,10 +4,10 @@ const path = require('path');
 //const SplitChunksPlugin = require('')
 //const HtmlWebpackPlugin = require('html-webpack-plugin');
 //const WorkboxWebpackPlugin = require('workbox-webpack-plugin');
-
+const fs = require('fs');
+const version = fs.readFileSync('./VERSION');
 const isProduction = process.env.NODE_ENV == 'production';
 
-const { GitRevisionPlugin } = require('git-revision-webpack-plugin')
 const stylesHandler = 'style-loader';
 
 
@@ -19,7 +19,7 @@ const config = {
         components: './src/components.js'
     },
     output: {
-        filename: '[name].[git-revision-hash].bundle.js',
+        filename: `[name].${version}.bundle.js`,
         path: path.resolve(__dirname, 'client/dist')
     },
     optimization: {
@@ -31,7 +31,7 @@ const config = {
     },
     devtool: 'source-map',
     plugins: [
-        new GitRevisionPlugin()
+
         //new Split
         /*new HtmlWebpackPlugin({
             template: 'index.hbs',
