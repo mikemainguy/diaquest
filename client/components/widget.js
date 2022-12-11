@@ -9,6 +9,9 @@ AFRAME.registerSystem('widget', {
 });
 
 AFRAME.registerComponent('widget', {
+    schema: {
+        method: {type: 'string'},
+    },
     init: function () {
         this.color = '#11a';
         this.el.setAttribute('material', 'color', this.color);
@@ -30,11 +33,11 @@ AFRAME.registerComponent('widget', {
         document.getElementById('sizer').setAttribute('visible', false);
         const buttonState = {}
         buttonState.first = null;
-        debug(evt.target.id);
+        debug(this.data.method);
         if (typeof newrelic !== 'undefined') {
             newrelic.addPageAction(evt.target.id);
         }
-        switch (evt.target.id) {
+        switch (this.data.method) {
             case 'align':
                 buttonState.mode = ['aligning'];
                 break;
