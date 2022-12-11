@@ -19,9 +19,9 @@
 
         </script>
 
-        <script src="/dist/db.bundle.js" type="application/javascript"></script>
-        <script src="/dist/index.bundle.js" type="application/javascript"></script>
-        <script src="/dist/components.bundle.js" type="application/javascript"></script>
+        <script src="/dist/db.{{version}}.bundle.js" type="application/javascript"></script>
+        <script src="/dist/index.{{version}}.bundle.js" type="application/javascript"></script>
+        <script src="/dist/components.{{version}}.bundle.js" type="application/javascript"></script>
     {{/if}}
 
     {{#if vrLocal}}
@@ -30,8 +30,8 @@
         </script>
 
 
-        <script src="/dist/index.bundle.js" type="application/javascript"></script>
-        <script src="/dist/components.bundle.js" type="application/javascript"></script>
+        <script src="/dist/index.{{version}}.bundle.js" type="application/javascript"></script>
+        <script src="/dist/components.{{version}}.bundle.js" type="application/javascript"></script>
     {{/if}}
     <link href="/assets/main.css" rel="stylesheet"/>
 
@@ -42,4 +42,5 @@
 {{{body}}}
 
 </body>
+
 </html>

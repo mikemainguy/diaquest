@@ -1,11 +1,12 @@
 const env = require('./server/env');
 const {expressLogger, logger} = require('./server/logging');
 const config = require('./newrelic').config;
+const fs = require('fs');
+const version = fs.readFileSync('./client/dist/version.txt');
 const axios = require('axios');
 if (env.NR_LICENCE_KEY) {
     require('newrelic');
 }
-
 
 const express = require('express');
 const {engine} = require('express-handlebars');
@@ -64,12 +65,12 @@ app.set('views', './server/views');
 
 app.get('/', async (req, res) => {
     res.render('landing', {
-        html: true, sourceVersion: env.SOURCE_VERSION
+        html: true, version: version
     });
 });
 
 app.get('/local', (req, res) => {
-    res.render('world', {vrLocal: true, sourceVersion: env.SOURCE_VERSION});
+    res.render('world', {vrLocal: true, version: version});
 });
 
 app.use(auth(auth0Config));
@@ -79,7 +80,7 @@ app.get('/home', async (req, res) => {
    res.redirect('/worlds/' + userInfo.sub);
 });
 app.get('/worlds/:worldId', (req, res) => {
-    res.render('world', {vrConnected: true, sourceVersion: env.SOURCE_VERSION});
+    res.render('world', {vrConnected: true, version: version});
 });
 app.get('/api/voice/token', async (req, res) => {
     try {
