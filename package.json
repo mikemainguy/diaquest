@@ -7,10 +7,10 @@
     "start": "node ./index.js",
     "background": "node ./background.js",
     "test": "mocha --recursive",
-    "build": "node ./version.js && webpack --mode=production --node-env=production",
-    "build:dev": "node ./version.js && webpack --mode=development",
-    "build:prod": "node ./version.js && webpack --mode=production --node-env=production",
-    "watch": "node ./version.js && webpack --watch",
+    "build": "webpack --mode=production --node-env=production",
+    "build:dev": "webpack --mode=development",
+    "build:prod": "webpack --mode=production --node-env=production",
+    "watch": "webpack --watch",
     "serve": "webpack serve"
   },
   "dependencies": {

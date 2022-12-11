@@ -2,7 +2,7 @@ const env = require('./server/env');
 const {expressLogger, logger} = require('./server/logging');
 const config = require('./newrelic').config;
 const fs = require('fs');
-const version = fs.readFileSync('./client/dist/version.txt');
+const version = fs.readFileSync('./client/dist/COMMITHASH');
 const axios = require('axios');
 if (env.NR_LICENCE_KEY) {
     require('newrelic');
