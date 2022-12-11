@@ -5,7 +5,7 @@ AFRAME.registerSystem('color-picker', {
 });
 AFRAME.registerComponent('color-picker', {
   init: function() {
-    const letters = "069F";
+    const letters = "0369cF";
     let x = 0;
 
     for (const red of letters) {
@@ -17,7 +17,7 @@ AFRAME.registerComponent('color-picker', {
           ele.setAttribute('height', 0.05);
           ele.setAttribute('color', color);
           ele.setAttribute('color-swatch', 'color: ' + color);
-          ele.setAttribute('position', new THREE.Vector3((x%8)*0.05, Math.floor((x/8))*0.05, 0));
+          ele.setAttribute('position', new THREE.Vector3((x%12)*0.05, Math.floor((x/12))*0.05, 0));
           this.el.appendChild(ele);
 
           x++;
