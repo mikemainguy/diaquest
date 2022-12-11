@@ -17,6 +17,7 @@ NR_ACCOUNT_ID: <<new relic account #>>
 SIGNALWIRE_TOKEN: <<signal wire secret (for backend rest api to generate token)>>
 SIGNALWIRE_USER: <<signalwire user>>
 AUTH0_CLIENT_ID: <<auth0 client id>>
+VOICE_TOKEN: <<for voice recognition>>
 ```
 Once you have those configured, you should be good to go, just run npm start.
 
