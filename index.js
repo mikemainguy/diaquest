@@ -64,12 +64,12 @@ app.set('views', './server/views');
 
 app.get('/', async (req, res) => {
     res.render('landing', {
-        html: true
+        html: true, sourceVersion: env.SOURCE_VERSION
     });
 });
 
 app.get('/local', (req, res) => {
-    res.render('world', {vrLocal: true});
+    res.render('world', {vrLocal: true, sourceVersion: env.SOURCE_VERSION});
 });
 
 app.use(auth(auth0Config));
@@ -79,7 +79,7 @@ app.get('/home', async (req, res) => {
    res.redirect('/worlds/' + userInfo.sub);
 });
 app.get('/worlds/:worldId', (req, res) => {
-    res.render('world', {vrConnected: true});
+    res.render('world', {vrConnected: true, sourceVersion: env.SOURCE_VERSION});
 });
 app.get('/api/voice/token', async (req, res) => {
     try {

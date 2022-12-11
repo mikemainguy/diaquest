@@ -48,6 +48,9 @@ AFRAME.registerComponent('widget', {
                 buttonState.template = '#cylinder-template'
                 buttonState.mode = ['adding'];
                 break;
+            case 'exit':
+                this.el.sceneEl.exitVR();
+                break;
             case 'resize':
                 buttonState.mode = ['resizing'];
                 break;
