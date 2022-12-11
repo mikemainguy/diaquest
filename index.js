@@ -2,6 +2,7 @@ const env = require('./server/env');
 const {expressLogger, logger} = require('./server/logging');
 const config = require('./newrelic').config;
 const fs = require('fs');
+//Test Commit
 const version = fs.readFileSync('./VERSION');
 const axios = require('axios');
 if (env.NR_LICENCE_KEY) {
