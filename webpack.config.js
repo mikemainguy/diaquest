@@ -14,6 +14,11 @@ const config = {
         components: {
             import: './src/components.js',
             dependOn: 'index'
+        },
+        speech: './src/speech.js',
+        conference: {
+            import: './src/conference.js',
+            dependOn: 'index'
         }
     },
     output: {

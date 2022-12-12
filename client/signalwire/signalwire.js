@@ -1,6 +1,6 @@
 import * as SignalWire from '@signalwire/js';
 import {default as axios} from "axios";
-import {debug} from './debug';
+
 
 AFRAME.registerSystem('signalwire', {
     init: function () {
@@ -8,10 +8,10 @@ AFRAME.registerSystem('signalwire', {
 
         document.addEventListener('connectSignalwire', (evt) => {
             if (this.roomSession && this.roomSession.active) {
-                debug('already in session');
+                this.debug('already in session');
             } else {
                 setupRoom().then((results) => {
-                    debug('connected to conference');
+                    this.debug('connected to conference');
                     if (typeof newrelic !== 'undefined') {
                         newrelic.addPageAction('room session started');
                     }
@@ -25,7 +25,7 @@ AFRAME.registerSystem('signalwire', {
             if (this.roomSession) {
                 if (this.roomSession.active) {
                     this.roomSession.leave().then((data) => {
-                        debug('left session');
+                        this.debug('left session');
                         if (typeof newrelic !== 'undefined') {
                             newrelic.addPageAction('left session');
                         }
@@ -51,11 +51,11 @@ AFRAME.registerSystem('signalwire', {
             }
 
             this.roomSession.audioMute().then(() => {
-                debug('muted');
+                this.debug('muted');
             });
 
         } else {
-            debug('no room session');
+            this.debug('no room session');
         }
     },
     unmute: function (evt) {
@@ -66,13 +66,16 @@ AFRAME.registerSystem('signalwire', {
             }
             this.roomSession.videoUnmute();
             this.roomSession.audioUnmute().then(() => {
-                debug('unmuted');
+                this.debug('unmuted');
             });
 
         } else {
-            debug('no room session');
+            this.debug('no room session');
         }
 
+    },
+    debug: function(message) {
+        console.log(message);
     }
 });
 
