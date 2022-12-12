@@ -25,7 +25,7 @@
 
 
 
-    <a-entity id="plus" type="html">
+    <script id="plus" type="html">
         <a-entity position="0 0 .1">
             <a-box
                     width="0.05"
@@ -42,18 +42,18 @@
 
             </a-box>
         </a-entity>
-    </a-entity>
+    </script>
 
-    <a-entity id="widgetPoint" type="html">
+    <script id="widgetPoint" type="html">
         <a-cone
                 radius-bottom="0.03"
                 radius-top="0"
                 height="0.1"
                 mixin="widgetMaterial">
         </a-cone>
-    </a-entity>
+    </script>
 
-    <a-entity id="connector-template" type="html">
+    <script id="connector-template" type="html">
         <a-entity class="data-connector" share-position>
             <a-cone rotation="-90 0 0" position="0 0 0" radius-top="0" radius-bottom="0.02" height=".04" class="data-packet" color="#111">
             </a-cone>
@@ -62,8 +62,8 @@
             </a-cylinder>
             <a-entity class="label" mixin="labelMixin" position="0 0.3 0"></a-entity>
         </a-entity>
-    </a-entity>
-    <a-entity id="light-template" type="html">
+    </script>
+    <script id="light-template" type="html">
             <a-cylinder
                     share-position
                     radius=".01"
@@ -79,9 +79,9 @@
                     position="0 0.3 0">
             </a-entity>
 
-    </a-entity>
+    </script>
 
-    <a-entity
+    <script
             id="sphere-template"
             type="html">
         <a-entity share-position>
@@ -96,9 +96,9 @@
                     position="0 0.3 0">
             </a-entity>
         </a-entity>
-    </a-entity>
+    </script>
 
-    <a-entity
+    <script
             id="cylinder-template"
             type="html">
         <a-entity share-position>
@@ -111,10 +111,11 @@
             </a-cylinder>
             <a-entity mixin="labelMixin" position="0 0.3 0"></a-entity>
         </a-entity>
-    </a-entity>
-    <a-entity id="box-template" type="html">
+    </script>
+    <script id="box-template" type="html">
         <a-entity grabbable share-position>
             <a-box
+
                     class="saveable"
                     color="#00f"
                     width="1"
@@ -125,8 +126,8 @@
             </a-box>
             <a-entity mixin="labelMixin" position="0 0.3 0"></a-entity>
         </a-entity>
-    </a-entity>
-    <a-entity id="user-template" type="html">
+    </script>
+    <script id="user-template" type="html">
         <a-entity share-position>
             <a-entity
                     scale=".2 .2 .2"
@@ -139,6 +140,6 @@
                     position="0 0.3 0">
             </a-entity>
         </a-entity>
-    </a-entity>
+    </script>
     <img id="voiceicon" src="/assets/voice.svg">
 </a-assets>

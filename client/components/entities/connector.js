@@ -1,4 +1,4 @@
-import {debug} from './debug';
+import {debug} from '../debug';
 
 AFRAME.registerComponent('connector', {
   schema: {
@@ -82,6 +82,7 @@ AFRAME.registerComponent('connector', {
         } else {
           this.dataPacket
               .position.setZ((d2/-2) + .02);
+
         }
 
         if (this.label) {

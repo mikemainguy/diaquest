@@ -14,10 +14,7 @@
     {{#if vrConnected}}
         <script>
             const VRLOCAL = false;
-
         </script>
-
-        <script src="/dist/db.{{version}}.bundle.js" type="application/javascript"></script>
         <script src="/dist/index.{{version}}.bundle.js" type="application/javascript"></script>
         <script src="/dist/components.{{version}}.bundle.js" type="application/javascript"></script>
     {{/if}}
@@ -26,8 +23,6 @@
         <script>
             const VRLOCAL = true;
         </script>
-
-
         <script src="/dist/index.{{version}}.bundle.js" type="application/javascript"></script>
         <script src="/dist/components.{{version}}.bundle.js" type="application/javascript"></script>
     {{/if}}
@@ -38,7 +33,9 @@
 
 <body>
 {{{body}}}
-
+{{#if vrConnected}}
+<script defer src="/dist/db.{{version}}.bundle.js" type="application/javascript"></script>
+{{/if}}
 </body>
 
 </html>

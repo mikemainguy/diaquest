@@ -1,4 +1,4 @@
-import {changeRaycaster, createUUID, getCurrentMode, getSystem, round} from "./util";
+import {changeRaycaster, createUUID, getCurrentMode, getSystem, round} from "../util";
 
 AFRAME.registerSystem('stuff', {
     init: function () {
@@ -19,13 +19,16 @@ AFRAME.registerComponent('stuff', {
     update: function () {
         const v = AFRAME.utils.coordinates.parse(this.data.scale);
         this.scale = new THREE.Vector3(v.x, v.y, v.z);
-        this.el.emit('registerupdate', {}, true);
+        this.color = this.data.color;
+        this.text = this.data.text;
 
-    },
-    tock: function () {
-        if (!this.textDisplay) {
-            this.textDisplay = this.el.querySelector('[text-geometry]');
-        } else {
+        this.saveable = this.el.querySelector('.saveable');
+        this.textDisplay = this.el.querySelector('[text-geometry]');
+        if (this.saveable) {
+            this.saveable.setAttribute('visible', true);
+            this.saveable.setAttribute('sound', 'src: url(/assets/sounds/ButtonClick.mp3); on: click;');
+        }
+        if (this.textDisplay) {
             if (this.data.text) {
                 this.textDisplay.setAttribute('visible', true);
                 this.textDisplay.setAttribute('text-geometry', 'value', this.data.text);
@@ -34,25 +37,22 @@ AFRAME.registerComponent('stuff', {
             }
         }
 
-        if (!this.saveable) {
-            this.saveable = this.el.querySelector('.saveable');
+        this.el.emit('registerupdate', {}, true);
+    },
+    tock: function () {
+        if (!this.textDisplay || !this.saveable) {
+            this.update();
+            return;
         }
-        if (this.saveable) {
-            if (!this.scale.equals(this.saveable.object3D.scale)) {
-                this.saveable.object3D.scale.set(this.scale.x, this.scale.y, this.scale.z);
-            }
-
-            if (this.saveable?.object3D?.children[0]?.geometry) {
-                this.saveable.object3D.children[0].geometry.computeBoundingBox();
-            }
-            this.saveable.setAttribute('visible', true);
-            this.saveable.setAttribute('sound', 'src: url(/assets/sounds/ButtonClick.mp3); on: click;');
-            if (!this.saveable.getAttribute('animation')) {
-                this.saveable.setAttribute('material', 'color', this.data.color);
-            }
-
+        if (!this.scale.equals(this.saveable.object3D.scale)) {
+            this.saveable.object3D.scale.set(this.scale.x, this.scale.y, this.scale.z);
         }
-
+        if (this.saveable?.object3D?.children[0]?.geometry) {
+            this.saveable.object3D.children[0].geometry.computeBoundingBox();
+        }
+        if (!this.saveable.getAttribute('animation')) {
+            this.saveable.setAttribute('material', 'color', this.data.color);
+        }
     },
     tick: function () {
         if (this.textDisplay && this.saveable) {

@@ -11,7 +11,10 @@ const config = {
     entry: {
         index: './src/index.js',
         db: './src/db.js',
-        components: './src/components.js'
+        components: {
+            import: './src/components.js',
+            dependOn: 'index'
+        }
     },
     output: {
         filename: `[name].${version}.bundle.js`,
