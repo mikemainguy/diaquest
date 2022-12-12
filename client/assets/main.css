@@ -49,6 +49,19 @@ div.nonvr {
     left: 20px;
     background-color: #fff;
 }
+h1, h2 {
+    display: inline-block;
+    vertical-align: top;
+}
+#logo {
+    height: 64px;
+    width: 64px;
+    margin: 8px;
+    padding: 8px;
+    display: inline-block;
+    background: #99b;
+}
+
 div.nonvr  button {
     width: 96px;
     height: 48px;
