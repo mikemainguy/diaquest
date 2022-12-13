@@ -110,8 +110,17 @@ if (!VRLOCAL) {
         onChildRemoved(entities, (snapshot) => {
             const scene = document.querySelector('a-scene');
             const ele = document.getElementById(snapshot.val().id);
+
             if (ele) {
-                ele.remove();
+                if (!ele.classList.contains('rig')) {
+                    ele.remove();
+                } else {
+                    document.dispatchEvent(
+                        new CustomEvent('disconnectSignalwire',
+                            {detail: 'OK'}));
+
+                }
+
             }
         });
         onChildChanged(entities, (snapshot) => {

@@ -5,7 +5,7 @@ import {default as axios} from "axios";
 AFRAME.registerSystem('signalwire', {
     init: function () {
 
-
+        this.roomSession = null;
         document.addEventListener('connectSignalwire', (evt) => {
             if (this.roomSession && this.roomSession.active) {
                 this.debug('already in session');
@@ -29,7 +29,6 @@ AFRAME.registerSystem('signalwire', {
                         if (typeof newrelic !== 'undefined') {
                             newrelic.addPageAction('left session');
                         }
-
                         this.roomSession.dispose();
                     });
 
@@ -64,7 +63,7 @@ AFRAME.registerSystem('signalwire', {
             if (newrelic !== 'undefined') {
                 newrelic.addPageAction('unmute');
             }
-            this.roomSession.videoUnmute();
+
             this.roomSession.audioUnmute().then(() => {
                 this.debug('unmuted');
             });
