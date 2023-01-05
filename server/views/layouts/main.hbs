@@ -4,7 +4,7 @@
     <link rel=icon href="/assets/favicon-16x16.png" sizes="16x16" type="image/png">
     <link rel=icon href="/assets/favicon-32x32.png" sizes="32x32" type="image/png">
     <link rel=icon href="/assets/favicon-96x96.png" sizes="96x96" type="image/png">
-    <title>Immersive Idea Alpha</title>
+    <title>Immersive Idea Alpha {{version}}</title>
     <!--
     <link rel="manifest" href="manifest.webmanifest"/>
     -->
@@ -40,6 +40,9 @@
 <script defer src="/dist/db.{{version}}.bundle.js" type="application/javascript"></script>
 <script defer src="/dist/speech.{{version}}.bundle.js" type="application/javascript"></script>
 <script defer src="/dist/conference.{{version}}.bundle.js" type="application/javascript"></script>
+{{/if}}
+{{#if vrLocal}}
+    <script src="/dist/localdb.{{version}}.bundle.js" type="application/javascript"></script>
 {{/if}}
 </body>
 

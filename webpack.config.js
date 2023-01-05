@@ -11,6 +11,7 @@ const config = {
     entry: {
         index: './src/index.js',
         db: './src/db.js',
+        localdb: './src/local.js',
         components: {
             import: './src/components.js',
             dependOn: 'index'

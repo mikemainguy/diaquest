@@ -11,7 +11,3 @@ export function debug(value) {
     }
   }
 }
-
-function vectorString(vector) {
-  return vector.x + " " + vector.y + " " + vector.z;
-}
