@@ -1,32 +1,37 @@
-const DB_NAME = 'localobjects';
-const DB_VERSION = 1;
-const DB_STORE_NAME = 'vrobjects';
+import {openDB} from 'idb';
+async function startup() {
+    const myDb = await openDB('immersive', 1, {
+        upgrade(db, oldVersion, newVersion, transaction, event) {
+            db.createObjectStore('entities');
+        }
+    });
+    const keys = await myDb.getAllKeys('entities');
+    for (const id of keys) {
+        const data = await myDb.get('entities', id);
+        createOrUpdateDom(data);
+    }
+}
 
-let db;
-let request = indexedDB.open(DB_NAME, DB_VERSION);
-request.onsuccess = function(event) {
-    console.log("IndexedDB opened successfully");
-    db = this.result;
-};
-request.onupgradeneeded = function(event) {
-    let dbResult = event.target.result;
-
-    // check if our database already exists and contains our object store
-    if (dbResult.objectStoreNames.contains(DB_STORE_NAME)) {
-        // if so, delete it so we can re-create it with our new structure
-        dbResult.deleteObjectStore(DB_STORE_NAME);
+async function createEntity(data) {
+    const myDb = await openDB('immersive', 1, {
+        upgrade(db, oldVersion, newVersion, transaction, event) {
+            db.createObjectStore('entities');
+        }
+    });
+    if (data && data.id && data.id != null) {
+        await myDb.put('entities', data, data.id);
     }
 
-    // create a new object store
-    let store = dbResult.createObjectStore(
-        DB_STORE_NAME, { keyPath: 'id' , autoIncrement: false}
-    );
+}
+async function removeEntity(id) {
+    const myDb = await openDB('immersive', 1, {
+        upgrade(db, oldVersion, newVersion, transaction, event) {
+            db.createObjectStore('entities');
+        }
+    });
+    await myDb.delete('entities', id);
+}
 
-    // create indices for each of our key property names
-    //store.createIndex('authorName', 'authorName', { unique: false });
-    //store.createIndex('fileName', 'fileName', { unique: true });
-    //store.createIndex('markdownContent', 'markdownContent', { unique: false });
-};
 document.addEventListener('shareUpdate', function (evt) {
     if (!evt.detail && !evt.detail.id) {
         console.error("Missing Id to update " + JSON.stringify(evt.detail));
@@ -35,46 +40,109 @@ document.addEventListener('shareUpdate', function (evt) {
     if (VRLOCAL) {
         const el = document.getElementById(evt.detail.id);
         evt.detail.updater = document.querySelector('.rig').getAttribute('id');
-        createOrUpdateDom(evt.detail);
-    } else {
+
         if (evt.detail.remove === true) {
-            if (evt.detail && evt.detail.id) {
-                removeEntity(evt.detail.id);
-                return;
+            removeEntity(evt.detail.id);
+        } else {
+            if (el) {
+                updateEntity(evt.detail);
             } else {
-                console.error("cannot remove " + JSON.stringify(evt.detail));
+                createEntity(evt.detail);
             }
 
         }
-        const el = document.getElementById(evt.detail.id);
-        evt.detail.updater = document.querySelector('.rig').getAttribute('id');
-
-        if (el) {
-            updateEntity(evt.detail);
-        } else {
-            createEntity(evt.detail);
-        }
+        createOrUpdateDom(evt.detail);
 
     }
-
-
 });
-function updateEntity(data) {
-    try {
-        //const path = getDbPath(data.id);
-        //update(ref(database, path), data);
-    } catch (err) {
-        console.log(err);
+
+async function updateEntity(data) {
+    const myDb = await openDB('immersive', 1, {
+        upgrade(db, oldVersion, newVersion, transaction, event) {
+            db.createObjectStore('entities');
+        }
+    });
+    if (data && data.id && data.id != null) {
+        const myObj = await myDb.get('entities', data.id);
+        Object.assign(myObj, data);
+        await myDb.put('entities', myObj, data.id);
     }
 
-
 }
+function createOrUpdateDom(entity) {
+    const me = document.querySelector('.rig')
 
-function createEntity(data) {
-    try {
-        //const path = getDbPath(data.id);
-        //set(ref(database, path), data);
-    } catch(err){
-        console.log(err);
+    if (!entity || !entity.template || !entity.id ||
+        (me && me.getAttribute('id') === entity.id)) {
+        return;
+    }
+    const scene = document.querySelector("a-scene");
+    let exists = document.getElementById(entity.id);
+    if (exists && entity.updater && (me.getAttribute('id') === entity.updater)) {
+        return;
+    }
+    const ele = exists ? exists : document.createElement('a-entity');
+
+
+    ele.setAttribute('template', 'src: ' + entity.template);
+    ele.setAttribute('id', entity.id);
+    const comp = ele.querySelector('[share-position]');
+
+    if (entity.rotation || entity.position) {
+        if (comp && comp.components && comp.components['share-position'] &&
+            comp.components['share-position'].oldPosition) {
+            comp.components['share-position'].pause();
+            comp.components['share-position'].oldPosition = null;
+
+        }
+    }
+    if (entity.rotation) {
+        ele.setAttribute('rotation', entity.rotation);
+    }
+
+    if (entity.position) {
+        ele.setAttribute('position', entity.position);
+    }
+    const scale = entity.scale ? entity.scale : '0.2 0.2 0.2';
+
+    const color = entity.color ? entity.color : '#669';
+    const text = entity.text ? entity.text : '';
+    switch (entity.template) {
+        case '#user-template':
+        case '#box-template':
+        case '#pane-template':
+        case '#cylinder-template':
+        case '#light-template':
+        case '#sphere-template':
+            ele.setAttribute('stuff', 'text: ' + text + '; color: ' + color + '; scale: ' + scale);
+            break;
+        case '#connector-template':
+            ele.setAttribute('stuff', 'text: ' + text + '; color: ' + color);
+            ele.setAttribute('connector', 'startEl: #' + entity.first + "; endEl: #" + entity.second);
+            break;
+    }
+    if (!exists) {
+        scene.append(ele);
+    }
+    if (entity.rotation || entity.position) {
+        if (comp && comp.components && comp.components['share-position'] &&
+            comp.components['share-position'].oldPosition) {
+            comp.components['share-position'].play();
+
+        }
     }
 }
+const sc = document
+    .querySelector('a-scene');
+if (sc.hasLoaded){
+    startup().then(()=> {
+        console.log('data loaded after scene');
+    });
+} else {
+    sc.addEventListener('loaded', function() {
+        startup().then(() => {
+            console.log('localdb loaded before scene');
+        });
+    })
+}
+
