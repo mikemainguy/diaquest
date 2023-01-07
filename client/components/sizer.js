@@ -13,6 +13,7 @@ AFRAME.registerSystem('sizer', {
             if (evt.handle) {
                 this.handle = evt.handle;
             } else {
+                this.el.emit('hideMenu', {id: '#bmenu'}, true);
                 this.handle = null;
             }
         }

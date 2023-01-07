@@ -46,7 +46,13 @@ AFRAME.registerSystem('aligner', {
 
     },
     align: function (evt) {
-        this.changeRaycaster('#aligner a-plane, ');
+        const bmenu = document.getElementById('bmenu');
+        if (bmenu && bmenu.object3D.visible) {
+            this.changeRaycaster('#aligner a-plane, #bmenu [widget], ');
+        } else {
+            this.changeRaycaster('#aligner a-plane, ');
+        }
+
         const el = document.getElementById(evt.detail.id);
         if (!el) {
             return;

@@ -163,7 +163,15 @@ function showMenu(evt) {
 
 
 function hideMenu(evt) {
-    changeMenu(evt.detail.id, false, '.saveable')
+    let objs = '.saveable'
+    if (!evt.id || evt.id != '#bmenu') {
+        const bmenu = document.getElementById('bmenu')
+
+        if (bmenu && bmenu.object3D.visible) {
+            objs += ', #bmenu [widget]'
+        }
+    }
+    changeMenu(evt.detail.id, false, objs);
 }
 
 function changeMenu(id, visible, objects) {

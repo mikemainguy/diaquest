@@ -1,4 +1,5 @@
 import {openDB} from 'idb';
+
 async function startup() {
     const myDb = await openDB('immersive', 1, {
         upgrade(db, oldVersion, newVersion, transaction, event) {
@@ -23,6 +24,7 @@ async function createEntity(data) {
     }
 
 }
+
 async function removeEntity(id) {
     const myDb = await openDB('immersive', 1, {
         upgrade(db, oldVersion, newVersion, transaction, event) {
@@ -30,6 +32,10 @@ async function removeEntity(id) {
         }
     });
     await myDb.delete('entities', id);
+    const ele = document.getElementById(id);
+    if (ele && !ele.classList.contains('rig')) {
+        ele.remove();
+    }
 }
 
 document.addEventListener('shareUpdate', function (evt) {
@@ -69,6 +75,7 @@ async function updateEntity(data) {
     }
 
 }
+
 function createOrUpdateDom(entity) {
     const me = document.querySelector('.rig')
 
@@ -93,7 +100,6 @@ function createOrUpdateDom(entity) {
             comp.components['share-position'].oldPosition) {
             comp.components['share-position'].pause();
             comp.components['share-position'].oldPosition = null;
-
         }
     }
     if (entity.rotation) {
@@ -128,21 +134,20 @@ function createOrUpdateDom(entity) {
         if (comp && comp.components && comp.components['share-position'] &&
             comp.components['share-position'].oldPosition) {
             comp.components['share-position'].play();
-
         }
     }
 }
+
 const sc = document
     .querySelector('a-scene');
-if (sc.hasLoaded){
-    startup().then(()=> {
+if (sc.hasLoaded) {
+    startup().then(() => {
         console.log('data loaded after scene');
     });
 } else {
-    sc.addEventListener('loaded', function() {
+    sc.addEventListener('loaded', function () {
         startup().then(() => {
             console.log('localdb loaded before scene');
         });
     })
 }
-

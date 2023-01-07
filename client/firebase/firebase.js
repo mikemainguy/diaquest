@@ -234,10 +234,6 @@ function removeEntity(id) {
     }
 }
 
-if (!VRLOCAL) {
-
-
-}
 
 function createOrUpdateDom(entity) {
     const me = document.querySelector('.rig')
