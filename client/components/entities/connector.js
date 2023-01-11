@@ -2,8 +2,8 @@ import {debug} from '../debug';
 
 AFRAME.registerComponent('connector', {
   schema: {
-    startEl: {type: 'selector'},
-    endEl: {type: 'selector'},
+    startEl: {type: 'string'},
+    endEl: {type: 'string'},
     speed: {type: 'number', default: 1.0},
     delay: {type: 'number', default: 1.0},
     twoWay: {type: 'boolean', default: false}
@@ -19,8 +19,20 @@ AFRAME.registerComponent('connector', {
     this.oldPos2 = new THREE.Vector3();
     this.el.emit('registerupdate', {}, true);
     this.started = false;
-    if (this.data.startEl && this.data.startEl.object3D &&
-      this.data.endEl && this.data.endEl.object3D ) {
+    if (this.data.startEl) {
+      const el = document.querySelector(this.data.startEl);
+      if (el && el.object3D) {
+        this.obj1 = el.object3D;
+      }
+
+    }
+    if (this.data.endEl) {
+      const el = document.querySelector(this.data.endEl);
+      if (el && el.object3D) {
+        this.obj2 = el.object3D;
+      }
+    }
+    if (this.obj1 && this.obj2) {
       if (this.el.querySelector('.data-direction')) {
         this.connector = this.el.querySelector('.data-direction').object3D;
       }
@@ -44,11 +56,20 @@ AFRAME.registerComponent('connector', {
     }
   },
   tock: function() {
-    if (!this.obj1 && this.data.startEl && this.data.startEl.object3D) {
-      this.obj1 = this.data.startEl.object3D;
+    if (!this.obj1 && this.data.startEl) {
+      const el = document.querySelector(this.data.startEl);
+      if (el) {
+        this.obj1 = el.object3D;
+      }
+
+
     }
-    if (!this.obj2 && this.data.endEl && this.data.endEl.object3D) {
-      this.obj2 = this.data.endEl.object3D;
+    if (!this.obj2 && this.data.endEl ) {
+      const el = document.querySelector(this.data.endEl);
+      if (el) {
+        this.obj2 = el.object3D;
+      }
+
     }
 
   },

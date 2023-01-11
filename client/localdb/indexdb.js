@@ -124,7 +124,7 @@ function createOrUpdateDom(entity) {
             break;
         case '#connector-template':
             ele.setAttribute('stuff', 'text: ' + text + '; color: ' + color);
-            ele.setAttribute('connector', 'startEl: #' + entity.first + "; endEl: #" + entity.second);
+            ele.setAttribute('connector', 'startEl: #' + entity.first + '; endEl: #' + entity.second);
             break;
     }
     if (!exists) {
