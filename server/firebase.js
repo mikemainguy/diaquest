@@ -20,4 +20,11 @@ admin.initializeApp({
   databaseURL: "https://metastore-37b60-default-rtdb.firebaseio.com"
 });
 
-module.exports = {getAuth: getAuth};
+const createWorld = async function(world, owner, public) {
+  const db = admin.database();
+  const ref = db.ref('/worlds/' + world);
+  await ref.set({"owner": owner, "public": public});
+}
+
+
+module.exports = {getAuth: getAuth, createWorld: createWorld};

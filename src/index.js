@@ -2,7 +2,12 @@ require('aframe');
 require('aframe-extras');
 require('aframe-lookatme');
 require('aframe-template-component');
+require('super-three');
 
+
+//require('aframe-gltf-exporter-component');
+//THREE.Math = {};
+//THREE.Math.degToRad = AFRAME.THREE.MathUtils.degToRad;
 //import * as SignalWire from '@signalwire/js';
 
 /*

@@ -1,0 +1,26 @@
+<form id="createWorld" method="POST" action="/worlds/create">
+    <input name="name">
+    <input name="public" type="checkbox">
+    <input type="submit">
+</form>
+<script>
+    document.getElementById('createWorld').addEventListener('submit',
+    function(event) {
+        event.preventDefault();
+
+        fetch(event.target.action,
+                {
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    },
+                    method:'post',
+                    body: new URLSearchParams(new FormData(event.target))
+                }
+        );
+
+
+
+    }, false);
+
+
+</script>

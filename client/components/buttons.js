@@ -14,6 +14,39 @@ AFRAME.registerSystem('buttons', {
         this.el.addEventListener('buttonstate', this.buttonstate);
         this.el.addEventListener('hideMenu', this.hideMenu);
         this.el.addEventListener('showMenu', this.showMenu);
+        document.addEventListener('export', function() {
+            console.log('starting');
+            const exporter = new THREE.GLTFExporter();
+            const nodes = Array.from(document.querySelectorAll('[stuff]').values());
+            const nodeMap = nodes.map(x => x.object3D);
+// Parse the input and generate the glTF output
+            exporter.parse(
+                nodeMap,
+                // called when the gltf has been generated
+                function ( gltf ) {
+
+                    console.log( gltf );
+                    //let myJson = gltf
+
+                    let element = document.createElement('a');
+                    element.setAttribute('href',
+                        URL.createObjectURL(new Blob ([gltf],
+                            {type: 'model/gltf-binary'})));
+                    element.setAttribute('download', 'model.glb');
+                    element.style.display = 'none';
+                    document.body.appendChild(element);
+                    element.click();
+                    document.body.removeChild(element);
+
+                },
+                function (err) {
+                  console.log('error '  + err);
+                },
+
+                {"binary": true, forcePowerOfTwoTextures: true, onlyVisible: true, embedImages: true, forceIndices: true}
+            );
+
+        });
     },
     buttonstate: function (evt) {
         this.template = evt.detail.template ? evt.detail.template : null;

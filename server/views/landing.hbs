@@ -1,48 +1,55 @@
-<div id="hero">
-    <img id="logo" src="/assets/immersiveidea.png"/>
-    <h1>Welcome</h1>
-</div>
-<div id="leftDiv">
-    <ul id="mainmenu">
-        <li>Use our <a href="/local">Local Playground</a>
-            to expore your ideas in a private space.  It's a Great place to try things out without signing in.
-        </li>
-        <li>Or <a href="/login">Sign up</a> to create a free account, invite your friends, and create a shared exprience</li>
-        </li>
-        <li>Of course, you can also go to our <a href="/worlds/public">Public Playground</a> and collaborate in a shared space with anyone in the world.
-        </li>
-        <li>You also get a <a href="/home">Private Space</a> in the cloud for free that is only accessible to you if you'd like to save your work for later.
-        </li>
+<div id="header">
+    <ul>
+        <li><a href="/pages/about">About</a></li>
+        <li><a href="pages/documentation">Documentation</a></li>
+        <li><a href="/login">Sign Up</a></li>
+        <li><a href="/local">Local Environment</a></li>
+        <li><a href="/worlds/public">Public Cloud</a></li>
+        <li><a href="/home">Home Cloud</a></li>
+        <li><a href="mailto:support@immersiveidea.com">Contact Us</a></li>
     </ul>
 </div>
-<div id="controllers" >
-    <h1>Overview of controller buttons</h1>
+<div class="main">
+    <div id="hero">
+        <h1>Explore Your Immersive Ideas</h1>
+    </div>
+
     <div>
-        <img src="/assets/Quest2_controller.png"/>
+        <h2>Tips</h2>
+        <ul>
+            <li>Audio conferencing is currently "opt-in". If you don't join the audio conference, you won't hear other
+                people and they can't hear you.
+            </li>
+            <li>Movement is a little choppy right now.</li>
+            <li>There is an "immersive AR" mode that is unintentional. Not sure if this will stick around as we haven't
+                figured out if it's useful or not
+            </li>
+            <li>To join the immersive experience, click the "VR" button in the bottom right side of your window. This
+                really
+                is only useful on Quest rigth now as it
+                simply brings up a full screen view of browser on desktop.
+            </li>
+            <li>This is designed to be inherently secure, the public space can only be accessed if you are authenticated
+                and
+                the private link is a local in memory only
+                experience (you may be able to join audio, there are some kinks there that are being worked out)
+            </li>
+            <li>Bug reports/feature requests/general questions can be sent to <a
+                    href="mailto:support@immersiveidea.com">support@immersiveidea.com</a>
+            </li>
+        </ul>
 
     </div>
+    <div>
+        <h2>Powered by:</h2>
+        <ul>
+            <li><a href="https://aframe.io">a-frame</a></li>
+            <li><a href="https://threejs.org">Threejs</a></li>
+            <li><a href="https://nodejs.org">Nodejs</a></li>
+            <li><a href="https://heroku.com">Heroku</a></li>
+            <li><a href="https://cloudflare.com">Cloudflare</a></li>
+            <li><a href="https://github.com/mikemainguy/diaquest">Source Code on Github</a></li>
+        </ul>
+    </div>
+    <span>Version {{version}}</span>
 </div>
-<div>
-    <h2>Tips</h2>
-    <ul>
-        <li>Audio conferencing is currently "opt-in". If you don't join the audio conference, you won't hear other
-            people and they can't hear you.
-        </li>
-        <li>Movement is a little choppy right now.</li>
-        <li>There is an "immersive AR" mode that is unintentional. Not sure if this will stick around as we haven't
-            figured out if it's useful or not
-        </li>
-        <li>To join the immersive experience, click the "VR" button in the bottom right side of your window. This really
-            is only useful on Quest rigth now as it
-            simply brings up a full screen view of browser on desktop.
-        </li>
-        <li>This is designed to be inherently secure, the public space can only be accessed if you are authenticated and
-            the private link is a local in memory only
-            experience (you may be able to join audio, there are some kinks there that are being worked out)
-        </li>
-        <li>Bug reports/feature requests/general questions can be sent to <a href="mailto:support@immersiveidea.com">support@immersiveidea.com</a>
-        </li>
-    </ul>
-</div>
-Version {{version}}
-

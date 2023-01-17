@@ -9,8 +9,16 @@
     <button id="leaveButton">Connected</button>
     <button id="muteButton">Live</button>
     <button id="unmuteButton">Muted</button>
+    <button id="exportButton">Export</button>
 </div>
 <script>
+    const exportButton = document.getElementById('exportButton');
+    exportButton.addEventListener('click', () => {
+        document.dispatchEvent(
+                new CustomEvent('export',
+                        {detail: 'OK'}));
+
+    });
     const forward = document.getElementById('forwardButton');
     forward.addEventListener('mousedown', () => {
         const leftHand = document.querySelector('#left-hand');

@@ -5,11 +5,20 @@ body {
 
     color: #99b;
 }
+
 a, a:visited {
     color: #94C4F4;
 }
 a:hover {
     color: #FFCA3D;
+}
+
+#header li {
+    list-style-type: none;
+    margin: 10px;
+    padding: 0;
+    font-weight: lighter;
+    display: inline;
 }
 #ignore {
     padding: 5px;
@@ -28,17 +37,13 @@ a:hover {
     height: 100%;
 
 }
-#leftDiv {
-    width: 50%
+div.main {
+    margin: 40px;
+    border: #336 solid;
+    padding: 20px;
+    border-radius: 20px;
 }
-#mainmenu li {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-}
-#mainmenu li p {
-    font-weight: lighter;
-}
+
 div.nonvr {
     position: absolute;
     width: 50%;

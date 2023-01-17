@@ -15,6 +15,7 @@ AFRAME.registerComponent('stuff', {
     init: function () {
         this.el.setAttribute('sound', 'src: url(/assets/sounds/KeyInLow.mp3); volume: 0.2; on: mouseenter;');
         this.aligning = false;
+
     },
     update: function () {
         const v = AFRAME.utils.coordinates.parse(this.data.scale);
@@ -133,6 +134,10 @@ AFRAME.registerComponent('stuff', {
             const obj = evt.target;
             obj.setAttribute('animation', "property: material.color; from: #cc2; to: #ff2; dir: alternate; dur: 500; loop: true");
             console.log(JSON.stringify(evt.detail.intersection.point));
+
+            const p2 = document.querySelector('#pointer2');
+            p2.setAttribute('position', evt.detail.intersection.point);
+
             const rhand = document.querySelector('#right-hand');
             const ray = rhand.components['raycaster'].lineData.end;
             const v = ray.clone();

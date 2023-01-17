@@ -10,6 +10,7 @@ if (env.NR_LICENCE_KEY) {
 }
 
 const express = require('express');
+
 const {engine} = require('express-handlebars');
 const {auth} = require('express-openid-connect');
 const app = express();
@@ -17,8 +18,9 @@ const port = env.PORT;
 
 const firebase = require('./server/firebase');
 
-
+app.use(express.urlencoded({extended: true}))
 app.use(expressLogger);
+
 
 const maxAge = 60 * 60 * 4;
 if (env.NODE_ENV != 'development') {
@@ -70,6 +72,12 @@ app.get('/', async (req, res) => {
     });
 });
 
+app.get('/pages/:page', async (req, res) => {
+    res.render('pages/' + req.params['page'], {
+        html: true, version: version, page: req.params['page']
+    });
+});
+
 app.get('/local', (req, res) => {
     res.render('world', {vrLocal: true, version: version});
 });
@@ -83,6 +91,12 @@ app.get('/home', async (req, res) => {
 app.get('/worlds/:worldId', (req, res) => {
     res.render('world', {vrConnected: true, version: version});
 });
+app.post('/worlds/create', (req, res) => {
+    const public = req.body.public ? true:false;
+    firebase.createWorld(req.body.name, req.oidc.user.sub, public);
+    res.json({"status": "OK"});
+});
+
 app.get('/api/voice/token', async (req, res) => {
     try {
         const response = await axios.post('https://api.assemblyai.com/v2/realtime/token', // use account token to get a temp user token
