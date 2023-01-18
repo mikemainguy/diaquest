@@ -5,9 +5,7 @@
     <link rel=icon href="/assets/favicon-32x32.png" sizes="32x32" type="image/png">
     <link rel=icon href="/assets/favicon-96x96.png" sizes="96x96" type="image/png">
     <title>Immersive Idea Alpha {{version}}</title>
-    <!--
-    <link rel="manifest" href="manifest.webmanifest"/>
-    -->
+    <link rel="manifest" href="/manifest.webmanifest"/>
     <script type="text/javascript">
             ;window.NREUM||(NREUM={});NREUM.init={distributed_tracing:{enabled:true},privacy:{cookies_enabled:true},ajax:{deny_list:["bam.nr-data.net"]}};
             ;NREUM.loader_config={accountID:"622279",trustKey:"622279",agentID:"739699753",licenseKey:"2584b8385e",applicationID:"739699753"}
@@ -35,6 +33,29 @@
 </head>
 
 <body>
+{{#if nonVr}}
+<div id="header">
+    <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/pages/about">About</a></li>
+        <li><a href="/pages/documentation">Documentation</a></li>
+        {{#if admin}}
+            <li><a href="/pages/directory">Admin</a></li>
+        {{/if}}
+        <li><a href="mailto:support@immersiveidea.com">Contact Us</a></li>
+    </ul>
+    {{#if user}}
+        <span class="user">
+            Hi {{user}}
+        </span>
+    {{/if}}
+    {{#unless user}}
+        <span class="user">
+           <a href="/login">Sign Up</a>
+        </span>
+    {{/unless}}
+</div>
+{{/if}}
 {{{body}}}
 {{#if vrConnected}}
 <script defer src="/dist/db.{{version}}.bundle.js" type="application/javascript"></script>
@@ -44,6 +65,6 @@
 {{#if vrLocal}}
     <script src="/dist/localdb.{{version}}.bundle.js" type="application/javascript"></script>
 {{/if}}
-</body>
 
+</body>
 </html>

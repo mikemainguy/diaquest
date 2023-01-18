@@ -72,6 +72,9 @@ async function setupApp() {
     }
     return null;
 }
+async function getWorldList() {
+
+}
 
 if (!VRLOCAL) {
     if (typeof newrelic !== 'undefined') {

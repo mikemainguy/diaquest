@@ -26,5 +26,17 @@ const createWorld = async function(world, owner, public) {
   await ref.set({"owner": owner, "public": public});
 }
 
+const createInvite = async function(email, world) {
+  const db = admin.database();
+  const ref = db.ref('/invites/' + email);
+  await ref.set({"world": world});
+}
+const verifyInvite = async function(email, world) {
+  const db = admin.database();
+  const ref = db.ref('/invites/' + email + '/' + world);
 
-module.exports = {getAuth: getAuth, createWorld: createWorld};
+  await ref.set({"world": world});
+}
+
+
+module.exports = {getAuth: getAuth, createWorld: createWorld, createInvite: createInvite};

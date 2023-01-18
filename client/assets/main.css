@@ -2,7 +2,7 @@ body {
     font-family: Arial;
     font-weight: bold;
     background-color: #001;
-
+    font-size: larger;
     color: #99b;
 }
 
@@ -12,7 +12,14 @@ a, a:visited {
 a:hover {
     color: #FFCA3D;
 }
-
+#header {
+    display: flex;
+}
+span.user {
+    margin-left:auto;
+    margin-right:64px;
+    margin-top:16px;
+}
 #header li {
     list-style-type: none;
     margin: 10px;
@@ -43,6 +50,20 @@ div.main {
     padding: 20px;
     border-radius: 20px;
 }
+#envlist li {
+    padding: 16px;
+    list-style: none;
+}
+#envlist li a {
+    text-align: center;
+    display: block;
+    padding: 10px;
+    border: solid #00ceff 1px;
+    border-radius: 16px;
+    background: #333333;
+    width: 300px;
+}
+
 
 div.nonvr {
     position: absolute;
@@ -66,7 +87,10 @@ h1, h2 {
     display: inline-block;
     background: #99b;
 }
-
+.user {
+    display: inline-block;
+    text-align: right;
+}
 div.nonvr  button {
     width: 96px;
     height: 48px;

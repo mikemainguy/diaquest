@@ -68,10 +68,9 @@ AFRAME.registerComponent('buttons', {
         this.gridpointer = false;
         pointer.setAttribute('material', 'color: #fff; opacity: 0.6; emissive: #fff');
         pointer.setAttribute('radius', '0.008');
-        //this.el.appendChild(pointer);
+        this.el.appendChild(pointer);
         this.pointer = pointer;
         this.system.pointers.push(pointer);
-
     },
     update: function () {
 
