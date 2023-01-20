@@ -127,9 +127,20 @@ app.get('/worlds/:worldId', requiresAuth(), (req, res) => {
     res.render('world', {vrConnected: true, version: version});
 });
 
-app.post('/worlds/create', requiresAuth(), (req, res) => {
+app.post('/worlds/create', requiresAuth(), async (req, res) => {
     const public = req.body.public ? true : false;
-    firebase.createWorld(req.body.name, req.oidc.user.sub, public);
+    const fbresponse = await firebase.createWorld(req.body.name, req.oidc.user.sub, public);
+    console.log(JSON.stringify(fbresponse.data));
+    signalwire = await axios.post('https://diaquest.signalwire.com/api/video/rooms',
+        {
+            name: req.body.name
+        }, {
+            auth: {
+                username: env.SIGNALWIRE_USER,
+                password: env.SIGNALWIRE_TOKEN
+            }
+        });
+    console.log(JSON.stringify(signalwire.data));
     res.json({"status": "OK"});
 });
 app.get('/invite/:world', requiresAuth(), (req, res) => {
@@ -179,7 +190,10 @@ app.get('/api/user/signalwireToken', requiresAuth(), (req, res, next) => {
                 user_name: req.oidc.user.name,
                 permissions: [
                     "room.self.audio_mute",
-                    "room.self.audio_unmute"
+                    "room.self.audio_unmute",
+                    "room.self.video_mute",
+                    "room.self.video_unmute",
+
                 ],
                 join_video_muted: true,
                 auto_create_room: false
