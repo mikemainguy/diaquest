@@ -114,7 +114,7 @@ AFRAME.registerComponent('connector', {
         }
 
       } else {
-        debug(JSON.stringify(intersections));
+        //debug(JSON.stringify(intersections));
       }
     } else {
       if (this.el.querySelector('.data-direction')) {
@@ -148,7 +148,7 @@ AFRAME.registerComponent('connector', {
     if (intersects.length > 0) {
       intersections.push(intersects[0].point);
     } else {
-      debug("object 2 not intersected");
+      //debug("object 2 not intersected");
     }
     direction.multiplyScalar(-1);
     const raycast2 = new THREE.Raycaster(this.pos2, direction, 0, distance);
@@ -156,7 +156,7 @@ AFRAME.registerComponent('connector', {
     if (intersects2.length > 0) {
       intersections.push(intersects2[0].point);
     } else {
-        debug("object 1 not intersected");
+        //debug("object 1 not intersected");
     }
     return intersections;
   }

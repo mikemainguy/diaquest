@@ -21,6 +21,7 @@
         <a-sphere opacity="0.2" radius="0.25" color="#ff4"></a-sphere>
     </a-entity>
     <!-- look-controls wasd-controls="fly: true" -->
+
     <a-entity id="sizer" visible="false">
 
         <a-cylinder id="xySize" radius=".1" height="50" visible="false" ,position="0 0 0"
@@ -38,6 +39,7 @@
     <a-entity light="type: ambient; color: #BBB">
 
     </a-entity>
+    {{>shape-properties }}
     <a-entity position="-80 2 100" light="type: point; color: #FB9; distance: 200; intensity: 1;">
         <a-entity id="ambient" sound="src: url(/assets/sounds/brown.mp3); loop: true; volume: 1"></a-entity>
         <!--<a-sphere radius="5"  material="src: /assets/sky2.jpeg; color: #ff2; opacity: 0.2" animation="property: rotation; loop: true; dur: 15000; easing: linear; from: 0 0 0; to: 0 360 0"></a-sphere>-->
