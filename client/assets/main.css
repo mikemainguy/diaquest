@@ -54,34 +54,30 @@ div.main {
     width: 40%;
 }
 #examples {
+    display: inline-block;
     width: 40%;
-
 }
 #examples li {
     list-style: none;
 }
-#examples {
-    margin-top: 20px;
-    margin-bottom: auto;
-}
+
 #envlist > a {
     margin: auto;
 
 }
 #envlist, #examples {
-    margin-top: 20px;
+
     margin-bottom: auto;
     width: 45%;
     display: inline-block;
 }
-#examples {
-    margin-right:20px;
-    margin-left:auto;
-    height: 300px;
-}
+
 #envlist li {
     padding: 16px;
     list-style: none;
+}
+#version {
+    font-size: x-small;
 }
 #envlist li a {
     text-align: center;
@@ -104,10 +100,7 @@ div.nonvr {
     left: 20px;
     background-color: #fff;
 }
-h1, h2 {
-    display: inline-block;
-    vertical-align: top;
-}
+
 #logo {
     height: 64px;
     width: 64px;
