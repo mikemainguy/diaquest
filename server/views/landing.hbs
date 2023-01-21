@@ -44,3 +44,8 @@
 
 </div>
 <span id="version">Version {{version}}</span>
+<script>
+    if (typeof navigator.serviceWorker !== 'undefined') {
+        navigator.serviceWorker.register('/sw.js');
+    }
+</script>
