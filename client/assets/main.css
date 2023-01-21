@@ -50,6 +50,35 @@ div.main {
     padding: 20px;
     border-radius: 20px;
 }
+#envlist {
+    width: 40%;
+}
+#examples {
+    width: 40%;
+
+}
+#examples li {
+    list-style: none;
+}
+#examples {
+    margin-top: 20px;
+    margin-bottom: auto;
+}
+#envlist > a {
+    margin: auto;
+
+}
+#envlist, #examples {
+    margin-top: 20px;
+    margin-bottom: auto;
+    width: 45%;
+    display: inline-block;
+}
+#examples {
+    margin-right:20px;
+    margin-left:auto;
+    height: 300px;
+}
 #envlist li {
     padding: 16px;
     list-style: none;
