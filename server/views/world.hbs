@@ -40,8 +40,9 @@
 
     </a-entity>
     {{>shape-properties }}
+    <a-entity position="0 -30 0" id="ambient" sound="src: url(/assets/sounds/theme1.mp3); loop: true; volume: .5"></a-entity>
     <a-entity position="-80 2 100" light="type: point; color: #FB9; distance: 200; intensity: 1;">
-        <a-entity id="ambient" sound="src: url(/assets/sounds/brown.mp3); loop: true; volume: 1"></a-entity>
+
         <!--<a-sphere radius="5"  material="src: /assets/sky2.jpeg; color: #ff2; opacity: 0.2" animation="property: rotation; loop: true; dur: 15000; easing: linear; from: 0 0 0; to: 0 360 0"></a-sphere>-->
     </a-entity>
     <!--
