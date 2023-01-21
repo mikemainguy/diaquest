@@ -56,7 +56,11 @@ app.get('/manifest.webmanifest', (req, res) => {
         {"name": "Immersive Idea",
         "display": "standalone",
         "start_url": "${env.AUTH0_BASE_URL}",
-        "scope": "${env.AUTH0_BASE_URL}"}
+        "scope": "${env.AUTH0_BASE_URL}",
+        "short_name": "Immersive Idea",
+        "theme_color": "#000000",
+        "background_color": "#000000",
+        "description": "A diagramming tool to help collaborate and edit 3d diagrams in an immersive environment."}
         `
     );
 });
