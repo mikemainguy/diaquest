@@ -84,6 +84,7 @@ if (!VRLOCAL) {
     setupApp().then((profile) => {
         const scene = document.querySelector('a-scene');
         if (scene && scene.hasLoaded) {
+
             writeUser(profile);
         } else {
             document.addEventListener('aframeReady', (evt) => {
@@ -141,27 +142,35 @@ if (!VRLOCAL) {
 
 
 export function writeUser(profile) {
-    sha512(profile.user.sid).then((result) => {
-        profile.user.last_seen = new Date().toUTCString();
-        const id = 'session' + result;
-        update(ref(database, 'users/' + profile.user.sub), profile);
+    if (profile && profile.user && profile.user.sid
+        &&profile.user.sub && profile.user.email) {
+        sha512(profile.user.sid).then((result) => {
+            profile.user.last_seen = new Date().toUTCString();
+            const id = 'session' + result;
+            update(ref(database, 'users/' + profile.user.sub), profile);
 
 
-        const rig = document.querySelector('.rig');
-        if (rig) {
-            rig.setAttribute('id', id);
-            createEntity({
-                id: id,
-                last_seen: new Date().toUTCString(),
-                position: rig.object3D.position,
-                rotation: rig.getAttribute('rotation'),
-                text: profile.user.email,
-                template: "#user-template"
-            });
-        }
+            const rig = document.querySelector('.rig');
+            if (rig) {
+                rig.setAttribute('id', id);
+                createEntity({
+                    id: id,
+                    last_seen: new Date().toUTCString(),
+                    position: rig.object3D.position,
+                    rotation: rig.getAttribute('rotation'),
+                    text: profile.user.email,
+                    template: "#user-template"
+                });
+            } else {
+                console.error('rig not found');
+            }
 
 
-    });
+        });
+    } else {
+        console.error('user info appears to be not logged in');
+    }
+
     const directory = ref(database, "/users/" + profile.user.sub + "/directory/worlds");
 
     onValue(directory, (snap) => {
@@ -171,8 +180,8 @@ export function writeUser(profile) {
 
 
 document.addEventListener('shareUpdate', function (evt) {
-    if (!evt.detail && !evt.detail.id) {
-        console.error("Missing Id to update " + JSON.stringify(evt.detail));
+    if (!evt || !evt.detail || !evt.detail.id || evt.detail.id == null) {
+        console.error("Missing Id to update, skipping update");
         return;
     }
     if (VRLOCAL) {
