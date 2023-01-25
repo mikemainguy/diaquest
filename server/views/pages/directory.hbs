@@ -1,13 +1,23 @@
 <form id="createWorld" method="POST" action="/worlds/create">
-    <input name="name">
-    <input name="public" type="checkbox">
-    <input type="submit">
+    <ul>
+        <li>
+            <label for="name">Name</label><input name="name">
+        </li>
+        <li>
+            <label for="">public?</label><input name="public" type="checkbox">
+        </li>
+        <li>
+            <input type="submit">
+        </li>
+    </ul>
+
+
+
 </form>
 <script>
     document.getElementById('createWorld').addEventListener('submit',
     function(event) {
         event.preventDefault();
-
         fetch(event.target.action,
                 {
                     headers: {

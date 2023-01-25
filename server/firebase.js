@@ -21,9 +21,24 @@ admin.initializeApp({
 });
 
 const createWorld = async function(world, owner, public) {
+  try {
+    const db = admin.database();
+    const ref = db.ref('/worlds/' + world);
+    await ref.set({"owner": owner, "public": public});
+
+    const dirref = db.ref('/directory/' + world);
+    await dirref.set({"owner": owner, "public": public, "name": world});
+  } catch (e) {
+    return ({"status": JSON.stringify(e)});
+  }
+
+  return ({"status": "OK"});
+}
+const listWorlds = async function() {
   const db = admin.database();
-  const ref = db.ref('/worlds/' + world);
-  await ref.set({"owner": owner, "public": public});
+  const dirref = db.ref('/directory');
+  const list = await dirref.once('value');
+  return list;
 }
 
 const createInvite = async function(email, world) {
@@ -34,9 +49,8 @@ const createInvite = async function(email, world) {
 const verifyInvite = async function(email, world) {
   const db = admin.database();
   const ref = db.ref('/invites/' + email + '/' + world);
-
   await ref.set({"world": world});
 }
 
 
-module.exports = {getAuth: getAuth, createWorld: createWorld, createInvite: createInvite};
+module.exports = {getAuth: getAuth, createWorld: createWorld, createInvite: createInvite, listWorlds: listWorlds};

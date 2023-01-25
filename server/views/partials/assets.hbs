@@ -129,16 +129,24 @@
     </script>
     <script id="user-template" type="html">
         <a-entity share-position>
-            <a-entity
-                    scale="1 1 1"
-                    position="0 -1 0"
-                    gltf-material="color: #0f0"
-                    rotation="0 180 0"
-                    gltf-model="url(/assets/character3.glb)">
+        <a-entity rotation="0 0 0">
+            <a-entity rotation="0 0 0" scale="0.2 0.2 0.1">
+                <a-sphere
+                position="0 .5 0"
+                material="color: #ff0; opacity: .9"
+                radius=".5">
+                </a-sphere>
+            <a-entity>
+            <a-sphere position=".2 .6 -.4"
+                radius="0.1" color="#33c">
+            </a-sphere>
+            <a-sphere position="-.2 .6 -.4"
+                radius="0.1" color="#33c">
+            </a-sphere>
             </a-entity>
             <a-entity
                     mixin="labelMixin"
-                    position="0 .3 0">
+                    position="0 1 0">
             </a-entity>
         </a-entity>
     </script>

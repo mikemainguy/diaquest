@@ -89,7 +89,7 @@ app.get('/manifest.webmanifest', (req, res) => {
       "label": "Example 1"
     },
     {
-      "src": "/assets/com.oculus.browser-20230121-110747.jpg",
+      "src": "/assets/com.oculus.browser-20230121-110746.jpg",
       "sizes": "1024x1024",
       "type": "image/jpeg",
       "label": "Example 2"
@@ -170,6 +170,10 @@ app.get('/home', requiresAuth(), async (req, res) => {
 });
 app.get('/worlds/:worldId', requiresAuth(), (req, res) => {
     res.render('world', {vrConnected: true, version: version});
+});
+app.get('/worlds', async(req, res) => {
+    const fbresponse = await firebase.listWorlds();
+    res.json(fbresponse);
 });
 
 app.post('/worlds/create', requiresAuth(), async (req, res) => {

@@ -164,8 +164,6 @@ export function writeUser(profile) {
             } else {
                 console.error('rig not found');
             }
-
-
         });
     } else {
         console.error('user info appears to be not logged in');
