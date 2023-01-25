@@ -10,9 +10,6 @@
             <input type="submit">
         </li>
     </ul>
-
-
-
 </form>
 <script>
     document.getElementById('createWorld').addEventListener('submit',
@@ -26,11 +23,12 @@
                     method:'post',
                     body: new URLSearchParams(new FormData(event.target))
                 }
-        );
-
-
-
+        ).then((res)=> {
+            if (res.status == 'OK') {
+                console.log('success');
+            } else {
+                console.log('Error');
+            }
+        });
     }, false);
-
-
 </script>

@@ -8,14 +8,17 @@ AFRAME.registerSystem('transcription', {
         this.target = null;
         this.data = null
         this.transcribestart = this.transcribestart.bind(this);
+        document.addEventListener('transcribestart', this.transcribestart);
         this.transcribestop = this.transcribestop.bind(this);
+        document.addEventListener('transcribestop', this.transcribestop)
     },
-    transcribestart: function(el) {
-        this.target = el;
+    transcribestart: function(evt) {
+        this.target = evt.detail;
         this.data=[];
         this.startRecording();
+
     },
-    transcribestop: function(el) {
+    transcribestop: function(evt) {
         this.target = null;
         this.data = null;
         this.stopRecording();
@@ -72,17 +75,25 @@ AFRAME.registerSystem('transcription', {
 
         if (this.isRecording) {
             debug('Recording happening');
-            if (this.socket) {
-                this.socket.send(JSON.stringify({terminate_session: true}));
-                this.socket.close();
-                this.socket = null;
-                debug('Socket Closed');
+            try {
+                if (this.socket) {
+                    this.socket.send(JSON.stringify({terminate_session: true}));
+                    this.socket.close();
+                    this.socket = null;
+                    debug('Socket Closed');
+                }
+            } catch (err) {
             }
-            if (this.recorder) {
-                this.recorder.pauseRecording();
-                this.recorder = null;
-                debug('Recording Stopped');
+            try {
+                if (this.recorder) {
+                    this.recorder.pauseRecording();
+                    this.recorder = null;
+                    debug('Recording Stopped');
+                }
+            } catch (err) {
+
             }
+
             this.isRecording = false;
         }
     }
@@ -92,10 +103,15 @@ AFRAME.registerComponent('transcription', {
     events: {
         mousedown: function(evt) {
             debug('mouse down');
-            this.system.transcribestart(this.el);
+            document.dispatchEvent(
+                new CustomEvent('transcribestart',
+                    {detail: this.el}));
+
         },
         mouseup: function(evt) {
-            this.system.transcribestop(this.el);
+            document.dispatchEvent(
+                new CustomEvent('transcribestop',
+                    null));
         }
     }
 });

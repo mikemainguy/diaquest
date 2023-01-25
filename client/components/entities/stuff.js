@@ -133,16 +133,6 @@ AFRAME.registerComponent('stuff', {
             evt.detail.cursorEl.components['tracked-controls-webxr'].controller.gamepad.hapticActuators[0].pulse(.05, 25);
             const obj = evt.target;
             obj.setAttribute('animation', "property: material.color; from: #cc2; to: #ff2; dir: alternate; dur: 500; loop: true");
-            console.log(JSON.stringify(evt.detail.intersection.point));
-
-            const p2 = document.querySelector('#pointer2');
-            p2.setAttribute('position', evt.detail.intersection.point);
-
-            const rhand = document.querySelector('#right-hand');
-            const ray = rhand.components['raycaster'].lineData.end;
-            const v = ray.clone();
-            rhand.object3D.localToWorld(v);
-            console.log(JSON.stringify(v));
         },
         mouseleave: function (evt) {
             const obj = evt.target;
