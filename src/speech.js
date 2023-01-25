@@ -1,7 +1,8 @@
-import { debug }  from "../client/components/debug";
+import {debug} from "../client/components/debug";
+
 const RecordRTC = require("recordrtc");
 AFRAME.registerSystem('transcription', {
-    init: function() {
+    init: function () {
         this.socket;
         this.recorder;
         this.isRecording = false;
@@ -12,66 +13,63 @@ AFRAME.registerSystem('transcription', {
         this.transcribestop = this.transcribestop.bind(this);
         document.addEventListener('transcribestop', this.transcribestop)
     },
-    transcribestart: function(evt) {
+    transcribestart: function (evt) {
         this.target = evt.detail;
-        this.data=[];
+        this.data = [];
         this.startRecording();
 
     },
-    transcribestop: function(evt) {
+    transcribestop: function (evt) {
         this.target = null;
         this.data = null;
         this.stopRecording();
     },
-    startRecording: async function() {
+    startRecording: async function () {
         if (!this.isRecording) {
             const response = await fetch('/api/voice/token');
             const data = await response.json();
             const {token} = data;
-            this.socket = await new WebSocket(`wss://api.assemblyai.com/v2/realtime/ws?sample_rate=16000&token=${token}`);
-            this.socket.onmessage = (message) => {
-                const res = JSON.parse(message.data);
-                if (this.data) {
-                    this.data.push(res);
-                    this.target.emit('transcriptiondata', {data: res});
+            if (!this.socket) {
+                this.socket = await new WebSocket(`wss://api.assemblyai.com/v2/realtime/ws?sample_rate=16000&token=${token}`);
+                this.socket.onmessage = (message) => {
+                    const res = JSON.parse(message.data);
+                    if (this.data) {
+                        this.data.push(res);
+                        this.target.emit('transcriptiondata', {data: res});
+                    }
                 }
             }
-            this.socket.onopen = () => {
+            this.socket.onopen = async () => {
                 debug('Socket Opened');
-                navigator.mediaDevices.getUserMedia({audio: true})
-                    .then((stream) => {
-                        this.recorder = new RecordRTC(stream, {
-                            type: 'audio',
-                            mimeType: 'audio/webm;codecs=pcm', // endpoint requires 16bit PCM audio
-                            recorderType: RecordRTC.StereoAudioRecorder,
-                            timeSlice: 250, // set 250 ms intervals of data that sends to AAI
-                            desiredSampRate: 16000,
-                            numberOfAudioChannels: 1, // real-time requires only one channel
-                            bufferSize: 4096,
-                            audioBitsPerSecond: 128000,
-                            ondataavailable: (blob) => {
-                                const reader = new FileReader();
-                                reader.onload = () => {
-                                    const base64data = reader.result;
+                const stream = await navigator.mediaDevices.getUserMedia({audio: true});
+                if (this.recorder) {
+                    this.recorder.resumeRecording();
+                } else {
+                    this.recorder = new RecordRTC(stream, {
+                        type: 'audio', mimeType: 'audio/webm;codecs=pcm', // endpoint requires 16bit PCM audio
+                        recorderType: RecordRTC.StereoAudioRecorder, timeSlice: 250, // set 250 ms intervals of data that sends to AAI
+                        desiredSampRate: 16000, numberOfAudioChannels: 1, // real-time requires only one channel
+                        bufferSize: 4096, audioBitsPerSecond: 128000, ondataavailable: (blob) => {
+                            const reader = new FileReader();
+                            reader.onload = () => {
+                                const base64data = reader.result;
 
-                                    // audio data must be sent as a base64 encoded string
-                                    if (this.socket && (this.socket.readyState == 1)) {
-                                        this.socket.send(JSON.stringify({audio_data: base64data.split('base64,')[1]}));
-                                    }
-                                };
-                                reader.readAsDataURL(blob);
-                            },
-                        });
+                                // audio data must be sent as a base64 encoded string
+                                if (this.socket && (this.socket.readyState == 1)) {
+                                    this.socket.send(JSON.stringify({audio_data: base64data.split('base64,')[1]}));
+                                }
+                            };
+                            reader.readAsDataURL(blob);
+                        },
+                    });
+                    this.recorder.startRecording();
+                }
 
-                        this.recorder.startRecording();
-                        this.isRecording=true;
-                        debug('Recording Started');
-                    })
-                    .catch((err) => console.error(err));
+                this.isRecording = true;
+                debug('Recording Started');
             }
         }
-    },
-    stopRecording: async function() {
+    }, stopRecording: async function () {
 
         if (this.isRecording) {
             debug('Recording happening');
@@ -87,31 +85,25 @@ AFRAME.registerSystem('transcription', {
             try {
                 if (this.recorder) {
                     this.recorder.pauseRecording();
-                    this.recorder = null;
                     debug('Recording Stopped');
                 }
             } catch (err) {
 
             }
-
             this.isRecording = false;
         }
     }
-});
+})
+;
 
 AFRAME.registerComponent('transcription', {
     events: {
-        mousedown: function(evt) {
+        mousedown: function (evt) {
             debug('mouse down');
-            document.dispatchEvent(
-                new CustomEvent('transcribestart',
-                    {detail: this.el}));
+            document.dispatchEvent(new CustomEvent('transcribestart', {detail: this.el}));
 
-        },
-        mouseup: function(evt) {
-            document.dispatchEvent(
-                new CustomEvent('transcribestop',
-                    null));
+        }, mouseup: function (evt) {
+            document.dispatchEvent(new CustomEvent('transcribestop', null));
         }
     }
 });
