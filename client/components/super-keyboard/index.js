@@ -26,6 +26,9 @@ AFRAME.registerComponent('3d-keyboard', {
             debug(JSON.stringify(evt.detail, null, 2));
             if (evt.detail.data.message_type == "PartialTranscript") {
                 //what do I do with "FinalTranscript"
+                if (evt.detail.data.text == "") {
+                    return;
+                }
                 this.data.value = evt.detail.data.text;
                 this.label.setAttribute('text', 'value', this.data.value);
             }
