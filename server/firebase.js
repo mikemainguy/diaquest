@@ -36,7 +36,7 @@ const createWorld = async function(world, owner, public) {
 }
 const listWorlds = async function() {
   const db = admin.database();
-  const dirref = db.ref('/directory');
+  const dirref = db.ref('/worlds');
   const list = await dirref.once('value');
   return list;
 }

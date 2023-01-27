@@ -71,6 +71,18 @@ div.main {
     width: 45%;
     display: inline-block;
 }
+div.secure {
+    background-color: #224;
+    margin-left: 56px;
+}
+div.secure li {
+    border-style: solid;
+    border-radius: 16px;
+    border-color: #445;
+    background: #446;
+    color: #533;
+    margin: 12px;
+}
 
 #envlist li {
     padding: 16px;
@@ -79,7 +91,7 @@ div.main {
 #version {
     font-size: x-small;
 }
-#envlist li a {
+#envlist li a, .secure {
     text-align: center;
     display: block;
     padding: 10px;

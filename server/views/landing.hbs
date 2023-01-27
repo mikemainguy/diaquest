@@ -1,4 +1,3 @@
-
 <div class="main">
     <div id="hero">
         <h1>Explore Your Ideas in an Immersive VR experience</h1>
@@ -9,9 +8,26 @@
             Open on your Meta Quest headset</a>
         <ul>
             <li><a href="/local">Local Environment</a></li>
-            <li><a href="/worlds/public">Public Cloud</a></li>
-            <li><a href="/home">Private Cloud</a></li>
-        </ul>
+            {{#if user}}
+                <li><a href="/worlds/public">Public Cloud</a></li>
+                <li><a href="/home">Private Cloud</a></li>
+            </ul>
+            {{/if}}
+            {{#unless user}}
+            </ul>
+            <div class="secure">
+
+                    <a href="/login">Signup/Login to access</a>
+                    <ul class="disabled">
+                        <li>Public Cloud</li>
+                        <li>Private Cloud</li>
+                    </ul>
+
+
+            </div>
+
+            {{/unless}}
+
     </div>
     <div id="examples">
         <!--
@@ -25,20 +41,20 @@
         -->
     </div>
     <div>
-    Please take a <a href="https://www.surveymonkey.com/r/FDJ9FHQ">One Minute Survey</a>
-    to help guide product development.
+        Please take a <a href="https://www.surveymonkey.com/r/FDJ9FHQ">One Minute Survey</a>
+        to help guide product development.
     </div>
     <h3>Adding a new dimension of power for individuals and teams to explore and collaborate on complex concepts</h3>
     <div>
         <p>
             Unlock the power of your Oculus quest to explore ideas in 3D VR worlds unencumbered by
-        the normal constraints of physical reality.  Using our tool you can collaboratively edit
-        diagrams and express ideas, workflows, technical models, and other concepts using your
-        Meta Quest without downloading or installing any software.
+            the normal constraints of physical reality. Using our tool you can collaboratively edit
+            diagrams and express ideas, workflows, technical models, and other concepts using your
+            Meta Quest without downloading or installing any software.
         </p>
         <p>
-        Try one of the above examples and see the power of our next generation WebXR technology framework
-        with nothing more than your Meta Quest headset browser.
+            Try one of the above examples and see the power of our next generation WebXR technology framework
+            with nothing more than your Meta Quest headset browser.
         </p>
     </div>
 
