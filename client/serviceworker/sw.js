@@ -14,8 +14,12 @@ self.addEventListener("message", (event) => {
 });
 
 workbox.routing.registerRoute(
-    new RegExp('/*'),
+    new RegExp('/dist/*'),
     new workbox.strategies.StaleWhileRevalidate({
         cacheName: CACHE
     })
 );
+workbox.routing.registerRoute(
+    new RegExp('/login'),
+    new workbox.strategies.NetworkFirst()
+)
