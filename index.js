@@ -163,7 +163,7 @@ app.get('/local', (req, res) => {
     res.render('world', {vrLocal: true, version: version});
 });
 
-app.get('/login', (req, res) => res.oidc.login({returnTo: '/worlds/public'}));
+app.get('/login', (req, res) => res.oidc.login({returnTo: '/'}));
 app.get('/home', requiresAuth(), async (req, res) => {
     const userInfo = req.oidc.user;
     res.redirect('/worlds/' + userInfo.sub);
