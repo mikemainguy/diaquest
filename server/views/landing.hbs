@@ -29,20 +29,12 @@
             {{/unless}}
 
     </div>
-    <div id="examples">
-        <!--
-        <ul>
-            <li><img src="">a</li>
-            <li><img src="">b</li>
-            <li><img src="">c</li>
-            <li><img src="">d</li>
-            <li><img src="">e</li>
-        </ul>
-        -->
-    </div>
     <div>
         Please take a <a href="https://www.surveymonkey.com/r/FDJ9FHQ">One Minute Survey</a>
         to help guide product development.
+    </div>
+    <div>
+        <ul id="listing"></ul>
     </div>
     <h3>Adding a new dimension of power for individuals and teams to explore and collaborate on complex concepts</h3>
     <div>
@@ -60,6 +52,26 @@
 
 </div>
 <span id="version">Version {{version}}</span>
+<script>
+    document.addEventListener('directoryUpdate', (evt)=> {
+        const dir = document.getElementById("listing");
+        for(const e of dir.children) {
+            e.remove();
+        }
+        for(const d of Object.entries(evt.detail)) {
+            const id = d[0];
+            const name = d[1].name;
+            const li = document.createElement('li');
+            const a = document.createElement('a');
+            a.setAttribute('href', '/worlds/' + id);
+            a.append(name);
+            li.appendChild(a);
+            dir.appendChild(li);
+        }
+        console.log(JSON.stringify(evt.detail));
+    });
+</script>
+<script defer src="/dist/db.{{version}}.bundle.js" type="application/javascript"></script>
 <script>
     if (typeof navigator.serviceWorker !== 'undefined') {
         navigator.serviceWorker.register('/sw.js');

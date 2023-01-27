@@ -199,15 +199,6 @@ app.post('/worlds/create', requiresAuth(), async (req, res) => {
     }
 });
 
-app.post('/directory/list', async (req, res) => {
-    try {
-
-        res.json({"status": "OK"});
-    } catch (err) {
-        console.log(err.code);
-        res.json({"status": "Error: "+ JSON.stringify('Error')});
-    }
-});
 app.get('/invite/:world', requiresAuth(), (req, res) => {
 
 });

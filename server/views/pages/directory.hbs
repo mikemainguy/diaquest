@@ -1,34 +1,41 @@
 <form id="createWorld" method="POST" action="/worlds/create">
-    <ul>
-        <li>
-            <label for="name">Name</label><input name="name">
-        </li>
-        <li>
-            <label for="">public?</label><input name="public" type="checkbox">
-        </li>
-        <li>
-            <input type="submit">
-        </li>
-    </ul>
+    <div>
+        <label for="name">Name</label><input name="name">
+    </div>
+    <div>
+        <label for="">public?</label><input name="public" type="checkbox">
+    </div>
+    <div>
+        <input type="submit">
+    </div>
+
+
+
 </form>
 <script>
     document.getElementById('createWorld').addEventListener('submit',
-    function(event) {
-        event.preventDefault();
-        fetch(event.target.action,
-                {
-                    headers: {
-                        "Content-Type": "application/x-www-form-urlencoded"
-                    },
-                    method:'post',
-                    body: new URLSearchParams(new FormData(event.target))
-                }
-        ).then((res)=> {
-            if (res.status == 'OK') {
-                console.log('success');
-            } else {
-                console.log('Error');
-            }
-        });
-    }, false);
+            function(event) {
+                event.preventDefault();
+                fetch(event.target.action,
+                        {
+                            headers: {
+                                "Content-Type": "application/x-www-form-urlencoded"
+                            },
+                            method:'post',
+                            body: new URLSearchParams(new FormData(event.target))
+                        }
+                ).then((res)=> {
+                    if (res.status == 'OK') {
+                        console.log('success');
+                    } else {
+                        console.log('Error');
+                    }
+                });
+            }, false);
+
 </script>
+
+<ul id="listing">
+
+</ul>
+

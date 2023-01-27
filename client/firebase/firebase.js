@@ -75,6 +75,12 @@ async function setupApp() {
 async function getWorldList() {
 
 }
+setupApp().then((profile) => {
+    if (profile == null) {
+        console.error('Not Logged In');
+        return;
+    }
+});
 
 if (!VRLOCAL) {
     if (typeof newrelic !== 'undefined') {
@@ -82,6 +88,12 @@ if (!VRLOCAL) {
     }
 
     setupApp().then((profile) => {
+        if (profile == null) {
+            console.error('Not Logged In');
+            return;
+        }
+
+
         const scene = document.querySelector('a-scene');
         if (scene && scene.hasLoaded) {
 
@@ -96,46 +108,59 @@ if (!VRLOCAL) {
         if (typeof newrelic !== 'undefined') {
             newrelic.addPageAction('firebase db setup');
         }
-
-        const entities = ref(database, getDbPath(null));
-
-        onChildAdded(entities, (snapshot) => {
-            const scene = document.querySelector('a-scene');
-            if (scene && scene.hasLoaded) {
-                createOrUpdateDom(snapshot.val());
-            } else {
-                document.addEventListener('aframeReady', (evt) => {
-                    createOrUpdateDom(snapshot.val());
-                });
-            }
+        const directoryRef = ref(database, 'directory/');
+        onValue(directoryRef, (snapshot)=>{
+            document.dispatchEvent(
+                new CustomEvent('directoryUpdate',
+                    {detail: snapshot.val()}));
 
         });
 
-        onChildRemoved(entities, (snapshot) => {
-            const scene = document.querySelector('a-scene');
-            const ele = document.getElementById(snapshot.val().id);
+        const loc = window.location.pathname;
+        if (loc.startsWith('/worlds')) {
+            const path = getDbPath(null);
 
-            if (ele) {
-                if (!ele.classList.contains('rig')) {
-                    ele.remove();
+            const entities = ref(database, path);
+
+            onChildAdded(entities, (snapshot) => {
+                const scene = document.querySelector('a-scene');
+                if (scene && scene.hasLoaded) {
+                    createOrUpdateDom(snapshot.val());
                 } else {
-                    document.dispatchEvent(
-                        new CustomEvent('disconnectSignalwire',
-                            {detail: 'OK'}));
-
+                    document.addEventListener('aframeReady', (evt) => {
+                        createOrUpdateDom(snapshot.val());
+                    });
                 }
 
-            }
-        });
-        onChildChanged(entities, (snapshot) => {
-            if (scene && scene.hasLoaded) {
-                createOrUpdateDom(snapshot.val());
-            } else {
-                document.addEventListener('aframeReady', (evt) => {
+            });
+
+            onChildRemoved(entities, (snapshot) => {
+                const scene = document.querySelector('a-scene');
+                const ele = document.getElementById(snapshot.val().id);
+
+                if (ele) {
+                    if (!ele.classList.contains('rig')) {
+                        ele.remove();
+                    } else {
+                        document.dispatchEvent(
+                            new CustomEvent('disconnectSignalwire',
+                                {detail: 'OK'}));
+
+                    }
+
+                }
+            });
+            onChildChanged(entities, (snapshot) => {
+                if (scene && scene.hasLoaded) {
                     createOrUpdateDom(snapshot.val());
-                });
-            }
-        });
+                } else {
+                    document.addEventListener('aframeReady', (evt) => {
+                        createOrUpdateDom(snapshot.val());
+                    });
+                }
+            });
+        }
+
     });
 
 }
