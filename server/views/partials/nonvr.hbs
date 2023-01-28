@@ -1,17 +1,22 @@
 <div class="nonvr">
-    <button id="forwardButton">
+  <!--  <button id="forwardButton">
         Forward
     </button>
     <button id="backButton">
         Back
     </button>
+    -->
     <button id="joinButton">Disconnected</button>
     <button id="leaveButton">Connected</button>
     <button id="muteButton">Live</button>
     <button id="unmuteButton">Muted</button>
     <button id="exportButton">Export</button>
+    <button id="homeButton">Exit</button>
 </div>
 <script>
+    document.getElementById('homeButton').addEventListener('click', () => {
+       window.location.href=(window.location.origin);
+    });
     const exportButton = document.getElementById('exportButton');
     exportButton.addEventListener('click', () => {
         document.dispatchEvent(
@@ -19,7 +24,7 @@
                         {detail: 'OK'}));
 
     });
-    const forward = document.getElementById('forwardButton');
+    /*const forward = document.getElementById('forwardButton');
     forward.addEventListener('mousedown', () => {
         const leftHand = document.querySelector('#left-hand');
 
@@ -49,7 +54,7 @@
                 new CustomEvent('thumbstickmoved',
                         {detail: {x: 0, y:-1}}));
     });
-
+*/
 
     document.getElementById('joinButton').addEventListener('click', (evt) => {
         document.dispatchEvent(
