@@ -56,47 +56,48 @@ function getDbPath(id) {
     }
 }
 
-async function setupApp() {
+async function getProfile() {
     try {
         const profile = await axios.get('/api/user/profile');
-        if (profile && profile.data) {
-            await signInWithCustomToken(auth, profile.data.firebase_token);
-        } else {
-            window.location.href = "/";
-        }
-
-
         return profile.data;
+    } catch (err) {
+        console.log(err);
+        return null;
+    }
+
+}
+
+async function setupApp(profile) {
+    try {
+        if (profile) {
+            await signInWithCustomToken(auth, profile.firebase_token);
+        } else {
+            //window.location.href = "/";
+        }
+        return profile;
     } catch (error) {
         console.log(error);
     }
     return null;
 }
+
 async function getWorldList() {
 
 }
-setupApp().then((profile) => {
-    if (profile == null) {
-        console.error('Not Logged In');
-        return;
-    }
-});
 
-if (!VRLOCAL) {
-    if (typeof newrelic !== 'undefined') {
-        newrelic.addPageAction('initializing firebase');
-    }
-
-    setupApp().then((profile) => {
+async function initializeFirebase() {
+    if (!VRLOCAL) {
+        if (typeof newrelic !== 'undefined') {
+            newrelic.addPageAction('initializing firebase');
+        }
+        const profile = await getProfile();
         if (profile == null) {
-            console.error('Not Logged In');
             return;
         }
-
+        await setupApp(profile);
 
         const scene = document.querySelector('a-scene');
         if (scene && scene.hasLoaded) {
-
             writeUser(profile);
         } else {
             document.addEventListener('aframeReady', (evt) => {
@@ -104,12 +105,11 @@ if (!VRLOCAL) {
             });
         }
 
-
         if (typeof newrelic !== 'undefined') {
             newrelic.addPageAction('firebase db setup');
         }
         const directoryRef = ref(database, 'directory/');
-        onValue(directoryRef, (snapshot)=>{
+        onValue(directoryRef, (snapshot) => {
             document.dispatchEvent(
                 new CustomEvent('directoryUpdate',
                     {detail: snapshot.val()}));
@@ -160,15 +160,13 @@ if (!VRLOCAL) {
                 }
             });
         }
-
-    });
-
+    }
 }
-
+initializeFirebase();
 
 export function writeUser(profile) {
     if (profile && profile.user && profile.user.sid
-        &&profile.user.sub && profile.user.email) {
+        && profile.user.sub && profile.user.email) {
         sha512(profile.user.sid).then((result) => {
             profile.user.last_seen = new Date().toUTCString();
             const id = 'session' + result;
@@ -250,7 +248,7 @@ function createEntity(data) {
     try {
         const path = getDbPath(data.id);
         set(ref(database, path), data);
-    } catch(err){
+    } catch (err) {
         console.log(err);
     }
 }
@@ -261,7 +259,7 @@ function removeEntity(id) {
             const path = getDbPath(id);
             remove(ref(database, path));
         } else {
-            console.error ("no id passed to remove");
+            console.error("no id passed to remove");
         }
 
     } catch (err) {
