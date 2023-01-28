@@ -57,7 +57,7 @@ app.get('/manifest.webmanifest', (req, res) => {
         {
   "name": "Immersive Idea",
   "display": "standalone",
-  "start_url": "/",
+  "start_url": "${env.AUTH0_BASE_URL}",
   "scope": "${env.AUTH0_BASE_URL}",
   "short_name": "Immersive Idea",
   "theme_color": "#000000",
@@ -67,7 +67,8 @@ app.get('/manifest.webmanifest', (req, res) => {
     {
       "src": "/assets/android-icon-192x192.png",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"
     },
     {
       "src": "/assets/icon-512x512.png",
