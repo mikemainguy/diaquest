@@ -5,7 +5,7 @@ const fs = require('fs');
 const sgMail = require('@sendgrid/mail')
 const {generateManifest} = require('./server/webmanifest');
 const {createWorld} = require('./server/createworld');
-const {getProfile} = require('./server/user');
+const {getProfile, signalwireToken} = require('./server/user');
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY)
 //Test Commit
@@ -16,19 +16,22 @@ if (env.NR_LICENCE_KEY) {
 }
 
 const express = require('express');
-
-const {engine} = require('express-handlebars');
-const {auth, requiresAuth} = require('express-openid-connect');
+app.use(express.urlencoded({extended: true}))
+app.use(expressLogger);
 const app = express();
+const {engine} = require('express-handlebars');
+app.engine('.hbs', engine({extname: '.hbs'}));
+app.set('view engine', 'hbs');
+app.set('views', './server/views');
+
 const port = env.PORT;
 
 const firebase = require('./server/firebase');
 
-app.use(express.urlencoded({extended: true}))
-app.use(expressLogger);
 
-
+const {auth, requiresAuth} = require('express-openid-connect');
 const maxAge = 60 * 60 * 4;
+
 if (env.NODE_ENV != 'development') {
     /**
      * Let these routes be cached by CDN
@@ -48,6 +51,7 @@ if (env.NODE_ENV != 'development') {
     });
 
 }
+
 /**
  * Serve these routes without authentication required
  */
@@ -69,9 +73,6 @@ const auth0Config = {
     clientID: env.AUTH0_CLIENT_ID,
     issuerBaseURL: env.AUTH0_ISSUER_BASE_URL
 };
-app.engine('.hbs', engine({extname: '.hbs'}));
-app.set('view engine', 'hbs');
-app.set('views', './server/views');
 
 app.use(auth(auth0Config));
 app.get('/', async (req, res) => {
@@ -167,43 +168,7 @@ app.get('/api/voice/token', requiresAuth(), async (req, res) => {
 
 });
 
-app.get('/api/user/signalwireToken', requiresAuth(), (req, res, next) => {
-    if (req.query && req.query.room) {
-        const signalwirePromise = axios.post('https://diaquest.signalwire.com/api/video/room_tokens',
-            {
-                room_name: req.query.room,
-                user_name: req.oidc.user.name,
-                permissions: [
-                    "room.self.audio_mute",
-                    "room.self.audio_unmute",
-                    "room.self.video_mute",
-                    "room.self.video_unmute",
-
-                ],
-                join_video_muted: true,
-                auto_create_room: false
-
-            }, {
-                auth: {
-                    username: env.SIGNALWIRE_USER,
-                    password: env.SIGNALWIRE_TOKEN
-                }
-            });
-
-
-        signalwirePromise.then((data) => {
-            const obj = {};
-            obj.signalwire_token = data.data.token;
-            res.setHeader('content-type', 'application/json');
-            res.send(JSON.stringify(obj));
-        }).catch((err) => {
-            res.status(500).send(err);
-        });
-    } else {
-        res.status(404).send("No Room Found");
-    }
-});
-
+app.get('/api/user/signalwireToken', requiresAuth(), signalwireToken);
 app.get('/api/user/profile', requiresAuth(), getProfile);
 
 logger.log({level: "info", message: "server start on port: " + port});
