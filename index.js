@@ -3,6 +3,10 @@ const {expressLogger, logger} = require('./server/logging');
 const config = require('./newrelic').config;
 const fs = require('fs');
 const sgMail = require('@sendgrid/mail')
+const {generateManifest} = require('./server/webmanifest');
+const {createWorld} = require('./server/createworld');
+const {getProfile} = require('./server/user');
+
 sgMail.setApiKey(process.env.SENDGRID_API_KEY)
 //Test Commit
 const version = fs.readFileSync('./VERSION');
@@ -51,63 +55,7 @@ app.use('/dist', express.static('client/dist'));
 app.use('/assets', express.static('client/assets'));
 app.use('/sw.js', express.static('client/serviceworker/sw.js'));
 app.use('/favicon.ico', express.static('client/favicon.ico'));
-app.get('/manifest.webmanifest', (req, res) => {
-    res.send(
-        `
-        {
-  "name": "Immersive Idea",
-  "display": "standalone",
-  "start_url": "${env.AUTH0_BASE_URL}",
-  "scope": "${env.AUTH0_BASE_URL}",
-  "short_name": "Immersive Idea",
-  "theme_color": "#000000",
-  "background_color": "#000000",
-  "description": "A diagramming tool to help collaborate and edit 3d diagrams in an immersive environment.",
-  "icons": [
-    {
-      "src": "/assets/android-icon-192x192.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "/assets/icon-512x512.png",
-      "sizes": "512x512",
-      "type": "image/png"
-    }
-  ],
-  "categories": [
-    "utilities",
-    "business",
-    "education",
-    "productivity"
-  ],
-  "screenshots": [
-    {
-      "src": "/assets/com.oculus.browser-20230121-110512.jpg",
-      "sizes": "1024x1024",
-      "type": "image/jpeg",
-      "label": "Example 1"
-    },
-    {
-      "src": "/assets/com.oculus.browser-20230121-110746.jpg",
-      "sizes": "1024x1024",
-      "type": "image/jpeg",
-      "label": "Example 2"
-    },
-    {
-      "src": "/assets/com.oculus.browser-20230121-111323.jpg",
-      "sizes": "1024x1024",
-      "type": "image/jpeg",
-      "label": "Complex Architecture Diagram"
-    }
-  ]
-}
-        `
-    );
-});
-//app.use('/manifest.webmanifest', express.static('client/manifest.webmanifest'));
-
+app.get('/manifest.webmanifest', generateManifest );
 
 /**********************************************************
  * Routes above here are insecure, only put static insecure stuff above here
@@ -177,28 +125,8 @@ app.get('/worlds', async(req, res) => {
     res.json(fbresponse);
 });
 
-app.post('/worlds/create', requiresAuth(), async (req, res) => {
-    try {
-        const public = req.body.public ? true : false;
+app.post('/worlds/create', requiresAuth(), createWorld);
 
-        const fbresponse = await firebase.createWorld(req.body.name, req.oidc.user.sub, public);
-        console.log(JSON.stringify(fbresponse.data));
-        signalwire = await axios.post('https://diaquest.signalwire.com/api/video/rooms',
-            {
-                name: req.body.name
-            }, {
-                auth: {
-                    username: env.SIGNALWIRE_USER,
-                    password: env.SIGNALWIRE_TOKEN
-                }
-            });
-        console.log(JSON.stringify(signalwire.data));
-        res.json({"status": "OK"});
-    } catch (err) {
-        console.log(err.code);
-        res.json({"status": "Error: "+ JSON.stringify('Error')});
-    }
-});
 
 app.get('/invite/:world', requiresAuth(), (req, res) => {
 
@@ -276,32 +204,7 @@ app.get('/api/user/signalwireToken', requiresAuth(), (req, res, next) => {
     }
 });
 
-app.get('/api/user/profile', requiresAuth(),
-    (req, res, next) => {
-        const claims = {"user": true};
-        if (req.oidc.idTokenClaims['immersiveRoles']) {
-            claims.roles = req.oidc.idTokenClaims['immersiveRoles'];
-            if (claims.roles.length > 0) {
-                claims.roles = claims.roles.reduce((a, v) => ({...a, [v]: true}), {})
-            } else {
-                claims.roles = {"user": true};
-            }
-        }
-
-        const firebasePromise = firebase
-            .getAuth()
-            .createCustomToken(req.oidc.user.sub, claims.roles);
-        const obj = {};
-        obj.user = req.oidc.user;
-
-        firebasePromise.then(data => {
-            obj.firebase_token = data;
-            res.setHeader('content-type', 'application/json');
-            res.send(JSON.stringify(obj));
-        })
-            .catch((err) => res.status(500).send(err));
-
-    });
+app.get('/api/user/profile', requiresAuth(), getProfile);
 
 logger.log({level: "info", message: "server start on port: " + port});
 app.listen(port, () => {
