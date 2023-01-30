@@ -51,6 +51,9 @@ AFRAME.registerComponent('widget', {
             case 'exit':
                 this.el.sceneEl.exitVR();
                 break;
+            case 'grouping':
+                buttonState.mode = ['grouping'];
+                break;
             case 'resize':
                 buttonState.mode = ['resizing'];
                 break;

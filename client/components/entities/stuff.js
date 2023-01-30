@@ -90,8 +90,21 @@ AFRAME.registerComponent('stuff', {
             if (typeof newrelic !== 'undefined') {
                 newrelic.addPageAction('click', {id: obj.id});
             }
-
-            switch (getCurrentMode()) {
+            const mode = getCurrentMode();
+            switch (mode) {
+                case 'add-children':
+                    const parent = getSystem('buttons').first;
+                    if (parent) {
+                        this.el.setAttribute('stuff', 'parent', parent);
+                        document.dispatchEvent(new CustomEvent('shareUpdate', {detail: {id: obj.id, parent: parent}}));
+                    } else {
+                        this.el.setAttribute('stuff', 'parent', '');
+                        document.dispatchEvent(new CustomEvent('shareUpdate', {detail: {id: obj.id, parent: ''}}));
+                    }
+                    break;
+                case 'grouping':
+                    this.el.emit('buttonstate', {mode: ['add-children'], first: obj.id});
+                    break;
                 case 'aligning':
                     document.dispatchEvent(new CustomEvent('align', {detail: {id: obj.id}}));
                     break;
@@ -99,7 +112,7 @@ AFRAME.registerComponent('stuff', {
                     document.dispatchEvent(new CustomEvent('shareUpdate', {detail: {id: obj.id, remove: true}}));
                     break;
                 case 'edit-color':
-                    const newColor = getSystem('buttons').color
+                    const newColor = getSystem('buttons').color;
                     this.data.color = newColor;
                     evt.target.setAttribute('material', 'color', this.data.color);
                     document.dispatchEvent(new CustomEvent('shareUpdate', {detail: {id: obj.id, color: newColor}}));

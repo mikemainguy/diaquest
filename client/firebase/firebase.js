@@ -286,7 +286,6 @@ function createOrUpdateDom(entity) {
     ele.setAttribute('template', 'src: ' + entity.template);
     ele.setAttribute('id', entity.id);
     const comp = ele.querySelector('[share-position]');
-
     if (entity.rotation || entity.position) {
         if (comp && comp.components && comp.components['share-position'] &&
             comp.components['share-position'].oldPosition) {
@@ -306,6 +305,7 @@ function createOrUpdateDom(entity) {
 
     const color = entity.color ? entity.color : '#669';
     const text = entity.text ? entity.text : '';
+    const parent = entity.parent ? entity.parent : '';
     switch (entity.template) {
         case '#user-template':
         case '#box-template':
@@ -313,7 +313,7 @@ function createOrUpdateDom(entity) {
         case '#cylinder-template':
         case '#light-template':
         case '#sphere-template':
-            ele.setAttribute('stuff', 'text: ' + text + '; color: ' + color + '; scale: ' + scale);
+            ele.setAttribute('stuff', 'text: ' + text + '; color: ' + color + '; scale: ' + scale + '; parent: ' + parent);
             break;
         case '#connector-template':
             ele.setAttribute('stuff', 'text: ' + text + '; color: ' + color);

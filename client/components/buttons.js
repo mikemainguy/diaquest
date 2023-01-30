@@ -134,6 +134,12 @@ AFRAME.registerComponent('buttons', {
             }
 
         },
+        bbuttontouchstart: function (evt) {
+
+        },
+        bbuttontouchend: function(evt) {
+
+        },
         bbuttondown: function (evt) {
             const bMenuShowing = document.getElementById('bmenu').getAttribute('visible');
             if (bMenuShowing) {
