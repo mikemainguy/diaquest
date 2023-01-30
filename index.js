@@ -127,17 +127,19 @@ logger.log({level: "info", message: "server start on port: " + port});
 app.listen(port, () => {
 
 });
-
+logger.info(process.env.NODE_ENV);
 if (env.NODE_ENV != "development") {
-    console.log(process.env.NODE_ENV);
+    logger.info("Logging deployment");
     axios.post('https://api.newrelic.com/v2/applications/739699753/deployments.json', {
         "deployment": {
             "revision": env.VERSION.toString()
         }
     }, { headers: {'Api-Key': env.NR_USER_KEY}}).then(function(response) {
-        console.log('deployment logged');
+        logger.info('deployment logged');
     }).catch(function(error){
-        console.log('deployment could not be logged');
-        console.log(error);
+        logger.warn('deployment could not be logged');
+        logger.warn(error);
     });
+} else {
+    logger.info("Deployment not logged");
 }

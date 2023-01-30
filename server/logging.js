@@ -1,4 +1,5 @@
 const winston = require('winston');
+const env = require('./env');
 const expressWinston = require("express-winston");
 const expressLogger = expressWinston.logger({
   transports: [
@@ -14,6 +15,8 @@ const expressLogger = expressWinston.logger({
 const logger = winston.createLogger({
   transports: [
     new winston.transports.Console()
-  ]
+  ],
+  level: env.LOG_LEVEL
+
 });
 module.exports = {expressLogger: expressLogger, logger: logger};

@@ -1,13 +1,14 @@
 const firebase = require("./firebase");
 const axios = require("axios");
 const env = require("./env");
-
+const {logger} = require('./logging');
 const createWorld = async (req, res) => {
     try {
         const public = req.body.public ? true : false;
 
         const fbresponse = await firebase.createWorld(req.body.name, req.oidc.user.sub, public);
-        console.log(JSON.stringify(fbresponse.data));
+        logger.debug('here');
+        logger.debug(JSON.stringify(fbresponse.data));
         signalwire = await axios.post('https://diaquest.signalwire.com/api/video/rooms',
             {
                 name: req.body.name
@@ -17,10 +18,10 @@ const createWorld = async (req, res) => {
                     password: env.SIGNALWIRE_TOKEN
                 }
             });
-        console.log(JSON.stringify(signalwire.data));
+        logger.debug({"createWorld": JSON.stringify(signalwire.data)});
         res.json({"status": "OK"});
     } catch (err) {
-        console.log(err.code);
+        logger.error({"createWorld": err.code});
         res.json({"status": "Error: "+ JSON.stringify('Error')});
     }
 }
