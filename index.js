@@ -116,20 +116,28 @@ app.get('/worlds', async(req, res) => {
 });
 
 app.post('/worlds/create', requiresAuth(), createWorld);
-
-
-app.get('/invite/:world', requiresAuth(), (req, res) => {
-
-});
-
+app.get('/invite/:world', requiresAuth(), (req, res) => { });
 app.post('/worlds/:world/invite', requiresAuth(), mailer);
-
 app.get('/api/voice/token', requiresAuth(), voiceHandler);
-
 app.get('/api/user/signalwireToken', requiresAuth(), signalwireToken);
 app.get('/api/user/profile', requiresAuth(), getProfile);
 
 logger.log({level: "info", message: "server start on port: " + port});
+
 app.listen(port, () => {
 
 });
+
+if (env.NODE_ENV != "development") {
+    console.log(process.env.NODE_ENV);
+    axios.post('https://api.newrelic.com/v2/applications/739699753/deployments.json', {
+        "deployment": {
+            "revision": env.VERSION.toString()
+        }
+    }, { headers: {'Api-Key': env.NR_USER_KEY}}).then(function(response) {
+        console.log('deployment logged');
+    }).catch(function(error){
+        console.log('deployment could not be logged');
+        console.log(error);
+    });
+}

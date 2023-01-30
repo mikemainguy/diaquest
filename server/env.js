@@ -12,6 +12,7 @@ const env =
         FIREBASE_PRIVATE_KEY: process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n') || '',
         NR_ACCOUNT_ID: process.env.NR_ACCOUNT_ID || false,
         NR_LICENCE_KEY: process.env.NR_LICENCE_KEY || false,
+        NR_USER_KEY: process.env.NR_USER_KEY || false,
         SIGNALWIRE_TOKEN: process.env.SIGNALWIRE_TOKEN || false,
         SIGNALWIRE_USER: process.env.SIGNALWIRE_USER || false,
         AUTH0_CLIENT_ID: process.env.AUTH0_CLIENT_ID || false,
