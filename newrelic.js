@@ -37,6 +37,7 @@ exports.config = {
       enabled: true
     }
   },
+  labels: 'version:' + env.VERSION + ';host:' + env.AUTH0_BASE_URL,
   attributes: {
     /**
      * Prefix of attributes to exclude from all destinations. Allows * as wildcard

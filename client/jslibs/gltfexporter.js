@@ -40,7 +40,6 @@
         register( callback ) {
 
             if ( this.pluginCallbacks.indexOf( callback ) === - 1 ) {
-
                 this.pluginCallbacks.push( callback );
 
             }

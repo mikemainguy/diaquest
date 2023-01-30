@@ -10,12 +10,17 @@ AFRAME.registerComponent('stuff', {
         text: {type: 'string'},
         color: {type: 'string'},
         scale: {type: 'string', default: '.2 .2 .2'},
-        action: {type: 'string'}
+        action: {type: 'string'},
+        parent: {type: 'string', default: null}
     },
     init: function () {
         this.el.setAttribute('sound', 'src: url(/assets/sounds/KeyInLow.mp3); volume: 0.2; on: mouseenter;');
         this.aligning = false;
-
+        this.el.addChild = this.addChild.bind(this);
+    },
+    addChild: function(el) {
+        this.el.object3D.appendChild(el.object3D);
+        el.setAttribute('stuff', 'parent', this.el.getAttribute('id'));
     },
     update: function () {
         const v = AFRAME.utils.coordinates.parse(this.data.scale);
@@ -25,6 +30,10 @@ AFRAME.registerComponent('stuff', {
 
         this.saveable = this.el.querySelector('.saveable');
         this.textDisplay = this.el.querySelector('[text-geometry]');
+        if (this.data.parent) {
+            const parent = document.getElementById(this.data.parent);
+            parent.object3D.attach(this.el.object3D);
+        }
         if (this.saveable) {
             this.saveable.setAttribute('visible', true);
             this.saveable.setAttribute('sound', 'src: url(/assets/sounds/ButtonClick.mp3); on: click;');
@@ -151,9 +160,16 @@ AFRAME.registerComponent('stuff', {
             if (typeof newrelic !== 'undefined') {
                 newrelic.addPageAction('release', {id: this.grabbed.id});
             }
-            this.el.sceneEl.object3D.attach(this.grabbed.object3D);
+            if (this.data.parent) {
+                const parent = document.getElementById(this.data.parent);
+                parent.object3D.attach(this.grabbed.object3D);
+            } else {
+                this.el.sceneEl.object3D.attach(this.grabbed.object3D);
+
+            }
             const newPos = round(this.grabbed.object3D.position, .1);
             this.grabbed.object3D.position.set(newPos.x, newPos.y, newPos.z);
+
             const ang = AFRAME.utils.coordinates.parse(this.grabbed.getAttribute('rotation'));
             this.grabbed.setAttribute('rotation', AFRAME.utils.coordinates.stringify(round(ang, 45)));
             this.grabbed = null;

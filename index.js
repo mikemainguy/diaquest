@@ -1,24 +1,30 @@
 const env = require('./server/env');
 const {expressLogger, logger} = require('./server/logging');
 const config = require('./newrelic').config;
-const fs = require('fs');
+
 const sgMail = require('@sendgrid/mail')
+
 const {generateManifest} = require('./server/webmanifest');
 const {createWorld} = require('./server/createworld');
 const {getProfile, signalwireToken} = require('./server/user');
+const {pageHandler} = require('./server/pagehandler');
+const {mailer} = require('./server/mailer');
+const {voiceHandler} = require('./server/voice');
+
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY)
 //Test Commit
-const version = fs.readFileSync('./VERSION');
+const version = env.VERSION;
 const axios = require('axios');
 if (env.NR_LICENCE_KEY) {
     require('newrelic');
 }
 
 const express = require('express');
+const app = express();
 app.use(express.urlencoded({extended: true}))
 app.use(expressLogger);
-const app = express();
+
 const {engine} = require('express-handlebars');
 app.engine('.hbs', engine({extname: '.hbs'}));
 app.set('view engine', 'hbs');
@@ -27,7 +33,6 @@ app.set('views', './server/views');
 const port = env.PORT;
 
 const firebase = require('./server/firebase');
-
 
 const {auth, requiresAuth} = require('express-openid-connect');
 const maxAge = 60 * 60 * 4;
@@ -91,23 +96,7 @@ app.get('/', async (req, res) => {
     });
 });
 
-app.get('/pages/:page', async (req, res) => {
-    let user = false;
-    let admin = false;
-
-    if (req.oidc && req.oidc.isAuthenticated()) {
-        user = req.oidc.user.email;
-        const roles = req.oidc.user.immersiveRoles;
-        if (roles && roles.includes('admin')) {
-            admin = true;
-        }
-    }
-
-    res.render('pages/' + req.params['page'], {
-        html: true, version: version, page: req.params['page'], nonVr: true,
-        user: user, admin: admin
-    });
-});
+app.get('/pages/:page', pageHandler);
 
 app.get('/local', (req, res) => {
     res.render('world', {vrLocal: true, version: version});
@@ -133,40 +122,9 @@ app.get('/invite/:world', requiresAuth(), (req, res) => {
 
 });
 
-app.post('/worlds/:world/invite', requiresAuth(), (req, res) => {
-    if (!req.body.email) {
-        return;
-    }
-    const msg = {
-        to: req.body.email, // Change to your recipient
-        from: 'invite@immersiveidea.com', // Change to your verified sender
-        subject: 'Invitation to collaborate on Immersive Idea',
-        text: '',
-        html: '<a href="https://www.immersiveidea.com/invite/' + params['world'] + '">Join Now</a>',
-    }
-    sgMail
-        .send(msg)
-        .then(() => {
-            console.log('Email sent')
-        })
-        .catch((error) => {
-            console.error(error)
-        })
-    res.json({"status": "OK"});
-});
+app.post('/worlds/:world/invite', requiresAuth(), mailer);
 
-app.get('/api/voice/token', requiresAuth(), async (req, res) => {
-    try {
-        const response = await axios.post('https://api.assemblyai.com/v2/realtime/token', // use account token to get a temp user token
-            {expires_in: 3600}, // can set a TTL timer in seconds.
-            {headers: {authorization: env.VOICE_TOKEN}});
-        const {data} = response;
-        res.json(data)
-    } catch (error) {
-        res.json(`Error: ${error}`);
-    }
-
-});
+app.get('/api/voice/token', requiresAuth(), voiceHandler);
 
 app.get('/api/user/signalwireToken', requiresAuth(), signalwireToken);
 app.get('/api/user/profile', requiresAuth(), getProfile);

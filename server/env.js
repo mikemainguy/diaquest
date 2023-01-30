@@ -1,5 +1,7 @@
+const fs = require("fs");
 
 require('dotenv').config();
+const version = fs.readFileSync('./VERSION');
 const env =
     {
         NODE_ENV: process.env.NODE_ENV || 'development',
@@ -13,7 +15,8 @@ const env =
         SIGNALWIRE_TOKEN: process.env.SIGNALWIRE_TOKEN || false,
         SIGNALWIRE_USER: process.env.SIGNALWIRE_USER || false,
         AUTH0_CLIENT_ID: process.env.AUTH0_CLIENT_ID || false,
-        VOICE_TOKEN: process.env.VOICE_TOKEN || false
+        VOICE_TOKEN: process.env.VOICE_TOKEN || false,
+        VERSION: version || 'unknown'
     }
 module.exports = env;
 
