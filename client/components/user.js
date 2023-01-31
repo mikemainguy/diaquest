@@ -9,7 +9,12 @@ AFRAME.registerComponent('user', {
     } else {
       this.el.setAttribute('text', 'value: Local User');
     }
-  }
+  },
+    events: {
+      'enter-vr': function() {
+          this.el.setAttribute('visible', true);
+      }
+    }
 });
 
 

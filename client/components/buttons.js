@@ -68,6 +68,7 @@ AFRAME.registerComponent('buttons', {
         this.gridpointer = false;
         pointer.setAttribute('material', 'color: #fff; opacity: 0.6; emissive: #fff');
         pointer.setAttribute('radius', '0.008');
+        pointer.setAttribute('visible', 'false');
         this.el.appendChild(pointer);
         this.pointer = pointer;
         this.system.pointers.push(pointer);
@@ -139,6 +140,12 @@ AFRAME.registerComponent('buttons', {
         },
         bbuttontouchend: function(evt) {
 
+        },
+        triggertouchstart: function(evt) {
+          this.pointer.setAttribute('visible', 'true');
+        },
+        triggertouchend: function(evt) {
+            this.pointer.setAttribute('visible', 'false');
         },
         bbuttondown: function (evt) {
             const bMenuShowing = document.getElementById('bmenu').getAttribute('visible');

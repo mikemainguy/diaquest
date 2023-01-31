@@ -212,6 +212,14 @@ document.addEventListener('shareUpdate', function (evt) {
     } else {
         if (evt.detail.remove === true) {
             if (evt.detail && evt.detail.id) {
+                const id = evt.detail.id;
+                const children = document.querySelectorAll('[stuff]');
+                const scene = document.querySelector('a-scene');
+                for (const c of children) {
+                    if (c.components['stuff'].data.parent == id) {
+                        c.setAttribute('stuff', 'parent', '');
+                    }
+                }
                 removeEntity(evt.detail.id);
                 return;
             } else {

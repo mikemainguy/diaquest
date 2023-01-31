@@ -32,7 +32,12 @@ AFRAME.registerComponent('stuff', {
         this.textDisplay = this.el.querySelector('[text-geometry]');
         if (this.data.parent) {
             const parent = document.getElementById(this.data.parent);
-            parent.object3D.attach(this.el.object3D);
+            if (parent) {
+                parent.object3D.attach(this.el.object3D);
+            } else {
+                this.el.sceneEl.object3D.attach(this.el.object3D);
+            }
+
         }
         if (this.saveable) {
             this.saveable.setAttribute('visible', true);
@@ -109,6 +114,7 @@ AFRAME.registerComponent('stuff', {
                     document.dispatchEvent(new CustomEvent('align', {detail: {id: obj.id}}));
                     break;
                 case 'removing':
+                    console.log('removing');
                     document.dispatchEvent(new CustomEvent('shareUpdate', {detail: {id: obj.id, remove: true}}));
                     break;
                 case 'edit-color':
@@ -175,7 +181,12 @@ AFRAME.registerComponent('stuff', {
             }
             if (this.data.parent) {
                 const parent = document.getElementById(this.data.parent);
-                parent.object3D.attach(this.grabbed.object3D);
+                if (parent) {
+                    parent.object3D.attach(this.grabbed.object3D);
+                } else {
+                    this.el.setAttribute('stuff', 'parent', '');
+                    this.el.sceneEl.object3D.attach(this.grabbed.object3D);
+                }
             } else {
                 this.el.sceneEl.object3D.attach(this.grabbed.object3D);
 
