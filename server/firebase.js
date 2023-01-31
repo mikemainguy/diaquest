@@ -1,5 +1,5 @@
 const env = require('./env');
-
+const {logger} = require('./logging');
 const admin = require("firebase-admin");
 const { getAuth } = require("firebase-admin/auth");
 const serviceAccount = {
@@ -24,10 +24,16 @@ const createWorld = async function(world, owner, public) {
   try {
     const db = admin.database();
     const ref = db.ref('/worlds/' + world);
-    await ref.set({"owner": owner, "public": public});
+    const val = await ref.once('value');
+    if (!val.exists()) {
+      await ref.set({"owner": owner, "public": public});
+      const dirref = db.ref('/directory/' + world);
+      await dirref.set({"owner": owner, "public": public, "name": world});
+    } else {
+      logger.warn(world + " Already Exists");
+      return ({"status": world + " Already Exists"});
+    }
 
-    const dirref = db.ref('/directory/' + world);
-    await dirref.set({"owner": owner, "public": public, "name": world});
   } catch (e) {
     return ({"status": JSON.stringify(e)});
   }
