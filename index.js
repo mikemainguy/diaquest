@@ -1,12 +1,12 @@
 const env = require('./server/env');
 const {expressLogger, logger} = require('./server/logging');
 const config = require('./newrelic').config;
-
+const {createProxyMiddleware} = require('http-proxy-middleware');
 const sgMail = require('@sendgrid/mail')
 
 const {generateManifest} = require('./server/webmanifest');
 const {createWorld} = require('./server/createworld');
-const {getProfile, signalwireToken} = require('./server/user');
+const {getProfile, signalwireToken, storeNewRelic} = require('./server/user');
 const {pageHandler} = require('./server/pagehandler');
 const {mailer} = require('./server/mailer');
 const {voiceHandler} = require('./server/voice');
@@ -121,7 +121,9 @@ app.post('/worlds/:world/invite', requiresAuth(), mailer);
 app.get('/api/voice/token', requiresAuth(), voiceHandler);
 app.get('/api/user/signalwireToken', requiresAuth(), signalwireToken);
 app.get('/api/user/profile', requiresAuth(), getProfile);
-
+app.post('/api/user/newrelic', requiresAuth(), storeNewRelic);
+app.use('/graphql',
+    createProxyMiddleware({ target: 'https://api.newrelic.com', changeOrigin: true}));
 logger.log({level: "info", message: "server start on port: " + port});
 
 app.listen(port, () => {

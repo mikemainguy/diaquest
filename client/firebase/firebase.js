@@ -58,8 +58,9 @@ function getDbPath(id) {
 
 async function getProfile() {
     try {
-        const profile = await axios.get('/api/user/profile');
-        return profile.data;
+
+        const profile = JSON.parse(sessionStorage.getItem('user'));
+        return profile;
     } catch (err) {
         console.log(err);
         return null;
@@ -162,7 +163,7 @@ async function initializeFirebase() {
         }
     }
 }
-initializeFirebase();
+document.addEventListener('userloaded', initializeFirebase);
 
 export function writeUser(profile) {
     if (profile && profile.user && profile.user.sid
@@ -170,6 +171,7 @@ export function writeUser(profile) {
         sha512(profile.user.sid).then((result) => {
             profile.user.last_seen = new Date().toUTCString();
             const id = 'session' + result;
+
             update(ref(database, 'users/' + profile.user.sub), profile);
 
 

@@ -1,0 +1,35 @@
+<a href="https://one.newrelic.com/admin-portal/api-keys/home">New Relic API Keys</a>
+<form id="addToken" method="POST" action="/api/user/newrelic">
+    <div>
+        <label for="token">Enter User Token</label><input name="token">
+    </div>
+    <div>
+        <label for="account">Enter Account #</label><input name="account">
+    </div>
+    <div>
+        <input type="submit">
+    </div>
+</form>
+
+<script>
+    document.getElementById('addToken').addEventListener('submit',
+            function(event) {
+                event.preventDefault();
+                fetch(event.target.action,
+                        {
+                            headers: {
+                                "Content-Type": "application/x-www-form-urlencoded"
+                            },
+                            method:'post',
+                            body: new URLSearchParams(new FormData(event.target))
+                        }
+                ).then((res)=> {
+                    if (res.status == 'OK') {
+                        console.log('success');
+                    } else {
+                        console.log('Error');
+                    }
+                });
+            }, false);
+
+</script>

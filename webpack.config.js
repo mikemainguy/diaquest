@@ -12,6 +12,7 @@ const config = {
         index: './src/index.js',
         db: './src/db.js',
         localdb: './src/local.js',
+        graphql: './src/graphql.js',
         components: {
             import: './src/components.js',
             dependOn: 'index'

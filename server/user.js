@@ -2,7 +2,8 @@ const firebase = require("./firebase");
 const axios = require("axios");
 const env = require("./env");
 
-const getProfile =     (req, res, next) => {
+
+const getProfile = async (req, res, next) => {
     const claims = {"user": true};
     if (req.oidc.idTokenClaims['immersiveRoles']) {
         claims.roles = req.oidc.idTokenClaims['immersiveRoles'];
@@ -13,18 +14,19 @@ const getProfile =     (req, res, next) => {
         }
     }
 
-    const firebasePromise = firebase
+    const data = await firebase
         .getAuth()
         .createCustomToken(req.oidc.user.sub, claims.roles);
     const obj = {};
     obj.user = req.oidc.user;
+    const newRelic = await firebase.getUser(req.oidc.user.sub);
 
-    firebasePromise.then(data => {
-        obj.firebase_token = data;
-        res.setHeader('content-type', 'application/json');
-        res.send(JSON.stringify(obj));
-    })
-        .catch((err) => res.status(500).send(err));
+    obj.firebase_token = data;
+    obj.newrelic_token = newRelic.newrelic_token;
+    obj.newrelic_account = newRelic.newrelic_account;
+    res.setHeader('content-type', 'application/json');
+    res.send(JSON.stringify(obj));
+
 
 }
 
@@ -65,4 +67,9 @@ const signalwireToken = (req, res, next) => {
     }
 }
 
-module.exports = {getProfile: getProfile, signalwireToken: signalwireToken}
+const storeNewRelic = async (req, res, next) => {
+    await firebase.saveNewRelic(req.oidc.user.sub, req.body.token, req.body.account);
+    res.send({'status': 'OK'});
+
+}
+module.exports = {getProfile: getProfile, signalwireToken: signalwireToken, storeNewRelic: storeNewRelic}

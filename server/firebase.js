@@ -19,7 +19,17 @@ admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
   databaseURL: "https://metastore-37b60-default-rtdb.firebaseio.com"
 });
-
+const saveNewRelic = async (user, token, account) => {
+  const db = admin.database();
+  const ref=db.ref('/users/' + user)
+  await ref.update({"newrelic_token": token, "newrelic_account": account});
+}
+const getUser = async (user) => {
+  const db = admin.database();
+  const ref=db.ref('/users/' + user);
+  const data = await ref.once('value');
+  return data.val();
+}
 const createWorld = async function(world, owner, public) {
   try {
     const db = admin.database();
@@ -59,4 +69,9 @@ const verifyInvite = async function(email, world) {
 }
 
 
-module.exports = {getAuth: getAuth, createWorld: createWorld, createInvite: createInvite, listWorlds: listWorlds};
+module.exports = {getAuth: getAuth,
+  createWorld: createWorld,
+  createInvite: createInvite,
+  listWorlds: listWorlds,
+ saveNewRelic: saveNewRelic,
+getUser: getUser};

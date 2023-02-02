@@ -1,6 +1,6 @@
 AFRAME.registerComponent('user', {
   init: function () {
-    if (!VRLOCAL) {
+    /*if (!VRLOCAL) {
       fetch('/api/user/profile')
           .then((res)=> res.json())
           .then((data) => {
@@ -8,7 +8,7 @@ AFRAME.registerComponent('user', {
           });
     } else {
       this.el.setAttribute('text', 'value: Local User');
-    }
+    }*/
   },
     events: {
       'enter-vr': function() {
