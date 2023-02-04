@@ -148,12 +148,16 @@ AFRAME.registerComponent('buttons', {
             this.pointer.setAttribute('visible', 'false');
         },
         bbuttondown: function (evt) {
-            const bMenuShowing = document.getElementById('bmenu').getAttribute('visible');
-            if (bMenuShowing) {
-                hideMenu({detail: {id: '#bmenu'}});
-            } else {
-                showMenu({detail: {id: '#bmenu', objects: '#bmenu [widget], .saveable'}});
+            const bmenu = document.getElementById('bmenu');
+            if (bmenu) {
+                const bMenuShowing = document.getElementById('bmenu').getAttribute('visible');
+                if (bMenuShowing) {
+                    hideMenu({detail: {id: '#bmenu'}});
+                } else {
+                    showMenu({detail: {id: '#bmenu', objects: '#bmenu [widget], .saveable'}});
+                }
             }
+
         },
         ybuttondown: function (evt) {
             const yMenuShowing = document.getElementById('ymenu').getAttribute('visible');

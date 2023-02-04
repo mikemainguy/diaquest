@@ -6,27 +6,45 @@
             {detail:
                         {
                             labels: [
-                                {field: 'value2', label: 'Response Time', mapping: function(d) {return d['value2']['95']}},
-                                {field: 'value1', label: 'Count'}],
+                                {field: 'value1',
+                                    label: 'Response Time',
+                                    scale: .05,
+                                    mapping: function(d) {return d['value1']['95']}},
+                                {field: 'value2', label: 'Count', scale: .0001}
+                            ],
                             query:
-                                    'SELECT percentile(duration, 95) AS value2, COUNT(*) as value1 FROM BrowserInteraction SINCE 48 HOURS AGO  TIMESERIES 1 hour FACET browserInteractionName LIMIT 10', position: '0 0 -10'}}));
+                                    'SELECT count(*) as value2, percentile(largestContentfulPaint, 95) as value1 FROM PageViewTiming  SINCE 1 day AGO facet pageUrl order by value2 desc limit 20 timeseries 1 hour', position: '0 0 -10'}}));
 </script>
 <style>
+    div#sceneholder {
+        align-items: center;
+        display: flex;
+        justify-content: center;
+        vertical-align: middle;
+        width: 100%;
+        height: 80%;
+
+    }
     a-scene    {
-        width: 500px;
-        height: 500px;
-}
+        width: 1000px;
+        height:1000px;
+    }
 </style>
-    <a-scene embedded>
+<div id="sceneholder">
+    <a-scene stats embedded>
+
         <a-assets>
             <script id="label" type="application/html">
 
             </script>
         </a-assets>
 
+        <a-light type="ambient" intensity=".9">
+
+        </a-light>
 
         <a-entity class="rig" position="0 0 2"
-                  wasd-controls="fly: true">
+                  >
 
             <a-entity id="keyboard-rotation">
                 <a-entity
@@ -57,6 +75,7 @@
             <a-entity id="right-hand"
                       laser-controls="hand: right"
                       buttons
+                      chartinteraction
                       oculus-touch-controls="hand: right"
                       raycaster="objects: .saveable,a-link; lineColor: #fff; lineOpacity: 0.7; far: .1"
                       position=".5 1.6 1.5"
@@ -89,12 +108,15 @@
 
             </a-entity>
             <a-entity
+                    wasd-controls="fly: true"
                     look-controls
                     camera="active: true"
                     id="camera"
                     position="0 1.6 2">
+<!--                <a-light type="spot" angle="15" distance="4">
 
-
+                </a-light>
+-->
                 <a-plane id='inspector'
                          material="opacity: 0.5; color: #222"
                          position=".2 .3 -1"
@@ -106,7 +128,8 @@
             </a-entity>
 
         </a-entity>
-    </a-scene>
 
+    </a-scene>
+</div>
 
 

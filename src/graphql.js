@@ -37,9 +37,9 @@ document.addEventListener('gqlquery', async (event) => {
         for (const l of event.detail.labels) {
 
             if (l.mapping) {
-                point.data.push({value : l.mapping(d), label: l.label});
+                point.data.push({value : l.mapping(d), label: l.label, scale: l.scale});
             } else {
-                point.data.push({value : d[l.field], label: l.label});
+                point.data.push({value : d[l.field], label: l.label, scale: l.scale});
             }
 
         }
