@@ -1,0 +1,101 @@
+<a-scene>
+
+    <a-assets>
+        <script id="label" type="application/html">
+
+        </script>
+        <img id="linkImage" src="/assets/castle.jpg">
+    </a-assets>
+
+
+    <a-light type="ambient" intensity=".9">
+
+    </a-light>
+
+    <a-entity class="rig" position="0 0 2"
+    >
+
+        <a-entity id="keyboard-rotation">
+            <a-entity
+                    id="keyboard"
+                    position="0 .8 -.55"
+                    3d-keyboard="visible: false; scale: .04 .04 .4"
+                    rotation="-30 0 0">
+                <a-sphere radius="0.04" transcription position=".3 .12 .04" visible="false" material="color: #fff; opacity: 0.5">
+                    <a-image lookatme width="0.04" height="0.04" src="#voiceicon"></a-image>
+                </a-sphere>
+            </a-entity>
+        </a-entity>
+        <!--<a-plane id="sizerplane" lookatme width=".5" height=".1" position="-.25 1.2 -.5" text="value: Text"></a-plane>-->
+        <a-entity
+                id="left-hand"
+                position="-.5 1.6 1.5"
+                rotation="90 0 0"
+                buttons
+                grabber
+                oculus-touch-controls="hand: left"
+                laser-controls="hand: left"
+                raycaster="objects: .saveable,a-link; lineColor: #fff; lineOpacity: 0.7; far: .1"
+                mover="x: 1 0 0; y: 0 0 1">
+
+
+
+        </a-entity>
+        <a-entity id="right-hand"
+                  laser-controls="hand: right"
+                  buttons
+                  chartinteraction
+                  oculus-touch-controls="hand: right"
+                  raycaster="objects: .saveable,a-link; lineColor: #fff; lineOpacity: 0.7; far: .1"
+                  position=".5 1.6 1.5"
+                  rotation="90 0 0"
+                  grabber
+                  mover="x: -22.5; y: 0 -1 0">
+
+            <a-plane width="0.2"
+                     height="0.03"
+                     color="#fff"
+                     id="user"
+                     user
+                     visible="false"
+                     class="text"
+                     text="color: #000; value: test; baseline: center; width: 0.25; align: center"
+                     position=".005 0.01 0.17"
+                     rotation="-90 -90 0"></a-plane>
+
+            <!--<a-plane width="0.01"
+                     height="0.01"
+                     color="#fff"
+                     id="menu-help"
+                     class="text"
+
+                     text="color: #000; value: menu; baseline: center; align: center; wrap: 5"
+                     position="-.035 0.008 .03"
+                     rotation="-75 10 0"></a-plane> -->
+
+
+
+        </a-entity>
+        <a-entity
+                wasd-controls="fly: true"
+                look-controls
+                camera="active: true"
+                id="camera"
+                position="0 1.6 2">
+            <!--                <a-light type="spot" angle="15" distance="4">
+
+                            </a-light>
+            -->
+            <a-plane id='inspector'
+                     material="opacity: 0.5; color: #222"
+                     position=".2 .3 -1"
+                     width="1"
+                     height=".1"
+                     rotation="0 0 0"
+                     visible="false"
+                     text="align: left; wrapCount: 35; value: test"></a-plane>
+        </a-entity>
+
+    </a-entity>
+
+</a-scene>

@@ -11,6 +11,7 @@ AFRAME.registerComponent('stuff', {
         color: {type: 'string'},
         scale: {type: 'string', default: '.2 .2 .2'},
         action: {type: 'string'},
+        sides: {type: 'int', default: 36},
         parent: {type: 'string', default: null}
     },
     init: function () {
@@ -27,6 +28,7 @@ AFRAME.registerComponent('stuff', {
         this.scale = new THREE.Vector3(v.x, v.y, v.z);
         this.color = this.data.color;
         this.text = this.data.text;
+        this.sides = this.data.sides;
 
         this.saveable = this.el.querySelector('.saveable');
         this.textDisplay = this.el.querySelector('[text-geometry]');

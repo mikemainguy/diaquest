@@ -20,6 +20,7 @@
   "dependencies": {
     "@analytics/google-tag-manager": "^0.5.2",
     "@apollo/client": "^3.7.5",
+    "@aws-sdk/client-s3": "^3.266.1",
     "@sendgrid/mail": "^7.7.0",
     "@signalwire/js": "^3.16.0",
     "aframe": "file:./local/aframe",

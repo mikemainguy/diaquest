@@ -11,9 +11,11 @@
             newrelic.addPageAction('assets loaded');
         }
     </script>
+
     {{> aligner }}
     <a-entity id="clock" clock lookatme position="0 5 -23" scale="3 3 3"></a-entity>
     <a-entity id="navigation" lookatme navigation position="23 2 0"></a-entity>
+    <a-link lookatme href="/pages/newRelic" position="0 2 -20" title="New Relic" image="#linkImage"></a-link>
     <!--<a-entity>
         <a-cylinder opacity="0.5" height="100" color="#f00" radius="0.01"></a-cylinder>
         <a-cylinder opacity="0.5" height="100" color="#0f0" radius="0.01" rotation="90 0 0"></a-cylinder>
@@ -42,6 +44,9 @@
     </a-entity>
     {{>shape-properties }}
     <a-entity  id="ambient" sound="src: url(/assets/sounds/classical.mp3); loop: true; volume: 0.1; positional: false"></a-entity>
+    <a-cylinder segments-height="1" segments-radial="6">
+
+    </a-cylinder>
     <a-entity position="-80 2 100" light="type: point; color: #FB9; distance: 200; intensity: 1;">
         <!--<a-sphere radius="5"  material="src: /assets/sky2.jpeg; color: #ff2; opacity: 0.2" animation="property: rotation; loop: true; dur: 15000; easing: linear; from: 0 0 0; to: 0 360 0"></a-sphere>-->
     </a-entity>
@@ -72,3 +77,30 @@
 
     {{> nonvr }}
 </a-scene>
+<script>
+    document.addEventListener('directoryUpdate', (evt)=> {
+        const scene = document.querySelector('a-scene');
+        const nodes = Object.entries(evt.detail);
+        let x = nodes.length*-2;
+
+        if (scene) {
+            for(const d of nodes) {
+                const id = d[0];
+                const name = d[1].name;
+
+                const li = document.createElement('a-link');
+                const a = document.createElement('a');
+                li.setAttribute('href', '/worlds/' + id);
+                li.setAttribute('title', name);
+                li.setAttribute('image', '#linkImage');
+                li.setAttribute('position', x + ' 2 -23');
+                x+=4;
+                scene.appendChild(li);
+
+
+            }
+        }
+
+        console.log(JSON.stringify(evt.detail));
+    });
+</script>

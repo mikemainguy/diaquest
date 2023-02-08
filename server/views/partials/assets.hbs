@@ -99,6 +99,40 @@
     </script>
 
     <script
+            id="tetrahedron-template"
+            type="html">
+        <a-entity share-position>
+            <a-tetrahedron
+                    class="saveable"
+                    material="color: #33f"
+                    radius=".5"
+                    visible="false">
+            </a-tetrahedron>
+            <a-entity
+                    mixin="labelMixin"
+                    position="0 0.3 0">
+            </a-entity>
+        </a-entity>
+    </script>
+
+    <script
+            id="tetrahedron-template"
+            type="html">
+        <a-entity share-position>
+            <a-octahedron
+                    class="saveable"
+                    material="color: #33f"
+                    radius=".5"
+                    visible="false">
+            </a-octahedron>
+            <a-entity
+                    mixin="labelMixin"
+                    position="0 0.3 0">
+            </a-entity>
+        </a-entity>
+    </script>
+
+    <script
             id="cylinder-template"
             type="html">
         <a-entity share-position>
@@ -151,5 +185,6 @@
         </a-entity>
     </script>
     <img id="voiceicon" src="/assets/voice.svg">
+    <img id="linkImage" src="/assets/castle.jpg">
 
 </a-assets>

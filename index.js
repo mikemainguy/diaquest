@@ -6,9 +6,11 @@ const sgMail = require('@sendgrid/mail')
 
 const {generateManifest} = require('./server/webmanifest');
 const {createWorld} = require('./server/createworld');
-const {getProfile, signalwireToken, storeNewRelic} = require('./server/user');
+const {getProfile, signalwireToken, storeNewRelic, inviteHandler} = require('./server/user');
 const {pageHandler} = require('./server/pagehandler');
 const {mailer} = require('./server/mailer');
+const {listImages, createImage} = require('./server/images');
+
 const {voiceHandler} = require('./server/voice');
 
 
@@ -111,13 +113,19 @@ app.get('/worlds/:worldId', requiresAuth(), (req, res) => {
     res.render('world', {vrConnected: true, version: version});
 });
 app.get('/worlds', async(req, res) => {
-    const fbresponse = await firebase.listWorlds();
+    const fbresponse = await firebase.listWorlds(req.oidc.user.sub);
     res.json(fbresponse);
 });
-
+app.get('/images/create', requiresAuth(), async(req, res) => {
+    await createImage();
+    res.sendStatus(200);
+});
+app.get('/images', requiresAuth(), async(req, res) => {
+    await listImages();
+    res.sendStatus(200);
+});
 app.post('/worlds/create', requiresAuth(), createWorld);
-app.get('/invite/:world', requiresAuth(), (req, res) => { });
-app.post('/worlds/:world/invite', requiresAuth(), mailer);
+app.post('/worlds/invite', requiresAuth(), inviteHandler);
 app.get('/api/voice/token', requiresAuth(), voiceHandler);
 app.get('/api/user/signalwireToken', requiresAuth(), signalwireToken);
 app.get('/api/user/profile', requiresAuth(), getProfile);

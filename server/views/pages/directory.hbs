@@ -12,6 +12,20 @@
 
 
 </form>
+<form id="addCollaborator" method="POST" action="/worlds/invite">
+    <div>
+        <label for="email">Email</label><input name="email">
+    </div>
+    <div>
+        <label for="world">World</label><input name="world">
+    </div>
+    <div>
+        <input type="submit">
+    </div>
+
+
+
+</form>
 <script>
     document.getElementById('createWorld').addEventListener('submit',
             function(event) {
@@ -23,6 +37,28 @@
                             },
                             method:'post',
                             body: new URLSearchParams(new FormData(event.target))
+                        }
+                ).then((res)=> {
+                    if (res.status == 'OK') {
+                        console.log('success');
+                    } else {
+                        console.log('Error');
+                    }
+                });
+            }, false);
+
+
+    document.getElementById('addCollaborator').addEventListener('submit',
+            function(event) {
+                const form = FormData(event.target)
+                event.preventDefault();
+                fetch(event.target.action,
+                        {
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            method:'post',
+                            body: {email: form.get('email'), world: form.get('world')}
                         }
                 ).then((res)=> {
                     if (res.status == 'OK') {

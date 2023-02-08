@@ -50,18 +50,30 @@ const createWorld = async function(world, owner, public) {
 
   return ({"status": "OK"});
 }
-const listWorlds = async function() {
+const listWorlds = async function(user) {
   const db = admin.database();
   const dirref = db.ref('/worlds');
   const list = await dirref.once('value');
+  const dest = [];
+  for (const d of list) {
+    console.log(d);
+  }
   return list;
 }
 
-const createInvite = async function(email, world) {
+const createCollaborator = async function(user, world) {
+
   const db = admin.database();
-  const ref = db.ref('/invites/' + email);
-  await ref.set({"world": world});
+  await db.ref('/worlds/' + world)
+      .once('value', (snapshot, context) => {
+            if (snapshot.exists()) {
+              const ref = db.ref('/worlds/' + world + '/collaborators/' + user);
+              ref.set(true);
+            }
+          }
+      );
 }
+
 const verifyInvite = async function(email, world) {
   const db = admin.database();
   const ref = db.ref('/invites/' + email + '/' + world);
@@ -71,7 +83,7 @@ const verifyInvite = async function(email, world) {
 
 module.exports = {getAuth: getAuth,
   createWorld: createWorld,
-  createInvite: createInvite,
+  createCollaborator: createCollaborator,
   listWorlds: listWorlds,
  saveNewRelic: saveNewRelic,
 getUser: getUser};
