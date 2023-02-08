@@ -1,4 +1,4 @@
-import {debug} from "../client/components/debug";
+import {debug} from "../components/debug";
 
 const RecordRTC = require("recordrtc");
 AFRAME.registerSystem('transcription', {

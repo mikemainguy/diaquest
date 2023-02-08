@@ -9,17 +9,17 @@ const stylesHandler = 'style-loader';
 
 const config = {
     entry: {
-        index: './src/index.js',
-        db: './src/db.js',
-        localdb: './src/local.js',
-        graphql: './src/graphql.js',
+        index: './client/webpack/index.js',
+        db: './client/webpack/db.js',
+        localdb: './client/webpack/local.js',
+        graphql: './client/webpack/graphql.js',
         components: {
-            import: './src/components.js',
+            import: './client/webpack/components.js',
             dependOn: 'index'
         },
-        speech: './src/speech.js',
+        speech: './client/webpack/speech.js',
         conference: {
-            import: './src/conference.js',
+            import: './client/webpack/conference.js',
             dependOn: 'index'
         }
     },
