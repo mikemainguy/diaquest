@@ -2,7 +2,12 @@ const firebase = require("../../firebase");
 const axios = require("axios");
 const env = require("../../env");
 const {logger} = require('../../logging');
-const createWorld = async (req, res) => {
+module.exports = async (req, res) => {
+    if (req.method != "POST") {
+        res.sendStatus(405);
+        return;
+    }
+
     try {
         const public = req.body.public ? true : false;
 

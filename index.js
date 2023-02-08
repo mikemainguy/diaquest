@@ -5,8 +5,8 @@ const {createProxyMiddleware} = require('http-proxy-middleware');
 const sgMail = require('@sendgrid/mail')
 
 const {generateManifest} = require('./server/webmanifest');
-const {createWorld} = require('./server/createworld');
-const {getProfile, signalwireToken, storeNewRelic, inviteHandler} = require('./server/user');
+
+const {getProfile, signalwireToken, storeNewRelic} = require('./server/user');
 const {pageHandler} = require('./server/pagehandler');
 const {mailer} = require('./server/mailer');
 const {listImages, createImage} = require('./server/images');
@@ -26,6 +26,8 @@ const express = require('express');
 const app = express();
 app.use(express.urlencoded({extended: true}))
 app.use(expressLogger);
+const api = require('./server/api');
+
 
 const {engine} = require('express-handlebars');
 app.engine('.hbs', engine({extname: '.hbs'}));
@@ -124,12 +126,12 @@ app.get('/images', requiresAuth(), async(req, res) => {
     await listImages();
     res.sendStatus(200);
 });
-app.post('/worlds/create', requiresAuth(), createWorld);
-app.post('/worlds/invite', requiresAuth(), inviteHandler);
 app.get('/api/voice/token', requiresAuth(), voiceHandler);
 app.get('/api/user/signalwireToken', requiresAuth(), signalwireToken);
 app.get('/api/user/profile', requiresAuth(), getProfile);
 app.post('/api/user/newrelic', requiresAuth(), storeNewRelic);
+api(app);
+
 app.use('/graphql',
     createProxyMiddleware({ target: 'https://api.newrelic.com', changeOrigin: true}));
 logger.log({level: "info", message: "server start on port: " + port});

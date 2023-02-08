@@ -45,6 +45,7 @@
     "firebase-admin": "^11.0.0",
     "git-commit-id": "^2.0.1",
     "git-revision-webpack-plugin": "^5.0.0",
+    "glob": "^8.1.0",
     "graphql-request": "^5.1.0",
     "idb": "^7.1.1",
     "newrelic": "^9.1.0",
