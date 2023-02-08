@@ -9,8 +9,6 @@ module.exports = async (req, res) => {
     try {
         const world = req.body.world;
         const email = req.body.email;
-        console.log(email);
-        console.log(world);
         const tokenOptions = {
             method: 'POST',
             url: 'https://aardvarkguru.us.auth0.com/oauth/token',
@@ -25,7 +23,7 @@ module.exports = async (req, res) => {
 
         const tokenResponse = await axios.request(tokenOptions);
         const access_token =tokenResponse.data.access_token;
-        console.log(access_token);
+
         const options = {
             method: 'GET',
             url: env.AUTH0_ISSUER_BASE_URL + '/api/v2/users-by-email',
@@ -34,7 +32,7 @@ module.exports = async (req, res) => {
         };
 
         const user = await axios.request(options);
-        console.log(user);
+
         if (user.data && user.data.length > 0) {
             await firebase
                 .createCollaborator(user.data[0].user_id, world);
@@ -55,7 +53,7 @@ module.exports = async (req, res) => {
         }
         res.sendStatus(200);
     } catch (err) {
-        console.log(err);
+
         res.sendStatus(500);
     }
 }

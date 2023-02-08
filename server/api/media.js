@@ -14,6 +14,10 @@ const S3 = new S3Client({
 });
 
 module.exports = async (req, res) => {
+    if (req.method != 'GET') {
+        res.sendStatus(405);
+        return;
+    }
     console.log(
         await S3.send(
             new ListObjectsCommand({Bucket: 'immersiveidea'})

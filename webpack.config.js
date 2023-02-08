@@ -2,10 +2,7 @@ const path = require('path');
 const fs = require('fs');
 const version = fs.readFileSync('./VERSION');
 const isProduction = process.env.NODE_ENV == 'production';
-
 const stylesHandler = 'style-loader';
-
-
 
 const config = {
     entry: {

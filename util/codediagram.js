@@ -10,7 +10,6 @@ function createUUID() {
 
 const tree= dirTree('.', {exclude: /node_modules|[\.].+/, attributes: ['type'], depth: 3});
 const nodes = {};
-;
 
 function buildShape(node, x, y, z) {
     const template = node.type==='directory'?'#sphere-template':'#box-template';
@@ -51,8 +50,4 @@ if (tree.children) {
         }
     }
 }
-
-
-
-
 fs.writeFileSync('data.json', JSON.stringify(nodes, null, 2));
