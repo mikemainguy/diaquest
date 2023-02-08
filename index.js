@@ -3,16 +3,8 @@ const {expressLogger, logger} = require('./server/logging');
 const config = require('./newrelic').config;
 const {createProxyMiddleware} = require('http-proxy-middleware');
 const sgMail = require('@sendgrid/mail')
-
-const {generateManifest} = require('./server/webmanifest');
-
-const {getProfile, signalwireToken, storeNewRelic} = require('./server/user');
-const {pageHandler} = require('./server/pagehandler');
-const {mailer} = require('./server/mailer');
-const {listImages, createImage} = require('./server/images');
-
-const {voiceHandler} = require('./server/voice');
-
+const { generateManifest } = require('./server/webmanifest');
+const { pageHandler } = require('./server/pagehandler');
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY)
 //Test Commit
@@ -36,7 +28,6 @@ app.set('views', './server/views');
 
 const port = env.PORT;
 
-const firebase = require('./server/firebase');
 
 const {auth, requiresAuth} = require('express-openid-connect');
 const maxAge = 60 * 60 * 4;
@@ -114,22 +105,7 @@ app.get('/home', requiresAuth(), async (req, res) => {
 app.get('/worlds/:worldId', requiresAuth(), (req, res) => {
     res.render('world', {vrConnected: true, version: version});
 });
-app.get('/worlds', async(req, res) => {
-    const fbresponse = await firebase.listWorlds(req.oidc.user.sub);
-    res.json(fbresponse);
-});
-app.get('/images/create', requiresAuth(), async(req, res) => {
-    await createImage();
-    res.sendStatus(200);
-});
-app.get('/images', requiresAuth(), async(req, res) => {
-    await listImages();
-    res.sendStatus(200);
-});
-app.get('/api/voice/token', requiresAuth(), voiceHandler);
-app.get('/api/user/signalwireToken', requiresAuth(), signalwireToken);
-app.get('/api/user/profile', requiresAuth(), getProfile);
-app.post('/api/user/newrelic', requiresAuth(), storeNewRelic);
+
 api(app);
 
 app.use('/graphql',
