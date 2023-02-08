@@ -66,6 +66,9 @@ app.get('/manifest.webmanifest', generateManifest );
  * Route below here are secured with token from auth0
  */
 const auth0Config = {
+    authorizationParams: {
+      connection: "email"
+    },
     authRequired: false,
     auth0Logout: true,
     secret: env.AUTH0_SECRET,

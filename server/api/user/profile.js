@@ -22,8 +22,10 @@ module.exports = async (req, res) => {
     const newRelic = await firebase.getUser(req.oidc.user.sub);
 
     obj.firebase_token = data;
-    obj.newrelic_token = newRelic.newrelic_token;
-    obj.newrelic_account = newRelic.newrelic_account;
+    if (newRelic) {
+        obj.newrelic_token = newRelic.newrelic_token;
+        obj.newrelic_account = newRelic.newrelic_account;
+    }
     res.setHeader('content-type', 'application/json');
     res.send(JSON.stringify(obj));
 }
