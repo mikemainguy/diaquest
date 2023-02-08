@@ -19,7 +19,7 @@ document.addEventListener('gqlquery', async (event) => {
 }
 `;
 
-    const client = new GraphQLClient('/graphql', {});
+    const client = new GraphQLClient('/api/newrelic/graphql', {});
 
     client.setHeader('Api-Key', profile.newrelic_token);
 
