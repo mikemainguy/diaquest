@@ -1,7 +1,8 @@
 const {auth0, requiresAuth} = require('./server/auth0');
 const env = require('./server/env');
 const {expressLogger} = require('./server/logging');
-const config = require('./newrelic').config;
+require('./server/newrelic')
+
 const deploymentlogger = require('./server/deploymentlogger');
 const { setup } = require('./server/pagehandler');
 
@@ -11,9 +12,7 @@ if (env.SENDGRID_API_KEY) {
 }
 
 const version = env.VERSION;
-if (env.NR_LICENCE_KEY) {
-    require('newrelic');
-}
+
 const express = require('express');
 const app = express();
 app.use(express.urlencoded({extended: true}))
