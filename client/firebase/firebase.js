@@ -117,6 +117,16 @@ async function initializeFirebase() {
 
         });
 
+        const privateDirectoryRef = ref(database, `dir/user_worlds/${profile.user.sub}/` );
+        onValue(privateDirectoryRef, (snapshot) => {
+            console.log('here');
+            document.dispatchEvent(
+                new CustomEvent('privateDirectoryUpdate',
+                    {detail: snapshot.val()}));
+
+        });
+
+
         const loc = window.location.pathname;
         if (loc.startsWith('/worlds')) {
             const path = getDbPath(null);
@@ -194,11 +204,8 @@ export function writeUser(profile) {
         console.error('user info appears to be not logged in');
     }
 
-    const directory = ref(database, "/users/" + profile.user.sub + "/directory/worlds");
 
-    onValue(directory, (snap) => {
-        const el = document.getElementById('directory');
-    });
+
 }
 
 

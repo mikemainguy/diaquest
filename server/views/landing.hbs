@@ -6,39 +6,45 @@
     <div id="envlist">
         <a href="https://www.oculus.com/open_url/?url=https%3A%2F%2Fwww.immersiveidea.com">
             Open on your Meta Quest headset</a>
-        <ul>
-            <li><a href="/local">Local Environment</a></li>
-            {{#if user}}
-                <li><a href="/worlds/public">Public Cloud</a></li>
-                <li><a href="/home">Private Cloud</a></li>
-                        <li><a href="/pages/newRelic">New Relic Explorer</a></li>
-            </ul>
-            {{/if}}
-            {{#unless user}}
+    <ul>
+        <li><a href="/local">Local Environment</a></li>
+        {{#if user}}
+            <li><a href="/worlds/public">Public Cloud</a></li>
+            <li><a href="/home">Private Cloud</a></li>
+            <li><a href="/pages/newRelic">New Relic Explorer</a></li>
+        </ul>
+        {{/if}}
+        {{#unless user}}
             </ul>
             <div class="secure">
 
-                    <a href="/login">Signup/Login to access</a>
-                    <ul class="disabled">
-                        <li>Public Cloud</li>
-                        <li>Private Cloud</li>
-                        <li>New Relic Explorer</li>
-                    </ul>
+                <a href="/login">Signup/Login to access</a>
+                <ul class="disabled">
+                    <li>Public Cloud</li>
+                    <li>Private Cloud</li>
+                    <li>New Relic Explorer</li>
+                </ul>
 
 
             </div>
 
-            {{/unless}}
+        {{/unless}}
 
     </div>
     <div>
         Please take a <a href="https://www.surveymonkey.com/r/FDJ9FHQ">One Minute Survey</a>
         to help guide product development.
     </div>
+    <h3>Environments privately shared with you</h3>
+    <div>
+        <ul id="privateListing"></ul>
+    </div>
+    <h3>Public spaces that anyone can edit</h3>
     <div>
         <ul id="listing"></ul>
     </div>
-    <h3>Adding a new dimension of power for individuals and teams to explore and collaborate on complex concepts</h3>
+
+    <p>Adding a new dimension of power for individuals and teams to explore and collaborate on complex concepts</p>
     <div>
         <p>
             Unlock the power of your Oculus quest to explore ideas in 3D VR worlds unencumbered by
@@ -55,29 +61,53 @@
 </div>
 <span id="version">Version {{version}}</span>
 <script>
-    document.addEventListener('directoryUpdate', (evt)=> {
+    document.addEventListener('directoryUpdate', (evt) => {
         const dir = document.getElementById("listing");
-
-        if (dir) {
-            for(const e of dir.children) {
-                e.remove();
-            }
-        }
-        for(const d of Object.entries(evt.detail)) {
+        for (const d of Object.entries(evt.detail)) {
             const id = d[0];
             const name = d[1].name;
             if (dir) {
                 const li = document.createElement('li');
+                li.setAttribute('eid', id);
                 const a = document.createElement('a');
                 a.setAttribute('href', '/worlds/' + id);
                 a.append(name);
+                li.appendChild(a);
+                if (dir.querySelector("li[eid='" + id + "'")) {
+
+                } else {
+                    dir.appendChild(li);
+                }
+
+            }
+
+        }
+
+    });
+    document.addEventListener('privateDirectoryUpdate', (evt) => {
+        const dir = document.getElementById("privateListing");
+
+        if (dir) {
+            for (const e of dir.children) {
+                e.remove();
+            }
+        }
+        for (const d of Object.entries(evt.detail)) {
+            const id = d[0];
+            if (dir) {
+                const li = document.createElement('li');
+                const a = document.createElement('a');
+                a.setAttribute('href', '/worlds/' + id);
+                a.append(id);
                 li.appendChild(a);
                 dir.appendChild(li);
             }
 
         }
-        console.log(JSON.stringify(evt.detail));
+
     });
+
+
 </script>
 <script defer src="/dist/db.{{version}}.bundle.js" type="application/javascript"></script>
 <script>

@@ -1,6 +1,9 @@
 const firebase = require("../../firebase");
 const axios = require("axios");
 const env = require("../../env");
+const {logger} = require("../../logging");
+const {sendMail} = require("../../sendgrid");
+
 module.exports = async (req, res) => {
     if (req.method != 'POST') {
         res.sendStatus(405);
@@ -11,7 +14,7 @@ module.exports = async (req, res) => {
         const email = req.body.email;
         const tokenOptions = {
             method: 'POST',
-            url: 'https://aardvarkguru.us.auth0.com/oauth/token',
+            url: env.AUTH0_ISSUER_BASE_URL + '/oauth/token',
             headers: {'content-type': 'application/x-www-form-urlencoded'},
             data: new URLSearchParams({
                 grant_type: 'client_credentials',
@@ -40,20 +43,26 @@ module.exports = async (req, res) => {
             const createOptions = {
                 method: 'POST',
                 url: env.AUTH0_ISSUER_BASE_URL + '/api/v2/users',
-                data: JSON.stringify({email: email, connection: "email", email_verified: false, verify_email: false }),
+                data: JSON.stringify({email: email,
+                    connection: "email",
+                    email_verified: true,
+                    verify_email: false }),
                 headers: {authorization: 'Bearer ' + access_token, "Content-Type": "application/json"}
             };
             const newUser = await axios.request(createOptions);
             if (newUser.data) {
+
                 await firebase
                     .createCollaborator(newUser.data.user_id, world);
             } else {
                 res.sendStatus(500);
+                return;
             }
         }
+        await sendMail( email, world  );
         res.sendStatus(200);
     } catch (err) {
-
+        logger.error(err);
         res.sendStatus(500);
     }
 }

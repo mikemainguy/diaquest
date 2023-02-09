@@ -3,6 +3,7 @@ const {engine} = require("express-handlebars");
 
 const env = require('./env');
 const {generateManifest} = require("./webmanifest");
+const {logger} = require('./logging');
 
 const maxAge = 60 * 60 * 4;
 
@@ -64,6 +65,7 @@ const setup = (app) => {
         });
     });
     app.get('/pages/:page', pageHandler);
+    logger.info('Pagehandler configured');
 
 }
 module.exports = {setup: setup};
