@@ -34,14 +34,6 @@ const setup = (app) => {
     app.set('view engine', 'hbs');
     app.set('views', './server/views');
 
-    if (env.NODE_ENV != 'development') {
-        /**
-         * Let these routes be cached by CDN
-         */
-        ['/dist', '/assets', '/favicon.ico', '/'].forEach((path) => {
-            app.use(path, cacheControl);
-        });
-    }
     ['/dist', '/assets', '/favicon.ico'].forEach((path) => {
         app.use(path, express.static('client' + path));
     });
