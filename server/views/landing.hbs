@@ -65,13 +65,13 @@
         const dir = document.getElementById("listing");
         for (const d of Object.entries(evt.detail)) {
             const id = d[0];
-            const name = d[1].name;
+
             if (dir) {
                 const li = document.createElement('li');
                 li.setAttribute('eid', id);
                 const a = document.createElement('a');
                 a.setAttribute('href', '/worlds/' + id);
-                a.append(name);
+                a.append(id);
                 li.appendChild(a);
                 if (dir.querySelector("li[eid='" + id + "'")) {
 

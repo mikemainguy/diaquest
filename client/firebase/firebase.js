@@ -119,7 +119,7 @@ async function initializeFirebase() {
 
         const privateDirectoryRef = ref(database, `dir/user_worlds/${profile.user.sub}/` );
         onValue(privateDirectoryRef, (snapshot) => {
-            console.log('here');
+
             document.dispatchEvent(
                 new CustomEvent('privateDirectoryUpdate',
                     {detail: snapshot.val()}));
