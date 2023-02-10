@@ -62,54 +62,34 @@
 <span id="version">Version {{version}}</span>
 <script>
     document.addEventListener('directoryUpdate', (evt) => {
-        const dir = document.getElementById("listing");
-        for (const d of Object.entries(evt.detail)) {
-            const id = d[0];
+        const htmlId = evt.detail.htmlId;
+        if (htmlId) {
+            const dir = document.getElementById(htmlId);
+            for (const d of Object.entries(evt.detail.entries)) {
+                const id = d[0];
+                if (dir) {
+                    const li = document.createElement('li');
+                    li.setAttribute('eid', id);
+                    const a = document.createElement('a');
+                    a.setAttribute('href', '/worlds/' + id);
+                    a.append(id);
+                    li.appendChild(a);
+                    if (dir.querySelector("li[eid='" + id + "'")) {
 
-            if (dir) {
-                const li = document.createElement('li');
-                li.setAttribute('eid', id);
-                const a = document.createElement('a');
-                a.setAttribute('href', '/worlds/' + id);
-                a.append(id);
-                li.appendChild(a);
-                if (dir.querySelector("li[eid='" + id + "'")) {
+                    } else {
+                        dir.appendChild(li);
+                    }
 
-                } else {
-                    dir.appendChild(li);
                 }
 
             }
-
         }
 
     });
-    document.addEventListener('privateDirectoryUpdate', (evt) => {
-        const dir = document.getElementById("privateListing");
-
-        if (dir) {
-            for (const e of dir.children) {
-                e.remove();
-            }
-        }
-        for (const d of Object.entries(evt.detail)) {
-            const id = d[0];
-            if (dir) {
-                const li = document.createElement('li');
-                const a = document.createElement('a');
-                a.setAttribute('href', '/worlds/' + id);
-                a.append(id);
-                li.appendChild(a);
-                dir.appendChild(li);
-            }
-
-        }
-
-    });
-
 
 </script>
 <script defer src="/dist/db.{{version}}.bundle.js" type="application/javascript"></script>
+
 <script>
     if (typeof navigator.serviceWorker !== 'undefined') {
         navigator.serviceWorker.register('/sw.js');

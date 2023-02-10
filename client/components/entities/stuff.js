@@ -31,7 +31,7 @@ AFRAME.registerComponent('stuff', {
         this.sides = this.data.sides;
 
         this.saveable = this.el.querySelector('.saveable');
-        this.textDisplay = this.el.querySelector('[text-geometry]');
+        this.textDisplay = this.el.querySelector('[text]');
         if (this.data.parent) {
             const parent = document.getElementById(this.data.parent);
             if (parent) {
@@ -48,7 +48,7 @@ AFRAME.registerComponent('stuff', {
         if (this.textDisplay) {
             if (this.data.text) {
                 this.textDisplay.setAttribute('visible', true);
-                this.textDisplay.setAttribute('text-geometry', 'value', this.data.text);
+                this.textDisplay.setAttribute('text', 'value', this.data.text);
             } else {
                 this.textDisplay.setAttribute('visible', false);
             }

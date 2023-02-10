@@ -113,16 +113,26 @@ async function initializeFirebase() {
         onValue(directoryRef, (snapshot) => {
             document.dispatchEvent(
                 new CustomEvent('directoryUpdate',
-                    {detail: snapshot.val()}));
+                    {
+                        detail: {
+                            htmlId: 'listing',
+                            entries: snapshot.val()
+                        }
+                    }));
 
         });
 
-        const privateDirectoryRef = ref(database, `dir/user_worlds/${profile.user.sub}/` );
+        const privateDirectoryRef = ref(database, `dir/user_worlds/${profile.user.sub}/`);
         onValue(privateDirectoryRef, (snapshot) => {
 
             document.dispatchEvent(
-                new CustomEvent('privateDirectoryUpdate',
-                    {detail: snapshot.val()}));
+                new CustomEvent('directoryUpdate',
+                    {
+                        detail: {
+                            htmlId: 'privateListing',
+                            entries: snapshot.val()
+                        }
+                    }));
 
         });
 
@@ -173,6 +183,7 @@ async function initializeFirebase() {
         }
     }
 }
+
 document.addEventListener('userloaded', initializeFirebase);
 
 export function writeUser(profile) {
@@ -203,7 +214,6 @@ export function writeUser(profile) {
     } else {
         console.error('user info appears to be not logged in');
     }
-
 
 
 }
@@ -348,3 +358,6 @@ function createOrUpdateDom(entity) {
         }
     }
 }
+
+
+

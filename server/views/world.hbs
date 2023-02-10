@@ -15,7 +15,7 @@
     {{> aligner }}
     <a-entity id="clock" clock lookatme position="0 5 -23" scale="3 3 3"></a-entity>
     <a-entity id="navigation" lookatme navigation position="23 2 0"></a-entity>
-    <a-link lookatme href="/pages/newRelic" position="0 2 -20" title="New Relic" image="#linkImage"></a-link>
+    <a-link lookatme href="/pages/newRelic" position="0 8 -23" title="New Relic" image="#linkImage"></a-link>
     <!--<a-entity>
         <a-cylinder opacity="0.5" height="100" color="#f00" radius="0.01"></a-cylinder>
         <a-cylinder opacity="0.5" height="100" color="#0f0" radius="0.01" rotation="90 0 0"></a-cylinder>
@@ -36,6 +36,12 @@
         <a-sphere sizer="position: 0 -1 0" mixin="sizeConnectorMixin" radius=".05" position="0 -1 0"></a-sphere>
         <a-sphere sizer="position: 0 0 1" mixin="sizeConnectorMixin" radius=".05" position="0 0 1"></a-sphere>
         <a-sphere sizer="position: 0 0 -1" mixin="sizeConnectorMixin" radius=".05" position="0 0 -1"></a-sphere>
+    </a-entity>
+    <a-entity id="listing" position="0 3 -23">
+
+    </a-entity>
+    <a-entity id="privateListing" position = "0 1 -23">
+
     </a-entity>
 
     {{> rig }}
@@ -76,21 +82,21 @@
 </a-scene>
 <script>
     document.addEventListener('directoryUpdate', (evt)=> {
-        const scene = document.querySelector('a-scene');
-        const nodes = Object.entries(evt.detail);
+        const scene = document.getElementById(evt.detail.htmlId);
+
+        const nodes = Object.entries(evt.detail.entries);
         let x = nodes.length*-2;
 
         if (scene) {
             for(const d of nodes) {
                 const id = d[0];
-                const name = d[1].name;
 
                 const li = document.createElement('a-link');
                 const a = document.createElement('a');
                 li.setAttribute('href', '/worlds/' + id);
-                li.setAttribute('title', name);
+                li.setAttribute('title', id);
                 li.setAttribute('image', '#linkImage');
-                li.setAttribute('position', x + ' 2 -23');
+                li.setAttribute('position', x + ' 0 0');
                 x+=4;
                 scene.appendChild(li);
 
