@@ -27,5 +27,6 @@ module.exports = async (req, res) => {
         obj.newrelic_account = newRelic.newrelic_account;
     }
     res.setHeader('content-type', 'application/json');
+    res.setHeader('cache-control', 'private, no-store');
     res.send(JSON.stringify(obj));
 }
