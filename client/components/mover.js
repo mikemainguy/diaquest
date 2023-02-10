@@ -35,13 +35,18 @@ AFRAME.registerSystem('mover', {
             case 'd':
                 this.offset.set(.1,0,0);
                 break;
-            case '1':
+            case 'W':
                 this.offset.set(0,.1,0);
                 break;
-            case 'q':
+            case 'S':
                 this.offset.set(0,-.1,0);
                 break;
-
+            case 'A':
+                //THese two I'd like to make rotate, but it's a bit wierd as camera is child of rig, will fix later
+                break;
+            case 'D':
+                //THese two I'd like to make rotate, but it's a bit wierd as camera is child of rig, will fix later
+                break;
             default:
                 this.offset.set(0,0,0);
         }
