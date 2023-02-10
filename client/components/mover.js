@@ -5,6 +5,42 @@ AFRAME.registerSystem('mover', {
         this.running = true;
         this.enabled = true;
         this.directions = [];
+        this.offset = new THREE.Vector3(0,0,0);
+        this.keyEvent = this.keyEvent.bind(this);
+        document.addEventListener('keydown', this.keyEvent);
+    },
+    keyEvent: function(evt) {
+        if (!this.camera) {
+            this.camera = document.getElementById("camera");
+            return;
+        }
+        if (!this.rig) {
+            this.rig = document.querySelector(".rig");
+            return;
+        }
+
+        const camWorld = new THREE.Quaternion();
+        this.camera.object3D.getWorldQuaternion(camWorld);
+
+        switch (evt.key) {
+            case 'w':
+                this.offset.set(0,0,-.1);
+                break;
+            case 's':
+                this.offset.set(0,0,.1);
+                break;
+            case 'a':
+                this.offset.set(-.1,0,0);
+                break;
+            case 'd':
+                this.offset.set(.1,0,0);
+                break;
+            default:
+
+        }
+        const dir = this.offset.clone().applyQuaternion(this.camera.object3D.quaternion);
+        this.rig.object3D.position.add(dir);
+
     }
 });
 AFRAME.registerComponent('mover', {
