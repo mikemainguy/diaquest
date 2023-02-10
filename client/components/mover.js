@@ -35,8 +35,15 @@ AFRAME.registerSystem('mover', {
             case 'd':
                 this.offset.set(.1,0,0);
                 break;
-            default:
+            case '1':
+                this.offset.set(0,.1,0);
+                break;
+            case 'q':
+                this.offset.set(0,-.1,0);
+                break;
 
+            default:
+                this.offset.set(0,0,0);
         }
         const dir = this.offset.clone().applyQuaternion(this.camera.object3D.quaternion);
         this.rig.object3D.position.add(dir);
