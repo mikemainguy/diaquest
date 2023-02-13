@@ -12,8 +12,27 @@
     <button id="unmuteButton">Muted</button>
     <button id="exportButton">Export</button>
     <button id="homeButton">Exit</button>
+    <form id="media" action="/api/media/create">
+        <label for="fileupload">File</label>
+        <input id="fileupload" type="file" name="fileupload" />
+        <button type="submit"> Upload </button>
+    </form>
+
 </div>
-<script>
+
+    <script>
+        document.getElementById('media').addEventListener('submit', function(event) {
+        event.preventDefault();
+        let formData = new FormData();
+        formData.append("file", event.target.fileupload.files[0]);
+        formData.append("path", window.location.pathname);
+        fetch(event.target.action, {
+        method: "POST",
+        body: formData
+    });
+
+    }, false);
+
     document.getElementById('homeButton').addEventListener('click', () => {
        window.location.href=(window.location.origin);
     });

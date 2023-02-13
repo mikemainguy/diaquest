@@ -104,13 +104,17 @@ div.secure li {
 
 div.nonvr {
     position: absolute;
-    width: 50%;
+    width: 80%;
     height: 50px;
     border-radius: 8px;
     z-index: 9999;
     bottom: 20px;
     left: 20px;
     background-color: #fff;
+}
+div.nonvr form {
+    display: inline-block;
+    width: 500px;
 }
 
 #logo {

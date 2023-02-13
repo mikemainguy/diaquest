@@ -11,6 +11,7 @@ AFRAME.registerComponent('stuff', {
         color: {type: 'string'},
         scale: {type: 'string', default: '.2 .2 .2'},
         action: {type: 'string'},
+        image: {type: 'string'},
         sides: {type: 'int', default: 36},
         parent: {type: 'string', default: null}
     },
@@ -29,7 +30,7 @@ AFRAME.registerComponent('stuff', {
         this.color = this.data.color;
         this.text = this.data.text;
         this.sides = this.data.sides;
-
+        this.image = this.data.image;
         this.saveable = this.el.querySelector('.saveable');
         this.textDisplay = this.el.querySelector('[text]');
         if (this.data.parent) {
@@ -39,7 +40,6 @@ AFRAME.registerComponent('stuff', {
             } else {
                 this.el.sceneEl.object3D.attach(this.el.object3D);
             }
-
         }
         if (this.saveable) {
             this.saveable.setAttribute('visible', true);

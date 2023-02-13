@@ -1,6 +1,7 @@
 const {auth0, requiresAuth} = require('./server/auth0');
 const env = require('./server/env');
 const {expressLogger} = require('./server/logging');
+const fileUpload = require("express-fileupload");
 require('./server/newrelic');
 
 const deploymentlogger = require('./server/deploymentlogger');
@@ -13,6 +14,7 @@ const express = require('express');
 const app = express();
 
 app.use(express.urlencoded({extended: true}))
+app.use(fileUpload());
 app.use(expressLogger);
 
 const api = require('./server/api');

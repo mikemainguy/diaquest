@@ -85,7 +85,25 @@ async function setupApp(profile) {
 async function getWorldList() {
 
 }
+async function registerMedias(medias) {
+    onValue(medias, (snapshot)=> {
+        const val =snapshot.val();
+        const data = [];
+        for (const media in val) {
 
+            const mediaEntry =
+                {href: 'https://media.immersiveidea.com/' + media,
+                    name: val[media].name,
+                    mimetype: val[media].mimetype};
+            data.push(mediaEntry);
+            console.log(JSON.stringify(mediaEntry));
+
+        };
+        document.querySelector('[mediamanager]').dispatchEvent(
+            new CustomEvent('mediaUpdated',
+                {detail: data}));
+    });
+}
 async function initializeFirebase() {
     if (!VRLOCAL) {
         if (typeof newrelic !== 'undefined') {
@@ -106,9 +124,6 @@ async function initializeFirebase() {
             });
         }
 
-        if (typeof newrelic !== 'undefined') {
-            newrelic.addPageAction('firebase db setup');
-        }
         const directoryRef = ref(database, 'directory/');
         onValue(directoryRef, (snapshot) => {
             document.dispatchEvent(
@@ -124,7 +139,6 @@ async function initializeFirebase() {
 
         const privateDirectoryRef = ref(database, `dir/user_worlds/${profile.user.sub}/`);
         onValue(privateDirectoryRef, (snapshot) => {
-
             document.dispatchEvent(
                 new CustomEvent('directoryUpdate',
                     {
@@ -140,8 +154,18 @@ async function initializeFirebase() {
         const loc = window.location.pathname;
         if (loc.startsWith('/worlds')) {
             const path = getDbPath(null);
+            const medias = ref(database,
+                path.split('/entities')[0] + '/media');
 
             const entities = ref(database, path);
+            if (scene && scene.hasLoaded) {
+                registerMedias(medias);
+
+            } else {
+                document.addEventListener('aframeReady', (evt) => {
+                    registerMedias(medias);
+                });
+            }
 
             onChildAdded(entities, (snapshot) => {
                 const scene = document.querySelector('a-scene');
@@ -182,6 +206,10 @@ async function initializeFirebase() {
             });
         }
     }
+    if (typeof newrelic !== 'undefined') {
+        newrelic.addPageAction('firebase db setup');
+    }
+
 }
 
 document.addEventListener('userloaded', initializeFirebase);

@@ -2,6 +2,10 @@ const {
     S3Client,
     PutObjectCommand
 } = require("@aws-sdk/client-s3");
+const {Readable } = require("stream");
+const crypto = require('crypto');
+const {storeMedia} = require('../../firebase');
+
 const env = require("../../env");
 const S3 = new S3Client({
     region: "auto",
@@ -17,12 +21,23 @@ module.exports = async(req, res) => {
         res.sendStatus(405);
         return;
     }
-    console.log(
-        await S3.send(
+    const key = crypto
+        .createHash('sha256')
+        .update(req.files.file.name)
+        .digest('hex');
+    const entry = {
+        key: key,
+        name: req.files.file.name
+    }
+    const response =     await S3.send(
             new PutObjectCommand({Bucket: 'immersiveidea',
-                Key: 'test.json',
-                Body: '{test: "data"}'})
-        )
-    );
+                Key: key,
+                ContentLength: req.files.file.size,
+                ContentType: req.files.file.mimetype,
+                Body: Readable.from(req.files.file.data)})
+        );
+    await storeMedia(req.body.path.replace('/worlds', ''), key, req.files.file.name, req.files.file.mimetype);
+    console.log(response);
+    console.log(entry);
     res.sendStatus(200);
 }

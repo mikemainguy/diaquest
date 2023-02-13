@@ -73,6 +73,16 @@ const createCollaborator = async function(user, world) {
           }
       );
 }
+const storeMedia = async function(world, key, name, mimetype) {
+  const db = admin.database();
+  await db.ref(`/worlds/${world}`)
+      .once('value', (snapshot, context) => {
+        if (snapshot.exists()) {
+          const ref = db.ref(`/worlds/${world}/media/${key}`);
+          ref.set({name: name, mimetype: mimetype});
+        }
+      });
+}
 
 const verifyInvite = async function(email, world) {
   const db = admin.database();
@@ -86,4 +96,5 @@ module.exports = {getAuth: getAuth,
   createCollaborator: createCollaborator,
   listWorlds: listWorlds,
  saveNewRelic: saveNewRelic,
-getUser: getUser};
+getUser: getUser,
+storeMedia: storeMedia};
