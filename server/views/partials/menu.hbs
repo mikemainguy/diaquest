@@ -1,10 +1,10 @@
 <a-entity position=".1 .05 -.1" rotation="-70 -80 0" id="bmenu" visible="false" scale="0.1 0.1 0.1">
-    <a-entity sound="src: url(/assets/sounds/KeyIn.mp3); on: click; poolSize: 5" gridlayout position="0 -.5 0">
+    <a-entity sound="src: url(/assets/sounds/KeyIn.mp3); on: click; poolSize: 5" gridlayout position="-1 -.5 0">
         <a-entity>
             <a-entity text="value: Sphere" mixin="menuPlane"></a-entity>
             <a-entity widget="method: add-sphere"
                       obj-model="obj: url(/assets/models/button.obj)"
-                      material="color: #fce; opacity: .6">
+                      material="color: #fce; opacity: .8">
 
             </a-entity>
             <a-sphere radius="0.125"
@@ -17,7 +17,7 @@
             <a-entity text="value: Box" mixin="menuPlane"></a-entity>
             <a-entity widget="method: add-box"
                       obj-model="obj: url(/assets/models/button.obj)"
-                      material="color: #fce; opacity: .6"></a-entity>
+                      material="color: #fce; opacity: .8"></a-entity>
 
 
             <a-box
@@ -34,7 +34,7 @@
             <a-entity text="value: Cylinder" mixin="menuPlane"></a-entity>
             <a-entity widget="method: add-cylinder"
                       obj-model="obj: url(/assets/models/button.obj)"
-                      material="color: #fce; opacity: .6">
+                      material="color: #fce; opacity: .8">
             </a-entity>
 
             <a-cylinder radius="0.125" height=".25"
@@ -48,7 +48,7 @@
                 <a-entity text="value: Connector" mixin="menuPlane"></a-entity>
                 <a-entity widget="method: add-connector"
                           obj-model="obj: url(/assets/models/button.obj)"
-                          material="color: #fce; opacity: .6"></a-entity>
+                          material="color: #fce; opacity: .8"></a-entity>
 
                 <a-entity template="src: #widgetPoint" position="0 0.2 0"></a-entity>
                 <a-cylinder radius=".01" height="0.3" color="#fff"></a-cylinder>
@@ -60,7 +60,7 @@
             <a-entity text="value: Plane" mixin="menuPlane"></a-entity>
             <a-entity widget="method: add-plane"
                       obj-model="obj: url(/assets/models/button.obj)"
-                      material="color: #fce; opacity: .6"></a-entity>
+                      material="color: #fce; opacity: .8"></a-entity>
 
 
             <a-plane
@@ -77,7 +77,7 @@
                     text="value: Text" mixin="menuPlane"></a-entity>
             <a-entity widget="method: edit"
                       obj-model="obj: url(/assets/models/button.obj)"
-                      material="color: #fce; opacity: .6"></a-entity>
+                      material="color: #fce; opacity: .8"></a-entity>
             <a-entity>
                 <a-box width=".05" height="0.05" depth="0.05" mixin="widgetMaterial"></a-box>
                 <a-box width=".05" position="-.1 0 0" height="0.05" depth="0.05" mixin="widgetMaterial"></a-box>
@@ -88,7 +88,7 @@
             <a-entity text="value: Edit Size" mixin="menuPlane"></a-entity>
             <a-entity widget="method: resize"
                       obj-model="obj: url(/assets/models/button.obj)"
-                      material="color: #fce; opacity: .6"></a-entity>
+                      material="color: #fce; opacity: .8"></a-entity>
             <a-entity>
                 <a-entity rotation="30 30 0">
                     <a-cylinder radius=".01" height="0.3" mixin="widgetMaterial"></a-cylinder>
@@ -117,7 +117,7 @@
                 <a-entity text="value: Color" mixin="menuPlane"></a-entity>
                 <a-entity widget="method: edit-color"
                           obj-model="obj: url(/assets/models/button.obj)"
-                          material="color: #fce; opacity: .6"></a-entity>
+                          material="color: #fce; opacity: .8"></a-entity>
                 <a-sphere mixin="widgetMaterial" radius=".1" position="0 0.05 0" material="color: #f00;"></a-sphere>
                 <a-sphere mixin="widgetMaterial" radius=".1" position="0.05 0 0" material="color: #040;"></a-sphere>
                 <a-sphere mixin="widgetMaterial" radius=".1" position="-0.05 0 0"
@@ -131,7 +131,7 @@
                 <a-entity text="value: Image" mixin="menuPlane"></a-entity>
                 <a-entity widget="method: edit-image"
                           obj-model="obj: url(/assets/models/button.obj)"
-                          material="color: #fce; opacity: .6"></a-entity>
+                          material="color: #fce; opacity: .8"></a-entity>
                 <a-sphere mixin="widgetMaterial" radius=".1" position="0 0.05 0" material="color: #f00;"></a-sphere>
                 <a-sphere mixin="widgetMaterial" radius=".1" position="0.05 0 0" material="color: #040;"></a-sphere>
                 <a-sphere mixin="widgetMaterial" radius=".1" position="-0.05 0 0"
@@ -144,7 +144,7 @@
             <a-entity text="value: Remove" mixin="menuPlane"></a-entity>
             <a-entity widget="method: remove"
                       obj-model="obj: url(/assets/models/button.obj)"
-                      material="color: #fce; opacity: .6"></a-entity>
+                      material="color: #fce; opacity: .8"></a-entity>
             <a-entity>
                 <a-box mixin="widgetMaterial" width=".2" height="0.05" depth="0.05" color="#f55"></a-box>
             </a-entity>
@@ -152,7 +152,7 @@
         </a-entity>
         <!--<a-entity>
             <a-entity text="value: Light"  mixin="menuPlane"></a-entity>
-            <a-entity widget="method: add-light" obj-model="obj: url(/assets/models/button.obj)" material="color: #fce; opacity: .6" scale=".5 .5 .5" rotation="90 0 0"></a-entity>
+            <a-entity widget="method: add-light" obj-model="obj: url(/assets/models/button.obj)" material="color: #fce; opacity: .8" scale=".5 .5 .5" rotation="90 0 0"></a-entity>
             <a-entity>
                 <a-cylinder mixin="widgetMaterial" radius=".01" height="0.05" color="#fff"></a-cylinder>
             </a-entity>
@@ -163,7 +163,7 @@
             <a-entity text="value: Align" mixin="menuPlane"></a-entity>
             <a-entity widget="method: align"
                       obj-model="obj: url(/assets/models/button.obj)"
-                      material="color: #fce; opacity: .6"></a-entity>
+                      material="color: #fce; opacity: .8"></a-entity>
             <a-entity>
                 <a-entity rotation="30 30 0">
                     <a-cylinder radius=".01" height="0.3" mixin="widgetMaterial"></a-cylinder>
@@ -191,7 +191,7 @@
             <a-entity text="value: Copy" mixin="menuPlane"></a-entity>
             <a-entity widget="method: copy"
                       obj-model="obj: url(/assets/models/button.obj)"
-                      material="color: #fce; opacity: .6"></a-entity>
+                      material="color: #fce; opacity: .8"></a-entity>
             <a-entity>
                 <a-sphere mixin="widgetMaterial" radius=".1" position="-0.05 0 0"
                           material="color: #fff;"></a-sphere>
@@ -204,7 +204,7 @@
             <a-entity text="value: Group" mixin="menuPlane"></a-entity>
             <a-entity widget="method: grouping"
                       obj-model="obj: url(/assets/models/button.obj)"
-                      material="color: #fce; opacity: .6">
+                      material="color: #fce; opacity: .8">
 
             </a-entity>
             <a-sphere radius="0.125"
@@ -217,13 +217,13 @@
             <a-entity text="value: Share" mixin="menuPlane"></a-entity>
             <a-entity widget="method: share"
                       obj-model="obj: url(/assets/models/button.obj)"
-                      material="color: #fce; opacity: .6"></a-entity>
+                      material="color: #fce; opacity: .8"></a-entity>
         </a-entity>
         <a-entity>
             <a-entity text="value: Exit" mixin="menuPlane"></a-entity>
             <a-entity widget="method: exit"
                       obj-model="obj: url(/assets/models/button.obj)"
-                      material="color: #fce; opacity: .6"></a-entity>
+                      material="color: #fce; opacity: .8"></a-entity>
         </a-entity>
 
     </a-entity>

@@ -186,6 +186,7 @@ AFRAME.registerComponent('buttons', {
                     data.template = ele.getAttribute('template').src;
                     const stuffData = ele.components['stuff'].data;
                     data.text = stuffData.text;
+                    data.image = stuffData.image;
                     data.color = stuffData.color;
                     data.scale = stuffData.scale;
                     document.dispatchEvent(
