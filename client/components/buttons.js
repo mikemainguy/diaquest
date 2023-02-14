@@ -6,6 +6,7 @@ AFRAME.registerSystem('buttons', {
         this.first = null;
         this.mode = [];
         this.color = '#399';
+        this.image = null;
         this.template = null;
         this.buttonstate = this.buttonstate.bind(this);
         this.hideMenu = hideMenu.bind(this);
@@ -51,6 +52,7 @@ AFRAME.registerSystem('buttons', {
     buttonstate: function (evt) {
         this.template = evt.detail.template ? evt.detail.template : null;
         this.mode = evt.detail.mode;
+        this.image = evt.detail.image;
         this.id = evt.detail.id ? evt.detail.id : null;
         this.first = evt.detail.first ? evt.detail.first : null;
         this.color = evt.detail.color ? evt.detail.color : this.color;

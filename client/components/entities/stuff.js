@@ -42,6 +42,9 @@ AFRAME.registerComponent('stuff', {
                 this.el.sceneEl.object3D.attach(this.el.object3D);
             }
         }
+        if (this.image && this.saveable) {
+            this.saveable.setAttribute('material', 'src', this.image);
+        }
         if (this.saveable) {
             this.saveable.setAttribute('visible', true);
             this.saveable.setAttribute('sound', 'src: url(/assets/sounds/ButtonClick.mp3); on: click;');
