@@ -18731,9 +18731,8 @@ module.exports.Component = registerComponent('raycaster', {
 
     // Draw line.
     if (data.showLine && (data.far !== oldData.far || data.origin !== oldData.origin || data.direction !== oldData.direction || !oldData.showLine)) {
-      // Calculate unit vector for line direction. Can be multiplied via scalar to performantly
-      // adjust line length.
-
+      // Calculate unit vector for line direction. Can be multiplied via scalar and added
+      // to orign to adjust line length.
       this.unitLineEndVec3.copy(data.direction).normalize();
       this.drawLine();
     }
@@ -18996,7 +18995,8 @@ module.exports.Component = registerComponent('raycaster', {
     }
 
     // Update the length of the line if given. `unitLineEndVec3` is the direction
-    // given by data.direction, then we apply a scalar to give it a length.
+    // given by data.direction, then we apply a scalar to give it a length and the
+    // origin point to offset it.
     this.lineData.start = data.origin;
     this.lineData.end = endVec3.copy(this.unitLineEndVec3).multiplyScalar(length).add(data.origin);
     this.lineData.color = data.lineColor;
@@ -24463,10 +24463,21 @@ class ACubeMap extends HTMLElement {
   /**
    * Calculates this.srcs.
    */
+
   constructor(self) {
     self = super(self);
-    self.srcs = self.validate();
     return self;
+  }
+  connectedCallback() {
+    // Defer if DOM is not ready.
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', this.connectedCallback.bind(this));
+      return;
+    }
+    ACubeMap.prototype.doConnectedCallback.call(this);
+  }
+  doConnectedCallback() {
+    this.srcs = this.validate();
   }
 
   /**
@@ -27139,7 +27150,7 @@ class AScene extends AEntity {
     this.pointerUnrestrictedBound = function () {
       self.pointerUnrestricted();
     };
-    if (!isWebXRAvailable) {
+    if (!self.hasWebXR) {
       // Exit VR on `vrdisplaydeactivate` (e.g. taking off Rift headset).
       window.addEventListener('vrdisplaydeactivate', this.exitVRBound);
 
@@ -27323,7 +27334,7 @@ class AScene extends AEntity {
             vrManager.setSession(xrSession).then(function () {
               vrManager.setFoveation(rendererSystem.foveationLevel);
             });
-            //this.sceneEl.systems.renderer.setWebXRFrameRate(xrSession);
+            self.systems.renderer.setWebXRFrameRate(xrSession);
             xrSession.addEventListener('end', self.exitVRBound);
             enterVRSuccess(resolve);
           }, function requestFail(error) {
@@ -27378,7 +27389,7 @@ class AScene extends AEntity {
         target: self
       });
       // Lock to landscape orientation on mobile.
-      if (!isWebXRAvailable && self.isMobile && screen.orientation && screen.orientation.lock) {
+      if (!self.hasWebXR && self.isMobile && screen.orientation && screen.orientation.lock) {
         screen.orientation.lock('landscape');
       }
       self.addFullScreenStyles();
@@ -30206,7 +30217,7 @@ __webpack_require__(/*! ./core/a-mixin */ "./src/core/a-mixin.js");
 // Extras.
 __webpack_require__(/*! ./extras/components/ */ "./src/extras/components/index.js");
 __webpack_require__(/*! ./extras/primitives/ */ "./src/extras/primitives/index.js");
-console.log('A-Frame Version: 1.4.1 (Date 2023-01-16, Commit #386dd486)');
+console.log('A-Frame Version: 1.4.1 (Date 2023-02-13, Commit #7e693f72)');
 console.log('THREE Version (https://github.com/supermedium/three.js):', pkg.dependencies['super-three']);
 console.log('WebVR Polyfill Version:', pkg.dependencies['webvr-polyfill']);
 module.exports = window.AFRAME = {
@@ -31772,7 +31783,7 @@ function fetchScript(src) {
 module.exports.System = registerSystem('gltf-model', {
   schema: {
     dracoDecoderPath: {
-      default: 'https://www.gstatic.com/draco/versioned/decoders/1.5.5/'
+      default: 'https://www.gstatic.com/draco/versioned/decoders/1.5.6/'
     },
     basisTranscoderPath: {
       default: ''

@@ -32,6 +32,7 @@ AFRAME.registerComponent('stuff', {
         this.sides = this.data.sides;
         this.image = this.data.image;
         this.saveable = this.el.querySelector('.saveable');
+        this.packet = this.el.querySelector('.data-packet');
         this.textDisplay = this.el.querySelector('[text]');
         if (this.data.parent) {
             const parent = document.getElementById(this.data.parent);
@@ -69,6 +70,9 @@ AFRAME.registerComponent('stuff', {
         }
         if (!this.saveable.getAttribute('animation')) {
             this.saveable.setAttribute('material', 'color', this.data.color);
+            if (this.packet) {
+                this.packet.setAttribute('material', 'color', this.data.color);
+            }
         }
     },
     tick: function () {
