@@ -125,6 +125,11 @@ AFRAME.registerComponent('stuff', {
                     evt.target.setAttribute('material', 'color', this.data.color);
                     document.dispatchEvent(new CustomEvent('shareUpdate', {detail: {id: obj.id, color: newColor}}));
                     break;
+                case 'edit-image':
+                    const newImage = getSystem('buttons').image;
+                    this.data.image = newImage;
+                    evt.target.setAttribute('material', 'src', this.data.image);
+                    document.dispatchEvent(new CustomEvent('shareUpdate', {detail: {id: obj.id, image: newImage}}));
                 case 'resizing':
                     this.el.emit('buttonstate', {mode: ['change-size'], first: obj.id}, true);
                     document.dispatchEvent(new CustomEvent('resizing', {detail: {id: obj.id}}));

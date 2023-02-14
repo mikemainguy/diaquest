@@ -116,7 +116,7 @@
     </script>
 
     <script
-            id="tetrahedron-template"
+            id="tetrahedron-template2"
             type="html">
         <a-entity share-position>
             <a-octahedron
@@ -155,6 +155,20 @@
                     width="1"
                     height="1"
                     depth="1"
+                    visible="false">
+
+            </a-box>
+            <a-entity mixin="labelMixin" position="0 0.3 0"></a-entity>
+        </a-entity>
+    </script>
+    <script id="plane-template" type="html">
+        <a-entity grabbable share-position>
+            <a-plane
+                    material="side: double"
+                    class="saveable"
+                    color="#fff"
+                    width="1"
+                    height="1"
                     visible="false">
 
             </a-box>

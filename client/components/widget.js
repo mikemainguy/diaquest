@@ -61,6 +61,10 @@ AFRAME.registerComponent('widget', {
                 buttonState.template = '#sphere-template'
                 buttonState.mode = ['adding'];
                 break;
+            case 'add-plane':
+                buttonState.template = '#plane-template'
+                buttonState.mode = ['adding'];
+                break;
             case 'add-box':
                 buttonState.template = '#box-template'
                 buttonState.mode = ['adding'];
@@ -70,6 +74,10 @@ AFRAME.registerComponent('widget', {
                 buttonState.mode = ['adding'];
                 break;
             case 'close':
+                break;
+            case 'edit-image':
+                buttonState.mode= ['edit-image'];
+                this.el.emit('showMenu', {id: '#image-picker', objects: '[image-swatch], .saveable'});
                 break;
             case 'edit-color':
                 buttonState.mode= ['edit-color'];

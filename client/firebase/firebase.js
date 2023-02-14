@@ -357,18 +357,23 @@ function createOrUpdateDom(entity) {
         ele.setAttribute('position', entity.position);
     }
     const scale = entity.scale ? entity.scale : '0.2 0.2 0.2';
-
+    const image = entity.image ? entity.image: '';
     const color = entity.color ? entity.color : '#669';
     const text = entity.text ? entity.text : '';
     const parent = entity.parent ? entity.parent : '';
     switch (entity.template) {
         case '#user-template':
         case '#box-template':
+        case '#plane-template':
         case '#pane-template':
         case '#cylinder-template':
         case '#light-template':
         case '#sphere-template':
-            ele.setAttribute('stuff', 'text: ' + text + '; color: ' + color + '; scale: ' + scale + '; parent: ' + parent);
+            ele.setAttribute('stuff', 'text: ' + text
+                + '; color: ' + color
+                + '; scale: ' + scale
+                + '; image: ' + image
+                + '; parent: ' + parent);
             break;
         case '#connector-template':
             ele.setAttribute('stuff', 'text: ' + text + '; color: ' + color);

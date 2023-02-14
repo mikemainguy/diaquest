@@ -63,6 +63,7 @@ AFRAME.registerComponent('buttons', {
         this.second = null;
         this.template = null;
         this.color = '#399';
+        this.image = '';
         this.snapmodes = ['copying', 'adding'];
         const pointer = document.createElement('a-sphere');
         this.gridpointer = false;
