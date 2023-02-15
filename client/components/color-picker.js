@@ -16,6 +16,7 @@ AFRAME.registerComponent('color-picker', {
           ele.setAttribute('width', 0.05);
           ele.setAttribute('height', 0.05);
           ele.setAttribute('color', color);
+          ele.setAttribute('text', `value: ${color}; wrapCount: 4`);
           ele.setAttribute('color-swatch', 'color: ' + color);
           ele.setAttribute('position', new THREE.Vector3((x%12)*0.05, Math.floor((x/12))*0.05, 0));
           this.el.appendChild(ele);
@@ -35,7 +36,6 @@ AFRAME.registerComponent('color-swatch', {
     this.el.addEventListener("click", this.clickHandler.bind(this));
   },
   clickHandler: function(evt) {
-
     this.el.emit('hideMenu', {id: '#bmenu'}, true);
     this.el.emit('hideMenu', {id: '#color-picker'}, true);
     this.el.emit('buttonstate', {mode: ['edit-color'], color: this.data.color}, true);

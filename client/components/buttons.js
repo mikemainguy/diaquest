@@ -1,5 +1,5 @@
 import {debug} from './debug';
-import {createUUID, round, changeRaycaster} from './util';
+import {changeRaycaster, createUUID} from './util';
 
 AFRAME.registerSystem('buttons', {
     init: function () {
@@ -15,7 +15,7 @@ AFRAME.registerSystem('buttons', {
         this.el.addEventListener('buttonstate', this.buttonstate);
         this.el.addEventListener('hideMenu', this.hideMenu);
         this.el.addEventListener('showMenu', this.showMenu);
-        document.addEventListener('export', function() {
+        document.addEventListener('export', function () {
             console.log('starting');
             const exporter = new THREE.GLTFExporter();
             const nodes = Array.from(document.querySelectorAll('[stuff]').values());
@@ -24,27 +24,30 @@ AFRAME.registerSystem('buttons', {
             exporter.parse(
                 nodeMap,
                 // called when the gltf has been generated
-                function ( gltf ) {
-
-                    console.log( gltf );
+                function (gltf) {
+                    console.log(gltf);
                     //let myJson = gltf
-
                     let element = document.createElement('a');
                     element.setAttribute('href',
-                        URL.createObjectURL(new Blob ([gltf],
+                        URL.createObjectURL(new Blob([gltf],
                             {type: 'model/gltf-binary'})));
                     element.setAttribute('download', 'model.glb');
                     element.style.display = 'none';
                     document.body.appendChild(element);
                     element.click();
                     document.body.removeChild(element);
-
                 },
                 function (err) {
-                  console.log('error '  + err);
+                    console.log('error ' + err);
                 },
 
-                {"binary": true, forcePowerOfTwoTextures: true, onlyVisible: true, embedImages: true, forceIndices: true}
+                {
+                    "binary": true,
+                    forcePowerOfTwoTextures: true,
+                    onlyVisible: true,
+                    embedImages: true,
+                    forceIndices: true
+                }
             );
 
         });
@@ -66,9 +69,8 @@ AFRAME.registerComponent('buttons', {
         this.template = null;
         this.color = '#399';
         this.image = '';
-        this.snapmodes = ['copying', 'adding'];
         const pointer = document.createElement('a-sphere');
-        this.gridpointer = false;
+
         pointer.setAttribute('material', 'color: #fff; opacity: 0.6; emissive: #fff');
         pointer.setAttribute('radius', '0.008');
         pointer.setAttribute('visible', 'false');
@@ -87,35 +89,17 @@ AFRAME.registerComponent('buttons', {
                 this.pointer.setAttribute('position', this.raycaster.lineData.end);
             }
         } else {
-            if (this.gridpointer) {
-                const v = this.raycaster.lineData.end.clone();
-                this.el.object3D.localToWorld(v);
-                const rounded = round(v, .1);
-                this.el.object3D.worldToLocal(rounded)
-                this.pointer.object3D.position.set(rounded.x, rounded.y, rounded.z);
-            } else {
-                this.pointer.object3D.position.set(
-                    this.raycaster.lineData.end.x,
-                    this.raycaster.lineData.end.y,
-                    this.raycaster.lineData.end.z);
-            }
-
+            this.pointer.object3D.position.copy(this.raycaster.lineData.end);
         }
-
     },
     events: {
-        thumbstickdown: function(evt) {
-            /*document.dispatchEvent(
-                new CustomEvent('inspect',
-                    {detail: 'data'}));
-
-             */
+        thumbstickdown: function (evt) {
             const rays = getRaycasters();
             for (const caster of rays) {
                 caster.setAttribute('raycaster', 'far', caster.getAttribute('raycaster').far == 10 ? .1 : 10);
             }
             for (const pointer of this.system.pointers) {
-                pointer.setAttribute('radius', (pointer.getAttribute('radius') == .1) ? .008: .1);
+                pointer.setAttribute('radius', (pointer.getAttribute('radius') == .1) ? .008 : .1);
             }
         },
         xbuttondown: function (evt) {
@@ -136,13 +120,13 @@ AFRAME.registerComponent('buttons', {
         bbuttontouchstart: function (evt) {
 
         },
-        bbuttontouchend: function(evt) {
+        bbuttontouchend: function (evt) {
 
         },
-        triggertouchstart: function(evt) {
-          this.pointer.setAttribute('visible', 'true');
+        triggertouchstart: function (evt) {
+            this.pointer.setAttribute('visible', 'true');
         },
-        triggertouchend: function(evt) {
+        triggertouchend: function (evt) {
             this.pointer.setAttribute('visible', 'false');
         },
         bbuttondown: function (evt) {
@@ -206,8 +190,6 @@ AFRAME.registerComponent('buttons', {
 function showMenu(evt) {
     changeMenu(evt.detail.id, true, evt.detail.objects);
 }
-
-
 
 
 function hideMenu(evt) {
