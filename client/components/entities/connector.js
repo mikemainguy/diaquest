@@ -47,31 +47,19 @@ AFRAME.registerComponent('connector', {
     }
 
   },
-  remove: function() {
-    if (this.data.startEl) {
-      //this.data.startEl.components['connections'].push(this.el);
-    }
-    if (this.data.startEl) {
-      //this.data.endEl.components['connections'].push(this.el);
-    }
-  },
   tock: function() {
     if (!this.obj1 && this.data.startEl) {
       const el = document.querySelector(this.data.startEl);
       if (el) {
         this.obj1 = el.object3D;
       }
-
-
     }
     if (!this.obj2 && this.data.endEl ) {
       const el = document.querySelector(this.data.endEl);
       if (el) {
         this.obj2 = el.object3D;
       }
-
     }
-
   },
   tick: function(time, timeDelta) {
     if (this.obj1 && this.obj2 && this.connector) {
@@ -79,12 +67,17 @@ AFRAME.registerComponent('connector', {
       this.obj2.getWorldPosition(this.pos2);
 
       const distance = this.pos1.distanceTo(this.pos2);
-      if (!this.pos1.equals(this.oldPos1) ||
-          !this.pos2.equals(this.oldPos2) ||
-          !this.started) {
+      if (!this.started) {
         this.oldPos1.copy(this.pos1);
         this.oldPos2.copy(this.pos2);
         this.started = true;
+      } else {
+        if (this.oldPos1.equals(this.pos1) && this.oldPos1.equals(this.pos2)) {
+          return;
+        } else {
+          this.oldPos1.copy(this.pos1);
+          this.oldPos2.copy(this.pos2);
+        }
       }
 
       const intersections = this.getIntersections(distance);
@@ -96,19 +89,16 @@ AFRAME.registerComponent('connector', {
 
         this.el.object3D.position.set(pos.x, pos.y, pos.z);
         this.el.object3D.lookAt(intersections[1]);
-        this.connector.scale.y = d2 - .08;
-        //this.connector.position.z = d2/2 + ((distance -d2) /2);
+        this.connector.scale.y = d2 - .02;
+        this.connector.position.setZ(.02);
         if (!this.dataPacket) {
           this.dataPacket = this.el.querySelector('.data-packet').object3D;
         } else {
           this.dataPacket
               .position.setZ((d2/-2) + .02);
-
         }
-
         if (this.label) {
           this.label.position.set(0, .1, 0);
-          //this.label.position.z = d2/2 + ((distance -d2) /2);
         } else {
           this.label = this.el.querySelector('.label').object3D;
         }
@@ -128,37 +118,23 @@ AFRAME.registerComponent('connector', {
     if (!this.obj1 || !this.obj1.el || !this.obj2 || !this.obj2.el) {
       return;
     }
-    if (!this.obj1.el.querySelector('.saveable') ||
-        !this.obj2.el.querySelector('.saveable')) {
-      return;
-    }
 
-    const save1 = this.obj1.el.querySelector('.saveable').object3D;
-    const save2 = this.obj2.el.querySelector('.saveable').object3D;
     const direction = new THREE.Vector3();
-
     direction.subVectors(this.pos2, this.pos1);
     direction.normalize();
 
     const raycast = new THREE.Raycaster(this.pos1, direction, 0, distance);
-
-    const intersects = raycast.intersectObject(save2);
-
+    const intersects = raycast.intersectObjects([this.obj1, this.obj2], true);
     const intersections = [];
     if (intersects.length > 0) {
       intersections.push(intersects[0].point);
-    } else {
-      //debug("object 2 not intersected");
     }
     direction.multiplyScalar(-1);
     const raycast2 = new THREE.Raycaster(this.pos2, direction, 0, distance);
-    const intersects2 = raycast2.intersectObject(save1);
+    const intersects2 = raycast2.intersectObjects([this.obj1, this.obj2], true);
     if (intersects2.length > 0) {
       intersections.push(intersects2[0].point);
-    } else {
-        //debug("object 1 not intersected");
     }
     return intersections;
   }
-
 });
