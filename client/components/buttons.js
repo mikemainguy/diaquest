@@ -105,9 +105,18 @@ AFRAME.registerComponent('buttons', {
     },
     events: {
         thumbstickdown: function(evt) {
-            document.dispatchEvent(
+            /*document.dispatchEvent(
                 new CustomEvent('inspect',
                     {detail: 'data'}));
+
+             */
+            const rays = getRaycasters();
+            for (const caster of rays) {
+                caster.setAttribute('raycaster', 'far', caster.getAttribute('raycaster').far == 10 ? .1 : 10);
+            }
+            for (const pointer of this.system.pointers) {
+                pointer.setAttribute('radius', (pointer.getAttribute('radius') == .1) ? .008: .1);
+            }
         },
         xbuttondown: function (evt) {
             const debug = document.querySelector('#debug');
@@ -119,23 +128,9 @@ AFRAME.registerComponent('buttons', {
 
         },
         abuttondown: function (evt) {
-            const rays = getRaycasters();
-            for (const caster of rays) {
-                const flashlight = document.createElement('a-entity');
-                caster.setAttribute('raycaster', 'far', 8);
-            }
-            for (const pointer of this.system.pointers) {
-                pointer.setAttribute('radius', .1);
-            }
+
         },
         abuttonup: function (evt) {
-            for (const pointer of this.system.pointers) {
-                pointer.setAttribute('radius', .008);
-            }
-            const rays = getRaycasters();
-            for (const caster of rays) {
-                caster.setAttribute('raycaster', 'far', .1);
-            }
 
         },
         bbuttontouchstart: function (evt) {

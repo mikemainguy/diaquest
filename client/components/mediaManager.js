@@ -1,9 +1,9 @@
 AFRAME.registerComponent('mediamanager', {
-    init: function() {
+    init: function () {
 
     },
     events: {
-        mediaUpdated: function(evt) {
+        mediaUpdated: function (evt) {
             let x = 0;
             console.log(this.el);
             for (const i in evt.detail) {
@@ -13,11 +13,9 @@ AFRAME.registerComponent('mediamanager', {
                 el.setAttribute('text', `value: ${evt.detail[i].name}`);
                 el.setAttribute('position', `${x++} 0 0`);
                 this.el.appendChild(el);
-                console.log(evt.detail[i].href);
             }
         }
     }
-
 });
 
 AFRAME.registerComponent('image-swatch', {
@@ -27,7 +25,7 @@ AFRAME.registerComponent('image-swatch', {
     init: function () {
         this.el.addEventListener("click", this.clickHandler.bind(this));
     },
-    clickHandler: function(evt) {
+    clickHandler: function (evt) {
         this.el.emit('hideMenu', {id: '#image-picker'}, true);
         this.el.emit('buttonstate', {mode: ['edit-image'], image: this.data.image}, true);
     }
