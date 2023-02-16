@@ -5,7 +5,6 @@ AFRAME.registerComponent('mediamanager', {
     events: {
         mediaUpdated: function (evt) {
             let x = 0;
-            console.log(this.el);
             for (const i in evt.detail) {
                 const el = document.createElement('a-plane');
                 el.setAttribute('material', `src: ${evt.detail[i].href}`);

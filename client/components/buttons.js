@@ -112,6 +112,15 @@ AFRAME.registerComponent('buttons', {
 
         },
         abuttondown: function (evt) {
+            const bmenu = document.getElementById('animationmenu');
+            if (bmenu) {
+                const bMenuShowing = bmenu.getAttribute('visible');
+                if (bMenuShowing) {
+                    hideMenu({detail: {id: '#animationmenu'}});
+                } else {
+                    showMenu({detail: {id: '#animationmenu', objects: '#animationmenu [widget], .saveable'}});
+                }
+            }
 
         },
         abuttonup: function (evt) {

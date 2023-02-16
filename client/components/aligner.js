@@ -17,15 +17,12 @@ AFRAME.registerSystem('aligner', {
         return geometry.boundingBox;
     },
     calculateOffset(src, dest, dim) {
-        const srcBox = this.getBounds(src);
         const srcPos = src.object3D.position.clone();
         src
             .object3D
             .getWorldPosition(
                 srcPos
             );
-
-        const destBox = this.getBounds(dest);
         const destPos = dest.object3D.position.clone();
         dest
             .object3D
@@ -42,7 +39,7 @@ AFRAME.registerSystem('aligner', {
         if (Math.abs(dim.z) > 0) {
             src.closest('[template]').object3D.position.setZ(destPos.z);
         }
-        const obj = src.closest('[template]');
+
 
     },
     align: function (evt) {

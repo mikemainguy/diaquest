@@ -1,0 +1,40 @@
+<a-entity position="0 2 1" id="animationmenu" visible="false">
+    <a-plane width=".5" height=".1" text="value: Animation Sequence; wrapCount: 20"></a-plane>
+    <a-entity widget="method: animation-from; label: Play" scale=".1 .1 .1"
+              position=".2 -.1 0"
+              obj-model="obj: url(/assets/models/button.obj)"
+              material="color: #fce; opacity: .8">
+    </a-entity>
+    <a-entity animation-entry position="0 -.1 0">
+        <a-entity widget="method: animation-from; label: From" scale=".1 .1 .1"
+                  position="-.1 0 0"
+                  obj-model="obj: url(/assets/models/button.obj)"
+                  material="color: #fce; opacity: .8">
+        </a-entity>
+        <a-entity widget="method: animation-to; label: To" scale=".1 .1 .1"
+                  position="0 0 0"
+                  obj-model="obj: url(/assets/models/button.obj)"
+                  material="color: #fce; opacity: .8">
+        </a-entity>
+        <a-entity widget="method: animation-duration; label: Duration" scale=".1 .1 .1"
+                  position=".1 0 0"
+                  obj-model="obj: url(/assets/models/button.obj)"
+                  material="color: #fce; opacity: .8">
+        </a-entity>
+        <a-entity widget="method: animation-remove; label: Remove" scale=".1 .1 .1"
+                  position=".2 0 0"
+                  obj-model="obj: url(/assets/models/button.obj)"
+                  material="color: #fce; opacity: .8">
+        </a-entity>
+        <a-entity widget="method: animation-add; label: Add" scale=".1 .1 .1"
+                  position=".3 0 0"
+                  obj-model="obj: url(/assets/models/button.obj)"
+                  material="color: #fce; opacity: .8">
+        </a-entity>
+
+        <a-plane width=".1" height=".1" position="-.2 0 0" text="value: Move; wrapCount: 5; color: #000"></a-plane>
+
+
+    </a-entity>
+
+</a-entity>
