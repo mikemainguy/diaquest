@@ -62,6 +62,12 @@
   "overrides": {
     "aframe": {
       "debug": "^4.3.4"
+    },
+    "aframe-lookatme": {
+      "aframe": "$aframe"
+    },
+    "aframe-extras": {
+      "aframe": "$aframe"
     }
   },
   "devDependencies": {
