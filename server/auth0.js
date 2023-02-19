@@ -3,7 +3,7 @@ const {auth, requiresAuth} = require("express-openid-connect");
 const auth0 = (app) => {
     const auth0Config = {
         authorizationParams: {
-            connection: "email"
+            allowedConnections: ["email", "facebook", 'google-oauth2']
         },
         authRequired: false,
         auth0Logout: true,
