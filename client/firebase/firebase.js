@@ -350,11 +350,38 @@ function createOrUpdateDom(entity) {
         }
     }
     if (entity.rotation) {
-        ele.setAttribute('rotation', entity.rotation);
+        if (exists && ele.object3D && ele.getAttribute('stuff')) {
+            const parent = ele.getAttribute('stuff').parent;
+            if (parent && document.querySelector('#' + parent)){
+                console.log('detaching');
+                ele.sceneEl.object3D.attach(ele.object3D);
+                ele.object3D.setRotationFromEuler(new THREE.Euler(
+                    THREE.MathUtils.degToRad(entity.rotation.x),
+                    THREE.MathUtils.degToRad(entity.rotation.y),
+                    THREE.MathUtils.degToRad(entity.rotation.z)));
+                document.querySelector('#' + parent).object3D.attach(ele.object3D);
+            } else {
+                ele.object3D.setRotationFromEuler(new THREE.Euler(
+                    THREE.MathUtils.degToRad(entity.rotation.x),
+                    THREE.MathUtils.degToRad(entity.rotation.y),
+                    THREE.MathUtils.degToRad(entity.rotation.z)));
+            }
+
+        } else {
+            ele.setAttribute('rotation', entity.rotation);
+        }
+
     }
 
     if (entity.position) {
-        ele.setAttribute('position', entity.position);
+        if (exists && ele.object3D && ele.object3D.position) {
+            const loc = new THREE.Vector3(entity.position.x, entity.position.y, entity.position.z);
+            ele.object3D.parent.worldToLocal(loc);
+            ele.object3D.position.set(loc.x, loc.y, loc.z);
+        } else {
+            ele.setAttribute('position', entity.position);
+        }
+
     }
     const scale = entity.scale ? entity.scale : '0.2 0.2 0.2';
     const image = entity.image ? entity.image: '';

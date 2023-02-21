@@ -55,9 +55,9 @@
 
     <script id="connector-template" type="html">
         <a-entity class="data-connector" share-position>
-            <a-cone rotation="-90 0 0" position="0 0 0" radius-top="0" radius-bottom="0.02" height=".04" class="data-packet" color="#111">
+            <a-cone rotation="-90 0 0" segments-height="1" segments-radial="16" position="0 0 0" radius-top="0" radius-bottom="0.02" height=".04" class="data-packet" color="#111">
             </a-cone>
-            <a-cylinder class="saveable data-direction" rotation="90 0 0" position="0 0 0"
+            <a-cylinder segments-height="1" segments-radial="16" open-ended="true" class="saveable data-direction" rotation="90 0 0" position="0 0 0"
                         material="opacity: 0.9; color: #33f" height="1" radius="0.06" visible="false">
             </a-cylinder>
             <a-entity class="label" mixin="labelMixin" position="0 0.3 0"></a-entity>
@@ -88,6 +88,7 @@
             <a-sphere
                     class="saveable"
                     material="color: #33f"
+                    segments-height="16"
                     radius=".5"
                     visible="false">
             </a-sphere>
@@ -140,6 +141,7 @@
                     class="saveable"
                     material="color: #33f"
                     radius=".5"
+                    segments-height="1"
                     height="1"
                     visible="false">
             </a-cylinder>

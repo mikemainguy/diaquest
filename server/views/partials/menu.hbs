@@ -214,6 +214,19 @@
 
         </a-entity>
         <a-entity>
+            <a-entity text="value: UnGroup" mixin="menuPlane"></a-entity>
+            <a-entity widget="method: ungrouping"
+                      obj-model="obj: url(/assets/models/button.obj)"
+                      material="color: #fce; opacity: .8">
+
+            </a-entity>
+            <a-sphere radius="0.125"
+                      mixin="widgetMaterial">
+                <a-entity template="src: #plus"></a-entity>
+            </a-sphere>
+
+        </a-entity>
+        <a-entity>
             <a-entity text="value: Share" mixin="menuPlane"></a-entity>
             <a-entity widget="method: share"
                       obj-model="obj: url(/assets/models/button.obj)"

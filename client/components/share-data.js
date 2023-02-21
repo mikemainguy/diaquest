@@ -25,10 +25,11 @@ AFRAME.registerComponent('share-position', {
     },
     updateShape: function (time, timeDelta) {
         if (this.dirty) {
-            this.e = this.parent.rotation;
-            if (this.el.id == 'camera') {
-                this.e.setFromQuaternion(this.currentRotation);
-            }
+            //this.e = this.parent.rotation.clone();
+            const q = new THREE.Quaternion();
+            this.el.object3D.getWorldQuaternion(q);
+            this.e.setFromQuaternion(q);
+
 
             const data = {
                 id: this.el.parentEl.getAttribute('id'),

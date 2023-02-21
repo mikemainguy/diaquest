@@ -19,6 +19,7 @@ AFRAME.registerComponent('stuff', {
         this.el.setAttribute('sound', 'src: url(/assets/sounds/KeyInLow.mp3); volume: 0.2; on: mouseenter;');
         this.aligning = false;
         this.el.addChild = this.addChild.bind(this);
+        this.groupline = null;
     },
     addChild: function(el) {
         this.el.object3D.appendChild(el.object3D);
@@ -34,13 +35,19 @@ AFRAME.registerComponent('stuff', {
         this.saveable = this.el.querySelector('.saveable');
         this.packet = this.el.querySelector('.data-packet');
         this.textDisplay = this.el.querySelector('[text]');
+        this.calculate = AFRAME.utils.throttleTick(this.calculate, 500, this);
         if (this.data.parent) {
+
             const parent = document.getElementById(this.data.parent);
             if (parent) {
-                parent.object3D.attach(this.el.object3D);
+
+                window.setTimeout(() => {parent.object3D.attach(this.el.object3D)}, 250);
             } else {
-                this.el.sceneEl.object3D.attach(this.el.object3D);
+
+                window.setTimeout(() => {this.el.sceneEl.object3D.attach(this.el.object3D);}, 250);
             }
+        } else {
+            window.setTimeout(() => {this.el.sceneEl.object3D.attach(this.el.object3D);}, 250);
         }
         if (this.image && this.saveable) {
             this.saveable.setAttribute('material', 'src', this.image);
@@ -61,24 +68,30 @@ AFRAME.registerComponent('stuff', {
         this.el.emit('registerupdate', {}, true);
     },
     tock: function () {
-        if (!this.textDisplay || !this.saveable) {
-            this.update();
-            return;
-        }
-        if (!this.scale.equals(this.saveable.object3D.scale)) {
-            this.saveable.object3D.scale.set(this.scale.x, this.scale.y, this.scale.z);
-        }
-        if (this.saveable?.object3D?.children[0]?.geometry) {
-            this.saveable.object3D.children[0].geometry.computeBoundingBox();
-        }
-        if (!this.saveable.getAttribute('animation')) {
-            this.saveable.setAttribute('material', 'color', this.data.color);
-            if (this.packet) {
-                this.packet.setAttribute('material', 'color', this.data.color);
-            }
-        }
+
     },
-    tick: function () {
+    calculate: function(time, timeDelta) {
+        setTimeout(() => {
+            if (!this.textDisplay || !this.saveable) {
+                this.update();
+                return;
+            }
+            if (!this.scale.equals(this.saveable.object3D.scale)) {
+                this.saveable.object3D.scale.set(this.scale.x, this.scale.y, this.scale.z);
+            }
+            if (this.saveable?.object3D?.children[0]?.geometry) {
+                this.saveable.object3D.children[0].geometry.computeBoundingBox();
+            }
+            if (!this.saveable.getAttribute('animation')) {
+                this.saveable.setAttribute('material', 'color', this.data.color);
+                if (this.packet) {
+                    this.packet.setAttribute('material', 'color', this.data.color);
+                }
+            }
+
+        },0);
+    },
+    tick: function (time, timeDelta) {
         if (this.textDisplay && this.saveable) {
             if (this.saveable?.object3D?.children[0]?.geometry?.boundingBox) {
                 const radius = this.saveable
@@ -92,10 +105,11 @@ AFRAME.registerComponent('stuff', {
                     this.textDisplay
                         .object3D
                         .position
-                        .set(0, (radius * this.saveable.object3D.scale.y) + 0.05, 0);
+                        .set(0, (radius * this.saveable.object3D.scale.y) + 0.06, 0);
                 }
             }
         }
+        this.calculate(time, timeDelta);
     },
     events: {
         click: function (evt) {
@@ -112,12 +126,16 @@ AFRAME.registerComponent('stuff', {
                         this.el.setAttribute('stuff', 'parent', parent);
                         document.dispatchEvent(new CustomEvent('shareUpdate', {detail: {id: obj.id, parent: parent}}));
                     } else {
+                        this.data.parent='';
                         this.el.setAttribute('stuff', 'parent', '');
                         document.dispatchEvent(new CustomEvent('shareUpdate', {detail: {id: obj.id, parent: ''}}));
                     }
                     break;
                 case 'grouping':
                     this.el.emit('buttonstate', {mode: ['add-children'], first: obj.id});
+                    break;
+                case 'ungrouping':
+                    this.el.emit('buttonstate', {mode: ['add-children'], first: null});
                     break;
                 case 'aligning':
                     document.dispatchEvent(new CustomEvent('align', {detail: {id: obj.id}}));

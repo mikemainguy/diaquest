@@ -59,6 +59,9 @@ AFRAME.registerComponent('widget', {
                 case 'grouping':
                     buttonState.mode = ['grouping'];
                     break;
+                case 'ungrouping':
+                    buttonState.mode = ['ungrouping'];
+                    break;
                 case 'resize':
                     buttonState.mode = ['resizing'];
                     break;
