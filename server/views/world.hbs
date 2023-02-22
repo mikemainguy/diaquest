@@ -74,28 +74,26 @@
 <script>
     document.addEventListener('directoryUpdate', (evt)=> {
         const scene = document.getElementById(evt.detail.htmlId);
+        if (evt.detail.entries) {
+            const nodes = Object.entries(evt.detail.entries);
+            let x = nodes.length*-2;
+            if (scene) {
+                for(const d of nodes) {
+                    const id = d[0];
 
-        const nodes = Object.entries(evt.detail.entries);
-        let x = nodes.length*-2;
-
-        if (scene) {
-            for(const d of nodes) {
-                const id = d[0];
-
-                const li = document.createElement('a-link');
-                const a = document.createElement('a');
-                li.setAttribute('visible', 'false');
-                li.setAttribute('href', '/worlds/' + id);
-                li.setAttribute('title', id);
-                li.setAttribute('image', '#linkImage');
-                li.setAttribute('position', x + ' 0 0');
-                x+=4;
-                scene.appendChild(li);
+                    const li = document.createElement('a-link');
+                    const a = document.createElement('a');
+                    li.setAttribute('visible', 'false');
+                    li.setAttribute('href', '/worlds/' + id);
+                    li.setAttribute('title', id);
+                    li.setAttribute('image', '#linkImage');
+                    li.setAttribute('position', x + ' 0 0');
+                    x+=4;
+                    scene.appendChild(li);
 
 
+                }
             }
         }
-
-        console.log(JSON.stringify(evt.detail));
     });
 </script>

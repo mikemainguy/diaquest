@@ -1,5 +1,3 @@
-const axios = require('axios').default;
-
 import {getAuth, signInWithCustomToken} from "firebase/auth";
 import {initializeApp} from 'firebase/app';
 import {sha512} from 'crypto-hash';
@@ -10,6 +8,7 @@ import {
     onChildAdded,
     onChildChanged,
     onChildRemoved,
+    onDisconnect,
     onValue,
     ref,
     remove,
@@ -33,39 +32,53 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const database = getDatabase(app);
 
-function getDbPath(id) {
+function parseUrl() {
     const loc = window.location.pathname.split('/');
+    return loc;
+}
 
+function buildPath(name, id) {
+    const loc = parseUrl();
     const pathId = id == null ? '' : '/' + id;
-
     if (loc.length < 3) {
-        return 'worlds/public/entities' + pathId;
+        return `worlds/public/${name}${pathId}`;
     }
     switch (loc[1]) {
         case 'public':
-            return 'worlds/public/entities' + pathId;
+            return `worlds/public/${name}${pathId}`;
         case 'worlds':
             if (loc.length === 3) {
                 const myLoc = decodeURIComponent(window.location).split('/').pop()
-                return 'worlds/' + myLoc + '/entities' + pathId;
+                return `worlds/${myLoc}/${name}${pathId}`;
             } else {
-                return 'worlds/public/entities' + pathId;
+                return `worlds/public/${name}${pathId}`;
             }
         default:
-            return 'worlds/public/entities' + pathId;
+            return `worlds/public/${name}${pathId}`;
     }
+
+}
+
+function getSessionPath(id) {
+    return buildPath('sessions', id);
+}
+
+function getEntityPath(id) {
+    return buildPath('entities', id);
+}
+
+function getMediaPath() {
+    return buildPath('media', null);
 }
 
 async function getProfile() {
     try {
-
         const profile = JSON.parse(sessionStorage.getItem('user'));
         return profile;
     } catch (err) {
         console.log(err);
         return null;
     }
-
 }
 
 async function setupApp(profile) {
@@ -82,28 +95,53 @@ async function setupApp(profile) {
     return null;
 }
 
-async function getWorldList() {
-
-}
 async function registerMedias(medias) {
-    onValue(medias, (snapshot)=> {
-        const val =snapshot.val();
+    onValue(medias, (snapshot) => {
+        const val = snapshot.val();
         const data = [];
         for (const media in val) {
-
             const mediaEntry =
-                {href: 'https://media.immersiveidea.com/' + media,
+                {
+                    href: 'https://media.immersiveidea.com/' + media,
                     name: val[media].name,
-                    mimetype: val[media].mimetype};
+                    mimetype: val[media].mimetype
+                };
             data.push(mediaEntry);
-            console.log(JSON.stringify(mediaEntry));
-
         };
         document.querySelector('[mediamanager]').dispatchEvent(
             new CustomEvent('mediaUpdated',
                 {detail: data}));
     });
 }
+const updateListener = (snapshot) => {
+    afterSceneLoads(createOrUpdateDom, snapshot.val());
+};
+const removeListener = (snapshot) => {
+    const ele = document.getElementById(snapshot.val().id);
+    if (ele) {
+        if (!ele.classList.contains('rig')) {
+            ele.remove();
+        } else {
+            document.dispatchEvent(
+                new CustomEvent('disconnectSignalwire',
+                    {detail: 'OK'}));
+
+        }
+    }
+}
+
+function afterSceneLoads(caller, data) {
+    const scene = document.querySelector('a-scene');
+    if (scene && scene.hasLoaded) {
+        caller(data);
+    } else {
+        document.addEventListener('aframeReady', (evt) => {
+            caller(data);
+        });
+    }
+
+}
+
 async function initializeFirebase() {
     if (!VRLOCAL) {
         if (typeof newrelic !== 'undefined') {
@@ -114,15 +152,7 @@ async function initializeFirebase() {
             return;
         }
         await setupApp(profile);
-
-        const scene = document.querySelector('a-scene');
-        if (scene && scene.hasLoaded) {
-            writeUser(profile);
-        } else {
-            document.addEventListener('aframeReady', (evt) => {
-                writeUser(profile)
-            });
-        }
+        afterSceneLoads(writeUser, profile);
 
         const directoryRef = ref(database, 'directory/');
         onValue(directoryRef, (snapshot) => {
@@ -147,69 +177,27 @@ async function initializeFirebase() {
                             entries: snapshot.val()
                         }
                     }));
-
         });
 
 
         const loc = window.location.pathname;
         if (loc.startsWith('/worlds')) {
-            const path = getDbPath(null);
-            const medias = ref(database,
-                path.split('/entities')[0] + '/media');
-
-            const entities = ref(database, path);
-            if (scene && scene.hasLoaded) {
-                registerMedias(medias);
-
-            } else {
-                document.addEventListener('aframeReady', (evt) => {
-                    registerMedias(medias);
-                });
-            }
-
-            onChildAdded(entities, (snapshot) => {
-                const scene = document.querySelector('a-scene');
-                if (scene && scene.hasLoaded) {
-                    createOrUpdateDom(snapshot.val());
-                } else {
-                    document.addEventListener('aframeReady', (evt) => {
-                        createOrUpdateDom(snapshot.val());
-                    });
-                }
-
-            });
-
-            onChildRemoved(entities, (snapshot) => {
-                const scene = document.querySelector('a-scene');
-                const ele = document.getElementById(snapshot.val().id);
-
-                if (ele) {
-                    if (!ele.classList.contains('rig')) {
-                        ele.remove();
-                    } else {
-                        document.dispatchEvent(
-                            new CustomEvent('disconnectSignalwire',
-                                {detail: 'OK'}));
-
-                    }
-
-                }
-            });
-            onChildChanged(entities, (snapshot) => {
-                if (scene && scene.hasLoaded) {
-                    createOrUpdateDom(snapshot.val());
-                } else {
-                    document.addEventListener('aframeReady', (evt) => {
-                        createOrUpdateDom(snapshot.val());
-                    });
-                }
-            });
+            afterSceneLoads(registerMedias, ref(database, getMediaPath()));
+            addListeners(ref(database, getEntityPath(null)));
+            addListeners(ref(database, getSessionPath()));
         }
     }
+
     if (typeof newrelic !== 'undefined') {
-        newrelic.addPageAction('firebase db setup');
+        newrelic.addPageAction('firebase db setup complete');
     }
 
+}
+
+function addListeners(entity) {
+    onChildAdded(entity, updateListener);
+    onChildRemoved(entity, removeListener);
+    onChildChanged(entity, updateListener);
 }
 
 document.addEventListener('userloaded', initializeFirebase);
@@ -290,8 +278,15 @@ document.addEventListener('shareUpdate', function (evt) {
 
 function updateEntity(data) {
     try {
-        const path = getDbPath(data.id);
-        update(ref(database, path), data);
+        const path = getEntityPath(data.id);
+        if (document.getElementById(data.id).classList.contains('rig')) {
+            const userRef = ref(database, getSessionPath(data.id));
+
+            update(userRef, data);
+        } else {
+            update(ref(database, path), data);
+        }
+
     } catch (err) {
         console.log(err);
     }
@@ -301,8 +296,15 @@ function updateEntity(data) {
 
 function createEntity(data) {
     try {
-        const path = getDbPath(data.id);
-        set(ref(database, path), data);
+        const path = getEntityPath(data.id);
+        if (data.template == '#user-template') {
+            const userRef = ref(database, getSessionPath(data.id));
+            onDisconnect(userRef).remove();
+            set(userRef, data);
+        } else {
+            set(ref(database, path), data);
+        }
+
     } catch (err) {
         console.log(err);
     }
@@ -311,7 +313,7 @@ function createEntity(data) {
 function removeEntity(id) {
     try {
         if (id) {
-            const path = getDbPath(id);
+            const path = getEntityPath(id);
             remove(ref(database, path));
         } else {
             console.error("no id passed to remove");
@@ -352,8 +354,7 @@ function createOrUpdateDom(entity) {
     if (entity.rotation) {
         if (exists && ele.object3D && ele.getAttribute('stuff')) {
             const parent = ele.getAttribute('stuff').parent;
-            if (parent && document.querySelector('#' + parent)){
-                console.log('detaching');
+            if (parent && document.querySelector('#' + parent)) {
                 ele.sceneEl.object3D.attach(ele.object3D);
                 ele.object3D.setRotationFromEuler(new THREE.Euler(
                     THREE.MathUtils.degToRad(entity.rotation.x),
@@ -384,7 +385,7 @@ function createOrUpdateDom(entity) {
 
     }
     const scale = entity.scale ? entity.scale : '0.2 0.2 0.2';
-    const image = entity.image ? entity.image: '';
+    const image = entity.image ? entity.image : '';
     const color = entity.color ? entity.color : '#669';
     const text = entity.text ? entity.text : '';
     const parent = entity.parent ? entity.parent : '';
