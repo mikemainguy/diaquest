@@ -72,7 +72,7 @@ AFRAME.registerComponent('buttons', {
         const pointer = document.createElement('a-sphere');
 
         pointer.setAttribute('material', 'color: #fff; opacity: 0.6; emissive: #fff');
-        pointer.setAttribute('radius', '0.008');
+        pointer.setAttribute('radius', '0.004');
         pointer.setAttribute('visible', 'false');
         this.el.appendChild(pointer);
         this.pointer = pointer;
@@ -98,9 +98,7 @@ AFRAME.registerComponent('buttons', {
             for (const caster of rays) {
                 caster.setAttribute('raycaster', 'far', caster.getAttribute('raycaster').far == 10 ? .1 : 10);
             }
-            for (const pointer of this.system.pointers) {
-                pointer.setAttribute('radius', (pointer.getAttribute('radius') == .1) ? .008 : .1);
-            }
+
         },
         xbuttondown: function (evt) {
             const debug = document.querySelector('#debug');

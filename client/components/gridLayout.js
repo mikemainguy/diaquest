@@ -3,7 +3,7 @@ AFRAME.registerComponent('gridlayout', {
     //keyboard: {default: '#keyboard', type: 'selector'}
   },
   update: function () {
-    const factor = 6;
+    const factor = 5;
     let x = 0;
     const z = 0;
     this.childcount = this.el.childElementCount;

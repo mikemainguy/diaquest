@@ -17,10 +17,11 @@ AFRAME.registerComponent('widget', {
         this.color = '#11a';
         this.el.setAttribute('material', 'color', this.color);
         const label = document.createElement('a-text');
-        label.setAttribute('position', '0 .4 .041');
+        label.setAttribute('position', '0 .35 .05');
         label.setAttribute('value', this.data.label);
-        label.setAttribute('wrapCount', 5);
-        label.setAttribute('width', 2);
+        label.setAttribute('align', 'center');
+        label.setAttribute('wrap-count', '10');
+        label.setAttribute('width', '1');
         this.el.appendChild(label);
     },
     events: {

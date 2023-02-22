@@ -1,154 +1,118 @@
 <a-entity position=".1 .05 -.1" rotation="-70 -80 0" id="bmenu" visible="false" scale="0.1 0.1 0.1">
     <a-entity sound="src: url(/assets/sounds/KeyIn.mp3); on: click; poolSize: 5" gridlayout position="-1 -.5 0">
         <a-entity>
-            <a-entity text="value: Sphere" mixin="menuPlane"></a-entity>
-            <a-entity widget="method: add-sphere"
+            <a-entity widget="method: add-sphere; label: Sphere"
                       obj-model="obj: url(/assets/models/button.obj)"
                       material="color: #fce; opacity: .8">
-
             </a-entity>
-            <a-sphere radius="0.125"
-                      mixin="widgetMaterial">
-                <a-entity template="src: #plus"></a-entity>
-            </a-sphere>
+            <a-sphere
+                    radius="0.125"
+                    mixin="widgetMaterial"></a-sphere>
+            <a-icon width=".25" height=".25" position="0 -.3 0.045"name="plus"></a-icon>
 
         </a-entity>
         <a-entity>
-            <a-entity text="value: Box" mixin="menuPlane"></a-entity>
-            <a-entity widget="method: add-box"
+            <a-entity widget="method: add-box; label: Box"
                       obj-model="obj: url(/assets/models/button.obj)"
                       material="color: #fce; opacity: .8"></a-entity>
-
-
             <a-box
                     width="0.25"
                     height="0.25"
                     depth="0.25"
                     mixin="widgetMaterial">
-                <a-entity template="src: #plus"></a-entity>
-            </a-box>
 
+            </a-box>
+            <a-icon width=".25" height=".25" position="0 -.3 0.045"name="plus"></a-icon>
         </a-entity>
 
         <a-entity>
-            <a-entity text="value: Cylinder" mixin="menuPlane"></a-entity>
-            <a-entity widget="method: add-cylinder"
+            <a-entity widget="method: add-cylinder; label: Cylinder"
                       obj-model="obj: url(/assets/models/button.obj)"
                       material="color: #fce; opacity: .8">
             </a-entity>
-
             <a-cylinder radius="0.125" height=".25"
                         mixin="widgetMaterial">
-                <a-entity template="src: #plus"></a-entity>
-            </a-cylinder>
 
+            </a-cylinder>
+            <a-icon width=".25" height=".25" position="0 -.3 0.045"name="plus"></a-icon>
         </a-entity>
         <a-entity>
             <a-entity>
-                <a-entity text="value: Connector" mixin="menuPlane"></a-entity>
-                <a-entity widget="method: add-connector"
+                <a-entity widget="method: add-connector; label: Connector"
                           obj-model="obj: url(/assets/models/button.obj)"
                           material="color: #fce; opacity: .8"></a-entity>
-
                 <a-entity template="src: #widgetPoint" position="0 0.2 0"></a-entity>
                 <a-cylinder radius=".01" height="0.3" color="#fff"></a-cylinder>
-                <a-entity template="src: #plus"></a-entity>
 
             </a-entity>
+            <a-icon width=".25" height=".25" position="0 -.3 0.045"name="plus"></a-icon>
         </a-entity>
         <a-entity>
-            <a-entity text="value: Plane" mixin="menuPlane"></a-entity>
-            <a-entity widget="method: add-plane"
+            <a-entity widget="method: add-plane; label: Plane"
                       obj-model="obj: url(/assets/models/button.obj)"
                       material="color: #fce; opacity: .8"></a-entity>
-
-
             <a-plane
                     width="0.25"
                     height="0.25"
+                    position="0 0 0.045"
                     mixin="widgetMaterial">
-                <a-entity template="src: #plus"></a-entity>
+
             </a-plane>
-
+            <a-icon width=".25" height=".25" position="0 -.3 0.045"name="plus"></a-icon>
         </a-entity>
 
         <a-entity>
-            <a-entity
-                    text="value: Text" mixin="menuPlane"></a-entity>
-            <a-entity widget="method: edit"
+            <a-entity widget="method: edit; label: Text"
                       obj-model="obj: url(/assets/models/button.obj)"
                       material="color: #fce; opacity: .8"></a-entity>
-            <a-entity>
-                <a-box width=".05" height="0.05" depth="0.05" mixin="widgetMaterial"></a-box>
-                <a-box width=".05" position="-.1 0 0" height="0.05" depth="0.05" mixin="widgetMaterial"></a-box>
-                <a-box width=".05" position=".1 0 0" height="0.05" depth="0.05" mixin="widgetMaterial"></a-box>
-            </a-entity>
+            <a-icon width=".25" height=".25" position="0 -.3 0.045"name="edit"></a-icon>
         </a-entity>
-        <a-entity>
-            <a-entity text="value: Edit Size" mixin="menuPlane"></a-entity>
-            <a-entity widget="method: resize"
-                      obj-model="obj: url(/assets/models/button.obj)"
-                      material="color: #fce; opacity: .8"></a-entity>
-            <a-entity>
-                <a-entity rotation="30 30 0">
-                    <a-cylinder radius=".01" height="0.3" mixin="widgetMaterial"></a-cylinder>
-                    <a-entity template="src: #widgetPoint" position="0 .2 0"></a-entity>
-                    <a-entity template="src: #widgetPoint" rotation="0 0 180" position="0 -.2 0"></a-entity>
 
-                </a-entity>
-                <a-entity rotation="30 30 90">
-                    <a-cylinder radius=".01" height="0.3" mixin="widgetMaterial"></a-cylinder>
-                    <a-entity template="src: #widgetPoint" position="0 .2 0" opacity="0.5"></a-entity>
-                    <a-entity template="src: #widgetPoint" rotation="0 0 180"
-                              position="0 -.2 0"></a-entity>
-                </a-entity>
-                <a-entity rotation="120 30 0">
-                    <a-cylinder radius=".01" height="0.3" color="#fff"></a-cylinder>
-                    <a-entity template="src: #widgetPoint" position="0 .2 0"></a-entity>
-                    <a-entity template="src: #widgetPoint" rotation="0 0 180"
-                              position="0 -.2 0"></a-entity>
-                </a-entity>
-
-
-            </a-entity>
-        </a-entity>
         <a-entity>
             <a-entity>
-                <a-entity text="value: Color" mixin="menuPlane"></a-entity>
-                <a-entity widget="method: edit-color"
+                <a-entity widget="method: edit-color; label: Color"
                           obj-model="obj: url(/assets/models/button.obj)"
                           material="color: #fce; opacity: .8"></a-entity>
-                <a-sphere mixin="widgetMaterial" radius=".1" position="0 0.05 0" material="color: #f00;"></a-sphere>
-                <a-sphere mixin="widgetMaterial" radius=".1" position="0.05 0 0" material="color: #040;"></a-sphere>
-                <a-sphere mixin="widgetMaterial" radius=".1" position="-0.05 0 0"
-                          material="color: #00f;"></a-sphere>
                 <a-entity position="-7 0 4" rotation="0 45 0" scale="9 9 9" id="color-picker" color-picker
                           visible="false"></a-entity>
             </a-entity>
+            <a-icon width=".25" height=".25" position="0 -.3 0.045"name="edit"></a-icon>
+
         </a-entity>
         <a-entity>
             <a-entity>
-                <a-entity text="value: Image" mixin="menuPlane"></a-entity>
-                <a-entity widget="method: edit-image"
+                <a-entity widget="method: edit-image; label: Image"
                           obj-model="obj: url(/assets/models/button.obj)"
                           material="color: #fce; opacity: .8"></a-entity>
-                <a-sphere mixin="widgetMaterial" radius=".1" position="0 0.05 0" material="color: #f00;"></a-sphere>
-                <a-sphere mixin="widgetMaterial" radius=".1" position="0.05 0 0" material="color: #040;"></a-sphere>
-                <a-sphere mixin="widgetMaterial" radius=".1" position="-0.05 0 0"
-                          material="color: #00f;"></a-sphere>
 
             </a-entity>
+            <a-icon width=".25" height=".25" position="0 -.3 0.045"name="edit"></a-icon>
         </a-entity>
-
         <a-entity>
-            <a-entity text="value: Remove" mixin="menuPlane"></a-entity>
-            <a-entity widget="method: remove"
+            <a-entity widget="method: resize; label: Resize"
                       obj-model="obj: url(/assets/models/button.obj)"
                       material="color: #fce; opacity: .8"></a-entity>
-            <a-entity>
-                <a-box mixin="widgetMaterial" width=".2" height="0.05" depth="0.05" color="#f55"></a-box>
-            </a-entity>
+            <a-icon width=".25" height=".25" position="0 -.3 0.045"name="up-down"></a-icon>
+        </a-entity>
+        <a-entity>
+            <a-entity widget="method: align; label: Align"
+                      obj-model="obj: url(/assets/models/button.obj)"
+                      material="color: #fce; opacity: .8"></a-entity>
+            <a-icon width=".25" height=".25" position="0 -.3 0.045"name="menu"></a-icon>
+        </a-entity>
+        <a-entity>
+            <a-entity widget="method: copy; label: Copy"
+                      obj-model="obj: url(/assets/models/button.obj)"
+                      material="color: #fce; opacity: .8"></a-entity>
 
+            <a-icon width=".25" height=".25" position="0 -.3 0.045"name="right-arrow"></a-icon>
+
+        </a-entity>
+        <a-entity>
+            <a-entity widget="method: remove; label: Remove"
+                      obj-model="obj: url(/assets/models/button.obj)"
+                      material="color: #fce; opacity: .8"></a-entity>
+            <a-icon width=".25" height=".25" position="0 -.3 0.045"name="delete"></a-icon>
         </a-entity>
         <!--<a-entity>
             <a-entity text="value: Light"  mixin="menuPlane"></a-entity>
@@ -159,84 +123,36 @@
         </a-entity>-->
 
 
+
         <a-entity>
-            <a-entity text="value: Align" mixin="menuPlane"></a-entity>
-            <a-entity widget="method: align"
-                      obj-model="obj: url(/assets/models/button.obj)"
-                      material="color: #fce; opacity: .8"></a-entity>
-            <a-entity>
-                <a-entity rotation="30 30 0">
-                    <a-cylinder radius=".01" height="0.3" mixin="widgetMaterial"></a-cylinder>
-                    <a-entity template="src: #widgetPoint" position="0 .2 0"></a-entity>
-                    <a-entity template="src: #widgetPoint" rotation="0 0 180" position="0 -.2 0"></a-entity>
-
-                </a-entity>
-                <a-entity rotation="30 30 90">
-                    <a-cylinder radius=".01" height="0.3" mixin="widgetMaterial"></a-cylinder>
-                    <a-entity template="src: #widgetPoint" position="0 .2 0" opacity="0.5"></a-entity>
-                    <a-entity template="src: #widgetPoint" rotation="0 0 180"
-                              position="0 -.2 0"></a-entity>
-                </a-entity>
-                <a-entity rotation="120 30 0">
-                    <a-cylinder radius=".01" height="0.3" color="#fff"></a-cylinder>
-                    <a-entity template="src: #widgetPoint" position="0 .2 0"></a-entity>
-                    <a-entity template="src: #widgetPoint" rotation="0 0 180"
-                              position="0 -.2 0"></a-entity>
-                </a-entity>
-
-
-            </a-entity>
-        </a-entity>
-        <a-entity>
-            <a-entity text="value: Copy" mixin="menuPlane"></a-entity>
-            <a-entity widget="method: copy"
-                      obj-model="obj: url(/assets/models/button.obj)"
-                      material="color: #fce; opacity: .8"></a-entity>
-            <a-entity>
-                <a-sphere mixin="widgetMaterial" radius=".1" position="-0.05 0 0"
-                          material="color: #fff;"></a-sphere>
-                <a-sphere mixin="widgetMaterial" radius=".1" position="0.05 0 0"
-                          material="color: #fff; opacity: 0.5"></a-sphere>
-            </a-entity>
-
-        </a-entity>
-        <a-entity>
-            <a-entity text="value: Group" mixin="menuPlane"></a-entity>
-            <a-entity widget="method: grouping"
+            <a-entity widget="method: grouping; label: Group"
                       obj-model="obj: url(/assets/models/button.obj)"
                       material="color: #fce; opacity: .8">
 
             </a-entity>
-            <a-sphere radius="0.125"
-                      mixin="widgetMaterial">
-                <a-entity template="src: #plus"></a-entity>
-            </a-sphere>
+            <a-icon width=".25" height=".25" position="0 -.3 0.045"name="17714"></a-icon>
 
         </a-entity>
         <a-entity>
-            <a-entity text="value: UnGroup" mixin="menuPlane"></a-entity>
-            <a-entity widget="method: ungrouping"
+            <a-entity widget="method: ungrouping; label: Ungroup"
                       obj-model="obj: url(/assets/models/button.obj)"
                       material="color: #fce; opacity: .8">
 
             </a-entity>
-            <a-sphere radius="0.125"
-                      mixin="widgetMaterial">
-                <a-entity template="src: #plus"></a-entity>
-            </a-sphere>
+            <a-icon width=".25" height=".25" position="0 -.3 0.045"name="apps"></a-icon>
 
         </a-entity>
         <a-entity>
-            <a-entity text="value: Share" mixin="menuPlane"></a-entity>
-            <a-entity widget="method: share"
+            <a-entity widget="method: share; label: Share"
                       obj-model="obj: url(/assets/models/button.obj)"
                       material="color: #fce; opacity: .8"></a-entity>
+            <a-icon width=".25" height=".25" position="0 -.3 0.045"name="share"></a-icon>
         </a-entity>
         <a-entity>
-            <a-entity text="value: Exit" mixin="menuPlane"></a-entity>
-            <a-entity widget="method: exit"
+            <a-entity widget="method: exit; label: Home"
                       obj-model="obj: url(/assets/models/button.obj)"
                       material="color: #fce; opacity: .8"></a-entity>
+            <a-icon width=".25" height=".25" position="0 -.3 0.045"name="home"></a-icon>
         </a-entity>
 
     </a-entity>

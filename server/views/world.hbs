@@ -33,6 +33,7 @@
         <a-sphere sizer="position: 0 0 1" mixin="sizeConnectorMixin" radius=".05" position="0 0 1"></a-sphere>
         <a-sphere sizer="position: 0 0 -1" mixin="sizeConnectorMixin" radius=".05" position="0 0 -1"></a-sphere>
     </a-entity>
+
     <a-entity id="listing" position="0 3 -23">
 
     </a-entity>
@@ -80,7 +81,6 @@
             if (scene) {
                 for(const d of nodes) {
                     const id = d[0];
-
                     const li = document.createElement('a-link');
                     const a = document.createElement('a');
                     li.setAttribute('visible', 'false');
@@ -90,8 +90,6 @@
                     li.setAttribute('position', x + ' 0 0');
                     x+=4;
                     scene.appendChild(li);
-
-
                 }
             }
         }
