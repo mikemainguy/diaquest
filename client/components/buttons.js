@@ -70,8 +70,7 @@ AFRAME.registerComponent('buttons', {
         this.color = '#399';
         this.image = '';
         const pointer = document.createElement('a-sphere');
-
-        pointer.setAttribute('material', 'color: #fff; opacity: 0.6; emissive: #fff');
+        pointer.setAttribute('material', 'color: #fff; opacity: 0.8; emissive: #fff');
         pointer.setAttribute('radius', '0.004');
         pointer.setAttribute('visible', 'false');
         this.el.appendChild(pointer);
@@ -96,9 +95,9 @@ AFRAME.registerComponent('buttons', {
         thumbstickdown: function (evt) {
             const rays = getRaycasters();
             for (const caster of rays) {
-                caster.setAttribute('raycaster', 'far', caster.getAttribute('raycaster').far == 10 ? .1 : 10);
+                caster.setAttribute('raycaster', 'far',
+                    caster.getAttribute('raycaster').far == 10 ? .1 : 20);
             }
-
         },
         xbuttondown: function (evt) {
             const debug = document.querySelector('#debug');
@@ -110,10 +109,10 @@ AFRAME.registerComponent('buttons', {
 
         },
         abuttondown: function (evt) {
-            const bmenu = document.getElementById('animationmenu');
-            if (bmenu) {
-                const bMenuShowing = bmenu.getAttribute('visible');
-                if (bMenuShowing) {
+            const amenu = document.getElementById('animationmenu');
+            if (amenu) {
+                const aMenuShowing = amenu.getAttribute('visible');
+                if (aMenuShowing) {
                     hideMenu({detail: {id: '#animationmenu'}});
                 } else {
                     showMenu({detail: {id: '#animationmenu', objects: '#animationmenu [widget], .saveable'}});

@@ -28,7 +28,8 @@ AFRAME.registerComponent('widget', {
         mouseenter: function(evt) {
             const target = evt.target;
             if (!target.getAttribute('animation')) {
-                target.setAttribute('animation', 'from: #ff2; to: #cc2; property: material.color; loop: true; dir: alternate; dur: 500');
+                target.setAttribute('animation',
+                    'from: #ff2; to: #cc2; property: material.color; loop: true; dir: alternate; dur: 500');
             }
         },
         mouseleave: function(evt) {
@@ -117,23 +118,11 @@ AFRAME.registerComponent('widget', {
                         new CustomEvent('disconnectSignalwire',
                             {detail: 'OK'}));
                     break;
-                case 'mute':
-                    document.dispatchEvent(
-                        new CustomEvent('mute',
-                            {detail: 'OK'}));
-                    break;
-                case 'unmute':
-                    document.dispatchEvent(
-                        new CustomEvent('unmute',
-                            {detail: 'OK'}));
-                    break;
                 default:
+                    this.el.emit(this.data.method, {detail: 'OK'});
 
             }
             this.el.emit('buttonstate', buttonState, true);
         }
     },
-
-
-
 });

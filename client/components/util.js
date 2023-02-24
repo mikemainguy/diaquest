@@ -17,6 +17,12 @@ export function changeRaycaster(newObjects) {
         hand.setAttribute('raycaster', 'objects', newObjects);
     }
 }
+export function htmlToElement(html) {
+    var template = document.createElement('template');
+    html = html.trim(); // Never return a text node of whitespace as the result
+    template.innerHTML = html;
+    return template.content.firstChild;
+}
 
 export function round(vec, amount) {
     const v = new THREE.Vector3(vec.x, vec.y, vec.z);
@@ -37,6 +43,7 @@ export function getSystem(systemName) {
 export function getCurrentMode() {
     return getSystem('buttons').mode.slice(-1)[0];
 }
+
 export function initSound() {
     const a = document.getElementById('ambient');
     if (a) {
