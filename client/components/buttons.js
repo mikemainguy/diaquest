@@ -96,7 +96,7 @@ AFRAME.registerComponent('buttons', {
             const rays = getRaycasters();
             for (const caster of rays) {
                 caster.setAttribute('raycaster', 'far',
-                    caster.getAttribute('raycaster').far == 10 ? .1 : 20);
+                    caster.getAttribute('raycaster').far == 20 ? .1 : 20);
             }
         },
         xbuttondown: function (evt) {
