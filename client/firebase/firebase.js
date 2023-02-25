@@ -58,7 +58,9 @@ function buildPath(name, id) {
     }
 
 }
-
+function getAnimationPath(id) {
+    return buildPath('animations', id);
+}
 function getSessionPath(id) {
     return buildPath('sessions', id);
 }
@@ -164,7 +166,6 @@ async function initializeFirebase() {
                             entries: snapshot.val()
                         }
                     }));
-
         });
 
         const privateDirectoryRef = ref(database, `dir/user_worlds/${profile.user.sub}/`);
@@ -178,20 +179,17 @@ async function initializeFirebase() {
                         }
                     }));
         });
-
-
         const loc = window.location.pathname;
         if (loc.startsWith('/worlds')) {
             afterSceneLoads(registerMedias, ref(database, getMediaPath()));
             addListeners(ref(database, getEntityPath(null)));
             addListeners(ref(database, getSessionPath()));
+            addListeners(ref(database, getAnimationPath()))
         }
     }
-
     if (typeof newrelic !== 'undefined') {
         newrelic.addPageAction('firebase db setup complete');
     }
-
 }
 
 function addListeners(entity) {
@@ -208,10 +206,7 @@ export function writeUser(profile) {
         sha512(profile.user.sid).then((result) => {
             profile.user.last_seen = new Date().toUTCString();
             const id = 'session' + result;
-
             update(ref(database, 'users/' + profile.user.sub), profile);
-
-
             const rig = document.querySelector('.rig');
             if (rig) {
                 rig.setAttribute('id', id);
@@ -230,8 +225,6 @@ export function writeUser(profile) {
     } else {
         console.error('user info appears to be not logged in');
     }
-
-
 }
 
 

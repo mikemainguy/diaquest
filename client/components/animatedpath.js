@@ -30,16 +30,29 @@ AFRAME.registerSystem('animationmanager', {
         }
         id.appendChild(selector);
     },
-    updateAnimation: function (field, id, color) {
+    updateSelection: function (field, id, color) {
         const ele = document.getElementById(id);
         if (ele) {
+
             if (this[field]) {
                 const old = document.getElementById(this[field]);
-                old.querySelector('[selected-animation]').remove();
-            }
-            this[field] = id;
-            this.createSelector(ele, color);
+                if (old) {
+                    const select = old.querySelector('[selected-animation]');
+                    if (select) {
+                        select.remove();
+                    }
+                }
 
+            }
+            if (id) {
+                if (color) {
+                    this[field] = id;
+                    this.createSelector(ele, color);
+                } else {
+                    this[field] == null;
+                }
+
+            }
         }
     },
     click: function (evt) {
@@ -49,13 +62,13 @@ AFRAME.registerSystem('animationmanager', {
                 const id = evt.detail.intersectedEl.closest('[template]').id
                 switch (this.state) {
                     case 'animation-select':
-                        this.updateAnimation('selected', id, '#ff0');
+                        this.updateSelection('selected', id, '#ff0');
                         break;
                     case 'animation-from':
-                        this.updateAnimation('from', id, '#f00');
+                        this.updateSelection('from', id, '#f00');
                         break;
                     case 'animation-to':
-                        this.updateAnimation('to', id, '#00f');
+                        this.updateSelection('to', id, '#00f');
                         break;
                 }
                 let ready = true;
@@ -82,7 +95,6 @@ AFRAME.registerComponent('animationmanager', {
     },
     animationUpdate: function (evt) {
         const list = this.el.querySelectorAll('[widget]');
-
         for(const w of list) {
             if (w.components['widget'].data.method == 'animation-add') {
                 w.setAttribute('visible', 'true');
@@ -90,6 +102,11 @@ AFRAME.registerComponent('animationmanager', {
 
         }
 
+    },
+    clearSelections: function() {
+        for (const f of ['selected', 'from','to']) {
+            this.system.updateSelection(f, this.system[f], null);
+        }
     },
     events: {
         'animation-add': function (evt) {
@@ -106,15 +123,23 @@ AFRAME.registerComponent('animationmanager', {
             } else {
                 this.animations.push(item);
             }
-            this.system.select = null;
-            this.system.from = null;
-            this.system.to = null;
             this.updateAnimationList();
+            this.clearSelections();
+            const el = document.getElementById(item.item);
+            const fromEl = document.getElementById(item.from);
 
+            if (el && fromEl) {
+                el.setAttribute('position', fromEl.getAttribute('position'));
+                //el.querySelector('[share-position]').setAttribute('share-position', 'active', false);
+            }
         },
         'animation-play': function (evt) {
             for (const c of this.animations) {
-                document.querySelector('#' + c.item).emit('animation-play');
+                const el = document.querySelector('#' + c.item);
+                if (el) {
+                    el.querySelector('[share-position]').setAttribute('share-position','active', false);
+                }
+                el.emit('animation-play');
             }
             this.system.state = null;
 

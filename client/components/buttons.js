@@ -156,6 +156,10 @@ AFRAME.registerComponent('buttons', {
             }
         },
         triggerdown: function (evt) {
+            if (!this.system.mode) {
+                this.system.mode = [];
+                return;
+            }
             if (evt.target.states.includes('cursor-hovering')) {
                 return;
             }

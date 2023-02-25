@@ -1,7 +1,9 @@
 import {debug} from './debug';
 
 AFRAME.registerComponent('share-position', {
-    schema: {},
+    schema: {
+        active: {type: 'boolean', default: true}
+    },
     init: function () {
         this.e = new THREE.Euler();
 
@@ -49,7 +51,7 @@ AFRAME.registerComponent('share-position', {
     },
     tick: function (time, timeDelta) {
 
-        if (this.hasPosition) {
+        if (this.hasPosition && this.data.active) {
 
             if (!this.oldPosition) {
                 this.oldPosition = new THREE.Vector3();
@@ -59,8 +61,6 @@ AFRAME.registerComponent('share-position', {
                 this.parent.getWorldPosition(this.currentPosition);
                 round100(this.currentPosition);
                 this.parent.getWorldQuaternion(this.currentRotation);
-
-
                 this.parent.getWorldPosition(this.oldPosition);
                 round100(this.oldPosition);
                 this.parent.getWorldQuaternion(this.oldRotation);
