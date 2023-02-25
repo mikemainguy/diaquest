@@ -130,7 +130,6 @@ AFRAME.registerComponent('animationmanager', {
 
             if (el && fromEl) {
                 el.setAttribute('position', fromEl.getAttribute('position'));
-                //el.querySelector('[share-position]').setAttribute('share-position', 'active', false);
             }
         },
         'animation-play': function (evt) {
