@@ -41,7 +41,14 @@ export function getSystem(systemName) {
     return document.querySelector('a-scene').systems[systemName];
 }
 export function getCurrentMode() {
-    return getSystem('buttons').mode.slice(-1)[0];
+    const sys = getSystem('buttons');
+    if (sys && sys.mode) {
+        return getSystem('buttons').mode.slice(-1)[0];
+    } else {
+        return null;
+    }
+
+
 }
 
 export function initSound() {

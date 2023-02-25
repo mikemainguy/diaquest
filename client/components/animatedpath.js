@@ -76,15 +76,20 @@ AFRAME.registerSystem('animationmanager', {
 });
 AFRAME.registerComponent('animationmanager', {
     init: function () {
+        this.animations = [];
         this.animationUpdate = this.animationUpdate.bind(this);
         document.addEventListener('animationUpdate', this.animationUpdate);
     },
     animationUpdate: function (evt) {
         const list = this.el.querySelectorAll('[widget]');
+
         for(const w of list) {
-            console.log(w.components['widget'].data.method);
+            if (w.components['widget'].data.method == 'animation-add') {
+                w.setAttribute('visible', 'true');
+            }
+
         }
-        debug(evt.detail);
+
     },
     events: {
         'animation-add': function (evt) {
