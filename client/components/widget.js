@@ -83,6 +83,10 @@ AFRAME.registerComponent('widget', {
                     buttonState.template = '#light-template'
                     buttonState.mode = ['adding'];
                     break;
+                case 'add-animationmanager':
+                    buttonState.template = '#animationmanager-template'
+                    buttonState.mode = ['adding'];
+                    break;
                 case 'close':
                     break;
                 case 'edit-image':

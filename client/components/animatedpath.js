@@ -1,7 +1,12 @@
 import {debug} from './debug';
 import {htmlToElement} from './util';
-
 AFRAME.registerSystem('animationmanager', {
+    init: function() {
+        this.activeid = null;
+    }
+});
+
+AFRAME.registerComponent('animationmanager', {
     init: function () {
         this.state = null;
         this.index = null;
@@ -10,9 +15,21 @@ AFRAME.registerSystem('animationmanager', {
         this.selected = null;
         this.duration = 1000;
         this.delay = 0;
+        this.active = false;
 
         this.click = this.click.bind(this);
         document.addEventListener('click', this.click);
+        this.animations = [];
+        this.animationUpdate = this.animationUpdate.bind(this);
+        document.addEventListener('animationUpdate', this.animationUpdate);
+    },
+    animationUpdate: function (evt) {
+        const list = this.el.querySelectorAll('[widget]');
+        for (const w of list) {
+            if (w.components['widget'].data.method == 'animation-add') {
+                w.setAttribute('visible', 'true');
+            }
+        }
     },
     createSelector: function (id, color) {
         const c = color ? color : '#00f';
@@ -20,7 +37,7 @@ AFRAME.registerSystem('animationmanager', {
             htmlToElement(`
             <a-entity selected-animation="true" animation="from: 0 0 0; to: 0 0 359; dur: 2000; autoplay: true; loop: true; property: rotation; easing: linear">
                 <a-entity animation="from: 0 0 0; to: 359 0 0; dur: 500; autoplay: true; loop: true; property: rotation; easing: linear">
-                    <a-sphere radius=".05" animation="from: 1 1 1; to: .25 .25 .25; autoplay: true; dur: 750; loop: true; property: scale;" position="0 .1 0" color="${color}"></a-sphere>
+                    <a-sphere radius=".05" animation="from: 1 1 1; to: .25 .25 .25; autoplay: true; dur: 750; loop: true; property: scale;" position="0 .1 0" color="${c}"></a-sphere>
                 </a-entity>
             </a-entity>
             `);
@@ -55,6 +72,61 @@ AFRAME.registerSystem('animationmanager', {
             }
         }
     },
+    clearSelections: function () {
+        for (const f of ['selected', 'from', 'to']) {
+            this.updateSelection(f, this[f], null);
+        }
+    },
+    events: {
+
+        'animation-add': function (evt) {
+            this.state = 'animation-add';
+            const item = {
+                item: this.selected,
+                from: this.from,
+                to: this.to,
+                duration: this.duration,
+                delay: this.delay
+            }
+            if (this.index) {
+                this.animations[this.index] = item;
+            } else {
+                this.animations.push(item);
+            }
+            this.updateAnimationList();
+            this.clearSelections();
+            const el = document.getElementById(item.item);
+            const fromEl = document.getElementById(item.from);
+
+            if (el && fromEl) {
+                el.setAttribute('position', fromEl.getAttribute('position'));
+            }
+        },
+        'animation-play': function (evt) {
+            for (const c of this.animations) {
+                const el = document.querySelector('#' + c.item);
+                if (el) {
+                    el.querySelector('[share-position]').setAttribute('share-position', 'active', false);
+                }
+                el.emit('animation-play');
+            }
+            this.state = null;
+
+        },
+        'animation-select': function (evt) {
+            this.state = 'animation-select';
+        },
+        'animation-from': function (evt) {
+            this.state = 'animation-from';
+        },
+        'animation-to': function (evt) {
+            this.state = 'animation-to';
+        },
+        'animation-duration': function (evt) {
+            this.state = 'animation-duration';
+        }
+
+    },
     click: function (evt) {
         if (this.state) {
             if (evt.detail.intersectedEl &&
@@ -78,84 +150,13 @@ AFRAME.registerSystem('animationmanager', {
                     }
                 }
                 if (ready) {
-                    document.dispatchEvent(new CustomEvent('animationUpdate',{detail: 'OK'}));
+                    document.dispatchEvent(new CustomEvent('animationUpdate', {detail: 'OK'}));
                 }
 
             }
         } else {
 
         }
-    }
-});
-AFRAME.registerComponent('animationmanager', {
-    init: function () {
-        this.animations = [];
-        this.animationUpdate = this.animationUpdate.bind(this);
-        document.addEventListener('animationUpdate', this.animationUpdate);
-    },
-    animationUpdate: function (evt) {
-        const list = this.el.querySelectorAll('[widget]');
-        for(const w of list) {
-            if (w.components['widget'].data.method == 'animation-add') {
-                w.setAttribute('visible', 'true');
-            }
-
-        }
-
-    },
-    clearSelections: function() {
-        for (const f of ['selected', 'from','to']) {
-            this.system.updateSelection(f, this.system[f], null);
-        }
-    },
-    events: {
-        'animation-add': function (evt) {
-            this.system.state = 'animation-add';
-            const item = {
-                item: this.system.selected,
-                from: this.system.from,
-                to: this.system.to,
-                duration: this.system.duration,
-                delay: this.system.delay
-            }
-            if (this.system.index) {
-                this.animations[this.system.index] = item;
-            } else {
-                this.animations.push(item);
-            }
-            this.updateAnimationList();
-            this.clearSelections();
-            const el = document.getElementById(item.item);
-            const fromEl = document.getElementById(item.from);
-
-            if (el && fromEl) {
-                el.setAttribute('position', fromEl.getAttribute('position'));
-            }
-        },
-        'animation-play': function (evt) {
-            for (const c of this.animations) {
-                const el = document.querySelector('#' + c.item);
-                if (el) {
-                    el.querySelector('[share-position]').setAttribute('share-position','active', false);
-                }
-                el.emit('animation-play');
-            }
-            this.system.state = null;
-
-        },
-        'animation-select': function (evt) {
-            this.system.state = 'animation-select';
-        },
-        'animation-from': function (evt) {
-            this.system.state = 'animation-from';
-        },
-        'animation-to': function (evt) {
-            this.system.state = 'animation-to';
-        },
-        'animation-duration': function (evt) {
-            this.system.state = 'animation-duration';
-        }
-
     },
     updateList: function () {
         const listEls = this.el.querySelector('.animationlist');

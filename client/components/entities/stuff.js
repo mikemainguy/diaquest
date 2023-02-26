@@ -35,15 +35,17 @@ AFRAME.registerComponent('stuff', {
         this.saveable = this.el.querySelector('.saveable');
         this.packet = this.el.querySelector('.data-packet');
         this.textDisplay = this.el.querySelector('[text]');
+        if (this.scale && this.saveable && this.saveable.object3D) {
+            this.saveable.object3D.scale.set(this.scale.x, this.scale.y, this.scale.z);
+        }
+
         this.calculate = AFRAME.utils.throttleTick(this.calculate, 500, this);
         if (this.data.parent) {
 
             const parent = document.getElementById(this.data.parent);
             if (parent) {
-
                 window.setTimeout(() => {parent.object3D.attach(this.el.object3D)}, 250);
             } else {
-
                 window.setTimeout(() => {this.el.sceneEl.object3D.attach(this.el.object3D);}, 250);
             }
         } else {
@@ -52,10 +54,6 @@ AFRAME.registerComponent('stuff', {
         if (this.image && this.saveable) {
             this.saveable.setAttribute('material', 'src', this.image);
         }
-        if (this.saveable) {
-            this.saveable.setAttribute('visible', true);
-            this.saveable.setAttribute('sound', 'src: url(/assets/sounds/ButtonClick.mp3); on: click;');
-        }
         if (this.textDisplay) {
             if (this.data.text) {
                 this.textDisplay.setAttribute('visible', true);
@@ -63,6 +61,10 @@ AFRAME.registerComponent('stuff', {
             } else {
                 this.textDisplay.setAttribute('visible', false);
             }
+        }
+        if (this.saveable) {
+            window.setTimeout(() => {this.saveable.setAttribute('visible', true)}, 250);
+            this.saveable.setAttribute('sound', 'src: url(/assets/sounds/ButtonClick.mp3); on: click;');
         }
 
         this.el.emit('registerupdate', {}, true);

@@ -109,23 +109,10 @@ AFRAME.registerComponent('buttons', {
 
         },
         abuttondown: function (evt) {
-            const amenu = document.getElementById('animationmenu');
-            if (amenu) {
-                const aMenuShowing = amenu.getAttribute('visible');
-                if (aMenuShowing) {
-                    hideMenu({detail: {id: '#animationmenu'}});
-                } else {
-                    const menu = document.getElementById('animationmenu');
-                    const cam = document.querySelector('#camera').object3D;
-
-                    //const keyboard = this.el.object3D;
-                    const pos = new THREE.Vector3();
-                    pos.copy(cam.position);
-                    menu.object3D.position.set(pos.x, pos.y - .4, pos.z - 1);
-                    showMenu({detail: {id: '#animationmenu', objects: '#animationmenu [widget], .saveable'}});
-                }
+            const animationMenuList = document.querySelectorAll('[animationmenu]');
+            for (const menu of animationMenuList) {
+                menu.setAttribute('visible', true);
             }
-
         },
         abuttonup: function (evt) {
 

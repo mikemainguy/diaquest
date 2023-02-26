@@ -23,7 +23,9 @@
              ></a-mixin>
 
 
-
+    <script id="animationmanager-template" type="html">
+        {{> animationMenu }}
+    </script>
 
     <script id="plus" type="html">
         <a-entity position="0 0 .1">
@@ -68,7 +70,8 @@
                     share-position
                     radius=".01"
                     height=".1"
-                    class="saveable">
+                    class="saveable"
+                    visible="false">
             </a-cylinder>
             <a-entity
                     rotation="90 0 0"

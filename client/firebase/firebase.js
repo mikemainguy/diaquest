@@ -325,6 +325,9 @@ function createOrUpdateDom(entity) {
         (me && me.getAttribute('id') === entity.id)) {
         return;
     }
+    /*if (entity && entity.template && (entity.template.indexOf('animation') > -1)){
+        return;
+    }*/
     const scene = document.querySelector("a-scene");
     let exists = document.getElementById(entity.id);
     if (exists && entity.updater && (me.getAttribute('id') === entity.updater)) {

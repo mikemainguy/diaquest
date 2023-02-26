@@ -3,7 +3,9 @@ AFRAME.registerSystem('grabber', {
 
   }
 });
+AFRAME.registerComponent('grabbable', {
 
+});
 AFRAME.registerComponent('grabber', {
   init: function () {
     this.grabbed = null;
