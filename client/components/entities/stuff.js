@@ -35,8 +35,16 @@ AFRAME.registerComponent('stuff', {
         this.saveable = this.el.querySelector('.saveable');
         this.packet = this.el.querySelector('.data-packet');
         this.textDisplay = this.el.querySelector('[text]');
-        if (this.scale && this.saveable && this.saveable.object3D) {
-            this.saveable.object3D.scale.set(this.scale.x, this.scale.y, this.scale.z);
+        if (this.scale &&
+            this.saveable &&
+            this.saveable.object3D) {
+            this
+                .saveable
+                .object3D
+                .scale
+                .set(this.scale.x,
+                    this.scale.y,
+                    this.scale.z);
         }
 
         this.calculate = AFRAME.utils.throttleTick(this.calculate, 500, this);
@@ -80,8 +88,11 @@ AFRAME.registerComponent('stuff', {
             }
             if (!this.scale.equals(this.saveable.object3D.scale)) {
                 this.saveable.object3D.scale.set(this.scale.x, this.scale.y, this.scale.z);
+                if (this.saveable?.object3D?.children[0]?.geometry) {
+                    this.saveable.object3D.children[0].geometry.computeBoundingBox();
+                }
             }
-            if (this.saveable?.object3D?.children[0]?.geometry) {
+            if (!this.saveable?.object3D?.children[0]?.geometry.boundingBox) {
                 this.saveable.object3D.children[0].geometry.computeBoundingBox();
             }
             if (!this.saveable.getAttribute('animation')) {
