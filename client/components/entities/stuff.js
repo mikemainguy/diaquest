@@ -1,4 +1,5 @@
-import {changeRaycaster, createUUID, getCurrentMode, getSystem, round} from "../util";
+import {changeRaycaster, getCurrentMode, getSystem, round} from "../util";
+
 const TIMEOUT = 100;
 AFRAME.registerSystem('stuff', {
     init: function () {
@@ -93,22 +94,26 @@ AFRAME.registerComponent('stuff', {
                 this.update();
                 return;
             }
-            if (!this.scale.equals(this.saveable.object3D.scale)) {
-                this
-                    .saveable
-                    .object3D
+            const obj = this.saveable.object3D;
+            if (!this.scale.equals(obj.scale)) {
+                obj
                     .scale
                     .set(
                         this.scale.x,
                         this.scale.y,
                         this.scale.z);
-                if (this.saveable?.object3D?.children[0]?.geometry) {
-                    this.saveable.object3D.children[0].geometry.computeBoundingBox();
+                for (const o of obj.children) {
+                    if (o.geometry) {
+                        o.geometry.computeBoundingBox();
+                    }
                 }
             }
-            if (!this.saveable?.object3D?.children[0]?.geometry.boundingBox) {
-                this.saveable.object3D.children[0].geometry.computeBoundingBox();
+            for (const o of obj.children) {
+                if (o.geometry && !o.geometry.boundingBox) {
+                    o.geometry.computeBoundingBox();
+                }
             }
+
             if (!this.saveable.getAttribute('animation')) {
                 this.saveable.setAttribute('material', 'color', this.data.color);
                 if (this.packet) {

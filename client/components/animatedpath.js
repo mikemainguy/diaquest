@@ -17,20 +17,17 @@ AFRAME.registerComponent('animationmanager', {
         this.duration = 1000;
         this.delay = 0;
         this.active = false;
-
-        this.click = this.click.bind(this);
-        document.addEventListener('click', this.click);
-        this.animations = [];
-        this.animationUpdate = this.animationUpdate.bind(this);
-        document.addEventListener('animationUpdate', this.animationUpdate);
-    },
-    animationUpdate: function (evt) {
-        const list = this.el.querySelectorAll('[widget]');
-        for (const w of list) {
-            if (w.components['widget'].data.method == 'animation-add') {
-                w.setAttribute('visible', 'true');
-            }
+        if (this.data.animations) {
+            this.animations = JSON.parse(this.data.animations);
+        } else {
+            this.animations = [];
         }
+        this.onclick = this.onclick.bind(this);
+        document.addEventListener('click', this.onclick);
+
+    },
+    schema: {
+        animations: {type: 'string'}
     },
     createSelector: function (id, color) {
         const c = color ? color : '#00f';
@@ -51,7 +48,6 @@ AFRAME.registerComponent('animationmanager', {
     updateSelection: function (field, id, color) {
         const ele = document.getElementById(id);
         if (ele) {
-
             if (this[field]) {
                 const old = document.getElementById(this[field]);
                 if (old) {
@@ -74,14 +70,14 @@ AFRAME.registerComponent('animationmanager', {
         }
     },
     clearSelections: function () {
-        for (const f of ['selected', 'from', 'to']) {
-            this.updateSelection(f, this[f], null);
-        }
+        this.updateSelection('to', this.to, null);
+        this.updateSelection('from', this.to, '#f00');
+        this.to = null;
+        this.state = 'animation-to';
     },
     events: {
         click: function (evt) {
             if (getCurrentMode() == 'remove') {
-                console.log('here');
                 document.dispatchEvent(
                     new CustomEvent('shareUpdate',
                         {
@@ -119,27 +115,8 @@ AFRAME.registerComponent('animationmanager', {
         'animation-add':
 
             function (evt) {
-                this.state = 'animation-add';
-                const item = {
-                    item: this.selected,
-                    from: this.from,
-                    to: this.to,
-                    duration: this.duration,
-                    delay: this.delay
-                }
-                if (this.index) {
-                    this.animations[this.index] = item;
-                } else {
-                    this.animations.push(item);
-                }
-                this.updateAnimationList();
-                this.clearSelections();
-                const el = document.getElementById(item.item);
-                const fromEl = document.getElementById(item.from);
 
-                if (el && fromEl) {
-                    el.setAttribute('position', fromEl.getAttribute('position'));
-                }
+
             }
 
         ,
@@ -153,7 +130,7 @@ AFRAME.registerComponent('animationmanager', {
                     }
                     el.emit('animation-play');
                 }
-                this.state = null;
+                //this.state = null;
 
             }
 
@@ -162,6 +139,7 @@ AFRAME.registerComponent('animationmanager', {
 
             function (evt) {
                 this.state = 'animation-select';
+                this.el.querySelector('[widget*=animation-select]').setAttribute('visible', false);
             }
 
         ,
@@ -172,11 +150,10 @@ AFRAME.registerComponent('animationmanager', {
             }
 
         ,
-        'animation-to':
+        'animation-to': function (evt) {
 
-            function (evt) {
-                this.state = 'animation-to';
-            }
+
+        }
 
         ,
         'animation-duration':
@@ -186,9 +163,7 @@ AFRAME.registerComponent('animationmanager', {
             }
 
     },
-    click: function (evt) {
-
-
+    onclick: function (evt) {
         if (this.state) {
             const intersectedEl = evt.detail.intersectedEl;
             if (intersectedEl &&
@@ -197,30 +172,44 @@ AFRAME.registerComponent('animationmanager', {
                 switch (this.state) {
                     case 'animation-select':
                         this.updateSelection('selected', id, '#ff0');
+                        this.state = 'animation-from';
                         break;
                     case 'animation-from':
                         this.updateSelection('from', id, '#f00');
+                        this.state = 'animation-to'
                         break;
                     case 'animation-to':
-                        this.updateSelection('to', id, '#00f');
+                        let delay = 0;
+                        for (const a of this.animations) {
+                            delay += a.duration;
+                        }
+                        const item = {
+                            item: this.selected,
+                            from: this.from,
+                            to: id,
+                            duration: this.duration,
+                            delay: delay
+                        }
+                        this.to = id;
+                        if (this.index) {
+                            this.animations[this.index] = item;
+                        } else {
+                            this.animations.push(item);
+                        }
+                        this.updateAnimationList();
+                        this.clearSelections();
+                        const el = document.getElementById(item.item);
+                        const fromEl = document.getElementById(item.from);
+                        if (el && fromEl) {
+                            el.setAttribute('position', fromEl.getAttribute('position'));
+                        }
                         break;
                 }
-                let ready = true;
-                for (const f of ['selected', 'from', 'to']) {
-                    if (this[f] == null) {
-                        ready = false;
-                    }
-                }
-                if (ready) {
-                    document.dispatchEvent(new CustomEvent('animationUpdate', {detail: 'OK'}));
-                }
-
             }
         } else {
 
         }
-    }
-    ,
+    },
     updateList: function () {
         const listEls = this.el.querySelector('.animationlist');
         if (!listEls) {
@@ -252,17 +241,25 @@ AFRAME.registerComponent('animationmanager', {
         return AFRAME.utils.coordinates.stringify(val);
     }
     ,
+    getWorldPosition(selector) {
+        const el = document.querySelector( selector);
+        const worldPos = new THREE.Vector3();
+        el.object3D.getWorldPosition(worldPos);
+        return worldPos;
+    },
     updateAnimationList: function (oldData) {
         let idx = 0;
+
+
         for (const a of this.animations) {
             const ele = document.querySelector('#' + a.item);
-            const from = document.querySelector('#' + a.from).getAttribute('position');
-            const to = document.querySelector('#' + a.to).getAttribute('position');
+            const from = this.getWorldPosition('#' + a.from);
+            const to = this.getWorldPosition('#' + a.to);
             ele
                 .setAttribute(`animation__${idx}`,
                     `from: ${this.getCoordinates(from)}; 
                 to: ${this.getCoordinates(to)}; 
-            property: position; autoplay: false; startEvents: animation-play`);
+            property: position; autoplay: false; duration: ${a.duration}; delay: ${a.delay};easing: linear;startEvents: animation-play`);
             idx++;
         }
         this.updateList();
