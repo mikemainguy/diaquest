@@ -1,5 +1,5 @@
 import {debug} from './debug';
-import {htmlToElement} from './util';
+import {htmlToElement, round} from './util';
 AFRAME.registerSystem('animationmanager', {
     init: function() {
         this.activeid = null;
@@ -78,7 +78,27 @@ AFRAME.registerComponent('animationmanager', {
         }
     },
     events: {
+        grabbed: function (evt) {
+            this.grabbed = this.el.closest('[template]');
+            if (typeof newrelic !== 'undefined') {
+                newrelic.addPageAction('grab', {id: this.grabbed.id});
+            }
+            evt.detail.hand.object3D.attach(this.grabbed.object3D);
+        },
+        released: function () {
+            if (typeof newrelic !== 'undefined') {
+                newrelic.addPageAction('release', {id: this.grabbed.id});
+            }
+            this.el.sceneEl.object3D.attach(this.grabbed.object3D);
+            this.system.activeid = this.grabbed.id;
 
+            const newPos = round(this.grabbed.object3D.position, .1);
+            this.grabbed.object3D.position.set(newPos.x, newPos.y, newPos.z);
+
+            const ang = AFRAME.utils.coordinates.parse(this.grabbed.getAttribute('rotation'));
+            this.grabbed.setAttribute('rotation', AFRAME.utils.coordinates.stringify(round(ang, 45)));
+            this.grabbed = null;
+        },
         'animation-add': function (evt) {
             this.state = 'animation-add';
             const item = {

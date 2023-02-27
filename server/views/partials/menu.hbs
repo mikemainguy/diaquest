@@ -1,7 +1,7 @@
 <a-entity position=".1 .05 -.1" rotation="-70 -80 0" id="bmenu" visible="false" scale="0.1 0.1 0.1">
     <a-entity sound="src: url(/assets/sounds/KeyIn.mp3); on: click; poolSize: 5" gridlayout position="-1 -.5 0">
         <a-entity>
-            <a-entity widget="method: add-sphere; label: Sphere"
+            <a-entity widget="method: add; template: #sphere-template; label: Sphere"
                       obj-model="obj: url(/assets/models/button.obj)"
                       material="color: #fce; opacity: .8">
             </a-entity>
@@ -12,7 +12,7 @@
 
         </a-entity>
         <a-entity>
-            <a-entity widget="method: add-box; label: Box"
+            <a-entity widget="method: add; template: #box-template; label: Box"
                       obj-model="obj: url(/assets/models/button.obj)"
                       material="color: #fce; opacity: .8"></a-entity>
             <a-box
@@ -22,11 +22,11 @@
                     mixin="widgetMaterial">
 
             </a-box>
-            <a-icon width=".25" height=".25" position="0 -.3 0.045"name="plus"></a-icon>
+            <a-icon width=".25" height=".25" position="0 -.3 0.045" name="plus"></a-icon>
         </a-entity>
 
         <a-entity>
-            <a-entity widget="method: add-cylinder; label: Cylinder"
+            <a-entity widget="method: add; template: #cylinder-template; label: Cylinder"
                       obj-model="obj: url(/assets/models/button.obj)"
                       material="color: #fce; opacity: .8">
             </a-entity>
@@ -38,7 +38,7 @@
         </a-entity>
         <a-entity>
             <a-entity>
-                <a-entity widget="method: add-connector; label: Connector"
+                <a-entity widget="method: add; template: #connector-template; label: Connector"
                           obj-model="obj: url(/assets/models/button.obj)"
                           material="color: #fce; opacity: .8"></a-entity>
                 <a-entity template="src: #widgetPoint" position="0 0.2 0"></a-entity>
@@ -48,7 +48,7 @@
             <a-icon width=".25" height=".25" position="0 -.3 0.045"name="plus"></a-icon>
         </a-entity>
         <a-entity>
-            <a-entity widget="method: add-plane; label: Plane"
+            <a-entity widget="method: add; template: #plane-template; label: Plane"
                       obj-model="obj: url(/assets/models/button.obj)"
                       material="color: #fce; opacity: .8"></a-entity>
             <a-plane

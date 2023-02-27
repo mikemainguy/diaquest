@@ -11,6 +11,43 @@ export function getMenuPosition(distance) {
     return pos;
 }
 
+export function exportGLB() {
+
+    const exporter = new THREE.GLTFExporter();
+    const nodes = Array.from(document.querySelectorAll('[stuff]').values());
+    const nodeMap = nodes.map(x => x.object3D);
+// Parse the input and generate the glTF output
+    exporter.parse(
+        nodeMap,
+        // called when the gltf has been generated
+        function (gltf) {
+            console.log(gltf);
+            //let myJson = gltf
+            let element = document.createElement('a');
+            element.setAttribute('href',
+                URL.createObjectURL(new Blob([gltf],
+                    {type: 'model/gltf-binary'})));
+            element.setAttribute('download', 'model.glb');
+            element.style.display = 'none';
+            document.body.appendChild(element);
+            element.click();
+            document.body.removeChild(element);
+        },
+        function (err) {
+            console.log('error ' + err);
+        },
+
+        {
+            "binary": true,
+            forcePowerOfTwoTextures: true,
+            onlyVisible: true,
+            embedImages: true,
+            forceIndices: true
+        }
+    );
+
+}
+
 export function changeRaycaster(newObjects) {
     const hands = document.querySelectorAll('[raycaster]');
     for (const hand of hands) {

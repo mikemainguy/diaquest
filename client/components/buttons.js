@@ -1,5 +1,5 @@
 import {debug} from './debug';
-import {changeRaycaster, createUUID} from './util';
+import {changeRaycaster, createUUID, exportGLB} from './util';
 
 AFRAME.registerSystem('buttons', {
     init: function () {
@@ -15,45 +15,29 @@ AFRAME.registerSystem('buttons', {
         this.el.addEventListener('buttonstate', this.buttonstate);
         this.el.addEventListener('hideMenu', this.hideMenu);
         this.el.addEventListener('showMenu', this.showMenu);
-        document.addEventListener('export', function () {
-            console.log('starting');
-            const exporter = new THREE.GLTFExporter();
-            const nodes = Array.from(document.querySelectorAll('[stuff]').values());
-            const nodeMap = nodes.map(x => x.object3D);
-// Parse the input and generate the glTF output
-            exporter.parse(
-                nodeMap,
-                // called when the gltf has been generated
-                function (gltf) {
-                    console.log(gltf);
-                    //let myJson = gltf
-                    let element = document.createElement('a');
-                    element.setAttribute('href',
-                        URL.createObjectURL(new Blob([gltf],
-                            {type: 'model/gltf-binary'})));
-                    element.setAttribute('download', 'model.glb');
-                    element.style.display = 'none';
-                    document.body.appendChild(element);
-                    element.click();
-                    document.body.removeChild(element);
-                },
-                function (err) {
-                    console.log('error ' + err);
-                },
-
-                {
-                    "binary": true,
-                    forcePowerOfTwoTextures: true,
-                    onlyVisible: true,
-                    embedImages: true,
-                    forceIndices: true
-                }
-            );
-
-        });
+        document.addEventListener('export', exportGLB);
     },
     buttonstate: function (evt) {
-        this.template = evt.detail.template ? evt.detail.template : null;
+        if (this.template == '#connector-template'
+            && this.mode[0] == 'add'
+           && this.first
+           && evt.detail.first) {
+            const data = {
+                id: createUUID(),
+                template: this.template,
+                color: this.color,
+                first: this.first,
+                second: evt.detail.first
+            }
+
+            document.dispatchEvent(
+                new CustomEvent('shareUpdate',
+                    {detail: data}));
+            this.system.first = null;
+        }
+        if (evt.detail.template) {
+            this.template = evt.detail.template;
+        }
         this.mode = evt.detail.mode;
         this.image = evt.detail.image;
         this.id = evt.detail.id ? evt.detail.id : null;
@@ -69,13 +53,16 @@ AFRAME.registerComponent('buttons', {
         this.template = null;
         this.color = '#399';
         this.image = '';
+        this.pointer = this.buildPointer();
+        this.system.pointers.push(this.pointer);
+    },
+    buildPointer: function() {
         const pointer = document.createElement('a-sphere');
         pointer.setAttribute('material', 'color: #fff; opacity: 0.8; emissive: #fff');
         pointer.setAttribute('radius', '0.004');
         pointer.setAttribute('visible', 'false');
         this.el.appendChild(pointer);
-        this.pointer = pointer;
-        this.system.pointers.push(pointer);
+        return pointer;
     },
     update: function () {
 
@@ -109,10 +96,7 @@ AFRAME.registerComponent('buttons', {
 
         },
         abuttondown: function (evt) {
-            const animationMenuList = document.querySelectorAll('[animationmenu]');
-            for (const menu of animationMenuList) {
-                menu.setAttribute('visible', true);
-            }
+
         },
         abuttonup: function (evt) {
 
@@ -136,7 +120,7 @@ AFRAME.registerComponent('buttons', {
                 if (bMenuShowing) {
                     hideMenu({detail: {id: '#bmenu'}});
                 } else {
-                    showMenu({detail: {id: '#bmenu', objects: '#bmenu [widget], .saveable'}});
+                    showMenu({detail: {id: '#bmenu', objects: '[widget], .saveable'}});
                 }
             }
 
@@ -163,7 +147,10 @@ AFRAME.registerComponent('buttons', {
             data.position = v;
 
             switch (this.system.mode.slice(-1)[0]) {
-                case 'copying':
+                case 'copy':
+                    if (!this.system.first) {
+                        return;
+                    }
                     data.id = createUUID();
                     const ele = document.getElementById(this.system.first);
                     data.template = ele.getAttribute('template').src;
@@ -176,14 +163,16 @@ AFRAME.registerComponent('buttons', {
                         new CustomEvent('shareUpdate',
                             {detail: data}));
                     break;
-                case 'adding':
-                    this.system.first = null;
+                case 'add':
                     data.id = createUUID();
                     data.template = this.system.template;
                     data.color = this.system.color;
+
                     document.dispatchEvent(
                         new CustomEvent('shareUpdate',
                             {detail: data}));
+                    this.system.first = null;
+                    this.system.second = null;
                     break;
             }
             debug(this.system.mode);
@@ -197,14 +186,7 @@ function showMenu(evt) {
 
 
 function hideMenu(evt) {
-    let objs = '.saveable'
-    if (!evt.id || evt.id != '#bmenu') {
-        const bmenu = document.getElementById('bmenu')
-
-        if (bmenu && bmenu.object3D.visible) {
-            objs += ', #bmenu [widget]'
-        }
-    }
+    let objs = '.saveable, [widget]'
     changeMenu(evt.detail.id, false, objs);
 }
 

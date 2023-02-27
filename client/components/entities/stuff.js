@@ -49,7 +49,6 @@ AFRAME.registerComponent('stuff', {
 
         this.calculate = AFRAME.utils.throttleTick(this.calculate, 500, this);
         if (this.data.parent) {
-
             const parent = document.getElementById(this.data.parent);
             if (parent) {
                 window.setTimeout(() => {
@@ -122,7 +121,7 @@ AFRAME.registerComponent('stuff', {
     tick: function (time, timeDelta) {
         if (this.textDisplay && this.saveable) {
             if (this.saveable?.object3D?.children[0]?.geometry?.boundingBox) {
-                const radius = this.saveable
+                const maxY = this.saveable
                     .object3D
                     .children[0]
                     .geometry
@@ -133,7 +132,7 @@ AFRAME.registerComponent('stuff', {
                     this.textDisplay
                         .object3D
                         .position
-                        .set(0, (radius * this.saveable.object3D.scale.y) + 0.06, 0);
+                        .set(0, (maxY * this.saveable.object3D.scale.y) + 0.06, 0);
                 }
             }
         }
@@ -146,6 +145,7 @@ AFRAME.registerComponent('stuff', {
             if (typeof newrelic !== 'undefined') {
                 newrelic.addPageAction('click', {id: obj.id});
             }
+
             const mode = getCurrentMode();
             switch (mode) {
                 case 'add-children':
@@ -165,11 +165,10 @@ AFRAME.registerComponent('stuff', {
                 case 'ungrouping':
                     this.el.emit('buttonstate', {mode: ['add-children'], first: null});
                     break;
-                case 'aligning':
+                case 'align':
                     document.dispatchEvent(new CustomEvent('align', {detail: {id: obj.id}}));
                     break;
-                case 'removing':
-                    console.log('removing');
+                case 'remove':
                     document.dispatchEvent(new CustomEvent('shareUpdate', {detail: {id: obj.id, remove: true}}));
                     break;
                 case 'edit-color':
@@ -187,34 +186,18 @@ AFRAME.registerComponent('stuff', {
                     this.el.emit('buttonstate', {mode: ['change-size'], first: obj.id}, true);
                     document.dispatchEvent(new CustomEvent('resizing', {detail: {id: obj.id}}));
                     break;
-                case 'editing':
+                case 'edit':
                     this.el.emit('buttonstate', {mode: ['typing'], first: obj.id}, true);
                     const keyboard = document.getElementById('keyboard');
                     changeRaycaster('.keyboardRaycastable');
                     keyboard.emit('show', {value: this.data.text, elId: obj.id});
                     break;
-                case 'copying':
-                    this.el.emit('buttonstate', {mode: ['copying'], first: obj.id}, true);
+                case 'copy':
+                    this.el.emit('buttonstate', {mode: ['copy'], first: obj.id}, true);
                     break;
-                case 'select-first':
-                    this.el.emit('buttonstate', {mode: ['select-second'], first: obj.id}, true);
-                    this.system.first = obj.id;
+                case 'add':
+                    this.el.emit('buttonstate', {mode: ['add'], first: obj.id}, true);
                     break;
-                case 'select-second':
-                    this.el.emit('buttonstate', {mode: ['select-first'], first: null}, true);
-                    const data = {
-                        id: createUUID(),
-                        first: this.system.first,
-                        second: obj.id,
-                        text: '',
-                        color: getSystem('buttons').color,
-                        template: '#connector-template'
-                    }
-                    document.dispatchEvent(
-                        new CustomEvent('shareUpdate',
-                            {detail: data}));
-
-
             }
         },
         mouseenter: function (evt) {

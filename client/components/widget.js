@@ -1,17 +1,15 @@
 import {debug} from './debug';
-
-
 AFRAME.registerSystem('widget', {
     init: function () {
         this.mode = [];
-
     }
 });
 
 AFRAME.registerComponent('widget', {
     schema: {
         method: {type: 'string'},
-        label: {type: 'string', default: ''}
+        label: {type: 'string', default: ''},
+        template: {type: 'string', default: ''}
     },
     init: function () {
         this.color = '#11a';
@@ -40,45 +38,12 @@ AFRAME.registerComponent('widget', {
             document.getElementById('sizer').setAttribute('visible', false);
             const buttonState = {}
             buttonState.first = null;
-            debug(this.data.method);
             if (typeof newrelic !== 'undefined') {
                 newrelic.addPageAction(evt.target.id);
             }
+            buttonState.mode = [this.data.method];
+            buttonState.template = this.data.template;
             switch (this.data.method) {
-                case 'align':
-                    buttonState.mode = ['aligning'];
-                    break;
-                case 'add-connector':
-                    buttonState.mode = ['connecting', 'select-first'];
-                    break;
-                case 'add-cylinder':
-                    buttonState.template = '#cylinder-template'
-                    buttonState.mode = ['adding'];
-                    break;
-                case 'exit':
-                    this.el.sceneEl.exitVR();
-                    break;
-                case 'grouping':
-                    buttonState.mode = ['grouping'];
-                    break;
-                case 'ungrouping':
-                    buttonState.mode = ['ungrouping'];
-                    break;
-                case 'resize':
-                    buttonState.mode = ['resizing'];
-                    break;
-                case 'add-sphere':
-                    buttonState.template = '#sphere-template'
-                    buttonState.mode = ['adding'];
-                    break;
-                case 'add-plane':
-                    buttonState.template = '#plane-template'
-                    buttonState.mode = ['adding'];
-                    break;
-                case 'add-box':
-                    buttonState.template = '#box-template'
-                    buttonState.mode = ['adding'];
-                    break;
                 case 'add-light':
                     buttonState.template = '#light-template'
                     buttonState.mode = ['adding'];
@@ -87,30 +52,16 @@ AFRAME.registerComponent('widget', {
                     buttonState.template = '#animationmanager-template'
                     buttonState.mode = ['adding'];
                     break;
+                case 'exit':
+                    this.el.sceneEl.exitVR();
+                    break;
                 case 'close':
                     break;
                 case 'edit-image':
-                    buttonState.mode= ['edit-image'];
                     this.el.emit('showMenu', {id: '#image-picker', objects: '[image-swatch], .saveable'});
                     break;
                 case 'edit-color':
-                    buttonState.mode= ['edit-color'];
                     this.el.emit('showMenu', {id: '#color-picker', objects: '[color-swatch], .saveable'});
-                    break;
-                case 'add-plane':
-                    buttonState.mode = ['adding'];
-                    break;
-                case 'remove':
-                    buttonState.mode = ['removing'];
-                    break;
-                case 'move':
-                    buttonState.mode = ['moving'];
-                    break;
-                case 'copy':
-                    buttonState.mode = ['copying'];
-                    break;
-                case 'edit':
-                    buttonState.mode = ['editing'];
                     break;
                 case 'joinConference':
                     document.dispatchEvent(
