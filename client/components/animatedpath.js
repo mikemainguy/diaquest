@@ -1,5 +1,5 @@
 import {debug} from './debug';
-import {htmlToElement, round} from './util';
+import {getCurrentMode, htmlToElement, round} from './util';
 AFRAME.registerSystem('animationmanager', {
     init: function() {
         this.activeid = null;
@@ -148,10 +148,16 @@ AFRAME.registerComponent('animationmanager', {
 
     },
     click: function (evt) {
+        if (getCurrentMode() == 'remove') {
+            console.log('here');
+            //document.dispatchEvent(new CustomEvent('shareUpdate', {detail: {id: obj.id, remove: true}}));
+        }
+
         if (this.state) {
-            if (evt.detail.intersectedEl &&
-                evt.detail.intersectedEl.closest('[template]')) {
-                const id = evt.detail.intersectedEl.closest('[template]').id
+            const intersectedEl = evt.detail.intersectedEl;
+            if (intersectedEl &&
+                intersectedEl.classList.contains('saveable')) {
+                const id = intersectedEl.closest('[template]').id
                 switch (this.state) {
                     case 'animation-select':
                         this.updateSelection('selected', id, '#ff0');

@@ -182,7 +182,7 @@ AFRAME.registerComponent('stuff', {
                     this.data.image = newImage;
                     evt.target.setAttribute('material', 'src', this.data.image);
                     document.dispatchEvent(new CustomEvent('shareUpdate', {detail: {id: obj.id, image: newImage}}));
-                case 'resizing':
+                case 'resize':
                     this.el.emit('buttonstate', {mode: ['change-size'], first: obj.id}, true);
                     document.dispatchEvent(new CustomEvent('resizing', {detail: {id: obj.id}}));
                     break;
