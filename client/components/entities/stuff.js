@@ -1,5 +1,5 @@
 import {changeRaycaster, createUUID, getCurrentMode, getSystem, round} from "../util";
-
+const TIMEOUT = 100;
 AFRAME.registerSystem('stuff', {
     init: function () {
         this.first = null;
@@ -21,7 +21,7 @@ AFRAME.registerComponent('stuff', {
         this.el.addChild = this.addChild.bind(this);
         this.groupline = null;
     },
-    addChild: function(el) {
+    addChild: function (el) {
         this.el.object3D.appendChild(el.object3D);
         el.setAttribute('stuff', 'parent', this.el.getAttribute('id'));
     },
@@ -52,12 +52,18 @@ AFRAME.registerComponent('stuff', {
 
             const parent = document.getElementById(this.data.parent);
             if (parent) {
-                window.setTimeout(() => {parent.object3D.attach(this.el.object3D)}, 250);
+                window.setTimeout(() => {
+                    parent.object3D.attach(this.el.object3D)
+                }, TIMEOUT);
             } else {
-                window.setTimeout(() => {this.el.sceneEl.object3D.attach(this.el.object3D);}, 250);
+                window.setTimeout(() => {
+                    this.el.sceneEl.object3D.attach(this.el.object3D);
+                }, TIMEOUT);
             }
         } else {
-            window.setTimeout(() => {this.el.sceneEl.object3D.attach(this.el.object3D);}, 250);
+            window.setTimeout(() => {
+                this.el.sceneEl.object3D.attach(this.el.object3D);
+            }, TIMEOUT);
         }
         if (this.image && this.saveable) {
             this.saveable.setAttribute('material', 'src', this.image);
@@ -71,7 +77,9 @@ AFRAME.registerComponent('stuff', {
             }
         }
         if (this.saveable) {
-            window.setTimeout(() => {this.saveable.setAttribute('visible', true)}, 250);
+            window.setTimeout(() => {
+                this.saveable.setAttribute('visible', true)
+            }, TIMEOUT);
             this.saveable.setAttribute('sound', 'src: url(/assets/sounds/ButtonClick.mp3); on: click;');
         }
 
@@ -80,14 +88,21 @@ AFRAME.registerComponent('stuff', {
     tock: function () {
 
     },
-    calculate: function(time, timeDelta) {
+    calculate: function (time, timeDelta) {
         setTimeout(() => {
             if (!this.textDisplay || !this.saveable) {
                 this.update();
                 return;
             }
             if (!this.scale.equals(this.saveable.object3D.scale)) {
-                this.saveable.object3D.scale.set(this.scale.x, this.scale.y, this.scale.z);
+                this
+                    .saveable
+                    .object3D
+                    .scale
+                    .set(
+                        this.scale.x,
+                        this.scale.y,
+                        this.scale.z);
                 if (this.saveable?.object3D?.children[0]?.geometry) {
                     this.saveable.object3D.children[0].geometry.computeBoundingBox();
                 }
@@ -102,7 +117,7 @@ AFRAME.registerComponent('stuff', {
                 }
             }
 
-        },0);
+        }, 0);
     },
     tick: function (time, timeDelta) {
         if (this.textDisplay && this.saveable) {
@@ -139,7 +154,7 @@ AFRAME.registerComponent('stuff', {
                         this.el.setAttribute('stuff', 'parent', parent);
                         document.dispatchEvent(new CustomEvent('shareUpdate', {detail: {id: obj.id, parent: parent}}));
                     } else {
-                        this.data.parent='';
+                        this.data.parent = '';
                         this.el.setAttribute('stuff', 'parent', '');
                         document.dispatchEvent(new CustomEvent('shareUpdate', {detail: {id: obj.id, parent: ''}}));
                     }
