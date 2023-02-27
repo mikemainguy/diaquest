@@ -1,7 +1,8 @@
 import {debug} from './debug';
 import {getCurrentMode, htmlToElement, round} from './util';
+
 AFRAME.registerSystem('animationmanager', {
-    init: function() {
+    init: function () {
         this.activeid = null;
     }
 });
@@ -78,13 +79,28 @@ AFRAME.registerComponent('animationmanager', {
         }
     },
     events: {
+        click: function (evt) {
+            if (getCurrentMode() == 'remove') {
+                console.log('here');
+                document.dispatchEvent(
+                    new CustomEvent('shareUpdate',
+                        {
+                            detail:
+                                {
+                                    id: this.el.closest('[template]').id,
+                                    remove: true
+                                }
+                        }));
+            }
+        },
         grabbed: function (evt) {
             this.grabbed = this.el.closest('[template]');
             if (typeof newrelic !== 'undefined') {
                 newrelic.addPageAction('grab', {id: this.grabbed.id});
             }
             evt.detail.hand.object3D.attach(this.grabbed.object3D);
-        },
+        }
+        ,
         released: function () {
             if (typeof newrelic !== 'undefined') {
                 newrelic.addPageAction('release', {id: this.grabbed.id});
@@ -98,60 +114,80 @@ AFRAME.registerComponent('animationmanager', {
             const ang = AFRAME.utils.coordinates.parse(this.grabbed.getAttribute('rotation'));
             this.grabbed.setAttribute('rotation', AFRAME.utils.coordinates.stringify(round(ang, 45)));
             this.grabbed = null;
-        },
-        'animation-add': function (evt) {
-            this.state = 'animation-add';
-            const item = {
-                item: this.selected,
-                from: this.from,
-                to: this.to,
-                duration: this.duration,
-                delay: this.delay
-            }
-            if (this.index) {
-                this.animations[this.index] = item;
-            } else {
-                this.animations.push(item);
-            }
-            this.updateAnimationList();
-            this.clearSelections();
-            const el = document.getElementById(item.item);
-            const fromEl = document.getElementById(item.from);
-
-            if (el && fromEl) {
-                el.setAttribute('position', fromEl.getAttribute('position'));
-            }
-        },
-        'animation-play': function (evt) {
-            for (const c of this.animations) {
-                const el = document.querySelector('#' + c.item);
-                if (el) {
-                    el.querySelector('[share-position]').setAttribute('share-position', 'active', false);
-                }
-                el.emit('animation-play');
-            }
-            this.state = null;
-
-        },
-        'animation-select': function (evt) {
-            this.state = 'animation-select';
-        },
-        'animation-from': function (evt) {
-            this.state = 'animation-from';
-        },
-        'animation-to': function (evt) {
-            this.state = 'animation-to';
-        },
-        'animation-duration': function (evt) {
-            this.state = 'animation-duration';
         }
+        ,
+        'animation-add':
+
+            function (evt) {
+                this.state = 'animation-add';
+                const item = {
+                    item: this.selected,
+                    from: this.from,
+                    to: this.to,
+                    duration: this.duration,
+                    delay: this.delay
+                }
+                if (this.index) {
+                    this.animations[this.index] = item;
+                } else {
+                    this.animations.push(item);
+                }
+                this.updateAnimationList();
+                this.clearSelections();
+                const el = document.getElementById(item.item);
+                const fromEl = document.getElementById(item.from);
+
+                if (el && fromEl) {
+                    el.setAttribute('position', fromEl.getAttribute('position'));
+                }
+            }
+
+        ,
+        'animation-play':
+
+            function (evt) {
+                for (const c of this.animations) {
+                    const el = document.querySelector('#' + c.item);
+                    if (el) {
+                        el.querySelector('[share-position]').setAttribute('share-position', 'active', false);
+                    }
+                    el.emit('animation-play');
+                }
+                this.state = null;
+
+            }
+
+        ,
+        'animation-select':
+
+            function (evt) {
+                this.state = 'animation-select';
+            }
+
+        ,
+        'animation-from':
+
+            function (evt) {
+                this.state = 'animation-from';
+            }
+
+        ,
+        'animation-to':
+
+            function (evt) {
+                this.state = 'animation-to';
+            }
+
+        ,
+        'animation-duration':
+
+            function (evt) {
+                this.state = 'animation-duration';
+            }
 
     },
     click: function (evt) {
-        if (getCurrentMode() == 'remove') {
-            console.log('here');
-            //document.dispatchEvent(new CustomEvent('shareUpdate', {detail: {id: obj.id, remove: true}}));
-        }
+
 
         if (this.state) {
             const intersectedEl = evt.detail.intersectedEl;
@@ -183,7 +219,8 @@ AFRAME.registerComponent('animationmanager', {
         } else {
 
         }
-    },
+    }
+    ,
     updateList: function () {
         const listEls = this.el.querySelector('.animationlist');
         if (!listEls) {
@@ -209,10 +246,12 @@ AFRAME.registerComponent('animationmanager', {
             index++;
             i -= .1
         }
-    },
+    }
+    ,
     getCoordinates: function (val) {
         return AFRAME.utils.coordinates.stringify(val);
-    },
+    }
+    ,
     updateAnimationList: function (oldData) {
         let idx = 0;
         for (const a of this.animations) {
@@ -228,8 +267,10 @@ AFRAME.registerComponent('animationmanager', {
         }
         this.updateList();
 
-    },
+    }
+    ,
     update: function (oldData) {
 
     }
-});
+})
+;
