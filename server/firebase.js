@@ -73,13 +73,13 @@ const createCollaborator = async function(user, world) {
           }
       );
 }
-const storeMedia = async function(world, key, name, mimetype) {
+const storeMedia = async function(world, key, name, mimetype, width, height) {
   const db = admin.database();
   await db.ref(`/worlds/${world}`)
       .once('value', (snapshot, context) => {
         if (snapshot.exists()) {
           const ref = db.ref(`/worlds/${world}/media/${key}`);
-          ref.set({name: name, mimetype: mimetype});
+          ref.set({name: name, mimetype: mimetype, width: width, height: height});
         }
       });
 }

@@ -5,13 +5,25 @@ AFRAME.registerComponent('mediamanager', {
     events: {
         mediaUpdated: function (evt) {
             let x = 0;
+            let y = 0;
+            const curve = new THREE.EllipseCurve(0,0,2,2,0, 2*Math.PI, false, 0);
             for (const i in evt.detail) {
                 const el = document.createElement('a-plane');
-                el.setAttribute('material', `src: ${evt.detail[i].href}`);
+                el.setAttribute('material', `src: ${evt.detail[i].href};side: double`);
                 el.setAttribute('image-swatch', `image: ${evt.detail[i].href}`)
                 el.setAttribute('text', `value: ${evt.detail[i].name}`);
-                el.setAttribute('position', `${x++} 0 0`);
+                el.setAttribute('lookatme', '');
+                if (evt.detail[i].width && evt.detail[i].height) {
+                    const ratio = evt.detail[i].height / evt.detail[i].width;
+                    el.setAttribute('height', ratio);
+                    el.setAttribute('width', 1);
+                }
+
+                const pos = curve.getPoint(x);
+                el.setAttribute('position', `${pos.x} ${Math.round(y/10)} ${pos.y}`);
                 this.el.appendChild(el);
+                x= x+.1;
+                y++;
             }
         }
     }

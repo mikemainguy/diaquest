@@ -106,7 +106,9 @@ async function registerMedias(medias) {
                 {
                     href: 'https://media.immersiveidea.com/' + media,
                     name: val[media].name,
-                    mimetype: val[media].mimetype
+                    mimetype: val[media].mimetype,
+                    width: val[media].width,
+                    height: val[media].height
                 };
             data.push(mediaEntry);
         };

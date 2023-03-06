@@ -63,7 +63,7 @@ AFRAME.registerComponent('animationmanager', {
                     this[field] = id;
                     this.createSelector(ele, color);
                 } else {
-                    this[field] == null;
+                    this[field] = null;
                 }
 
             }
@@ -249,8 +249,6 @@ AFRAME.registerComponent('animationmanager', {
     },
     updateAnimationList: function (oldData) {
         let idx = 0;
-
-
         for (const a of this.animations) {
             const ele = document.querySelector('#' + a.item);
             const from = this.getWorldPosition('#' + a.from);

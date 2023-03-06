@@ -29,7 +29,7 @@ module.exports = async(req, res) => {
         key: key,
         name: req.files.file.name
     }
-    const response =     await S3.send(
+    const response = await S3.send(
             new PutObjectCommand({Bucket: 'immersiveidea',
                 Key: key,
                 ContentLength: req.files.file.size,
