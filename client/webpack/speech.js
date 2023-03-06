@@ -6,7 +6,6 @@ AFRAME.registerSystem('transcription', {
         this.socketOpen = this.socketOpen.bind(this);
         this.socket;
         this.recorder;
-        this.isRecording = false;
         this.target = null;
         this.data = null
         this.transcribestart = this.transcribestart.bind(this);
@@ -28,11 +27,9 @@ AFRAME.registerSystem('transcription', {
         this.stopRecording();
     },
     setupConnection: async function ()  {
-        if (!this.token) {
-            const response = await fetch('/api/voice/token');
-            const data = await response.json();
-            this.token = data.token;
-        }
+        const response = await fetch('/api/voice/token');
+        const data = await response.json();
+        this.token = data.token;
         if (!this.socket) {
             this.socket = await new WebSocket(`wss://api.assemblyai.com/v2/realtime/ws?sample_rate=16000&token=${this.token}`);
             this.socket.onmessage = (message) => {
@@ -69,10 +66,9 @@ AFRAME.registerSystem('transcription', {
 
     },
     socketOpen: async function () {
-        const stream = await navigator.mediaDevices.getUserMedia({audio: true});
-        if (this.recorder) {
-            this.recorder.resumeRecording();
-        } else {
+        if (!this.recorder) {
+
+            const stream = await navigator.mediaDevices.getUserMedia({audio: true});
             this.recorder = new RecordRTC(stream, {
                 type: 'audio', mimeType: 'audio/webm;codecs=pcm', // endpoint requires 16bit PCM audio
                 recorderType: RecordRTC.StereoAudioRecorder, timeSlice: 300, // set 250 ms intervals of data that sends to AAI
@@ -95,30 +91,44 @@ AFRAME.registerSystem('transcription', {
         }
     },
     startRecording: async function () {
-        if (!this.isRecording) {
-            if (!this.socket) {
-                console.log('disconnected');
+
+            if (this.socket && this.socket.readyState > 1) {
+                debug('Socket closed or closing, disposing');
+                this.socket = null;
             }
-            this.recorder.startRecording();
-            this.isRecording = true;
-        } else {
-            console.log('already recording');
-        }
+
+            if (!this.socket) {
+                debug('Setting up socket');
+                await this.setupConnection();
+            }
+            if (this.recorder && this.recorder.getState() == 'paused') {
+                debug('Resuming Recording');
+                this.recorder.resumeRecording();
+            }
+            if (this.recorder && this.recorder.getState() == 'inactive') {
+                debug('Starting Recording');
+                this.recorder.startRecording();
+            }
+            document.dispatchEvent(new CustomEvent('playUp', {detail: this.el}));
+
     }, stopRecording: async function () {
-        if (this.isRecording) {
-            debug('Recording happening');
+
             try {
-                if (this.recorder) {
+                if (this.recorder.getState() == 'recording') {
+                    debug('Pausing Recorder');
                     this.recorder.pauseRecording();
-                    this.socket.send('{"terminate_session": true}');
-                    debug('Recording Stopped');
+                    if (this.socket && this.socket.readyState < 2) {
+                        debug('Terminating socket session');
+                        await this.socket.send('{"terminate_session": true}');
+                        this.socket = null;
+                    }
+
                 }
             } catch (err) {
                 console.log(err);
             }
-            this.isRecording = false;
         }
-    }
+
 });
 
 AFRAME.registerComponent('transcription', {
