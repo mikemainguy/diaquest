@@ -13,7 +13,8 @@ AFRAME.registerComponent('3d-keyboard', {
         ['z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '/'],
         [' ']
 
-    ],
+    ]
+    ,
     schema: {
         value: {type: 'string'},
         visible: {type: 'boolean', default: false},
@@ -25,7 +26,6 @@ AFRAME.registerComponent('3d-keyboard', {
         transcriptiondata: function (evt) {
             debug(JSON.stringify(evt.detail, null, 2));
             if (evt.detail.data.message_type == "PartialTranscript") {
-                //what do I do with "FinalTranscript"
                 if (evt.detail.data.text == "") {
                     return;
                 }

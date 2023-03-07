@@ -20,8 +20,8 @@ AFRAME.registerSystem('buttons', {
     buttonstate: function (evt) {
         if (this.template == '#connector-template'
             && this.mode[0] == 'add'
-           && this.first
-           && evt.detail.first) {
+            && this.first
+            && evt.detail.first) {
             const data = {
                 id: createUUID(),
                 template: this.template,
@@ -29,7 +29,6 @@ AFRAME.registerSystem('buttons', {
                 first: this.first,
                 second: evt.detail.first
             }
-
             document.dispatchEvent(
                 new CustomEvent('shareUpdate',
                     {detail: data}));
@@ -56,7 +55,7 @@ AFRAME.registerComponent('buttons', {
         this.pointer = this.buildPointer();
         this.system.pointers.push(this.pointer);
     },
-    buildPointer: function() {
+    buildPointer: function () {
         const pointer = document.createElement('a-sphere');
         pointer.setAttribute('material', 'color: #fff; opacity: 0.8; emissive: #fff');
         pointer.setAttribute('radius', '0.004');
@@ -183,7 +182,6 @@ AFRAME.registerComponent('buttons', {
 function showMenu(evt) {
     changeMenu(evt.detail.id, true, evt.detail.objects);
 }
-
 
 function hideMenu(evt) {
     let objs = '.saveable, [widget]'

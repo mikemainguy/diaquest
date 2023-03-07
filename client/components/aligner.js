@@ -29,18 +29,16 @@ AFRAME.registerSystem('aligner', {
             .getWorldPosition(
                 destPos
             )
-
+        const position = src.closest('[template]').object3D.position;
         if (Math.abs(dim.x) > 0) {
-            src.closest('[template]').object3D.position.setX(destPos.x);
+            position.setX(destPos.x);
         }
         if (Math.abs(dim.y) > 0) {
-            src.closest('[template]').object3D.position.setY(destPos.y);
+            position.setY(destPos.y);
         }
         if (Math.abs(dim.z) > 0) {
-            src.closest('[template]').object3D.position.setZ(destPos.z);
+            position.setZ(destPos.z);
         }
-
-
     },
     align: function (evt) {
         if (!evt.detail.id) {
@@ -78,10 +76,8 @@ AFRAME.registerSystem('aligner', {
                         .getWorldPosition(
                             pos
                         )
-
                     aligner.setAttribute('position', pos);
                     aligner.setAttribute('visible', true);
-
                     this.saveable.setAttribute('animation', 'from: #f00; to: #0f0; property: material.color; loop: true; dir: alternate; dur: 1000');
                 }
             } else {
@@ -89,10 +85,8 @@ AFRAME.registerSystem('aligner', {
                     this.saveable.removeAttribute('animation');
                     this.saveable = null;
                     this.changeRaycaster('');
-
                 }
                 this.direction = AFRAME.utils.coordinates.parse(el.components['aligner'].data.plane);
-
             }
         }
     },

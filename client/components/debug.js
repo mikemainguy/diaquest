@@ -10,8 +10,6 @@ export function debug(value) {
       } else {
         lines = [value];
       }
-
-
       debug.setAttribute('text', 'value', data.join('\n'));
       console.log(value);
     }

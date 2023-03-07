@@ -19,8 +19,6 @@ AFRAME.registerComponent('inspectable', {
         if (this.inspector){
             this.inspector.setAttribute('text', 'value', JSON.stringify(this.el.getAttribute('position')));
         }
-
-
     },
     events: {
         grabbed: function (evt) {

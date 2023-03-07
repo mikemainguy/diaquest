@@ -24,7 +24,6 @@ AFRAME.registerComponent('animationmanager', {
         }
         this.onclick = this.onclick.bind(this);
         document.addEventListener('click', this.onclick);
-
     },
     schema: {
         animations: {type: 'string'}
@@ -80,13 +79,13 @@ AFRAME.registerComponent('animationmanager', {
             if (getCurrentMode() == 'remove') {
                 document.dispatchEvent(
                     new CustomEvent('shareUpdate',
-                        {
-                            detail:
+                        {detail:
                                 {
                                     id: this.el.closest('[template]').id,
                                     remove: true
                                 }
-                        }));
+                        })
+                );
             }
         },
         grabbed: function (evt) {
@@ -103,65 +102,36 @@ AFRAME.registerComponent('animationmanager', {
             }
             this.el.sceneEl.object3D.attach(this.grabbed.object3D);
             this.system.activeid = this.grabbed.id;
-
             const newPos = round(this.grabbed.object3D.position, .1);
             this.grabbed.object3D.position.set(newPos.x, newPos.y, newPos.z);
-
             const ang = AFRAME.utils.coordinates.parse(this.grabbed.getAttribute('rotation'));
             this.grabbed.setAttribute('rotation', AFRAME.utils.coordinates.stringify(round(ang, 45)));
             this.grabbed = null;
-        }
-        ,
-        'animation-add':
-
-            function (evt) {
-
-
-            }
-
-        ,
-        'animation-play':
-
-            function (evt) {
-                for (const c of this.animations) {
-                    const el = document.querySelector('#' + c.item);
-                    if (el) {
-                        el.querySelector('[share-position]').setAttribute('share-position', 'active', false);
-                    }
-                    el.emit('animation-play');
+        },
+        'animation-add': function (evt) {
+        },
+        'animation-play': function (evt) {
+            for (const c of this.animations) {
+                const el = document.querySelector('#' + c.item);
+                if (el) {
+                    el.querySelector('[share-position]').setAttribute('share-position', 'active', false);
                 }
-                //this.state = null;
-
+                el.emit('animation-play');
             }
-
-        ,
-        'animation-select':
-
-            function (evt) {
-                this.state = 'animation-select';
-                this.el.querySelector('[widget*=animation-select]').setAttribute('visible', false);
-            }
-
-        ,
-        'animation-from':
-
-            function (evt) {
-                this.state = 'animation-from';
-            }
-
-        ,
+        },
+        'animation-select': function (evt) {
+            this.state = 'animation-select';
+            this.el.querySelector('[widget*=animation-select]').setAttribute('visible', false);
+        },
+        'animation-from': function (evt) {
+            this.state = 'animation-from';
+        },
         'animation-to': function (evt) {
 
-
+        },
+        'animation-duration': function (evt) {
+            this.state = 'animation-duration';
         }
-
-        ,
-        'animation-duration':
-
-            function (evt) {
-                this.state = 'animation-duration';
-            }
-
     },
     onclick: function (evt) {
         if (this.state) {
@@ -242,7 +212,7 @@ AFRAME.registerComponent('animationmanager', {
     }
     ,
     getWorldPosition(selector) {
-        const el = document.querySelector( selector);
+        const el = document.querySelector(selector);
         const worldPos = new THREE.Vector3();
         el.object3D.getWorldPosition(worldPos);
         return worldPos;
