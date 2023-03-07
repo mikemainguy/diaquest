@@ -12,21 +12,27 @@ AFRAME.registerSystem('transcription', {
         document.addEventListener('transcribestart', this.transcribestart);
         this.transcribestop = this.transcribestop.bind(this);
         document.addEventListener('transcribestop', this.transcribestop);
-        this.setupConnection();
-
+        this
+            .setupConnection()
+            .then(() => {
+                debug('Connection setup')
+            });
     },
     transcribestart: function (evt) {
         this.target = evt.detail;
         this.data = [];
-        this.startRecording();
-
+        this
+            .startRecording()
+            .then(() => {
+                debug('Recording started')
+            });
     },
-    transcribestop: function (evt) {
+    transcribestop: function () {
         this.target = null;
         this.data = null;
         this.stopRecording();
     },
-    setupConnection: async function ()  {
+    setupConnection: async function () {
         const response = await fetch('/api/voice/token');
         const data = await response.json();
         this.token = data.token;
@@ -61,13 +67,9 @@ AFRAME.registerSystem('transcription', {
             }
 
         }
-
-
-
     },
     socketOpen: async function () {
         if (!this.recorder) {
-
             const stream = await navigator.mediaDevices.getUserMedia({audio: true});
             this.recorder = new RecordRTC(stream, {
                 type: 'audio', mimeType: 'audio/webm;codecs=pcm', // endpoint requires 16bit PCM audio
@@ -78,7 +80,7 @@ AFRAME.registerSystem('transcription', {
                     reader.onload = () => {
                         const base64data = reader.result;
                         // audio data must be sent as a base64 encoded string
-                        if (this.socket && (this.socket.readyState == 1)) {
+                        if (this.socket && (this.socket.readyState === 1)) {
                             this.socket.send(JSON.stringify({audio_data: base64data.split('base64,')[1]}));
                         } else {
                             console.log('no socket available');
@@ -87,57 +89,57 @@ AFRAME.registerSystem('transcription', {
                     reader.readAsDataURL(blob);
                 },
             });
-
         }
     },
     startRecording: async function () {
-
-            if (this.socket && this.socket.readyState > 1) {
-                debug('Socket closed or closing, disposing');
-                this.socket = null;
-            }
-
-            if (!this.socket) {
-                debug('Setting up socket');
-                await this.setupConnection();
-            }
-            if (this.recorder && this.recorder.getState() == 'paused') {
-                debug('Resuming Recording');
-                this.recorder.resumeRecording();
-            }
-            if (this.recorder && this.recorder.getState() == 'inactive') {
-                debug('Starting Recording');
-                this.recorder.startRecording();
-            }
-            document.dispatchEvent(new CustomEvent('playUp', {detail: this.el}));
-
-    }, stopRecording: async function () {
-
-            try {
-                if (this.recorder.getState() == 'recording') {
-                    debug('Pausing Recorder');
-                    this.recorder.pauseRecording();
-                    if (this.socket && this.socket.readyState < 2) {
-                        debug('Terminating socket session');
-                        await this.socket.send('{"terminate_session": true}');
-                        this.socket = null;
-                    }
-
-                }
-            } catch (err) {
-                console.log(err);
+        if (this.socket && this.socket.readyState > 1) {
+            debug('Socket closed or closing, disposing');
+            this.socket = null;
+        }
+        if (!this.socket) {
+            debug('Setting up socket');
+            await this.setupConnection();
+        }
+        if (this.recorder) {
+            const state = this.recorder.getState();
+            switch (state) {
+                case 'paused':
+                    debug('Resuming Recording');
+                    this.recorder.resumeRecording();
+                    break;
+                case 'inactive':
+                    debug('Starting Recording');
+                    this.recorder.startRecording();
+                    break
+                default:
+                    debug(state);
             }
         }
-
+        document.dispatchEvent(new CustomEvent('playUp', {detail: this.el}));
+    },
+    stopRecording: async function () {
+        try {
+            if (this.recorder.getState() === 'recording') {
+                debug('Pausing Recorder');
+                this.recorder.pauseRecording();
+                if (this.socket && this.socket.readyState < 2) {
+                    debug('Terminating socket session');
+                    await this.socket.send('{"terminate_session": true}');
+                    this.socket = null;
+                }
+            }
+        } catch (err) {
+            console.log(err);
+        }
+    }
 });
 
 AFRAME.registerComponent('transcription', {
     events: {
-        mousedown: function (evt) {
+        mousedown: function () {
             debug('mouse down');
             document.dispatchEvent(new CustomEvent('transcribestart', {detail: this.el}));
-
-        }, mouseup: function (evt) {
+        }, mouseup: function () {
             document.dispatchEvent(new CustomEvent('transcribestop', null));
         }
     }
