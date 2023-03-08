@@ -54,10 +54,6 @@ const listWorlds = async function(user) {
   const db = admin.database();
   const dirref = db.ref('/worlds');
   const list = await dirref.once('value');
-  const dest = [];
-  for (const d of list) {
-    console.log(d);
-  }
   return list;
 }
 

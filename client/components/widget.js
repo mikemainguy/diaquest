@@ -14,8 +14,8 @@ AFRAME.registerComponent('widget', {
     init: function () {
         this.color = '#11a';
         this.el.setAttribute('material', 'color', this.color);
-        this.el.setAttribute('sound__0', 'src: url(/assets/sounds/KeyInLow.mp3); volume: 0.3; on: mouseenter; poolSize: 5');
-        this.el.setAttribute('sound__1', 'src: url(/assets/sounds/ButtonClick.mp3); volume: 0.8; on: mousedown; poolSize: 5');
+        this.el.setAttribute('sound__0', 'src: #audiohover; volume: 0.3; on: mouseenter; poolSize: 5');
+        this.el.setAttribute('sound__1', 'src: #audioclick; volume: 0.8; on: mousedown; poolSize: 5');
         const label = document.createElement('a-text');
         label.setAttribute('position', '0 .35 .05');
         label.setAttribute('value', this.data.label);

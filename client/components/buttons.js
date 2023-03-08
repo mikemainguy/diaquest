@@ -32,7 +32,9 @@ AFRAME.registerSystem('buttons', {
             document.dispatchEvent(
                 new CustomEvent('shareUpdate',
                     {detail: data}));
-            this.system.first = null;
+            this.first = null;
+        } else {
+            this.first = evt.detail.first ? evt.detail.first : null;
         }
         if (evt.detail.template) {
             this.template = evt.detail.template;
@@ -40,7 +42,6 @@ AFRAME.registerSystem('buttons', {
         this.mode = evt.detail.mode;
         this.image = evt.detail.image;
         this.id = evt.detail.id ? evt.detail.id : null;
-        this.first = evt.detail.first ? evt.detail.first : null;
         this.color = evt.detail.color ? evt.detail.color : this.color;
     }
 });

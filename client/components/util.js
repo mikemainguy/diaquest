@@ -92,8 +92,12 @@ export function initSound() {
     const a = document.getElementById('ambient');
     if (a) {
         const ambient = a.components.sound;
-        if (ambient.loaded && ambient.listener.context.state != 'running') {
-            ambient.playSound();
+        if (ambient.loaded && ambient.pool.children.length > 0) {
+            for (const audio of ambient.pool.children) {
+                if (!audio.isPlaying) {
+                    ambient.playSound();
+                }
+            }
         }
     }
 }

@@ -17,7 +17,7 @@ AFRAME.registerComponent('stuff', {
         parent: {type: 'string', default: null}
     },
     init: function () {
-        this.el.setAttribute('sound', 'src: url(/assets/sounds/KeyInLow.mp3); volume: 0.2; on: mouseenter;');
+        this.el.setAttribute('sound', 'src: #audiohover; volume: 0.2; on: mouseenter;');
         this.aligning = false;
         this.el.addChild = this.addChild.bind(this);
         this.groupline = null;
@@ -80,7 +80,7 @@ AFRAME.registerComponent('stuff', {
             window.setTimeout(() => {
                 this.saveable.setAttribute('visible', true)
             }, TIMEOUT);
-            this.saveable.setAttribute('sound', 'src: url(/assets/sounds/ButtonClick.mp3); on: click;');
+            this.saveable.setAttribute('sound', 'src: #audioclick; on: click;');
         }
 
         this.el.emit('registerupdate', {}, true);
