@@ -94,24 +94,27 @@ AFRAME.registerComponent('stuff', {
                 this.update();
                 return;
             }
-            const obj = this.saveable.object3D;
-            if (!this.scale.equals(obj.scale)) {
-                obj
-                    .scale
-                    .set(
-                        this.scale.x,
-                        this.scale.y,
-                        this.scale.z);
+            if (!this.el.hasAttribute('connector')) {
+                const obj = this.saveable.object3D;
+                if (!this.scale.equals(obj.scale)) {
+                    obj
+                        .scale
+                        .set(
+                            this.scale.x,
+                            this.scale.y,
+                            this.scale.z);
+                    for (const o of obj.children) {
+                        if (o.geometry) {
+                            o.geometry.computeBoundingBox();
+                        }
+                    }
+                }
                 for (const o of obj.children) {
-                    if (o.geometry) {
+                    if (o.geometry && !o.geometry.boundingBox) {
                         o.geometry.computeBoundingBox();
                     }
                 }
-            }
-            for (const o of obj.children) {
-                if (o.geometry && !o.geometry.boundingBox) {
-                    o.geometry.computeBoundingBox();
-                }
+
             }
 
             if (!this.saveable.getAttribute('animation')) {

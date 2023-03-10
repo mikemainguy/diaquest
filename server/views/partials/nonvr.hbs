@@ -1,40 +1,44 @@
 <div class="nonvr">
-  <!--  <button id="forwardButton">
-        Forward
-    </button>
-    <button id="backButton">
-        Back
-    </button>
-    -->
+    <!--  <button id="forwardButton">
+          Forward
+      </button>
+      <button id="backButton">
+          Back
+      </button>
+      -->
     <button id="joinButton">Disconnected</button>
     <button id="leaveButton">Connected</button>
     <button id="muteButton">Live</button>
     <button id="unmuteButton">Muted</button>
     <button id="exportButton">Export</button>
-    <button id="homeButton">Exit</button>
+    <button id="homeButton">Home</button>
     <form id="media" action="/api/media/create">
         <label for="fileupload">File</label>
-        <input id="fileupload" type="file" name="fileupload" />
-        <button type="submit"> Upload </button>
+        <input id="fileupload" type="file" name="fileupload"/>
+        <button type="submit"> Upload</button>
     </form>
 
 </div>
 
-    <script>
-        document.getElementById('media').addEventListener('submit', function(event) {
+<script>
+    document.getElementById('media').addEventListener('submit', function (event) {
         event.preventDefault();
         let formData = new FormData();
         formData.append("file", event.target.fileupload.files[0]);
         formData.append("path", window.location.pathname);
         fetch(event.target.action, {
-        method: "POST",
-        body: formData
-    });
+            method: "POST",
+            body: formData
+        }).then((res) => {
+            if (res.status == 200) {
+                window.alert('File added');
+            }
+        });
 
     }, false);
 
     document.getElementById('homeButton').addEventListener('click', () => {
-       window.location.href=(window.location.origin);
+        window.location.href = (window.location.origin);
     });
     const exportButton = document.getElementById('exportButton');
     exportButton.addEventListener('click', () => {
@@ -79,34 +83,34 @@
         document.dispatchEvent(
                 new CustomEvent('connectSignalwire',
                         {detail: 'OK'}));
-        document.getElementById('leaveButton').style.display='inline-block';
-        document.getElementById('joinButton').style.display='none';
-        document.getElementById('muteButton').style.display='inline-block';
+        document.getElementById('leaveButton').style.display = 'inline-block';
+        document.getElementById('joinButton').style.display = 'none';
+        document.getElementById('muteButton').style.display = 'inline-block';
 
     });
     document.getElementById('leaveButton').addEventListener('click', (evt) => {
         document.dispatchEvent(
                 new CustomEvent('disconnectSignalwire',
                         {detail: 'OK'}));
-        document.getElementById('leaveButton').style.display='none';
-        document.getElementById('joinButton').style.display='inline-block';
-        document.getElementById('muteButton').style.display='none';
-        document.getElementById('unmuteButton').style.display='none';
+        document.getElementById('leaveButton').style.display = 'none';
+        document.getElementById('joinButton').style.display = 'inline-block';
+        document.getElementById('muteButton').style.display = 'none';
+        document.getElementById('unmuteButton').style.display = 'none';
 
     });
     document.getElementById('muteButton').addEventListener('click', (evt) => {
         document.dispatchEvent(
                 new CustomEvent('mute',
                         {detail: 'OK'}));
-        document.getElementById('muteButton').style.display='none';
-        document.getElementById('unmuteButton').style.display='inline-block';
+        document.getElementById('muteButton').style.display = 'none';
+        document.getElementById('unmuteButton').style.display = 'inline-block';
 
     });
     document.getElementById('unmuteButton').addEventListener('click', (evt) => {
         document.dispatchEvent(
                 new CustomEvent('unmute',
                         {detail: 'OK'}));
-        document.getElementById('muteButton').style.display='inline-block';
-        document.getElementById('unmuteButton').style.display='none';
+        document.getElementById('muteButton').style.display = 'inline-block';
+        document.getElementById('unmuteButton').style.display = 'none';
     });
 </script>

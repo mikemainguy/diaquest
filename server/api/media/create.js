@@ -5,6 +5,7 @@ const {
 const {Readable } = require("stream");
 const crypto = require('crypto');
 const {storeMedia} = require('../../firebase');
+const sizeOf = require('buffer-image-size');
 
 const env = require("../../env");
 const S3 = new S3Client({
@@ -36,8 +37,14 @@ module.exports = async(req, res) => {
                 ContentType: req.files.file.mimetype,
                 Body: Readable.from(req.files.file.data)})
         );
-    await storeMedia(req.body.path.replace('/worlds', ''), key, req.files.file.name, req.files.file.mimetype);
+    let dimensions = {width: 100, height: 100};
+    try {
+        dimensions = sizeOf(req.files.file.data);
+    } catch (err) {
+        console.log(err);
+    }
+    await storeMedia(req.body.path.replace('/worlds', ''), key, req.files.file.name, req.files.file.mimetype, dimensions.width, dimensions.height);
     console.log(response);
     console.log(entry);
-    res.sendStatus(200);
+    res.status(200).send({status: 'OK'});
 }
