@@ -29,7 +29,7 @@ function buildShape(node, x, y, z) {
 }
 
 const axios = require("axios");
-module.exports = async(req, res) => {
+module.exports.handler = async(req, res) => {
     if (req.method != 'POST') {
         res.sendStatus(405);
         return;

@@ -89,7 +89,12 @@ div.secure li {
     list-style: none;
 }
 #version {
+    display: none;
     font-size: x-small;
+}
+
+#copyright {
+    font-size: small;
 }
 #envlist li a, .secure {
     text-align: center;

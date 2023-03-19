@@ -2,6 +2,7 @@ const path = require('path');
 const fs = require('fs');
 const version = fs.readFileSync('./VERSION');
 const isProduction = process.env.NODE_ENV == 'production';
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const stylesHandler = 'style-loader';
 
 const config = {
@@ -33,7 +34,7 @@ const config = {
     },
     devtool: 'source-map',
     plugins: [
-
+        new CleanWebpackPlugin()
     ],
     module: {
         rules: [

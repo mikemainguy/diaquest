@@ -2,7 +2,7 @@ const firebase = require("../../firebase");
 const axios = require("axios");
 const env = require("../../env");
 const {logger} = require('../../logging');
-module.exports = async (req, res) => {
+module.exports.handler = async (req, res) => {
     if (req.method != "POST") {
         res.sendStatus(405);
         return;

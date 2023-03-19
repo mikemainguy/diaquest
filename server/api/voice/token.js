@@ -1,6 +1,6 @@
 const axios = require("axios");
 const env = require("../../env");
-module.exports = async (req, res) => {
+module.exports.handler = async (req, res) => {
     try {
         const response = await axios.post('https://api.assemblyai.com/v2/realtime/token', // use account token to get a temp user token
             {expires_in: 3600}, // can set a TTL timer in seconds.

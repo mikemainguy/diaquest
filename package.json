@@ -59,6 +59,7 @@
     "super-three": "^0.147.1",
     "uuid": "^9.0.0",
     "webpack": "^5.74.0",
+    "clean-webpack-plugin": "^4.0.0",
     "winston": "^3.8.1"
   },
   "overrides": {

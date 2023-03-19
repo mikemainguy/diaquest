@@ -1,6 +1,6 @@
 const axios = require("axios");
 const env = require("../../env");
-module.exports = (req, res) => {
+module.exports.handler = (req, res) => {
     if (req.query && req.query.room) {
         const signalwirePromise = axios.post('https://diaquest.signalwire.com/api/video/room_tokens',
             {
@@ -11,6 +11,8 @@ module.exports = (req, res) => {
                     "room.self.audio_unmute",
                     "room.self.video_mute",
                     "room.self.video_unmute",
+                    "room.self.video_mute",
+                    "room.self.video_unmute"
 
                 ],
                 join_video_muted: true,

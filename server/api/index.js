@@ -7,10 +7,18 @@ const wire = async (app) => {
        for (const f of files){
            if (f != 'index.js') {
                const api = require('./' + f);
-               app.all('/api/' + f.replace('.js', ''),
-                   requiresAuth(),
-                   api
+               if (api.UNAUTH) {
+                   console.log('Unauthenticated Endpoint ' + f);
+                   app.all('/api/' + f.replace('.js', '') + '(/*)?',
+
+                       api.handler
                    )
+               } else {
+                   app.all('/api/' + f.replace('.js', ''),
+                       requiresAuth(),
+                       api.handler
+                   )
+               }
                console.log(f);
            }
        }

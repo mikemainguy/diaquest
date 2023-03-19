@@ -16,7 +16,8 @@ const app = express();
 app.use(express.urlencoded({extended: true}))
 app.use(fileUpload());
 app.use(expressLogger);
-
+const jsonParser = require('body-parser').json()
+app.use(jsonParser);
 const api = require('./server/api');
 const sgMail = require("@sendgrid/mail");
 

@@ -1,5 +1,5 @@
 const firebase = require("../../firebase");
-module.exports = async (req, res) => {
+module.exports.handler = async (req, res) => {
     if (req.method != 'GET') {
         res.sendStatus(405);
         return;

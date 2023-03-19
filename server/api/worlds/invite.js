@@ -4,7 +4,7 @@ const env = require("../../env");
 const {logger} = require("../../logging");
 const {sendMail} = require("../../sendgrid");
 
-module.exports = async (req, res) => {
+module.exports.handler = async (req, res) => {
     if (req.method != 'POST') {
         res.sendStatus(405);
         return;

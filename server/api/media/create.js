@@ -17,7 +17,7 @@ const S3 = new S3Client({
     },
 });
 
-module.exports = async(req, res) => {
+module.exports.handler = async(req, res) => {
     if (req.method != 'POST') {
         res.sendStatus(405);
         return;
