@@ -53,6 +53,7 @@ AFRAME.registerSystem('signalwire', {
                 this.debug('muted');
             });
 
+
         } else {
             this.debug('no room session');
         }
@@ -68,6 +69,7 @@ AFRAME.registerSystem('signalwire', {
                 this.debug('unmuted');
             });
 
+
         } else {
             this.debug('no room session');
         }
@@ -80,6 +82,7 @@ AFRAME.registerSystem('signalwire', {
 
 async function setupRoom() {
     const room = window.location.pathname;
+    const oculus =  navigator.appVersion.indexOf('Oculus') > -1;
     if (room.startsWith('/worlds/')) {
         const data = await axios.get('/api/user/signalwireToken?room=' + room.split('/')[2]);
         if (data.status == 200) {
@@ -89,14 +92,17 @@ async function setupRoom() {
 
             const roomSession = new SignalWire.Video.RoomSession({
                 token: data.data.signalwire_token,
-                video: true,
+                video: !oculus,
                 audio: true,
                 rootElement: document.getElementById('room'),
 
             });
 
             try {
-                await roomSession.join({audio: true, video: false});
+                await roomSession.join({audio: true, video: !oculus});
+                if (!oculus) {
+                    await roomSession.videoUnmute();
+                }
                 return roomSession;
             } catch (error) {
                 if (typeof newrelic !== 'undefined') {

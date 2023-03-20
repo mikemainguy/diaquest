@@ -1,18 +1,32 @@
 const axios = require('axios');
 const {updateJira} = require("./firebase");
-const getJiraIssues = async function (jiraconfig) {
+const getJiraIssues = async function (world, jiraconfig, startPos) {
+    let startAt = 0;
+    if (startPos) {
+        startAt = startPos;
+    }
     const auth = Buffer.from(jiraconfig.auth)
         .toString('base64');
     const config = {headers:
             {'Authorization': 'Basic ' + auth}
     }
-    const data = await axios.get(
-        jiraconfig.searchurl + '?jql=project%20%3D%20IM&fields=id,key,summary,description,issuetype,status,priority',
-        config
-    )
-    for (const issue of data.data.issues) {
-        extractData({webhookEvent: 'issue_synced', issue: issue});
+    try {
+        const data = await axios.get(
+            jiraconfig.searchurl + `?jql=project%20%3D%20IM&startAt=${startAt}&fields=id,key,summary,description,issuetype,status,priority`,
+            config
+        )
+        console.log(data);
+
+        for (const issue of data.data.issues) {
+            extractData(world, {webhookEvent: 'issue_synced', issue: issue});
+        }
+        return ({status: 'OK', total: data.data.total, maxResults: data.data.maxResults, startAt: data.data.startAt, syncCount: data.data.issues.length});
+    } catch (err) {
+        return {error: err};
     }
+    return ({error: 'Unknown'});
+
+
 }
 const extractData = async (world, data) => {
 

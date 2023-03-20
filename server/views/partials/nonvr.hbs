@@ -1,4 +1,7 @@
-<!--<div class="nonvr"> -->
+<div id="roomparent">
+    <div id="room"></div>
+</div>
+<div class="nonvr">
     <!--  <button id="forwardButton">
           Forward
       </button>
@@ -6,17 +9,18 @@
           Back
       </button>
       -->
-    <!--
-    <button id="joinButton">Disconnected</button>
-    <button id="leaveButton">Connected</button>
-    <button id="muteButton">Live</button>
-    <button id="unmuteButton">Muted</button>
-    <button id="exportButton">Export</button>
-    <button id="homeButton">Home</button>
+
+    <button id="joinButton"></button>
+    <button id="leaveButton"></button>
+    <button id="muteButton"></button>
+    <button id="unmuteButton"></button>
+    <!--<button id="exportButton"></button> -->
+    <button id="homeButton"></button>
+
     <form id="media" action="/api/media/create">
-        <label for="fileupload">File</label>
+        <label for="fileupload">Upload Media</label>
         <input id="fileupload" type="file" name="fileupload"/>
-        <button type="submit"> Upload</button>
+        <button id="uploadButton" type="submit"></button>
     </form>
 
 </div>
@@ -41,13 +45,14 @@
     document.getElementById('homeButton').addEventListener('click', () => {
         window.location.href = (window.location.origin);
     });
-    const exportButton = document.getElementById('exportButton');
+    /*const exportButton = document.getElementById('exportButton');
     exportButton.addEventListener('click', () => {
         document.dispatchEvent(
                 new CustomEvent('export',
                         {detail: 'OK'}));
 
     });
+    */
     /*const forward = document.getElementById('forwardButton');
     forward.addEventListener('mousedown', () => {
         const leftHand = document.querySelector('#left-hand');
@@ -115,4 +120,3 @@
         document.getElementById('unmuteButton').style.display = 'none';
     });
 </script>
-    -->

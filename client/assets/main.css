@@ -105,23 +105,6 @@ div.secure li {
     background: #333333;
     width: 300px;
 }
-
-
-div.nonvr {
-    position: absolute;
-    width: 80%;
-    height: 50px;
-    border-radius: 8px;
-    z-index: 9999;
-    bottom: 20px;
-    left: 20px;
-    background-color: #fff;
-}
-div.nonvr form {
-    display: inline-block;
-    width: 500px;
-}
-
 #logo {
     height: 64px;
     width: 64px;
@@ -134,15 +117,47 @@ div.nonvr form {
     display: inline-block;
     text-align: right;
 }
+
+div.nonvr {
+    position: absolute;
+    width: 25%;
+    border-radius: 16px;
+    bottom: 20px;
+    left: 20px;
+    background-color: #fff;
+}
+
+div.nonvr form {
+    display: inline-block;
+
+}
+
+
 div.nonvr  button {
-    width: 96px;
-    height: 48px;
+    width: 50px;
+    height: 50px;
     margin: 1px;
-    border-radius: 8px;
+    border-radius: 16px;
+    background-size: cover;
 }
 div.nonvr  button div {
     font-size: xx-small;
 }
+#roomparent {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 25%;
+    height: 25%;
+}
+#room {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 25%;
+    height: 25%;
+}
+
 #unmuteButton, #leaveButton, #muteButton {
     display: none;
 
@@ -152,6 +167,22 @@ div.nonvr  button div {
 }
 #unmuteButton, #joinButton {
     background-color: #fcc;
+}
+#joinButton {
+    background-image: url('/assets/icons/phone-512x512-1617678.png');
+}
+#muteButton {
+    background-image: url('/assets/icons/minus-512x512-1617683.png');
+}
+#leaveButton {
+    background-image: url('/assets/icons/attention-512x512-1617712.png');
+}
+#homeButton {
+    background-image: url('/assets/icons/home-512x512-1617693.png');
+}
+#uploadButton {
+    background-image: url('/assets/icons/cloud-upload-512x512-1617655.png');
+
 }
 
 div.nonvr button:hover {
