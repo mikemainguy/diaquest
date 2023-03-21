@@ -43,8 +43,13 @@ AFRAME.registerComponent('widget', {
             if (typeof newrelic !== 'undefined') {
                 newrelic.addPageAction(evt.target.id);
             }
-            buttonState.mode = [this.data.method];
-            buttonState.template = this.data.template;
+            if (this.data.method) {
+                buttonState.mode = [this.data.method];
+            }
+            if (this.data.template) {
+                buttonState.template = this.data.template;
+            }
+
             switch (this.data.method) {
                 case 'add-light':
                     buttonState.template = '#light-template'

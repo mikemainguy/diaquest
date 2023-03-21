@@ -1,28 +1,21 @@
-<a-entity position="-.1 .15 0" rotation="0 75 0" id="ymenu" visible="false"  scale="0.1 0.1 0.1">
+<!--position=".1 .05 -.1" rotation="-70 -80 0" -->
+<a-entity position="-.113 .040 -.101" rotation="-54 140 -50" id="ymenu" visible="false" scale="0.1 0.1 0.1">
     <a-entity gridlayout position="0 -.5 0">
-        <a-entity>
-            <a-plane text="value: Join Conference" id='joinConference' mixin="menuPlane"></a-plane>
-            <a-entity>
-
-            </a-entity>
+        <a-entity widget="method: joinConference; label: Join Conference"
+                  obj-model="obj: url(/assets/models/button.obj)"
+                  material="color: #fce; opacity: .8">
         </a-entity>
-        <a-entity>
-            <a-plane text="value: Leave Conference" id='leaveConference' mixin="menuPlane"></a-plane>
-            <a-entity>
-
-            </a-entity>
+        <a-entity class="insession" visible="false" widget="method: leaveConference; label: Leave Conference"
+                  obj-model="obj: url(/assets/models/button.obj)"
+                  material="color: #fce; opacity: .8">
         </a-entity>
-        <a-entity>
-            <a-plane text="value: Mute" id='mute' mixin="menuPlane"></a-plane>
-            <a-entity>
-
-            </a-entity>
+        <a-entity class="insession" visible="false" widget="method: mute; label: Mute"
+                  obj-model="obj: url(/assets/models/button.obj)"
+                  material="color: #fce; opacity: .8">
         </a-entity>
-        <a-entity>
-            <a-plane text="value: UnMute" id='unmute' mixin="menuPlane"></a-plane>
-            <a-entity>
-
-            </a-entity>
+        <a-entity class="insession" visible="false" widget="method: unmute; label: Unmute"
+                  obj-model="obj: url(/assets/models/button.obj)"
+                  material="color: #fce; opacity: .8">
         </a-entity>
     </a-entity>
 </a-entity>

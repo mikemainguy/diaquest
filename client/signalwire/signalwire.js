@@ -15,11 +15,25 @@ AFRAME.registerSystem('signalwire', {
                     if (typeof newrelic !== 'undefined') {
                         newrelic.addPageAction('room session started');
                     }
-
                     this.roomSession = results;
+
+                    const el = document.querySelector('#room video');
+                    if (el) {
+                        el.setAttribute('id', 'videostream');
+                        const conf = document.querySelector('#conference');
+                        conf.setAttribute('material', 'src', '#videostream');
+                        conf.setAttribute('visible', 'true');
+                        console.log('conference mapped');
+                    }
+
+                    const els = document.querySelectorAll('.insession');
+                    els.forEach((el) => {
+                        el.setAttribute('visible', 'true');
+                    });
+                }).catch((error) => {
+                    console.log(error);
                 });
             }
-
         });
         document.addEventListener('disconnectSignalwire', (evt) => {
             if (this.roomSession) {
@@ -29,9 +43,12 @@ AFRAME.registerSystem('signalwire', {
                         if (typeof newrelic !== 'undefined') {
                             newrelic.addPageAction('left session');
                         }
-                        this.roomSession.dispose();
-                    });
+                        this.roomSession.destroy();
+                        this.roomSession = null;
 
+                    }).catch((error) => {
+                        console.log(error);
+                    });
                 }
             }
         });
@@ -75,14 +92,14 @@ AFRAME.registerSystem('signalwire', {
         }
 
     },
-    debug: function(message) {
+    debug: function (message) {
         console.log(message);
     }
 });
 
 async function setupRoom() {
     const room = window.location.pathname;
-    const oculus =  navigator.appVersion.indexOf('Oculus') > -1;
+    const oculus = navigator.appVersion.indexOf('Oculus') > -1;
     if (room.startsWith('/worlds/')) {
         const data = await axios.get('/api/user/signalwireToken?room=' + room.split('/')[2]);
         if (data.status == 200) {
@@ -102,6 +119,8 @@ async function setupRoom() {
                 await roomSession.join({audio: true, video: !oculus});
                 if (!oculus) {
                     await roomSession.videoUnmute();
+                } else {
+                    //await roomSession.startScreenShare();
                 }
                 return roomSession;
             } catch (error) {

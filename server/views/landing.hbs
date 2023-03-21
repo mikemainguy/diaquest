@@ -1,11 +1,13 @@
 <div class="main">
     <div id="hero">
         <h1>Explore Your Ideas in an Immersive VR experience</h1>
+        <a href="https://www.oculus.com/open_url/?url=https%3A%2F%2Fwww.immersiveidea.com">
+            Open on your Meta Quest headset</a>
+
     </div>
 
     <div id="envlist">
-        <a href="https://www.oculus.com/open_url/?url=https%3A%2F%2Fwww.immersiveidea.com">
-            Open on your Meta Quest headset</a>
+
     <ul>
         <li><a href="/local">Local Environment</a></li>
         {{#if user}}
@@ -14,6 +16,10 @@
             <li><a href="/pages/newRelic">New Relic Explorer</a></li>
         </ul>
         {{/if}}
+        <div id="gallery">
+            <iframe  src="https://www.youtube.com/embed/cUchj31iC-A" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+        </div>
+
         {{#unless user}}
             </ul>
             <div class="secure">

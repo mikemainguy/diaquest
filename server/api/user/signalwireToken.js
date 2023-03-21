@@ -12,7 +12,8 @@ module.exports.handler = (req, res) => {
                     "room.self.video_mute",
                     "room.self.video_unmute",
                     "room.self.video_mute",
-                    "room.self.video_unmute"
+                    "room.self.video_unmute",
+                    "room.self.screenshare"
 
                 ],
                 join_video_muted: true,

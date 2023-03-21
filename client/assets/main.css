@@ -50,9 +50,6 @@ div.main {
     padding: 20px;
     border-radius: 20px;
 }
-#envlist {
-    width: 40%;
-}
 #examples {
     display: inline-block;
     width: 40%;
@@ -63,13 +60,28 @@ div.main {
 
 #envlist > a {
     margin: auto;
-
 }
-#envlist, #examples {
 
+#envlist, #examples {
     margin-bottom: auto;
-    width: 45%;
+    width: 100%;
     display: inline-block;
+}
+#envlist ul, #gallery {
+    display: inline-block;
+    padding-inline-start: 0;
+    width: 49%;
+}
+@media screen and (max-width: 625px) {
+    #envlist ul, #gallery {
+        display: inline-block;
+        width: 100%;
+    }
+}
+#gallery iframe {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16/9;
 }
 div.secure {
     background-color: #224;
@@ -103,7 +115,7 @@ div.secure li {
     border: solid #00ceff 1px;
     border-radius: 16px;
     background: #333333;
-    width: 300px;
+    width: 95%;
 }
 #logo {
     height: 64px;
@@ -182,6 +194,10 @@ div.nonvr  button div {
 }
 #uploadButton {
     background-image: url('/assets/icons/cloud-upload-512x512-1617655.png');
+
+}
+#room {
+    visibility: hidden;
 
 }
 

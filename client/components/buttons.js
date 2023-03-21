@@ -130,7 +130,7 @@ AFRAME.registerComponent('buttons', {
             if (yMenuShowing) {
                 hideMenu({detail: {id: '#ymenu'}});
             } else {
-                showMenu({detail: {id: '#ymenu', objects: '#ymenu a-plane[mixin=menuPlane], .saveable'}});
+                showMenu({detail: {id: '#ymenu', objects: '[widget], .saveable'}});
             }
         },
         triggerdown: function (evt) {
