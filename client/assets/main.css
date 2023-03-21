@@ -15,6 +15,14 @@ a:hover {
 #header {
     display: flex;
 }
+@media screen and (max-width: 625px) {
+    #header {
+        display: block;
+    }
+    .user {
+        width: 100%;
+    }
+}
 span.user {
     margin-left:auto;
     margin-right:64px;
@@ -67,6 +75,12 @@ div.main {
     width: 100%;
     display: inline-block;
 }
+#envlist ul {
+    float: left;
+}
+#envlist ul.disabled {
+    width: 100%;
+}
 #envlist ul, #gallery {
     display: inline-block;
     padding-inline-start: 0;
@@ -85,7 +99,10 @@ div.main {
 }
 div.secure {
     background-color: #224;
-    margin-left: 56px;
+    margin: 0;
+}
+div.secure a {
+    display: block;
 }
 div.secure li {
     border-style: solid;
@@ -97,7 +114,7 @@ div.secure li {
 }
 
 #envlist li {
-    padding: 16px;
+    padding: 4px;
     list-style: none;
 }
 #version {
