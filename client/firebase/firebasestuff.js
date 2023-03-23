@@ -15,7 +15,6 @@ export function createOrUpdateDom (entity) {
     }
     const ele = exists ? exists : document.createElement('a-entity');
 
-
     ele.setAttribute('template', 'src: ' + entity.template);
     ele.setAttribute('id', entity.id);
     const comp = ele.querySelector('[share-position]');

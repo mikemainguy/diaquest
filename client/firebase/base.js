@@ -24,8 +24,7 @@ export function getDb() {
 }
 export async function getProfile() {
     try {
-        const profile = JSON.parse(sessionStorage.getItem('user'));
-        return profile;
+        return JSON.parse(sessionStorage.getItem('user'));
     } catch (err) {
         console.log(err);
         return null;
@@ -40,5 +39,4 @@ export function afterSceneLoads(caller, data) {
             caller(data);
         });
     }
-
 }
