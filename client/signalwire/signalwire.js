@@ -4,7 +4,6 @@ import {default as axios} from "axios";
 
 AFRAME.registerSystem('signalwire', {
     init: function () {
-
         this.roomSession = null;
         document.addEventListener('connectSignalwire', (evt) => {
             if (this.roomSession && this.roomSession.active) {
