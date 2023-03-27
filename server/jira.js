@@ -12,7 +12,7 @@ const getJiraIssues = async function (world, jiraconfig, startPos) {
     }
     try {
         const data = await axios.get(
-            jiraconfig.searchurl + `?jql=project%20%3D%20IM&startAt=${startAt}&fields=id,key,summary,description,issuetype,status,priority`,
+            jiraconfig.searchurl + `?jql=project%20%3D%20IM&startAt=${startAt}&fields=id,key,customfield_10019,summary,description,issuetype,status,priority`,
             config
         )
         console.log(data);
@@ -52,7 +52,11 @@ const extractData = async (world, data) => {
                     }
 
                 }
-                    output.issueId = data.issue.id;
+                if (data.issue.fields.customfield_10019) {
+                    output.rank = data.issue.fields.customfield_10019;
+                }
+
+                output.issueId = data.issue.id;
                 output.id = data.issue.id;
 
                 output.issueKey = data.issue.key;

@@ -12,7 +12,13 @@ AFRAME.registerComponent('3d-keyboard', {
         ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';', '\'', 'Enter'],
         ['z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '/'],
         [' ']
-
+    ],
+    upkeys: [
+        ['!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '_', '+', '<-'],
+        ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', '{', '}', '|'],
+        ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', ':', '"', 'Enter'],
+        ['Z', 'X', 'C', 'V', 'B', 'N', 'M', '<', '>', '?'],
+        [' ']
     ]
     ,
     schema: {
@@ -20,7 +26,6 @@ AFRAME.registerComponent('3d-keyboard', {
         visible: {type: 'boolean', default: false},
         scale: {type: 'string', default: '.08 .08 1'},
         elId: {type: 'string'}
-
     },
     events: {
         transcriptiondata: function (evt) {
@@ -39,7 +44,6 @@ AFRAME.registerComponent('3d-keyboard', {
         this.el.addEventListener('mousedown', this.click.bind(this));
         this.el.addEventListener('mouseenter', this.hover.bind(this));
         this.el.addEventListener('mouseleave', this.blur.bind(this));
-
         this.keyboard = document.createElement('a-entity');
         this.keyboard.setAttribute('visible', this.data.visible);
         this.keyboard.setAttribute('sound', 'src: #audiohover; volume: 0.3; on: mouseenter; poolSize: 5');
@@ -73,7 +77,40 @@ AFRAME.registerComponent('3d-keyboard', {
                         x += 1;
                         k.setAttribute('position', x + ' ' + y + ' .001');
                 }
-
+                k.setAttribute('height', '.95');
+                k.setAttribute('text', 'value', key);
+                k.setAttribute('text', 'align', 'center');
+                k.setAttribute('material', 'color', '#222');
+            }
+            y -= 1;
+        }
+        y = 1.5;
+        for (const row of this.upkeys) {
+            let x = 7;
+            for (const key of row) {
+                const k = document.createElement('a-plane');
+                this.keyboard.appendChild(k);
+                k.classList.add('keyboardRaycastable');
+                k.setAttribute('key', key);
+                switch (key) {
+                    case 'Enter':
+                        k.setAttribute('width', '1.95');
+                        k.setAttribute('text', 'wrapCount', '6');
+                        x += 1.5;
+                        k.setAttribute('position', x + ' ' + y + ' .001');
+                        break;
+                    case ' ':
+                        k.setAttribute('width', '6');
+                        k.setAttribute('text', 'wrapCount', '6');
+                        x += 5;
+                        k.setAttribute('position', x + ' ' + y + ' .001');
+                        break;
+                    default:
+                        k.setAttribute('width', '.95');
+                        k.setAttribute('text', 'wrapCount', '2');
+                        x += 1;
+                        k.setAttribute('position', x + ' ' + y + ' .001');
+                }
                 k.setAttribute('height', '.95');
                 k.setAttribute('text', 'value', key);
                 k.setAttribute('text', 'align', 'center');
@@ -82,18 +119,12 @@ AFRAME.registerComponent('3d-keyboard', {
             y -= 1;
         }
         const back = document.createElement('a-plane');
-
-
         back.setAttribute('material', 'color', '#444');
         back.setAttribute('position', '0 0 0');
         back.setAttribute('width', '13.1');
         back.setAttribute('height', '4.1');
-
-
         this.keyboard.appendChild(back);
-
         this.label = document.createElement('a-plane');
-
         this.keyboard.appendChild(this.label);
         this.label.setAttribute('material', 'color', '#555');
         this.label.setAttribute('position', '0 3 .001');
@@ -102,29 +133,19 @@ AFRAME.registerComponent('3d-keyboard', {
         this.label.setAttribute('text', 'value', this.data.value);
         this.label.setAttribute('height', '1');
         this.label.setAttribute('height', '1');
-
-
     },
-
     update: function (oldData) {
     },
     tick: function (time) {
-
-
     },
-
     play: function () {
-
     },
-
     pause: function () {
-
     },
 
     /**
      * The plane for visual feedback when a key is hovered or clicked
      */
-
     click: function (ev) {
         const k = ev.target.getAttribute('key');
         if (k) {
@@ -138,13 +159,14 @@ AFRAME.registerComponent('3d-keyboard', {
                         this.data.value = this.data.value.slice(0, this.data.value.length - 1);
                     }
                     break;
+                case '[Shift]':
+                    break;
                 default:
                     this.data.value = this.data.value + k;
             }
             this.label.setAttribute('text', 'value', this.data.value);
         }
     },
-
     show: function (evt) {
         if (evt.detail.value) {
             this.data.value = evt.detail.value;
@@ -154,23 +176,19 @@ AFRAME.registerComponent('3d-keyboard', {
         }
         this.label.setAttribute('text', 'value', this.data.value);
         const cam = document.querySelector('#camera').object3D;
-
-        //const keyboard = this.el.object3D;
-        const pos = new THREE.Vector3();
-        pos.copy(cam.position);
-        const rig = document.querySelector('.rig').object3D;
-        //rig.worldToLocal(pos);
-        this.el.object3D.position.set(pos.x, pos.y - .2, pos.z - .5);
-
+        this.el.object3D.parent = cam;
+        this.el.object3D.position.set(0, -.1, -.5);
+        const pos = cam.position.clone();
+        cam.getWorldPosition(pos);
+        this.el.sceneEl.object3D.attach(this.el.object3D);
+        this.el.object3D.lookAt(pos);
         changeRaycaster('.keyboardRaycastable,[transcription]');
         this.keyboard.setAttribute('visible', 'true');
         this.el.querySelector('a-sphere').setAttribute('visible', true);
     },
-
     close: function () {
         this.keyboard.setAttribute('visible', 'false');
         this.el.querySelector('a-sphere').setAttribute('visible', false);
-
     },
     hover: function (ev) {
         ev.target.setAttribute('material', 'color', '#dd0');
@@ -178,6 +196,4 @@ AFRAME.registerComponent('3d-keyboard', {
     blur: function (ev) {
         ev.target.setAttribute('material', 'color', '#222');
     }
-
-
 });

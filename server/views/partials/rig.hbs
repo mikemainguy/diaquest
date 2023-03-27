@@ -1,16 +1,17 @@
+<a-entity id="keyboard-rotation">
+    <a-entity
+            id="keyboard"
+            position="0 .8 -.55"
+            3d-keyboard="visible: false; scale: .04 .04 .4"
+            rotation="0 0 0">
+        <a-sphere radius="0.04" transcription position=".3 .12 .04" visible="false" material="color: #fff; opacity: 0.5">
+            <a-image lookatme width="0.04" height="0.04" src="#voiceicon"></a-image>
+        </a-sphere>
+    </a-entity>
+</a-entity>
+
 <a-entity gltf-exporter="debug: true" class="rig" position="0 0 2">
 
-    <a-entity id="keyboard-rotation">
-        <a-entity
-                id="keyboard"
-                position="0 .8 -.55"
-                3d-keyboard="visible: false; scale: .04 .04 .4"
-                rotation="-30 0 0">
-            <a-sphere radius="0.04" transcription position=".3 .12 .04" visible="false" material="color: #fff; opacity: 0.5">
-                <a-image lookatme width="0.04" height="0.04" src="#voiceicon"></a-image>
-            </a-sphere>
-        </a-entity>
-    </a-entity>
     <a-entity id="image-picker" mediamanager position="0 1 0" visible="false">
 
     </a-entity>

@@ -8,6 +8,8 @@ AFRAME.registerSystem('transcription', {
         this.recorder;
         this.target = null;
         this.data = null
+        this.el.setAttribute('sound__0', 'on: startsound; src: url(/assets/sounds/African_Kalimba_1.mp3)');
+        this.el.setAttribute('sound__1', 'on: stopsound; src: url(/assets/sounds/African_Kalimba_2.mp3)');
         this.transcribestart = this.transcribestart.bind(this);
         document.addEventListener('transcribestart', this.transcribestart);
         this.transcribestop = this.transcribestop.bind(this);
@@ -24,6 +26,7 @@ AFRAME.registerSystem('transcription', {
         this
             .startRecording()
             .then(() => {
+                this.el.emit('startsound');
                 debug('Recording started')
             });
     },
@@ -31,6 +34,7 @@ AFRAME.registerSystem('transcription', {
         this.target = null;
         this.data = null;
         this.stopRecording();
+        this.el.emit('stopsound');
     },
     setupConnection: async function () {
         const response = await fetch('/api/voice/token');
