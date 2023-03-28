@@ -2,17 +2,23 @@ import {afterSceneLoads, getDb} from "./base";
 import {buildPath} from "./paths";
 import {onChildChanged, onValue, ref} from "firebase/database";
 
-
 const database = getDb();
-afterSceneLoads(jiraListener, ref(database, buildPath('jira/issues')));
+afterSceneLoads(jiraListener, ref(database, buildPath('jira')));
 async function jiraListener(jira) {
-    onChildChanged(jira, (snapshot) => {
+    const issueRef = ref(database, buildPath('jira/issues'));
+    onChildChanged(issueRef, (snapshot) => {
        updateDom(snapshot.val());
     });
     onValue(jira , (snapshot) => {
-        snapshot.forEach((j) => {
+        snapshot.child('statusMap').forEach((status) => {
+            document.dispatchEvent(
+                new CustomEvent('jiraStatusUpdate',
+                    {detail: status.val()}));
+        });
+        snapshot.child('issues').forEach((j) => {
             updateDom(j.val());
-        })
+        });
+
     }, {onlyOnce: true});
 }
 function updateDom(jira) {
@@ -35,4 +41,3 @@ function updateDom(jira) {
     }
     ticket.setAttribute('jira', data);
 }
-

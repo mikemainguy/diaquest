@@ -108,6 +108,22 @@ const verifyInvite = async function (email, world) {
     const ref = db.ref('/invites/' + email + '/' + world);
     await ref.set({"world": world});
 }
+const storeJiraBoardConfig = async function (world, boards) {
+    const db = admin.database();
+    const boardRef = db.ref(`/worlds/${world}/jira/boards`);
+    for (const board of boards) {
+        const fbBoard = await boardRef.child(board.id).get();
+        if (fbBoard.exists()) {
+            await boardRef.child(board.id).child('columns').set(board.columns);
+            await boardRef.child(board.id).child('name').set(board.name);
+            await boardRef.child(board.id).child('rankingField').set(board.rankingField);
+        } else {
+            await boardRef.child(board.id).set(board);
+        }
+
+    }
+
+}
 
 
 module.exports = {
@@ -119,5 +135,6 @@ module.exports = {
     getUser: getUser,
     storeMedia: storeMedia,
     updateJira: updateJira,
-    getJiraConfig: getJiraConfig
+    getJiraConfig: getJiraConfig,
+    storeJiraBoardConfig: storeJiraBoardConfig
 };

@@ -2,11 +2,17 @@ AFRAME.registerSystem('jira', {
     init: function() {
         this.tickets = new Map();
         this.status = new Map();
-        this.status.set('Backlog', 0);
-        this.status.set('Selected For Development', 1);
-        this.status.set('In Progress', 2);
-        this.status.set('Done', 3);
         this.priority = new Map();
+        this.statusMapper = this.statusMapper.bind(this.statusMapper);
+        document.addEventListener('jiraStatusUpdate', this.statusMapper);
+    },
+    statusMapper: function(event) {
+        if (!this.status.has(event.detail.status)) {
+            const el = document.createElement('a-entity');
+            el.setAttribute('jiraStatus', event.detail);
+            document.append(el);
+        }
+        console.log(JSON.stringify(event));
     },
     organize: function() {
         let i = 0;
@@ -23,8 +29,17 @@ AFRAME.registerSystem('jira', {
     }
 });
 AFRAME.registerComponent('jiraStatus', {
+    schema: {
+      status: {type: 'string'},
+      position: {type: 'string'},
+        rotation: {type: 'string'}
+    },
     init: function() {
 
+    },
+    update: function() {
+        this.el.setAttribute('position', this.data.position);
+        this.el.setAttribute('rotation', this.data.position);
     }
 });
 AFRAME.registerComponent('jira', {

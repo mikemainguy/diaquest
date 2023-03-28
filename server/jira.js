@@ -1,27 +1,67 @@
 const axios = require('axios');
 const {updateJira} = require("./firebase");
+const getBoards = async function(world, jiraconfig) {
+    const boardList = [];
+    const config = (getAxiosConfig(jiraconfig));
+    const res = await axios.get(
+        jiraconfig.searchurl + `/rest/agile/1.0/board`,
+        config
+    )
+    const boards = res.data.values;
+    const boardData = {};
+    if (boards && boards.length > 0) {
+        console.log(boards[0]);
+        const boardId = boards[0].id;
+        const board = await axios.get(
+            jiraconfig.searchurl + `/rest/agile/1.0/board/${boardId}/configuration`,
+            config
+        )
+        const columns = [];
+        for (const column of board.data.columnConfig.columns) {
+            const statusIds = [];
+            if (column.statuses.length > 0) {
+                for (const status of column.statuses) {
+                    statusIds.push(status.id);
+                }
+                columns.push({column: column.name, statuses: statusIds});
+            }
+        }
+        boardData.id= board.data.id;
+        boardData.name=board.data.name;
+        boardData.rankingField= board.data.ranking.rankCustomFieldId;
+        boardData.columns = columns;
+        boardList.push(boardData);
+    }
+    return boardList;
+}
+
+function getAxiosConfig(config) {
+    const auth = Buffer.from(config.auth)
+        .toString('base64');
+    return {
+        headers: {'Authorization': 'Basic ' + auth}
+    };
+}
 const getJiraIssues = async function (world, jiraconfig, startPos) {
     let startAt = 0;
     if (startPos) {
         startAt = startPos;
     }
-    const auth = Buffer.from(jiraconfig.auth)
-        .toString('base64');
-    const config = {headers:
-            {'Authorization': 'Basic ' + auth}
-    }
+    const config = getAxiosConfig(jiraconfig);
+
     try {
         const data = await axios.get(
-            jiraconfig.searchurl + `?jql=project%20%3D%20IM&startAt=${startAt}&fields=id,key,customfield_10019,summary,description,issuetype,status,priority`,
+            jiraconfig.searchurl + `/rest/api/3/search?jql=project%20%3D%20IM&startAt=${startAt}&fields=id,key,customfield_10019,summary,description,issuetype,status,priority`,
             config
         )
-        console.log(data);
+
 
         for (const issue of data.data.issues) {
             extractData(world, {webhookEvent: 'issue_synced', issue: issue});
         }
         return ({status: 'OK', total: data.data.total, maxResults: data.data.maxResults, startAt: data.data.startAt, syncCount: data.data.issues.length});
     } catch (err) {
+        console.log(err);
         return {error: err};
     }
     return ({error: 'Unknown'});
@@ -80,5 +120,5 @@ const extractData = async (world, data) => {
     }
 }
 module.exports = {
-    extractData, getJiraIssues
+    extractData, getJiraIssues, getBoards
 }
