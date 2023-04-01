@@ -1,45 +1,62 @@
 AFRAME.registerSystem('jira', {
-    init: function() {
+    init: function () {
         this.tickets = new Map();
-        this.status = new Map();
         this.priority = new Map();
-        this.statusMapper = this.statusMapper.bind(this.statusMapper);
-        document.addEventListener('jiraStatusUpdate', this.statusMapper);
     },
-    statusMapper: function(event) {
-        if (!this.status.has(event.detail.status)) {
-            const el = document.createElement('a-entity');
-            el.setAttribute('jiraStatus', event.detail);
-            document.append(el);
-        }
-        console.log(JSON.stringify(event));
-    },
-    organize: function() {
-        let i = 0;
+    /**
+     * This function sorts the tickets based on their rank and appends them to their corresponding swimlane.
+     * It does this by looping through each swimlane and for each swimlane,
+     * looping through the states, and setting the state to a map.
+     * After that, the function sorts the tickets into the correct swimlane by looping through the tickets,
+     * getting the statusId of each ticket, then appending the ticket to the correct swimlane using the stateMap.
+     * Finally, the position of each ticket is set, incrementing by 0.2 each time.
+     */
+    organize: function () {
+        let i = 1;
         const entries = [...this.tickets.values()];
-        entries.sort((a,b)=> {
+        entries.sort((a, b) => {
             return b.components['jira'].data.rank.localeCompare(a.components['jira'].data.rank);
         });
-        for (const ticket of entries)  {
-            const status = ticket.components['jira'].data.issueStatus;
-            const statusPos = this.status.get(status);
-            ticket.setAttribute('position', `${statusPos*.5} ${i*.2} 0`);
+        const swimlanes = document.querySelectorAll('[jirastatus]');
+        const stateMap = new Map();
+        swimlanes.forEach((el) => {
+            for (const state of el.components['jirastatus'].data.states) {
+                stateMap.set(state, el);
+            }
+        });
+        for (const ticket of entries) {
+            const statusId = ticket.components['jira'].data.issueStatusId;
+            stateMap.get(statusId).append(ticket);
+            ticket.setAttribute('position', `0 ${i * .2} 0`);
             i++;
-        };
+        }
+        ;
     }
 });
-AFRAME.registerComponent('jiraStatus', {
+AFRAME.registerSystem('jirastatus', {
+    init: function () {
+        this.count = 0;
+    }
+});
+AFRAME.registerComponent('jirastatus', {
     schema: {
-      status: {type: 'string'},
-      position: {type: 'string'},
-        rotation: {type: 'string'}
-    },
-    init: function() {
+        status: {type: 'string'},
+        states: {type: 'array'},
+        position: {type: 'string'}
 
     },
-    update: function() {
-        this.el.setAttribute('position', this.data.position);
-        this.el.setAttribute('rotation', this.data.position);
+    init: function () {
+        console.log(this.data);
+    },
+    update: function () {
+        if (!this.data.position) {
+            this.el.setAttribute('position', `${this.system.count} 1 -5`);
+            this.system.count++;
+        }
+        window.setTimeout(() => {
+            const textEl = this.el.querySelector('.text');
+            textEl.setAttribute('text', 'value', this.data.status);
+        }, 1000);
     }
 });
 AFRAME.registerComponent('jira', {
@@ -48,6 +65,7 @@ AFRAME.registerComponent('jira', {
         issueId: {type: 'string'},
         issueType: {type: 'string'},
         issueStatus: {type: 'string'},
+        issueStatusId: {type: 'string'},
         issueKey: {type: 'string'},
         issuePriority: {type: 'string'},
         issueSummary: {type: 'string'},
@@ -55,14 +73,10 @@ AFRAME.registerComponent('jira', {
         commentId: {type: 'string'},
         comment: {type: 'string'}
     },
-    update: function() {
+    update: function () {
         const id = this.el.id;
         const tickets = this.system.tickets;
-        const status = this.system.status;
         const priority = this.system.priority;
-        if (!status.has(this.data.issueStatus)) {
-            status.set(this.data.issueStatus, status.size);
-        }
         if (!priority.has(this.data.issuePriority)) {
             priority.set(this.data.issuePriority, priority.size);
         }
@@ -71,14 +85,16 @@ AFRAME.registerComponent('jira', {
         } else {
             tickets.set(id, this.el);
         }
-        window.setTimeout(()=> {
-            const summary = this.el.querySelector('.summary');
-            summary.setAttribute('text', 'value', this.data.issueSummary);
-            const key = this.el.querySelector('.key');
-            key.setAttribute('text', 'value', this.data.issueKey);
-        }, 100);
 
-        this.system.organize();
+        window.setTimeout((p) => {
+            const summary = p.el.querySelector('.summary');
+            summary.setAttribute('text', `value: ${p.data.issueSummary}`);
+            const key = p.el.querySelector('.key');
+            key.setAttribute('text', `value: ${p.data.issueKey}`);
+            p.system.organize();
+        }, 1000, this);
+
+
     },
 
 });

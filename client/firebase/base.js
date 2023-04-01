@@ -3,15 +3,15 @@ import {getAuth} from "firebase/auth";
 import {getDatabase} from "firebase/database";
 
 const firebaseConfig = {
-    apiKey: "AIzaSyAEkQdc91Hnjek1v-KlXiYLf5fHN_pKB_E",
-    authDomain: "metastore-37b60.firebaseapp.com",
-    databaseURL: "https://metastore-37b60-default-rtdb.firebaseio.com",
-    projectId: "metastore-37b60",
-    storageBucket: "metastore-37b60.appspot.com",
-    messagingSenderId: "312692319255",
-    appId: "1:312692319255:web:6aa206a92440a771a42852",
-    measurementId: "G-26SWC62X80"
-}
+    apiKey: "AIzaSyD4jJCYcIvHDEiOkVxC2c4zNYRqZKYHMMk",
+    authDomain: "immersive-idea.firebaseapp.com",
+    databaseURL: "https://immersive-idea-default-rtdb.firebaseio.com",
+    projectId: "immersive-idea",
+    storageBucket: "immersive-idea.appspot.com",
+    messagingSenderId: "831017515098",
+    appId: "1:831017515098:web:91b0dd4ae2f0a577184063",
+    measurementId: "G-VCC438TT47"
+};
 
 const getApp = function() {
     return initializeApp(firebaseConfig);

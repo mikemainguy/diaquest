@@ -17,13 +17,14 @@ const getBoards = async function(world, jiraconfig) {
             config
         )
         const columns = [];
+
         for (const column of board.data.columnConfig.columns) {
             const statusIds = [];
             if (column.statuses.length > 0) {
                 for (const status of column.statuses) {
                     statusIds.push(status.id);
                 }
-                columns.push({column: column.name, statuses: statusIds});
+                columns.push({id: columns.length, column: column.name, statuses: statusIds});
             }
         }
         boardData.id= board.data.id;
@@ -102,6 +103,7 @@ const extractData = async (world, data) => {
                 output.issueKey = data.issue.key;
                 output.issueType = data.issue.fields.issuetype.name;
                 output.issueStatus = data.issue.fields.status.name;
+                output.issueStatusId = data.issue.fields.status.id;
                 output.issuePriority = data.issue.fields.priority.name;
                 output.issueSummary = data.issue.fields.summary;
             }
