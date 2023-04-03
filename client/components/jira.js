@@ -2,6 +2,12 @@ AFRAME.registerSystem('jira', {
     init: function () {
         this.tickets = new Map();
         this.priority = new Map();
+        this.organize = this.organize.bind(this);
+        this.el.addEventListener('organize', this.organize);
+        this.tick = AFRAME.utils.throttleTick(this.tick, 1000, this);
+    },
+    tick: function(t, dt)  {
+      this.organize();
     },
     /**
      * This function sorts the tickets based on their rank and appends them to their corresponding swimlane.
@@ -12,6 +18,7 @@ AFRAME.registerSystem('jira', {
      * Finally, the position of each ticket is set, incrementing by 0.2 each time.
      */
     organize: function () {
+        performance.mark('organize-started');
         let i = 1;
         const entries = [...this.tickets.values()];
         entries.sort((a, b) => {
@@ -19,18 +26,34 @@ AFRAME.registerSystem('jira', {
         });
         const swimlanes = document.querySelectorAll('[jirastatus]');
         const stateMap = new Map();
+        const posMap = new Map();
         swimlanes.forEach((el) => {
             for (const state of el.components['jirastatus'].data.states) {
                 stateMap.set(state, el);
+                posMap.set(state, 5);
             }
         });
         for (const ticket of entries) {
             const statusId = ticket.components['jira'].data.issueStatusId;
-            stateMap.get(statusId).append(ticket);
-            ticket.setAttribute('position', `0 ${i * .2} 0`);
-            i++;
-        }
-        ;
+            if (stateMap.has(statusId)) {
+                const parent = stateMap.get(statusId);
+                if (ticket.parentEl.object3D != parent.object3D) {
+                    const pos = posMap.get(statusId);
+                    parent.object3D.add(ticket.object3D);
+                    ticket.setAttribute('position', `0 .2 ${pos}`);
+                    posMap.set(statusId, pos-.2);
+                } else {
+                    console.log('parent already correct');
+                }
+            } else {
+                console.log(statusId + ' missing');
+            }
+        };
+        performance.mark('organize-ended');
+        const organizeMeasure =
+            performance.measure('organize-started',
+            'organize-ended');
+
     }
 });
 AFRAME.registerSystem('jirastatus', {
@@ -46,7 +69,7 @@ AFRAME.registerComponent('jirastatus', {
 
     },
     init: function () {
-        console.log(this.data);
+
     },
     update: function () {
         if (!this.data.position) {
@@ -85,16 +108,30 @@ AFRAME.registerComponent('jira', {
         } else {
             tickets.set(id, this.el);
         }
-
-        window.setTimeout((p) => {
-            const summary = p.el.querySelector('.summary');
-            summary.setAttribute('text', `value: ${p.data.issueSummary}`);
-            const key = p.el.querySelector('.key');
-            key.setAttribute('text', `value: ${p.data.issueKey}`);
-            p.system.organize();
-        }, 1000, this);
-
-
     },
+    tick: function() {
+        const summary = this.el.querySelector('.summary');
+        if (summary) {
+            summary.setAttribute('text', `value: ${this.data.issueSummary}`);
+        } else {
+                console.log(this.el);
+        }
+        const key = this.el.querySelector('.key');
+        if (key) {
+            key.setAttribute('text', `value: ${this.data.issueKey}`);
+        } else {
+            console.log(this.el);
+        }
+        if (this.system) {
+            //this.el.sceneEl.emit('organize', {detail: 'OK'});
+            //this.el.sceneEl.emit('organize', {detail: 'OK'});
+            //console.log('here');
+            //this.system.organize();
+        } else {
+            //console.log('no system');
+        }
 
+        //
+
+    }
 });
