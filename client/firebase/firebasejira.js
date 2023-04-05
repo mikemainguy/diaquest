@@ -57,7 +57,11 @@ function updateDom(jira) {
         issueKey: jira.issueKey,
         issuePriority: jira.issuePriority,
         issueSummary: jira.issueSummary,
-        issueDescription: jira.issueDescription
+        issueDescription: jira.issueDescription,
+
+    }
+    if (jira.issueStoryPoints) {
+        data.issueStoryPoints = jira.issueStoryPoints;
     }
     ticket.setAttribute('jira', data);
 }

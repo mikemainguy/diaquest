@@ -93,6 +93,9 @@ const extractData = async (world, data) => {
                     }
 
                 }
+                if (data.issue.fields.customfield_10031) {
+                    output.issueStoryPoints = data.issue.fields.customfield_10031;
+                }
                 if (data.issue.fields.customfield_10019) {
                     output.rank = data.issue.fields.customfield_10019;
                 }
