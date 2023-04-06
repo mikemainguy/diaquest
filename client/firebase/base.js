@@ -13,15 +13,18 @@ const firebaseConfig = {
     measurementId: "G-VCC438TT47"
 };
 
-const getApp = function() {
+const getApp = function () {
     return initializeApp(firebaseConfig);
 }
-export function getFbAuth (app) {
+
+export function getFbAuth(app) {
     return getAuth(app);
 }
+
 export function getDb() {
     return getDatabase(getApp());
 }
+
 export async function getProfile() {
     try {
         return JSON.parse(sessionStorage.getItem('user'));
@@ -30,12 +33,13 @@ export async function getProfile() {
         return null;
     }
 }
+
 export function afterSceneLoads(caller, data) {
     const scene = document.querySelector('a-scene');
     if (scene && scene.hasLoaded) {
         caller(data);
     } else {
-        document.addEventListener('aframeReady', (evt) => {
+        document.addEventListener('aframeReady', () => {
             caller(data);
         });
     }

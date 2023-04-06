@@ -4,7 +4,7 @@ import {getDb} from "./base";
 import {getEntityPath, getSessionPath} from "./paths";
 const database = getDb();
 export function shareUpdate(evt) {
-    if (!evt || !evt.detail || !evt.detail.id || evt.detail.id == null) {
+    if (!evt || !evt.detail || !evt.detail.id) {
         console.error("Missing Id to update, skipping update");
         return;
     }

@@ -42,7 +42,7 @@ async function registerMedias(medias) {
                     height: val[media].height
                 };
             data.push(mediaEntry);
-        };
+        }
         document.querySelector('[mediamanager]').dispatchEvent(
             new CustomEvent('mediaUpdated',
                 {detail: data}));
