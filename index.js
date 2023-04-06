@@ -5,25 +5,22 @@ const fileUpload = require("express-fileupload");
 require('./server/newrelic');
 
 const deploymentlogger = require('./server/deploymentlogger');
-const { setup } = require('./server/pagehandler');
-
-
+const {setup} = require('./server/pagehandler');
 const version = env.VERSION;
-
 const express = require('express');
 const app = express();
-
 app.use(express.urlencoded({extended: true}))
 app.use(fileUpload());
 app.use(expressLogger);
+
 const jsonParser = require('body-parser').json()
 app.use(jsonParser);
+
 const api = require('./server/api');
 const sgMail = require("@sendgrid/mail");
 
 auth0(app);
 setup(app);
-
 app.get('/local', (req, res) => {
     res.render('world', {vrLocal: true, version: version});
 });
@@ -37,5 +34,6 @@ app.get('/worlds/:worldId', requiresAuth(), (req, res) => {
 });
 api(app);
 const port = env.PORT;
-app.listen(port, () => {});
+app.listen(port, () => {
+});
 deploymentlogger(port);
