@@ -1,4 +1,5 @@
 import {round} from "./util";
+import domtoimage from "dom-to-image";
 
 AFRAME.registerSystem('jira', {
     init: function () {
@@ -154,10 +155,18 @@ AFRAME.registerComponent('jira', {
         mouseenter: function(evt) {
             const box = this.el.querySelector('a-box');
             box.setAttribute('color', '#dd0');
+            const description = this.el.querySelector('.description');
+            if (description) {
+                description.setAttribute('visible', true);
+            }
         },
         mouseleave: function(evt) {
             const box = this.el.querySelector('a-box');
             box.setAttribute('color', '#333');
+            const description = this.el.querySelector('.description');
+            if (description) {
+                description.setAttribute('visible', false);
+            }
         },
 
     },
@@ -173,6 +182,40 @@ AFRAME.registerComponent('jira', {
         } else {
             tickets.set(id, this.el);
         }
+
+        if (this.data.issueDescription) {
+            const test = this.htmlToElement(this.data.issueDescription);
+            console.log(test);
+            domtoimage.toPng(test, {width: 1024, height: 1024}).then((url)=> {
+                const img = new Image();
+                img.src = url;
+                const id = 'img'+Date.now().valueOf();
+                img.setAttribute('id', id);
+                const assets = document.querySelector('a-assets');
+                assets.append(img);
+
+                this.image = id;
+
+                if (this.data.issueDescription) {
+                    console.log(this.data.issueDescription);
+                    if (this.image) {
+                        window.setTimeout(()=> {
+                            const description = this.el.querySelector('.description');
+                            console.log(this.image);
+                            description.setAttribute('src', '#' + this.image);
+                        }, 1000);
+
+                        //const material = description.getObject3D('mesh').material;
+                        //if (material && material.map) {
+                        //    material.map.needsUpdate = true;
+                        //}
+                    }
+                }
+            })
+                .catch(function(error) {
+
+                });
+        }
     },
     tick: function() {
         const summary = this.el.querySelector('.summary');
@@ -181,12 +224,15 @@ AFRAME.registerComponent('jira', {
         } else {
             console.log(this.el);
         }
+        const description = this.el.querySelector('.description');
+
         const key = this.el.querySelector('.key');
         if (key) {
             key.setAttribute('text', `value: ${this.data.issueKey}`);
         } else {
             console.log(this.el);
         }
+
         if (this.grabbed && this.system.swimlanes) {
             const worldPos = this.el.object3D.getWorldPosition(this.el.object3D.position.clone());
             this.system.swimlanes.forEach((swimlane) => {
@@ -208,5 +254,13 @@ AFRAME.registerComponent('jira', {
             });
 
         }
+    },
+    htmlToElement: function htmlToElement(html) {
+        const template = document.createElement('div');
+        template.style.backgroundColor="#fff";
+        html = html.trim(); // Never return a text node of whitespace as the result
+        template.innerHTML = html;
+        return template;
     }
+
 });

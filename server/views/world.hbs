@@ -42,7 +42,7 @@
     </a-entity>
 
     {{> rig }}
-    <a-entity light="type: ambient; color: #88B; intensity: .9">
+    <a-entity light="type: ambient; color: #fff; intensity: .9">
 
     </a-entity>
     {{> shape-properties }}
@@ -75,6 +75,13 @@
              visible="false"
              rotation="0 0 0"></a-plane>
 </a-scene>
+<div id="testel">
+    <h1>Test</h1>
+    <ul>
+        <li>one</li>
+        <li>two</li>
+    </ul>
+</div>
 <script>
     document.addEventListener('directoryUpdate', (evt)=> {
         const scene = document.getElementById(evt.detail.htmlId);

@@ -1,6 +1,8 @@
 const axios = require('axios');
 const {updateJira} = require("./firebase");
-const getBoards = async function(world, jiraconfig) {
+const j2m = require('jira2md');
+
+const getBoards = async function (world, jiraconfig) {
     const boardList = [];
     const config = (getAxiosConfig(jiraconfig));
     const res = await axios.get(
@@ -27,9 +29,9 @@ const getBoards = async function(world, jiraconfig) {
                 columns.push({id: columns.length, column: column.name, statuses: statusIds});
             }
         }
-        boardData.id= board.data.id;
-        boardData.name=board.data.name;
-        boardData.rankingField= board.data.ranking.rankCustomFieldId;
+        boardData.id = board.data.id;
+        boardData.name = board.data.name;
+        boardData.rankingField = board.data.ranking.rankCustomFieldId;
         boardData.columns = columns;
         boardList.push(boardData);
     }
@@ -43,6 +45,7 @@ function getAxiosConfig(config) {
         headers: {'Authorization': 'Basic ' + auth}
     };
 }
+
 const getJiraIssues = async function (world, jiraconfig, startPos) {
     let startAt = 0;
     if (startPos) {
@@ -52,7 +55,7 @@ const getJiraIssues = async function (world, jiraconfig, startPos) {
 
     try {
         const data = await axios.get(
-            jiraconfig.searchurl + `/rest/api/3/search?jql=project%20%3D%20IM&startAt=${startAt}&fields=id,key,customfield_10019,summary,description,issuetype,status,priority`,
+            jiraconfig.searchurl + `/rest/api/3/search?jql=project%20%3D%20IM&startAt=${startAt}&fields=id,key,customfield_10019,summary,description,issuetype,status,priority&expand=renderedFields`,
             config
         )
 
@@ -60,7 +63,13 @@ const getJiraIssues = async function (world, jiraconfig, startPos) {
         for (const issue of data.data.issues) {
             extractData(world, {webhookEvent: 'issue_synced', issue: issue});
         }
-        return ({status: 'OK', total: data.data.total, maxResults: data.data.maxResults, startAt: data.data.startAt, syncCount: data.data.issues.length});
+        return ({
+            status: 'OK',
+            total: data.data.total,
+            maxResults: data.data.maxResults,
+            startAt: data.data.startAt,
+            syncCount: data.data.issues.length
+        });
     } catch (err) {
         console.log(err);
         return {error: err};
@@ -72,27 +81,35 @@ const getJiraIssues = async function (world, jiraconfig, startPos) {
 const extractData = async (world, data) => {
 
     const operation = data.webhookEvent.split('_');
-    operation[0]  = operation[0].replace('jira:', '');
+    operation[0] = operation[0].replace('jira:', '');
     try {
         const output = {
-            timestamp: data.timestamp ? data.timestamp: new Date().valueOf(),
-            event: data.webhookEvent ? data.webhookEvent: 'sync',
+            timestamp: data.timestamp ? data.timestamp : new Date().valueOf(),
+            event: data.webhookEvent ? data.webhookEvent : 'sync',
         }
         if (data.user) {
-            output.user= data.user.displayName;
+            output.user = data.user.displayName;
         }
 
         if (operation[0] == 'issue') {
             if (data.issue) {
-                const desc = data.issue.fields.description;
-                if (desc) {
-                    if (desc.text) {
-                        output.issueDescription = desc.text;
-                    } else {
-                        output.issueDescription = desc;
-                    }
+                if (data.issue.renderedFields && data.issue.renderedFields.description) {
+                    output.issueDescription = data.issue.renderedFields.description;
+                } else {
+                    const desc = data.issue.fields.description;
+                    if (desc) {
+                        if (desc.text) {
+                            output.issueDescription = desc.text;
+                        } else {
+                            output.issueDescription = j2m.jira_to_html(desc);
+                        }
 
+                    }
                 }
+
+
+
+
                 if (data.issue.fields.customfield_10031) {
                     output.issueStoryPoints = data.issue.fields.customfield_10031;
                 }
@@ -118,7 +135,7 @@ const extractData = async (world, data) => {
                 output.issueId = data.issue.id;
             }
         }
-        await updateJira(world, operation[0] +'s', output);
+        await updateJira(world, operation[0] + 's', output);
         console.log(output);
     } catch (err) {
         console.log(err);
