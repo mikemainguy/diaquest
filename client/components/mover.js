@@ -14,7 +14,7 @@ AFRAME.registerSystem('mover', {
         this.updateVelocity = this.updateVelocity.bind(this);
         this.keyEvent = this.keyEvent.bind(this);
         document.addEventListener('keydown', this.keyEvent);
-        this.rig=document.querySelector('.rig');
+        this.rig = document.querySelector('.rig');
         this.camera = document.getElementById("camera");
 
         this.checkRigAndCamera();
@@ -98,7 +98,7 @@ AFRAME.registerSystem('mover', {
         if (this.vlength != 0) {
             this.camera.object3D.getWorldQuaternion(this.camWorld);
             this.velocity.applyQuaternion(this.camWorld);
-            this.rig.object3D.position.add(this.velocity.multiplyScalar(this.vlength * t  ));
+            this.rig.object3D.position.add(this.velocity.multiplyScalar(this.vlength * t));
         }
 
         this.rotateY(time, timeDelta);
@@ -153,7 +153,7 @@ AFRAME.registerComponent('mover', {
                     this.system.rotate = 0;
                 }
             } else {
-                this.x.scaledDirection.copy(this.x.direction.clone().multiplyScalar(Math.round(evt.detail.x * 10)/10));
+                this.x.scaledDirection.copy(this.x.direction.clone().multiplyScalar(Math.round(evt.detail.x * 10) / 10));
             }
 
             if (this.y.rotation != 0) {
@@ -163,7 +163,7 @@ AFRAME.registerComponent('mover', {
                     this.system.rotate = 0;
                 }
             } else {
-                this.y.scaledDirection.copy(this.y.direction.clone().multiplyScalar(Math.round(evt.detail.y*100)/100));
+                this.y.scaledDirection.copy(this.y.direction.clone().multiplyScalar(Math.round(evt.detail.y * 100) / 100));
             }
             this.system.updateVelocity();
         }

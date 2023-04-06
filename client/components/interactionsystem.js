@@ -1,11 +1,11 @@
 AFRAME.registerSystem('interaction-system', {
     events: {
-        'registerupdate': function(evt) {
+        'registerupdate': function (evt) {
             const components = evt.target.components;
 
             if (components['connector']) {
                 const data = components['connector'].data;
-                this.connectors.set(data.startEl,  {
+                this.connectors.set(data.startEl, {
                     startEl: data.startEl,
                     endEl: data.endEl,
                     myEl: evt.target
@@ -13,11 +13,11 @@ AFRAME.registerSystem('interaction-system', {
             }
 
             if (components['stuff']) {
-                this.stuff.set(evt.target.id,  {});
+                this.stuff.set(evt.target.id, {});
             }
 
         },
-        'interactionEvent': function(evt) {
+        'interactionEvent': function (evt) {
             if (this.stuff.has(evt.target)) {
                 if (this.sources.has(evt.target)) {
 
@@ -26,7 +26,7 @@ AFRAME.registerSystem('interaction-system', {
             }
         }
     },
-    init: function() {
+    init: function () {
         this.sources = new Map();
         this.stuff = new Map();
 

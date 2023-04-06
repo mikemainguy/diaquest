@@ -7,12 +7,14 @@ AFRAME.registerComponent('clock', {
     init: function () {
         this.el.setAttribute('text-geometry', 'value', '.');
         this.updateTime = this.updateTime.bind(this);
-        window.setInterval(() => {this.updateTime()}, 1000);
+        window.setInterval(() => {
+            this.updateTime()
+        }, 1000);
     },
-    updateTime: function(){
+    updateTime: function () {
         this.el.setAttribute('text-geometry', 'value', this.getTime());
     },
-    getTime: function() {
+    getTime: function () {
         const d = new Date();
         return d.toLocaleTimeString();
     }

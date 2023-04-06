@@ -1,5 +1,3 @@
-import {debug} from './debug';
-
 AFRAME.registerComponent('share-position', {
     schema: {
         active: {type: 'boolean', default: true}

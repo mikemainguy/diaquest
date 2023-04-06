@@ -7,7 +7,7 @@ AFRAME.registerSystem('aligner', {
         document.addEventListener('align', this.align.bind(this));
         document.addEventListener('stopalign', this.stopalign.bind(this));
     },
-    stopalign: function() {
+    stopalign: function () {
         this.saveable.removeAttribute('animation');
         this.saveable.setAttribute('color', this.saveable.components['stuff'].data.color);
     },
@@ -52,9 +52,7 @@ AFRAME.registerSystem('aligner', {
         }
 
         const el = document.getElementById(evt.detail.id);
-        if (!el) {
-            return;
-        } else {
+        if (el) {
             const saveable = el.querySelector('.saveable');
             const aligner = document.querySelector('#aligner');
             if (saveable) {
@@ -103,7 +101,7 @@ AFRAME.registerComponent('aligner', {
         this.el.setAttribute('sound', 'src: #audioclick; volume: 0.5; on: click;');
     },
     events: {
-        click: function (evt) {
+        click: function () {
             this.system.direction = AFRAME.utils.coordinates.parse(this.data.plane);
         }
     }

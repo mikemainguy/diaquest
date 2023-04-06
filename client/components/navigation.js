@@ -8,7 +8,7 @@ AFRAME.registerComponent('navigation', {
         const z = 0;
         for (el of this.el.children) {
             el.setAttribute('position',
-                new THREE.Vector3((-1 + (x%factor)) * 3,(Math.floor(x/factor))*3,z));
+                new THREE.Vector3((-1 + (x % factor)) * 3, (Math.floor(x / factor)) * 3, z));
             x++;
         }
     },

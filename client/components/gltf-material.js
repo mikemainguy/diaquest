@@ -10,14 +10,14 @@ AFRAME.registerComponent('gltf-material', {
         this.el.addEventListener('model-loaded', this.modelLoaded);
         this.el.addEventListener('componentchanged', this.materialChanged);
     },
-    materialChanged: function(evt) {
+    materialChanged: function (evt) {
         console.log(evt.detail.name);
     },
-    modelLoaded: function(evt) {
+    modelLoaded: function (evt) {
         const mesh = this.el.getObject3D('mesh');
         const color = this.data.color;
         const opacity = this.data.opacity;
-        mesh.traverse(function(node) {
+        mesh.traverse(function (node) {
             if (node.isMesh && node.material) {
                 node.material.color.set(color);
                 node.material.opacity = opacity;
@@ -25,7 +25,7 @@ AFRAME.registerComponent('gltf-material', {
             }
         });
     },
-    update: function() {
+    update: function () {
         if (this.color != this.data.color) {
             this.modelLoaded();
             this.color = this.data.color;

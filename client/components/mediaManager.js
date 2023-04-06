@@ -6,7 +6,7 @@ AFRAME.registerComponent('mediamanager', {
         mediaUpdated: function (evt) {
             let x = 0;
             let y = 0;
-            const curve = new THREE.EllipseCurve(0,0,2,2,0, 2*Math.PI, false, 0);
+            const curve = new THREE.EllipseCurve(0, 0, 2, 2, 0, 2 * Math.PI, false, 0);
             for (const i in evt.detail) {
                 const el = document.createElement('a-plane');
                 el.setAttribute('material', `src: ${evt.detail[i].href};side: double`);
@@ -20,9 +20,9 @@ AFRAME.registerComponent('mediamanager', {
                 }
 
                 const pos = curve.getPoint(x);
-                el.setAttribute('position', `${pos.x} ${Math.round(y/10)} ${pos.y}`);
+                el.setAttribute('position', `${pos.x} ${Math.round(y / 10)} ${pos.y}`);
                 this.el.appendChild(el);
-                x= x+.1;
+                x = x + .1;
                 y++;
             }
         }

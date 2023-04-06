@@ -3,38 +3,37 @@ AFRAME.registerComponent('series', {
         label: {type: 'string', default: ''},
         points: {
             default: null,
-            parse: function(value){
+            parse: function (value) {
                 try {
-                    const c = JSON.parse( value);
-                    return c;
+                    return JSON.parse(value);
                 } catch (err) {
                     console.log(err);
                     return {};
                 }
             },
-            stringify: function(value) {
+            stringify: function (value) {
                 JSON.stringify(value);
             }
         },
     },
-    toggleLabels: function(evt) {
-         for (const e of this.el.querySelectorAll('a-text')) {
-             e.setAttribute("visible", !this.visible);
-         }
-         this.visible = !this.visible;
+    toggleLabels: function (evt) {
+        for (const e of this.el.querySelectorAll('a-text')) {
+            e.setAttribute("visible", !this.visible);
+        }
+        this.visible = !this.visible;
     },
-    update: function() {
+    update: function () {
 
         this.points = this.data.points;
         let i = 0;
         for (const pnt of this.points) {
-            let ii=0;
+            let ii = 0;
             for (const dp of pnt.data) {
-                if (dp.value > 0 ) {
+                if (dp.value > 0) {
                     const p = document.createElement('a-entity');
-                    const prev = (i == 0) ? 0: this.points[i-1].data[ii].value;
-                    p.setAttribute('chartpoint', 'time: ' + i + '; value: ' + dp.value  + '; index:' + ii + '; scale:'
-                        +dp.scale + '; previous:' + prev);
+                    const prev = (i == 0) ? 0 : this.points[i - 1].data[ii].value;
+                    p.setAttribute('chartpoint', 'time: ' + i + '; value: ' + dp.value + '; index:' + ii + '; scale:'
+                        + dp.scale + '; previous:' + prev);
                     this.el.appendChild(p);
                     ii++;
                 }
@@ -45,7 +44,6 @@ AFRAME.registerComponent('series', {
 
             i++;
         }
-
 
 
         const label = htmlToElement(`
@@ -65,7 +63,7 @@ AFRAME.registerComponent('series', {
         this.el.appendChild(label);
         const box = htmlToElement(`
                 <a-plane height="0.19" width="${this.points.length * .11}" color="#113"
-                    rotation="-90 90 0" position="0 0 ${this.points.length/2 * .11}"
+                    rotation="-90 90 0" position="0 0 ${this.points.length / 2 * .11}"
                     text="value: ${this.data.label}; wrapCount: 130; align: center">
                 </a-plane>
                 
@@ -74,7 +72,7 @@ AFRAME.registerComponent('series', {
         this.el.flushToDOM();
 
     },
-    init: function() {
+    init: function () {
         this.points = this.data.points;
         this.startTime = 0;
         this.endTime = 0;
@@ -83,7 +81,7 @@ AFRAME.registerComponent('series', {
         document.addEventListener('togglelabels', this.toggleLabels);
     },
     events: {
-        'time': function(evt) {
+        'time': function (evt) {
             if (evt.detail.time > this.endTime) {
                 this.endTime = evt.detail.time;
                 this.el.parentEl.emit('endTime', this.endTime);
@@ -96,28 +94,28 @@ AFRAME.registerComponent('series', {
     }
 });
 AFRAME.registerComponent('chart', {
-   schema: {
-       chartData: {
-           default: null,
-           parse: function(value){
-               return JSON.parse(value);
-           },
-           stringify: function(value) {
-               JSON.stringify(value);
-           }
-       },
-       max: {type: 'int', default: 10}
-   },
+    schema: {
+        chartData: {
+            default: null,
+            parse: function (value) {
+                return JSON.parse(value);
+            },
+            stringify: function (value) {
+                JSON.stringify(value);
+            }
+        },
+        max: {type: 'int', default: 10}
+    },
     events: {
-       'startTime': function(evt) {
-           this.startTime = evt.detail.startTime;
-       },
-        'endTime': function(evt) {
-           this.endTime = evt.detail.endTime;
+        'startTime': function (evt) {
+            this.startTime = evt.detail.startTime;
+        },
+        'endTime': function (evt) {
+            this.endTime = evt.detail.endTime;
         }
     },
-    init: function() {
-       let i = 0;
+    init: function () {
+        let i = 0;
 
         for (const series in this.data.chartData.series) {
             const sdata = this.data.chartData.series[series];
@@ -131,12 +129,12 @@ AFRAME.registerComponent('chart', {
             </a-entity>
             `);
             this.el.appendChild(s);
-            if (i==0) {
+            if (i == 0) {
                 let ii = 0;
                 for (const pnt of sdata.points) {
-                    const dt = new Date(pnt.time*1000);
+                    const dt = new Date(pnt.time * 1000);
                     const time = htmlToElement(`
-                        <a-text value="${dt.toISOString()}" width="1" height="0.2" position=".75 .1 ${ii*.11}" rotation="-90 180 0"></a-text>
+                        <a-text value="${dt.toISOString()}" width="1" height="0.2" position=".75 .1 ${ii * .11}" rotation="-90 180 0"></a-text>
                     `);
                     s.appendChild(time);
                     ii++;
@@ -146,7 +144,7 @@ AFRAME.registerComponent('chart', {
             }
             i++;
         }
-        this.el.setAttribute('position', `${i*.2/-2} 0 0`);
+        this.el.setAttribute('position', `${i * .2 / -2} 0 0`);
         //this.el.setAttribute('rotation', '0 180 0');
         this.el.flushToDOM();
     }
@@ -160,16 +158,16 @@ AFRAME.registerComponent('chartpoint', {
         previous: {type: 'float', default: 0}
     },
     init: function () {
-        const colors= ['#00d', '#c0f', '#d04'];
+        const colors = ['#00d', '#c0f', '#d04'];
         const height = this.data.value * this.data.scale;
-        const z = this.data.time*.11;
+        const z = this.data.time * .11;
         const box = htmlToElement(`
         <a-triangle
         vertex-a=".00 .00 .00"
         vertex-b="-.01 -.1 .00"
         vertex-c=".01 -.1 .00"
         lookatmexlock
-        position="${(this.data.index * 0.05) - .025} ${height-.01} ${z}"
+        position="${(this.data.index * 0.05) - .025} ${height - .01} ${z}"
         
         material="color: ${colors[this.data.index]};"
         
@@ -180,7 +178,7 @@ AFRAME.registerComponent('chartpoint', {
         this.point = box;
         const label = htmlToElement(`
         <a-text value="${this.data.value}"
-            position="${(this.data.index * 0.05) - .025} ${height+.001}  ${z}" 
+            position="${(this.data.index * 0.05) - .025} ${height + .001}  ${z}" 
             rotation="0 0 -45"
             lookatme
             visible="false"
@@ -194,7 +192,7 @@ AFRAME.registerComponent('chartpoint', {
         `);
         if (this.data.time > 0) {
             const prevheight = this.data.previous * this.data.scale;
-            const prevz = (this.data.time-1)*.11;
+            const prevz = (this.data.time - 1) * .11;
 
             const line = htmlToElement(`
             <a-entity line="color: ${colors[this.data.index]}; start: ${(this.data.index * 0.05) - .025} ${height}  ${z}; end: ${(this.data.index * 0.05) - .025} ${prevheight} ${prevz}"
@@ -208,24 +206,25 @@ AFRAME.registerComponent('chartpoint', {
     }
 });
 AFRAME.registerComponent('chartinteraction', {
-   init: function() {
+    init: function () {
 
-   },
+    },
     events: {
-       bbuttondown: function(evt) {
-           document.dispatchEvent(new CustomEvent('togglelabels',{detail: 'OK'}));
-       }
+        bbuttondown: function (evt) {
+            document.dispatchEvent(new CustomEvent('togglelabels', {detail: 'OK'}));
+        }
     }
 });
+
 function htmlToElement(html) {
-    var template = document.createElement('template');
+    const template = document.createElement('template');
     html = html.trim(); // Never return a text node of whitespace as the result
     template.innerHTML = html;
     return template.content.firstChild;
 }
 
 AFRAME.registerComponent('lookatmexlock', {
-    init: function() {
+    init: function () {
         this.tick = AFRAME.utils.throttleTick(this.tick, 2000, this);
         const cam = document.getElementById('camera');
         if (cam) {
@@ -234,10 +233,10 @@ AFRAME.registerComponent('lookatmexlock', {
             this.mypos = new THREE.Vector3();
         }
     },
-    update: function() {
+    update: function () {
         this.el.object3D.getWorldPosition(this.mypos);
     },
-    tick: function() {
+    tick: function () {
         if (this.camera) {
             this.camera.getWorldPosition(this.pos);
             this.mypos.setX(this.pos.x);

@@ -1,4 +1,3 @@
-import {debug} from './debug';
 AFRAME.registerSystem('widget', {
     init: function () {
         this.mode = [];
@@ -25,16 +24,16 @@ AFRAME.registerComponent('widget', {
         this.el.appendChild(label);
     },
     events: {
-        mouseenter: function(evt) {
+        mouseenter: function (evt) {
             const target = evt.target;
             if (!target.getAttribute('animation')) {
                 target.setAttribute('animation',
                     'from: #ff2; to: #cc2; property: material.color; loop: true; dir: alternate; dur: 500');
             }
         },
-        mouseleave: function(evt) {
+        mouseleave: function (evt) {
             evt.target.removeAttribute('animation');
-            evt.target.setAttribute('material','color', this.color);
+            evt.target.setAttribute('material', 'color', this.color);
         },
         click: function (evt) {
             document.getElementById('sizer').setAttribute('visible', false);

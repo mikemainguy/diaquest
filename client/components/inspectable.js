@@ -1,13 +1,13 @@
-import {changeRaycaster, round} from "./util";
+import {changeRaycaster} from "./util";
 
 AFRAME.registerComponent('inspectable', {
     schema: {
         //keyboard: {default: '#keyboard', type: 'selector'}
     },
-    init: function() {
-      document.addEventListener('inspect', this.inspect.bind(this));
+    init: function () {
+        document.addEventListener('inspect', this.inspect.bind(this));
     },
-    inspect: function(evt) {
+    inspect: function (evt) {
         changeRaycaster('[inspectable]');
         this.inspector = document.querySelector('#inspector');
         this.inspector.setAttribute('visible', true);
@@ -16,7 +16,7 @@ AFRAME.registerComponent('inspectable', {
 
     },
     tick: function () {
-        if (this.inspector){
+        if (this.inspector) {
             this.inspector.setAttribute('text', 'value', JSON.stringify(this.el.getAttribute('position')));
         }
     },

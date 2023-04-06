@@ -18,9 +18,7 @@ AFRAME.registerComponent('stuff', {
     },
     init: function () {
         this.el.setAttribute('sound', 'src: #audiohover; volume: 0.2; on: mouseenter;');
-        this.aligning = false;
         this.el.addChild = this.addChild.bind(this);
-        this.groupline = null;
     },
     addChild: function (el) {
         this.el.object3D.appendChild(el.object3D);
@@ -190,6 +188,7 @@ AFRAME.registerComponent('stuff', {
                     this.data.image = newImage;
                     evt.target.setAttribute('material', 'src', this.data.image);
                     document.dispatchEvent(new CustomEvent('shareUpdate', {detail: {id: obj.id, image: newImage}}));
+                    break;
                 case 'resize':
                     this.el.emit('buttonstate', {mode: ['change-size'], first: obj.id}, true);
                     document.dispatchEvent(new CustomEvent('resizing', {detail: {id: obj.id}}));

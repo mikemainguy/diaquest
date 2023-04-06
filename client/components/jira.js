@@ -10,8 +10,8 @@ AFRAME.registerSystem('jira', {
         this.tick = AFRAME.utils.throttleTick(this.tick, 1000, this);
     },
 
-    tick: function(t, dt)  {
-      this.organize();
+    tick: function (t, dt) {
+        this.organize();
     },
     /**
      * This function sorts the tickets based on their rank and appends them to their corresponding swimlane.
@@ -51,30 +51,31 @@ AFRAME.registerSystem('jira', {
                     }
                     if (ticket.components['jira'].data.issueStoryPoints) {
                         size = ticket.components['jira'].data.issueStoryPoints * size;
-                        pos = pos - (size/2);
+                        pos = pos - (size / 2);
                         const box = ticket.querySelector('a-box');
                         box.setAttribute('depth', size);
                         const text = ticket.querySelector('.key');
                         if (!ticket.components['jira'].grabbed) {
-                            text.setAttribute('position', `0 0 ${(size/2) + .001}`);
+                            text.setAttribute('position', `0 0 ${(size / 2) + .001}`);
                         }
 
                     }
                     if (!ticket.components['jira'].grabbed) {
                         ticket.setAttribute('position', `0 .2 ${pos}`);
                     }
-                    posMap.set(statusId, pos-(size + .1));
+                    posMap.set(statusId, pos - (size + .1));
                 } else {
                     console.log('parent already correct');
                 }
             } else {
                 console.log(statusId + ' missing');
             }
-        };
+        }
+
         performance.mark('organize-ended');
         const organizeMeasure =
             performance.measure('organize-started',
-            'organize-ended');
+                'organize-ended');
 
     }
 });
@@ -91,7 +92,7 @@ AFRAME.registerComponent('jirastatus', {
 
     },
     events: {
-        color: function(evt) {
+        color: function (evt) {
 
         }
     },
@@ -152,7 +153,7 @@ AFRAME.registerComponent('jira', {
 
             }
         },
-        mouseenter: function(evt) {
+        mouseenter: function (evt) {
             const box = this.el.querySelector('a-box');
             box.setAttribute('color', '#dd0');
             const description = this.el.querySelector('.description');
@@ -160,7 +161,7 @@ AFRAME.registerComponent('jira', {
                 description.setAttribute('visible', true);
             }
         },
-        mouseleave: function(evt) {
+        mouseleave: function (evt) {
             const box = this.el.querySelector('a-box');
             box.setAttribute('color', '#333');
             const description = this.el.querySelector('.description');
@@ -186,10 +187,10 @@ AFRAME.registerComponent('jira', {
         if (this.data.issueDescription) {
             const test = this.htmlToElement(this.data.issueDescription);
             console.log(test);
-            domtoimage.toPng(test, {width: 1024, height: 1024}).then((url)=> {
+            domtoimage.toPng(test, {width: 1024, height: 1024}).then((url) => {
                 const img = new Image();
                 img.src = url;
-                const id = 'img'+Date.now().valueOf();
+                const id = 'img' + Date.now().valueOf();
                 img.setAttribute('id', id);
                 const assets = document.querySelector('a-assets');
                 assets.append(img);
@@ -199,7 +200,7 @@ AFRAME.registerComponent('jira', {
                 if (this.data.issueDescription) {
                     console.log(this.data.issueDescription);
                     if (this.image) {
-                        window.setTimeout(()=> {
+                        window.setTimeout(() => {
                             const description = this.el.querySelector('.description');
                             console.log(this.image);
                             description.setAttribute('src', '#' + this.image);
@@ -212,12 +213,12 @@ AFRAME.registerComponent('jira', {
                     }
                 }
             })
-                .catch(function(error) {
+                .catch(function (error) {
 
                 });
         }
     },
-    tick: function() {
+    tick: function () {
         const summary = this.el.querySelector('.summary');
         if (summary) {
             summary.setAttribute('text', `value: ${this.data.issueSummary}`);
@@ -242,7 +243,7 @@ AFRAME.registerComponent('jira', {
                 const worldBox = new THREE.Box3(parentObj.localToWorld(newBox.min),
                     parentObj.localToWorld(newBox.max));
 
-                worldBox.expandByVector(new THREE.Vector3(0,100,0));
+                worldBox.expandByVector(new THREE.Vector3(0, 100, 0));
                 let dropTarget = null;
                 if (worldBox.containsPoint(worldPos)) {
                     swimlane.querySelector('a-box').setAttribute('color', '#22f');
@@ -257,7 +258,7 @@ AFRAME.registerComponent('jira', {
     },
     htmlToElement: function htmlToElement(html) {
         const template = document.createElement('div');
-        template.style.backgroundColor="#fff";
+        template.style.backgroundColor = "#fff";
         html = html.trim(); // Never return a text node of whitespace as the result
         template.innerHTML = html;
         return template;

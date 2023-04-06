@@ -67,18 +67,18 @@ const extendDeep = AFRAME.utils.extendDeep;
 const meshMixin = AFRAME.primitives.getMeshMixin();
 
 AFRAME.registerComponent('icon', {
-   init: function() {
-       this.icons = files;
-   },
-    update: function() {
-       if (this.data.name) {
-           const result = this.icons.find(element => element.indexOf(this.data.name)>-1);
-           this.el.setAttribute('material', 'src', `/assets/icons/${result}`);
+    init: function () {
+        this.icons = files;
+    },
+    update: function () {
+        if (this.data.name) {
+            const result = this.icons.find(element => element.indexOf(this.data.name) > -1);
+            this.el.setAttribute('material', 'src', `/assets/icons/${result}`);
 
-       }
+        }
     },
     schema: {
-       name: {type: 'string'}
+        name: {type: 'string'}
     }
 });
 AFRAME.registerPrimitive('a-icon', extendDeep({}, meshMixin, {

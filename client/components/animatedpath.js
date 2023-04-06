@@ -3,7 +3,7 @@ import {getCurrentMode, htmlToElement, round} from './util';
 
 AFRAME.registerSystem('animationmanager', {
     init: function () {
-        this.activeid = null;
+
     }
 });
 
@@ -75,11 +75,12 @@ AFRAME.registerComponent('animationmanager', {
         this.state = 'animation-to';
     },
     events: {
-        click: function (evt) {
+        click: function () {
             if (getCurrentMode() == 'remove') {
                 document.dispatchEvent(
                     new CustomEvent('shareUpdate',
-                        {detail:
+                        {
+                            detail:
                                 {
                                     id: this.el.closest('[template]').id,
                                     remove: true
@@ -108,9 +109,9 @@ AFRAME.registerComponent('animationmanager', {
             this.grabbed.setAttribute('rotation', AFRAME.utils.coordinates.stringify(round(ang, 45)));
             this.grabbed = null;
         },
-        'animation-add': function (evt) {
+        'animation-add': function () {
         },
-        'animation-play': function (evt) {
+        'animation-play': function () {
             for (const c of this.animations) {
                 const el = document.querySelector('#' + c.item);
                 if (el) {
@@ -119,17 +120,17 @@ AFRAME.registerComponent('animationmanager', {
                 el.emit('animation-play');
             }
         },
-        'animation-select': function (evt) {
+        'animation-select': function () {
             this.state = 'animation-select';
             this.el.querySelector('[widget*=animation-select]').setAttribute('visible', false);
         },
-        'animation-from': function (evt) {
+        'animation-from': function () {
             this.state = 'animation-from';
         },
-        'animation-to': function (evt) {
+        'animation-to': function () {
 
         },
-        'animation-duration': function (evt) {
+        'animation-duration': function () {
             this.state = 'animation-duration';
         }
     },
@@ -217,7 +218,7 @@ AFRAME.registerComponent('animationmanager', {
         el.object3D.getWorldPosition(worldPos);
         return worldPos;
     },
-    updateAnimationList: function (oldData) {
+    updateAnimationList: function () {
         let idx = 0;
         for (const a of this.animations) {
             const ele = document.querySelector('#' + a.item);
@@ -234,7 +235,7 @@ AFRAME.registerComponent('animationmanager', {
 
     }
     ,
-    update: function (oldData) {
+    update: function () {
 
     }
 })
