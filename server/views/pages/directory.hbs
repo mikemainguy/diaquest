@@ -48,7 +48,7 @@
 
     document.getElementById('addCollaborator').addEventListener('submit',
             function(event) {
-                const form = FormData(event.target)
+                const form = FormData(event.target);
                 event.preventDefault();
                 fetch(event.target.action,
                         {

@@ -58,10 +58,8 @@ const getJiraIssues = async function (world, jiraconfig, startPos) {
             jiraconfig.searchurl + `/rest/api/3/search?jql=project%20%3D%20IM&startAt=${startAt}&fields=id,key,customfield_10019,summary,description,issuetype,status,priority&expand=renderedFields`,
             config
         )
-
-
         for (const issue of data.data.issues) {
-            extractData(world, {webhookEvent: 'issue_synced', issue: issue});
+            await extractData(world, {webhookEvent: 'issue_synced', issue: issue});
         }
         return ({
             status: 'OK',
@@ -74,7 +72,6 @@ const getJiraIssues = async function (world, jiraconfig, startPos) {
         console.log(err);
         return {error: err};
     }
-    return ({error: 'Unknown'});
 
 
 }
@@ -106,8 +103,6 @@ const extractData = async (world, data) => {
 
                     }
                 }
-
-
 
 
                 if (data.issue.fields.customfield_10031) {

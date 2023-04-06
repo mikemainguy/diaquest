@@ -9,13 +9,14 @@ module.exports.handler = async (req, res) => {
     }
 
     try {
-        const public = req.body.public ? true : false;
+        const publicFlag = !!req.body.public;
 
-        const fbresponse = await firebase.createWorld(req.body.name, req.oidc.user.sub, public);
+        const fbresponse = await firebase.createWorld(req.body.name, req.oidc.user.sub, publicFlag);
 
         logger.debug(JSON.stringify(fbresponse.data));
         if (fbresponse.status=="OK") {
-            signalwire = await axios.post('https://diaquest.signalwire.com/api/video/rooms',
+            //Note we just create the room, we only care that we get a 200, we don't need anything else in the response
+            const signalwire = await axios.post('https://diaquest.signalwire.com/api/video/rooms',
                 {
                     name: req.body.name
                 }, {

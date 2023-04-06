@@ -30,15 +30,15 @@ const getUser = async (user) => {
     const data = await ref.once('value');
     return data.val();
 }
-const createWorld = async function (world, owner, public) {
+const createWorld = async function (world, owner, publicFlag) {
     try {
         const db = admin.database();
         const ref = db.ref('/worlds/' + world);
         const val = await ref.once('value');
         if (!val.exists()) {
-            await ref.set({"owner": owner, "public": public});
+            await ref.set({"owner": owner, "public": publicFlag});
             const dirref = db.ref('/directory/' + world);
-            await dirref.set({"owner": owner, "public": public, "name": world});
+            await dirref.set({"owner": owner, "public": publicFlag, "name": world});
         } else {
             logger.warn(world + " Already Exists");
             return ({"status": world + " Already Exists"});
@@ -59,7 +59,7 @@ const updateJira = async function (world, type, data) {
             console.log(evt);
         });
 }
-const getJiraConfig = async function(world) {
+const getJiraConfig = async function (world) {
     const db = admin.database();
     const dirref = db.ref(`/worlds/${world}/jira/config`);
     const ref = await dirref.once('value');
@@ -76,8 +76,7 @@ const getJiraConfig = async function(world) {
 const listWorlds = async function (user) {
     const db = admin.database();
     const dirref = db.ref('/worlds');
-    const list = await dirref.once('value');
-    return list;
+    return await dirref.once('value');
 }
 
 const createCollaborator = async function (user, world) {

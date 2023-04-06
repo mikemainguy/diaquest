@@ -6,7 +6,7 @@ module.exports.handler = async (req, res) => {
 
     if (path.length < 6 || req.method != 'POST') {
         res.sendStatus(405);
-        return;
+
     } else {
         const token = await getJiraConfig(path[5]);
         console.log(req.body);
