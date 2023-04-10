@@ -39,7 +39,8 @@ export function afterSceneLoads(caller, data) {
     if (scene && scene.hasLoaded) {
         caller(data);
     } else {
-        document.addEventListener('aframeReady', () => {
+        document.addEventListener('aframeLoaded', () => {
+            console.log("Scene Listener Fired");
             caller(data);
         });
     }

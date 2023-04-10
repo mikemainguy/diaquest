@@ -61,14 +61,15 @@ AFRAME.registerComponent('connector', {
         if (this.obj1 && this.obj2 && this.connector) {
             this.obj1.getWorldPosition(this.pos1);
             this.obj2.getWorldPosition(this.pos2);
-
             const distance = this.pos1.distanceTo(this.pos2);
+
             if (!this.started) {
                 this.oldPos1.copy(this.pos1);
                 this.oldPos2.copy(this.pos2);
                 this.started = true;
             } else {
-                if (this.oldPos1.equals(this.pos1) && this.oldPos1.equals(this.pos2)) {
+                if (this.oldPos1.equals(this.pos1) &&
+                    this.oldPos2.equals(this.pos2)) {
                     return;
                 } else {
                     this.oldPos1.copy(this.pos1);
@@ -99,26 +100,20 @@ AFRAME.registerComponent('connector', {
                     this.label = this.el.querySelector('.label').object3D;
                 }
 
-            } else {
-                //debug(JSON.stringify(intersections));
             }
         } else {
             if (this.el.querySelector('.data-direction')) {
                 this.connector = this.el.querySelector('.data-direction').object3D;
             }
-
         }
-
     },
     getIntersections: function (distance) {
         if (!this.obj1 || !this.obj1.el || !this.obj2 || !this.obj2.el) {
             return;
         }
-
         const direction = new THREE.Vector3();
         direction.subVectors(this.pos2, this.pos1);
         direction.normalize();
-
         const raycast = new THREE.Raycaster(this.pos1, direction, 0, distance);
         const intersects = raycast.intersectObjects([this.obj1, this.obj2], true);
         const intersections = [];

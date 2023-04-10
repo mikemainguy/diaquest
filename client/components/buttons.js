@@ -1,5 +1,5 @@
 import {debug} from './debug';
-import {changeRaycaster, createUUID, exportGLB} from './util';
+import {getRaycasters, createUUID, exportGLB} from './util';
 
 AFRAME.registerSystem('buttons', {
     init: function () {
@@ -9,12 +9,8 @@ AFRAME.registerSystem('buttons', {
         this.image = null;
         this.template = null;
         this.buttonstate = this.buttonstate.bind(this);
-        this.hideMenu = hideMenu.bind(this);
-        this.showMenu = showMenu.bind(this);
-        this.pointers = [];
         this.el.addEventListener('buttonstate', this.buttonstate);
-        this.el.addEventListener('hideMenu', this.hideMenu);
-        this.el.addEventListener('showMenu', this.showMenu);
+        this.pointers = [];
         document.addEventListener('export', exportGLB);
     },
     buttonstate: function (evt) {
@@ -23,15 +19,12 @@ AFRAME.registerSystem('buttons', {
             && this.first
             && evt.detail.first) {
             const data = {
-                id: createUUID(),
                 template: this.template,
                 color: this.color,
                 first: this.first,
                 second: evt.detail.first
             }
-            document.dispatchEvent(
-                new CustomEvent('shareUpdate',
-                    {detail: data}));
+            this.shareUpdate(data);
             this.first = null;
         } else {
             this.first = evt.detail.first ? evt.detail.first : null;
@@ -63,9 +56,6 @@ AFRAME.registerComponent('buttons', {
         pointer.setAttribute('visible', 'false');
         this.el.appendChild(pointer);
         return pointer;
-    },
-    update: function () {
-
     },
     tock: function () {
         if (!this.raycaster) {
@@ -113,25 +103,11 @@ AFRAME.registerComponent('buttons', {
         triggertouchend: function (evt) {
             this.pointer.setAttribute('visible', 'false');
         },
-        bbuttondown: function (evt) {
-            const bmenu = document.getElementById('bmenu');
-            if (bmenu) {
-                const bMenuShowing = document.getElementById('bmenu').getAttribute('visible');
-                if (bMenuShowing) {
-                    hideMenu({detail: {id: '#bmenu'}});
-                } else {
-                    showMenu({detail: {id: '#bmenu', objects: '[widget], .saveable'}});
-                }
-            }
-
+        bbuttondown: function () {
+            this.menuButton('bmenu');
         },
-        ybuttondown: function (evt) {
-            const yMenuShowing = document.getElementById('ymenu').getAttribute('visible');
-            if (yMenuShowing) {
-                hideMenu({detail: {id: '#ymenu'}});
-            } else {
-                showMenu({detail: {id: '#ymenu', objects: '[widget], .saveable'}});
-            }
+        ybuttondown: function () {
+            this.menuButton('ymenu');
         },
         triggerdown: function (evt) {
             if (!this.system.mode) {
@@ -141,17 +117,14 @@ AFRAME.registerComponent('buttons', {
             if (evt.target.states.includes('cursor-hovering')) {
                 return;
             }
-            const data = {};
             const v = this.pointer.object3D.position.clone();
             this.el.object3D.localToWorld(v);
-            data.position = v;
-
+            const data = { position: v };
             switch (this.system.mode.slice(-1)[0]) {
                 case 'copy':
                     if (!this.system.first) {
                         return;
                     }
-                    data.id = createUUID();
                     const ele = document.getElementById(this.system.first);
                     data.template = ele.getAttribute('template').src;
                     const stuffData = ele.components['stuff'].data;
@@ -159,18 +132,12 @@ AFRAME.registerComponent('buttons', {
                     data.image = stuffData.image;
                     data.color = stuffData.color;
                     data.scale = stuffData.scale;
-                    document.dispatchEvent(
-                        new CustomEvent('shareUpdate',
-                            {detail: data}));
+                    this.shareUpdate(data);
                     break;
                 case 'add':
-                    data.id = createUUID();
                     data.template = this.system.template;
                     data.color = this.system.color;
-
-                    document.dispatchEvent(
-                        new CustomEvent('shareUpdate',
-                            {detail: data}));
+                    this.shareUpdate(data);
                     this.system.first = null;
                     this.system.second = null;
                     break;
@@ -178,26 +145,19 @@ AFRAME.registerComponent('buttons', {
             debug(this.system.mode);
         },
     },
-});
-
-function showMenu(evt) {
-    changeMenu(evt.detail.id, true, evt.detail.objects);
-}
-
-function hideMenu(evt) {
-    let objs = '.saveable, [widget]'
-    changeMenu(evt.detail.id, false, objs);
-}
-
-function changeMenu(id, visible, objects) {
-    const el = document.querySelector(id);
-    if (el) {
-        el.setAttribute('visible', visible);
+    shareUpdate: function(data) {
+        data.id = createUUID();
+        document.dispatchEvent(
+            new CustomEvent('shareUpdate',
+                {detail: data}));
+    },
+    menuButton: function(id) {
+        const selector = `#${id}`;
+        const showing = document.querySelector(selector).getAttribute('visible');
+        if (showing) {
+            this.el.emit('hideMenu', {id: selector}, true);
+        } else {
+            this.el.emit('showMenu', {id: selector, objects: '[widget], .saveable'}, true);
+        }
     }
-    changeRaycaster(objects);
-}
-
-function getRaycasters() {
-    return document.querySelectorAll('[raycaster]');
-}
-
+});

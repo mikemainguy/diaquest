@@ -41,6 +41,10 @@ export function changeRaycaster(newObjects) {
         hand.setAttribute('raycaster', 'objects', newObjects);
     }
 }
+export function getRaycasters() {
+    return document.querySelectorAll('[raycaster]');
+}
+
 
 export function htmlToElement(html) {
     const template = document.createElement('template');
