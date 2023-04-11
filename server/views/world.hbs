@@ -16,10 +16,6 @@
     {{> aligner }}
 
     <a-entity id="navigation" lookatme navigation position="23 2 0"></a-entity>
-
-        <!--<a-sphere animatedpath class="indicator" radius=".05" color="#f00"></a-sphere>-->
-
-
     <a-link visible="false" lookatme href="/pages/newRelic" position="0 8 -23" title="New Relic" image="#linkImage"></a-link>
 
     <a-entity id="sizer" visible="false">
@@ -48,15 +44,10 @@
     </a-entity>
     {{> shape-properties }}
     <a-entity  id="ambient" sound="src: url(/assets/sounds/classical.mp3); loop: true; volume: 0.1; positional: false"></a-entity>
-    <!--<a-entity position="-.5 1 -.5" light="type: directional; color: #FF8; intensity: .9;">-->
+
 
     </a-entity>
     <a-entity position=".5 -1 2" light="type: directional; color: #88A; intensity: .4;"></a-entity>
-    <!--<a-entity position="0 5.1 0" rotation="-90 0 0" light="type: spot; cast-shadow: true; color: #FFC; distance: 20; intensity: 1.2;"></a-entity>
-    <a-entity position="0 5.1 5" rotation="-90 0 0" light="type: spot; cast-shadow: true; color: #FCF; distance: 20; intensity: 1.2;"></a-entity>
-    <a-entity position="0 5.1 -5" rotation="-90 0 0" light="type: spot; cast-shadow: true; color: #CFF; distance: 20; intensity: 1.2;"></a-entity>
-    <a-entity id="room" position="0 .01 0" scale="1 1.15 1" shadow="receive: false" gltf-model="url(/assets/models/abandoned_room.glb)"></a-entity>
-    -->
     <a-circle radius="20" rotation="-90 0 0" shadow="receive: true" material="opacity: 1; src: /assets/grass.jpeg; repeat: 10 10; color: #9B9"></a-circle>
     <a-sky id="skybox" position="0 0 0" color="#eee"  src="/assets/8192.webp"></a-sky>
     <a-plane width="4"

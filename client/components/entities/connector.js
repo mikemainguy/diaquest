@@ -8,24 +8,36 @@ AFRAME.registerComponent('connector', {
     },
     events: {}
     ,
+    init() {
+        this.changed = this.changed.bind(this);
+        this.tick = AFRAME.utils.throttleTick(this.tick, 100, this);
+        this.startAttached = false;
+        this.endAttached = false;
+    },
     update: function () {
         this.pos1 = new THREE.Vector3();
         this.pos2 = new THREE.Vector3();
-        this.oldPos1 = new THREE.Vector3();
-        this.oldPos2 = new THREE.Vector3();
-        this.el.emit('registerupdate', {}, true);
-        this.started = false;
+
         if (this.data.startEl) {
             const el = document.querySelector(this.data.startEl);
-            if (el && el.object3D) {
-                this.obj1 = el.object3D;
+            if (!this.startAttached && el && el.object3D) {
+                el.addEventListener('child-attached', this.changed);
+                el.addEventListener('registerupdate', this.changed);
+                if (el?.components['stuff']?.saveable?.object3D) {
+                    this.obj1 = el?.components['stuff']?.saveable?.object3D;
+                }
+                this.startAttached = true;
             }
-
         }
         if (this.data.endEl) {
             const el = document.querySelector(this.data.endEl);
-            if (el && el.object3D) {
-                this.obj2 = el.object3D;
+            if (!this.endAttached && el && el.object3D) {
+                el.addEventListener('child-attached', this.changed);
+                el.addEventListener('registerupdate', this.changed);
+                if (el?.components['stuff']?.saveable?.object3D) {
+                    this.obj2 = el?.components['stuff']?.saveable?.object3D;
+                }
+                this.endAttached = true;
             }
         }
         if (this.obj1 && this.obj2) {
@@ -43,16 +55,14 @@ AFRAME.registerComponent('connector', {
         }
 
     },
-    tock: function () {
-        if (!this.obj1 && this.data.startEl) {
-            const el = document.querySelector(this.data.startEl);
-            if (el) {
+    changed: function(evt) {
+        const el = evt.detail.el;
+        if (el.classList.contains('saveable')) {
+            const template = el.closest('[template]');
+            if (template && ('#' + template.getAttribute('id')) == this.data.startEl) {
                 this.obj1 = el.object3D;
             }
-        }
-        if (!this.obj2 && this.data.endEl) {
-            const el = document.querySelector(this.data.endEl);
-            if (el) {
+            if (template && ('#' + template.getAttribute('id')) == this.data.endEl) {
                 this.obj2 = el.object3D;
             }
         }
@@ -62,21 +72,6 @@ AFRAME.registerComponent('connector', {
             this.obj1.getWorldPosition(this.pos1);
             this.obj2.getWorldPosition(this.pos2);
             const distance = this.pos1.distanceTo(this.pos2);
-
-            if (!this.started) {
-                this.oldPos1.copy(this.pos1);
-                this.oldPos2.copy(this.pos2);
-                this.started = true;
-            } else {
-                if (this.oldPos1.equals(this.pos1) &&
-                    this.oldPos2.equals(this.pos2)) {
-                    return;
-                } else {
-                    this.oldPos1.copy(this.pos1);
-                    this.oldPos2.copy(this.pos2);
-                }
-            }
-
             const intersections = this.getIntersections(distance);
             if (intersections &&
                 intersections.length > 1) {
@@ -102,10 +97,16 @@ AFRAME.registerComponent('connector', {
 
             }
         } else {
-            if (this.el.querySelector('.data-direction')) {
-                this.connector = this.el.querySelector('.data-direction').object3D;
+            this.update();
+        }
+        if (!this.connector && this.el.querySelector('.data-direction')) {
+            this.connector = this.el.querySelector('.data-direction').object3D;
+        } else {
+            if (!this.connector.el.getAttribute('visible')) {
+                this.connector.el.setAttribute('visible', true);
             }
         }
+
     },
     getIntersections: function (distance) {
         if (!this.obj1 || !this.obj1.el || !this.obj2 || !this.obj2.el) {

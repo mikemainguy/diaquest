@@ -19,6 +19,8 @@ AFRAME.registerComponent('stuff', {
     init: function () {
         this.el.setAttribute('sound', 'src: #audiohover; volume: 0.2; on: mouseenter;');
         this.el.addChild = this.addChild.bind(this);
+        this.el.emit('registerupdate', {el: this.el}, true);
+        this.calculate = this.calculate.bind(this);
     },
     addChild: function (el) {
         this.el.object3D.appendChild(el.object3D);
@@ -44,6 +46,8 @@ AFRAME.registerComponent('stuff', {
                 .set(this.scale.x,
                     this.scale.y,
                     this.scale.z);
+
+            this.el.emit('registerupdate', {el: this.el}, true);
         }
 
         this.calculate = AFRAME.utils.throttleTick(this.calculate, 500, this);
@@ -81,7 +85,7 @@ AFRAME.registerComponent('stuff', {
             this.saveable.setAttribute('sound', 'src: #audioclick; on: click;');
         }
 
-        this.el.emit('registerupdate', {}, true);
+        this.el.emit('registerupdate', {el: this.el}, true);
     },
     tock: function () {
 
@@ -95,6 +99,7 @@ AFRAME.registerComponent('stuff', {
             if (!this.el.hasAttribute('connector')) {
                 const obj = this.saveable.object3D;
                 if (!this.scale.equals(obj.scale)) {
+
                     obj
                         .scale
                         .set(
@@ -106,6 +111,8 @@ AFRAME.registerComponent('stuff', {
                             o.geometry.computeBoundingBox();
                         }
                     }
+                    this.el.emit('registerupdate', {el: this.el}, true);
+
                 }
                 for (const o of obj.children) {
                     if (o.geometry && !o.geometry.boundingBox) {

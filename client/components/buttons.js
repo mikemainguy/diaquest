@@ -24,7 +24,7 @@ AFRAME.registerSystem('buttons', {
                 first: this.first,
                 second: evt.detail.first
             }
-            this.shareUpdate(data);
+            shareUpdate(data);
             this.first = null;
         } else {
             this.first = evt.detail.first ? evt.detail.first : null;
@@ -132,24 +132,18 @@ AFRAME.registerComponent('buttons', {
                     data.image = stuffData.image;
                     data.color = stuffData.color;
                     data.scale = stuffData.scale;
-                    this.shareUpdate(data);
+                    shareUpdate(data);
                     break;
                 case 'add':
                     data.template = this.system.template;
                     data.color = this.system.color;
-                    this.shareUpdate(data);
+                    shareUpdate(data);
                     this.system.first = null;
                     this.system.second = null;
                     break;
             }
             debug(this.system.mode);
         },
-    },
-    shareUpdate: function(data) {
-        data.id = createUUID();
-        document.dispatchEvent(
-            new CustomEvent('shareUpdate',
-                {detail: data}));
     },
     menuButton: function(id) {
         const selector = `#${id}`;
@@ -161,3 +155,9 @@ AFRAME.registerComponent('buttons', {
         }
     }
 });
+function shareUpdate(data) {
+    data.id = createUUID();
+    document.dispatchEvent(
+        new CustomEvent('shareUpdate',
+            {detail: data}));
+}

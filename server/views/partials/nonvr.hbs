@@ -2,19 +2,10 @@
     <div id="room"></div>
 </div>
 <div class="nonvr">
-    <!--  <button id="forwardButton">
-          Forward
-      </button>
-      <button id="backButton">
-          Back
-      </button>
-      -->
-
     <button id="joinButton"></button>
     <button id="leaveButton"></button>
     <button id="muteButton"></button>
     <button id="unmuteButton"></button>
-    <!--<button id="exportButton"></button> -->
     <button id="homeButton"></button>
 
     <form id="media" action="/api/media/create">
@@ -45,46 +36,6 @@
     document.getElementById('homeButton').addEventListener('click', () => {
         window.location.href = (window.location.origin);
     });
-    /*const exportButton = document.getElementById('exportButton');
-    exportButton.addEventListener('click', () => {
-        document.dispatchEvent(
-                new CustomEvent('export',
-                        {detail: 'OK'}));
-
-    });
-    */
-    /*const forward = document.getElementById('forwardButton');
-    forward.addEventListener('mousedown', () => {
-        const leftHand = document.querySelector('#left-hand');
-
-        leftHand.dispatchEvent(
-                new CustomEvent('thumbstickmoved',
-                        {detail: {x: 0, y:-1}}));
-    });
-    forward.addEventListener('touchstart', () => {
-        const leftHand = document.querySelector('#left-hand');
-
-        leftHand.dispatchEvent(
-                new CustomEvent('thumbstickmoved',
-                        {detail: {x: 0, y:-1}}));
-    });
-
-    forward.addEventListener('mouseup', () => {
-        const leftHand = document.querySelector('#left-hand');
-
-        leftHand.dispatchEvent(
-                new CustomEvent('thumbstickmoved',
-                        {detail: {x: 0, y:0}}));
-    });
-    forward.addEventListener('touchend', () => {
-        const leftHand = document.querySelector('#left-hand');
-
-        leftHand.dispatchEvent(
-                new CustomEvent('thumbstickmoved',
-                        {detail: {x: 0, y:-1}}));
-    });
-*/
-
     document.getElementById('joinButton').addEventListener('click', (evt) => {
         document.dispatchEvent(
                 new CustomEvent('connectSignalwire',
