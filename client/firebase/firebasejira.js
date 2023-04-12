@@ -31,7 +31,7 @@ function updateBoard(board) {
                 column.column + '; states: '+
                 column.statuses.join(','));
             statusEl.setAttribute('template', 'src: #jirastatusTemplate');
-            statusEl.setAttribute('position', '0 2 0');
+            statusEl.setAttribute('position', '0 2 3');
 
             document.querySelector('a-scene').append(statusEl);
         }

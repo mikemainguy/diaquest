@@ -1,6 +1,6 @@
 
-<a-scene scene-initializer background="color: #003"
-         fog="type: exponential; color: #fff; near: 20; far: 100">
+<a-scene scene-initializer background="color: #002"
+         fog="type: exponential; color: #000; near: 5; far: 1000; density: .0025">
     <script>
         if (typeof newrelic !== 'undefined') {
             newrelic.addPageAction('load assets');
@@ -16,7 +16,7 @@
     {{> aligner }}
 
     <a-entity id="navigation" lookatme navigation position="23 2 0"></a-entity>
-    <a-link visible="false" lookatme href="/pages/newRelic" position="0 8 -23" title="New Relic" image="#linkImage"></a-link>
+    <a-link visible="false" lookatme href="/pages/newRelic" position="0 8 -23" title="New Relic"></a-link>
 
     <a-entity id="sizer" visible="false">
 
@@ -81,7 +81,6 @@
                     li.setAttribute('visible', 'false');
                     li.setAttribute('href', '/worlds/' + id);
                     li.setAttribute('title', id);
-                    li.setAttribute('image', '#linkImage');
                     li.setAttribute('position', x + ' 0 0');
                     x+=4;
                     scene.appendChild(li);

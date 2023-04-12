@@ -34,7 +34,7 @@ AFRAME.registerSystem('jira', {
         this.swimlanes.forEach((el) => {
             for (const state of el.components['jirastatus'].data.states) {
                 stateMap.set(state, el);
-                posMap.set(state, 5);
+                posMap.set(state, .2);
                 const geometry = el.querySelector('a-box').getObject3D('mesh').geometry;
                 geometry.computeBoundingBox();
             }
@@ -49,21 +49,28 @@ AFRAME.registerSystem('jira', {
                     if (!ticket.components['jira'].grabbed) {
                         parent.object3D.add(ticket.object3D);
                     }
+
+
                     if (ticket.components['jira'].data.issueStoryPoints) {
                         size = ticket.components['jira'].data.issueStoryPoints * size;
-                        pos = pos - (size / 2);
+
                         const box = ticket.querySelector('a-box');
-                        box.setAttribute('depth', size);
+                        box.setAttribute('height', size);
+                        pos=pos+(size/2);
                         const text = ticket.querySelector('.key');
                         if (!ticket.components['jira'].grabbed) {
-                            text.setAttribute('position', `0 0 ${(size / 2) + .001}`);
+                            text.setAttribute('position', `0 0 .051`);
+                            const summary = ticket.querySelector('.summary');
+                            summary.setAttribute('position', `0 ${(size/2) + .05} 0`);
                         }
 
                     }
+
                     if (!ticket.components['jira'].grabbed) {
-                        ticket.setAttribute('position', `0 .2 ${pos}`);
+                        ticket.setAttribute('position', `0 ${pos} 4.8`);
                     }
-                    posMap.set(statusId, pos - (size + .1));
+                    pos = pos + (size / 2) + .2;
+                    posMap.set(statusId, pos);
                 } else {
                     console.log('parent already correct');
                 }
@@ -101,7 +108,7 @@ AFRAME.registerComponent('jirastatus', {
     },
     update: function () {
         if (!this.data.position) {
-            this.el.setAttribute('position', `${this.system.count} 1 -5`);
+            this.el.setAttribute('position', `${this.system.count} 1 -2`);
             this.system.count++;
         }
         window.setTimeout(() => {
@@ -136,6 +143,7 @@ AFRAME.registerComponent('jira', {
             evt.detail.hand.object3D.attach(this.grabbed.object3D);
         },
         released: function () {
+            console.log('Dropped on ' + this.dropTarget);
             if (typeof newrelic !== 'undefined') {
                 newrelic.addPageAction('release', {id: this.grabbed.id});
             }
@@ -143,14 +151,11 @@ AFRAME.registerComponent('jira', {
             this.el.sceneEl.object3D.attach(this.grabbed.object3D);
             const newPos = round(this.grabbed.object3D.position, .1);
             this.grabbed.object3D.position.set(newPos.x, newPos.y, newPos.z);
-
-            const ang = AFRAME.utils.coordinates.parse(this.grabbed.getAttribute('rotation'));
-            this.grabbed.setAttribute('rotation', AFRAME.utils.coordinates.stringify(round(ang, 45)));
+            this.grabbed.setAttribute('rotation', '0 0 0');
             this.grabbed = null;
             if (this.dropTarget) {
                 console.log(this.dropTarget.getAttribute('id'));
-                this.data.issueStatusId = this.dropTarget.getAttribute('id');
-
+                this.el.setAttribute('jira', 'issueStatusId', this.dropTarget.getAttribute('id'));
             }
         },
         mouseenter: function (evt) {
@@ -178,16 +183,11 @@ AFRAME.registerComponent('jira', {
         if (!priority.has(this.data.issuePriority)) {
             priority.set(this.data.issuePriority, priority.size);
         }
-        if (tickets.has(id)) {
-
-        } else {
-            tickets.set(id, this.el);
-        }
-
+        tickets.set(id, this.el);
         if (this.data.issueDescription) {
             const test = this.htmlToElement(this.data.issueDescription);
             console.log(test);
-            domtoimage.toPng(test, {width: 1024, height: 1024}).then((url) => {
+            domtoimage.toPng(test, {width: 768, height: 768}).then((url) => {
                 const img = new Image();
                 img.src = url;
                 const id = 'img' + Date.now().valueOf();
@@ -225,8 +225,6 @@ AFRAME.registerComponent('jira', {
         } else {
             console.log(this.el);
         }
-        const description = this.el.querySelector('.description');
-
         const key = this.el.querySelector('.key');
         if (key) {
             key.setAttribute('text', `value: ${this.data.issueKey}`);
@@ -248,10 +246,11 @@ AFRAME.registerComponent('jira', {
                 if (worldBox.containsPoint(worldPos)) {
                     swimlane.querySelector('a-box').setAttribute('color', '#22f');
                     dropTarget = swimlane;
+                    this.dropTarget = dropTarget;
                 } else {
                     swimlane.querySelector('a-box').setAttribute('color', '#fff');
                 }
-                this.el.components['jira'].dropTarget = dropTarget;
+
             });
 
         }
