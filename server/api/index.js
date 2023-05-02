@@ -10,7 +10,6 @@ const wire = async (app) => {
                if (api.UNAUTH) {
                    console.log('Unauthenticated Endpoint ' + f);
                    app.all('/api/' + f.replace('.js', '') + '(/*)?',
-
                        api.handler
                    )
                } else {
@@ -22,7 +21,6 @@ const wire = async (app) => {
                console.log(f);
            }
        }
-
     });
 }
 module.exports = wire;

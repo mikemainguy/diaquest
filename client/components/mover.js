@@ -94,7 +94,7 @@ AFRAME.registerSystem('mover', {
 
     },
     tick: function (time, timeDelta) {
-        const t = timeDelta / 200;
+        const t = timeDelta/250;
         if (this.vlength != 0) {
             this.camera.object3D.getWorldQuaternion(this.camWorld);
             this.velocity.applyQuaternion(this.camWorld);
@@ -106,13 +106,12 @@ AFRAME.registerSystem('mover', {
 
     },
     rotateY: function (t, dt) {
-        const nextRotate = (this.rotate != 0);
-        if (!this.rotating && nextRotate) {
-            this.rig.object3D.rotation.y += this.rotate;
-            this.rotating = true;
-        } else {
-            this.rotating = nextRotate;
+
+        if (dt && this.rig && this.rig.object3D && this.rotate && this.rig.object3D.rotation) {
+            const rotation = (dt/20) * this.rotate;
+            this.rig.object3D.rotation.y = rotation + this.rig.object3D.rotation.y;
         }
+
     }
 });
 AFRAME.registerComponent('mover', {
@@ -143,12 +142,13 @@ AFRAME.registerComponent('mover', {
     events: {
         thumbstickmoved: function (evt) {
             initSound();
+
             if (this.data.camera) {
                 this.data.camera.setAttribute('active', true);
             }
             if (this.x.rotation != 0) {
-                if (Math.abs(evt.detail.x) > .5) {
-                    this.system.rotate = (this.x.rotation * Math.sign(evt.detail.x));
+                if (Math.abs(evt.detail.x) > .15) {
+                    this.system.rotate = (this.x.rotation * evt.detail.x);
                 } else {
                     this.system.rotate = 0;
                 }
@@ -157,8 +157,8 @@ AFRAME.registerComponent('mover', {
             }
 
             if (this.y.rotation != 0) {
-                if (Math.abs(evt.detail.y) > .5) {
-                    this.system.rotate = (this.y.rotation * Math.sign(evt.detail.y));
+                if (Math.abs(evt.detail.y) > .15) {
+                    this.system.rotate = (this.y.rotation * evt.detail.y);
                 } else {
                     this.system.rotate = 0;
                 }

@@ -11,7 +11,7 @@ AFRAME.registerSystem('jira', {
     },
 
     tick: function (t, dt) {
-        this.organize();
+        this.el.emit('organize', {}, false);
     },
     /**
      * This function sorts the tickets based on their rank and appends them to their corresponding swimlane.
@@ -43,37 +43,30 @@ AFRAME.registerSystem('jira', {
             const statusId = ticket.components['jira'].data.issueStatusId;
             if (stateMap.has(statusId)) {
                 const parent = stateMap.get(statusId);
-                if (ticket.parentEl.object3D != parent.object3D) {
-                    let pos = posMap.get(statusId);
-                    let size = .1;
+                if (ticket.object3D.parent != parent.object3D) {
                     if (!ticket.components['jira'].grabbed) {
                         parent.object3D.add(ticket.object3D);
                     }
-
-
-                    if (ticket.components['jira'].data.issueStoryPoints) {
-                        size = ticket.components['jira'].data.issueStoryPoints * size;
-
-                        const box = ticket.querySelector('a-box');
-                        box.setAttribute('height', size);
-                        pos=pos+(size/2);
-                        const text = ticket.querySelector('.key');
-                        if (!ticket.components['jira'].grabbed) {
-                            text.setAttribute('position', `0 0 .051`);
-                            const summary = ticket.querySelector('.summary');
-                            summary.setAttribute('position', `0 ${(size/2) + .05} 0`);
-                        }
-
-                    }
-
-                    if (!ticket.components['jira'].grabbed) {
-                        ticket.setAttribute('position', `0 ${pos} 4.8`);
-                    }
-                    pos = pos + (size / 2) + .2;
-                    posMap.set(statusId, pos);
-                } else {
-                    console.log('parent already correct');
                 }
+                let pos = posMap.get(statusId);
+                let size = .1;
+
+                if (ticket.components['jira'].data.issueStoryPoints) {
+                    size = ticket.components['jira'].data.issueStoryPoints * size;
+                }
+                const box = ticket.querySelector('a-box');
+                box.setAttribute('height', size);
+                pos = pos + (size / 2);
+
+                if (!ticket.components['jira'].grabbed) {
+                    const text = ticket.querySelector('.key');
+                    text.setAttribute('position', `0 0 .051`);
+                    const summary = ticket.querySelector('.summary');
+                    summary.setAttribute('position', `0 ${(size / 2) + .05} 0`);
+                    ticket.setAttribute('position', `0 ${pos} 4.8`);
+                }
+                pos = pos + (size / 2) + .2;
+                posMap.set(statusId, pos);
             } else {
                 console.log(statusId + ' missing');
             }
@@ -154,7 +147,6 @@ AFRAME.registerComponent('jira', {
             this.grabbed.setAttribute('rotation', '0 0 0');
             this.grabbed = null;
             if (this.dropTarget) {
-                console.log(this.dropTarget.getAttribute('id'));
                 this.el.setAttribute('jira', 'issueStatusId', this.dropTarget.getAttribute('id'));
             }
         },
@@ -178,15 +170,14 @@ AFRAME.registerComponent('jira', {
     },
     update: function () {
         const id = this.el.id;
-        const tickets = this.system.tickets;
+        this.system.tickets.set(id, this.el);
         const priority = this.system.priority;
         if (!priority.has(this.data.issuePriority)) {
             priority.set(this.data.issuePriority, priority.size);
         }
-        tickets.set(id, this.el);
+
         if (this.data.issueDescription) {
             const test = this.htmlToElement(this.data.issueDescription);
-            console.log(test);
             domtoimage.toPng(test, {width: 768, height: 768}).then((url) => {
                 const img = new Image();
                 img.src = url;
@@ -194,22 +185,13 @@ AFRAME.registerComponent('jira', {
                 img.setAttribute('id', id);
                 const assets = document.querySelector('a-assets');
                 assets.append(img);
-
                 this.image = id;
-
                 if (this.data.issueDescription) {
-                    console.log(this.data.issueDescription);
                     if (this.image) {
                         window.setTimeout(() => {
                             const description = this.el.querySelector('.description');
-                            console.log(this.image);
                             description.setAttribute('src', '#' + this.image);
                         }, 1000);
-
-                        //const material = description.getObject3D('mesh').material;
-                        //if (material && material.map) {
-                        //    material.map.needsUpdate = true;
-                        //}
                     }
                 }
             })
@@ -222,16 +204,11 @@ AFRAME.registerComponent('jira', {
         const summary = this.el.querySelector('.summary');
         if (summary) {
             summary.setAttribute('text', `value: ${this.data.issueSummary}`);
-        } else {
-            console.log(this.el);
         }
         const key = this.el.querySelector('.key');
         if (key) {
             key.setAttribute('text', `value: ${this.data.issueKey}`);
-        } else {
-            console.log(this.el);
         }
-
         if (this.grabbed && this.system.swimlanes) {
             const worldPos = this.el.object3D.getWorldPosition(this.el.object3D.position.clone());
             this.system.swimlanes.forEach((swimlane) => {
@@ -262,5 +239,4 @@ AFRAME.registerComponent('jira', {
         template.innerHTML = html;
         return template;
     }
-
 });
