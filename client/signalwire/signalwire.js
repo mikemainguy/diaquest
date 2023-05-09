@@ -98,7 +98,8 @@ AFRAME.registerSystem('signalwire', {
 
 async function setupRoom() {
     const room = window.location.pathname;
-    const oculus = navigator.appVersion.indexOf('Oculus') > -1;
+
+
     if (room.startsWith('/worlds/')) {
         const data = await axios.get('/api/user/signalwireToken?room=' + room.split('/')[2]);
         if (data.status == 200) {
@@ -108,26 +109,35 @@ async function setupRoom() {
 
             const roomSession = new SignalWire.Video.RoomSession({
                 token: data.data.signalwire_token,
-                video: !oculus,
-                audio: true,
                 rootElement: document.getElementById('room'),
-
             });
-
+            let videoPresent = true;
             try {
-                await roomSession.join({audio: true, video: !oculus});
-                if (!oculus) {
-                    await roomSession.videoUnmute();
-                } else {
-                    //await roomSession.startScreenShare();
+                const video = await navigator.mediaDevices.getUserMedia({video: true});
+                if (!video) {
+                    videoPresent=false;
                 }
+            } catch (error) {
+                videoPresent = false;
+            }
+            try {
+
+                await roomSession.join({
+                    audio: true,
+                    video: true,
+                    sendVideo: videoPresent,
+                    receiveVideo: true,
+                    sendAudio: true,
+                    receiveAudio: true});
+                if (videoPresent) {
+                    await roomSession.videoUnmute();
+                }
+
+
                 return roomSession;
             } catch (error) {
-                if (typeof newrelic !== 'undefined') {
-                    newrelic.addPageAction('session start failed', {path: room, error: error});
-
-                }
-
+                console.log("Cannot join");
+                newrelic.addPageAction('session start failed', {path: room, error: error});
                 console.error("Error", error);
             }
         } else {
