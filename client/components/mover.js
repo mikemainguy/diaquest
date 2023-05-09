@@ -108,7 +108,7 @@ AFRAME.registerSystem('mover', {
     rotateY: function (t, dt) {
 
         if (dt && this.rig && this.rig.object3D && this.rotate && this.rig.object3D.rotation) {
-            const rotation = (dt/20) * this.rotate;
+            const rotation = (dt/10) * this.rotate;
             this.rig.object3D.rotation.y = rotation + this.rig.object3D.rotation.y;
         }
 

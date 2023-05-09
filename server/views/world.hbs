@@ -1,5 +1,5 @@
 
-<a-scene scene-initializer fog renderer="foveationLevel: .1">
+<a-scene scene-initializer  renderer="foveationLevel: .1">
     <script>
         if (typeof newrelic !== 'undefined') {
             newrelic.addPageAction('load assets');
@@ -62,7 +62,7 @@
     -->
     <a-entity position=".5 -1 2" light="type: directional; color: #88A; intensity: .4;"></a-entity>
     <a-circle radius="100" rotation="-90 0 0" shadow="receive: true" material="opacity: 1; src: /assets/grass.jpeg; repeat: 100 100; color: #bb3"></a-circle>
-    <a-sky id="skybox" radius="100" position="0 5 0" color="#fff"  src="/assets/outdoor_field.jpeg"></a-sky>
+    <a-sky id="skybox" radius="1000" position="0 5 0" color="#fff"  src="/assets/outdoor_field.jpeg"></a-sky>
     <a-plane width="4"
              height="4"
              color="#fff"
