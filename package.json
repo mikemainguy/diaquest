@@ -26,7 +26,7 @@
     "@signalwire/js": "^3.16.0",
     "aframe": "file:./local/aframe",
     "aframe-extras": "^6.1.1",
-    "aframe-lookatme": "^0.0.1",
+    "aframe-lookatme": "^0.0.3",
     "aframe-template-component": "^3.2.1",
     "analytics": "^0.8.1",
     "axios": "^0.27.2",

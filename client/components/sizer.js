@@ -61,7 +61,7 @@ AFRAME.registerComponent('sizer', {
     init: function () {
         this.el.setAttribute('material', 'color', this.data.color);
         this.el.setAttribute('sound', 'src: #audiohover; on: mouseenter');
-
+        this.tick = AFRAME.utils.throttleTick(this.tick, 20, this);
         this.start = new THREE.Vector3();
         this.sizing = false;
         this.position = AFRAME.utils.coordinates.parse(this.data.position);

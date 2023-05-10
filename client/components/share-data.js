@@ -4,7 +4,7 @@ AFRAME.registerComponent('share-position', {
     },
     init: function () {
         this.e = new THREE.Euler();
-
+        this.tick = AFRAME.utils.throttleTick(this.tick, 20, this);
         const templateComponent = this.el.parentEl.components['template'];
         this.hasPosition = true;
         this.dirty = false;

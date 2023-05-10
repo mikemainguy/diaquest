@@ -10,36 +10,34 @@ AFRAME.registerComponent('connector', {
     ,
     init() {
         this.changed = this.changed.bind(this);
-        this.tick = AFRAME.utils.throttleTick(this.tick, 100, this);
+        this.tick = AFRAME.utils.throttleTick(this.tick, 50, this);
         this.startAttached = false;
         this.endAttached = false;
         this.pos1 = new THREE.Vector3();
         this.pos2 = new THREE.Vector3();
+        this.direction = new THREE.Vector3();
+    },
+    markAttached: function(target, obj, flag) {
+        if (target) {
+            const el = document.querySelector(target);
+            if (!this[flag] && el?.object3D) {
+                el.addEventListener('child-attached', this.changed);
+                el.addEventListener('registerupdate', this.changed);
+                if (el?.components['stuff']?.saveable?.object3D) {
+                    this[obj] = el?.components['stuff']?.saveable?.object3D;
+                }
+                this[flag] = true;
+            }
+        }
     },
     update: function () {
+        this.markAttached(this.data.startEl,
+            'obj1',
+            'startAttached');
+        this.markAttached(this.data.endEl,
+            'obj2',
+            'endAttached');
 
-        if (this.data.startEl) {
-            const el = document.querySelector(this.data.startEl);
-            if (!this.startAttached && el && el.object3D) {
-                el.addEventListener('child-attached', this.changed);
-                el.addEventListener('registerupdate', this.changed);
-                if (el?.components['stuff']?.saveable?.object3D) {
-                    this.obj1 = el?.components['stuff']?.saveable?.object3D;
-                }
-                this.startAttached = true;
-            }
-        }
-        if (this.data.endEl) {
-            const el = document.querySelector(this.data.endEl);
-            if (!this.endAttached && el && el.object3D) {
-                el.addEventListener('child-attached', this.changed);
-                el.addEventListener('registerupdate', this.changed);
-                if (el?.components['stuff']?.saveable?.object3D) {
-                    this.obj2 = el?.components['stuff']?.saveable?.object3D;
-                }
-                this.endAttached = true;
-            }
-        }
         if (this.obj1 && this.obj2) {
             if (this.el.querySelector('.data-direction')) {
                 this.connector = this.el.querySelector('.data-direction').object3D;
@@ -68,17 +66,17 @@ AFRAME.registerComponent('connector', {
         }
     },
     tick: function (time, timeDelta) {
-        if (this.obj1 && this.obj2 && this.connector) {
+        if (this.obj1 &&
+            this.obj2 &&
+            this.connector) {
             this.obj1.getWorldPosition(this.pos1);
             this.obj2.getWorldPosition(this.pos2);
             const distance = this.pos1.distanceTo(this.pos2);
             const intersections = this.getIntersections(distance);
             if (intersections &&
                 intersections.length > 1) {
-
                 const d2 = intersections[0].distanceTo(intersections[1]);
                 const pos = intersections[0].lerp(intersections[1], .5);
-
                 this.el.object3D.position.set(pos.x, pos.y, pos.z);
                 this.el.object3D.lookAt(intersections[1]);
                 this.connector.scale.y = d2 - .02;
@@ -94,7 +92,6 @@ AFRAME.registerComponent('connector', {
                 } else {
                     this.label = this.el.querySelector('.label').object3D;
                 }
-
             }
         } else {
             this.update();
@@ -112,17 +109,18 @@ AFRAME.registerComponent('connector', {
         if (!this.obj1 || !this.obj1.el || !this.obj2 || !this.obj2.el) {
             return;
         }
-        const direction = new THREE.Vector3();
-        direction.subVectors(this.pos2, this.pos1);
-        direction.normalize();
-        const raycast = new THREE.Raycaster(this.pos1, direction, 0, distance);
+
+        this.direction.subVectors(this.pos2, this.pos1);
+        this.direction.normalize();
+        const raycast = new THREE.Raycaster(this.pos1, this.direction, 0, distance);
         const intersects = raycast.intersectObjects([this.obj1, this.obj2], true);
         const intersections = [];
         if (intersects.length > 0) {
             intersections.push(intersects[0].point);
         }
-        direction.multiplyScalar(-1);
-        const raycast2 = new THREE.Raycaster(this.pos2, direction, 0, distance);
+
+        this.direction.multiplyScalar(-1);
+        const raycast2 = new THREE.Raycaster(this.pos2, this.direction, 0, distance);
         const intersects2 = raycast2.intersectObjects([this.obj1, this.obj2], true);
         if (intersects2.length > 0) {
             intersections.push(intersects2[0].point);

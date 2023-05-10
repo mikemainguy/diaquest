@@ -19,6 +19,7 @@ AFRAME.registerComponent('stuff', {
     init: function () {
         this.el.setAttribute('sound', 'src: #audiohover; volume: 0.2; on: mouseenter;');
         this.el.addChild = this.addChild.bind(this);
+        this.tick = AFRAME.utils.throttleTick(this.tick, 50, this);
         this.el.emit('registerupdate', {el: this.el}, true);
         this.calculate = this.calculate.bind(this);
     },

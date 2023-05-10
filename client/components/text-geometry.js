@@ -47,7 +47,6 @@ AFRAME.registerComponent('text-geometry', {
     },
     tick: function (time) {
         const m = this.el.getObject3D('mesh');
-
         if (Math.abs(m.position.x) != this.offset) {
             if (m.geometry.boundingSphere) {
                 this.offset = m.geometry.boundingSphere.radius;
