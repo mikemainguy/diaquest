@@ -13,10 +13,10 @@ AFRAME.registerComponent('connector', {
         this.tick = AFRAME.utils.throttleTick(this.tick, 100, this);
         this.startAttached = false;
         this.endAttached = false;
-    },
-    update: function () {
         this.pos1 = new THREE.Vector3();
         this.pos2 = new THREE.Vector3();
+    },
+    update: function () {
 
         if (this.data.startEl) {
             const el = document.querySelector(this.data.startEl);
