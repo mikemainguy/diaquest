@@ -137,17 +137,18 @@ function createOrUpdateDom(entity) {
         }
     }
 }
-
-const sc = document
-    .querySelector('a-scene');
-if (sc.hasLoaded) {
-    startup().then(() => {
-        console.log('data loaded after scene');
-    });
-} else {
-    sc.addEventListener('loaded', function () {
+window.setTimeout(function() {
+    const sc = document
+        .querySelector('a-scene');
+    if (sc.hasLoaded) {
         startup().then(() => {
-            console.log('localdb loaded before scene');
+            console.log('data loaded after scene');
         });
-    })
-}
+    } else {
+        sc.addEventListener('loaded', function () {
+            startup().then(() => {
+                console.log('localdb loaded before scene');
+            });
+        })
+    }
+}, 2000);

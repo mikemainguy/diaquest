@@ -2,9 +2,9 @@
     <div class="container">
         <div class="row">
             <div class="col-6 col-12-medium">
-                <a href="/local" class="button-large">Try Local Demo</a>
+                <a href="/local" class="button-large">Demo</a>
                 {{#unless user}}
-                    <a href="/login" class="button-large">Log In</a>
+                    <a href="/login" class="button-large">Sign Up/Log In</a>
                 {{/unless}}
                 {{#if user}}
                     <a href="https://www.oculus.com/open_url/?url=https%3A%2F%2Fwww.immersiveidea.com"
@@ -62,7 +62,7 @@
                 <section>
                     <header><h2>Public Environments</h2></header>
                     {{#unless user}}
-                        <p>You must for <a href="/login">log in</a> to use these environments</p>
+                        <p><a href="/login">Sign Up/Log In</a> to use these environments</p>
                     {{/unless}}
                     <ul id="listing" class="link-list"></ul>
                 </section>
@@ -72,7 +72,7 @@
                 <section>
                     <header><h2>Private Environments</h2></header>
                     {{#unless user}}
-                        <p>You must for <a href="/login">log in</a> to use these environments</p>
+                        <p><a href="/login">Sign Up/Log In</a> to use these environments</p>
                     {{/unless}}
 
                     <ul class="link-list" id="privateListing"></ul>
