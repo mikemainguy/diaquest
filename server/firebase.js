@@ -73,6 +73,21 @@ const getJiraConfig = async function (world) {
         return null;
     }
 }
+const getNewRelicConfig = async function (world) {
+    const db = admin.database();
+    const dirref = db.ref(`/worlds/${world}/newRelic/config`);
+    const ref = await dirref.once('value');
+    if (ref.exists) {
+        const val = ref.val();
+        if (val.newrelic_account && val.newrelic_key) {
+            return val;
+        } else {
+            return null;
+        }
+    } else {
+        return null;
+    }
+}
 const listWorlds = async function (user) {
     const db = admin.database();
     const dirref = db.ref('/worlds');
@@ -126,6 +141,7 @@ const storeJiraBoardConfig = async function (world, boards) {
 
 
 module.exports = {
+    getNewRelicConfig: getNewRelicConfig,
     getAuth: getAuth,
     createWorld: createWorld,
     createCollaborator: createCollaborator,

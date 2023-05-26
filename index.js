@@ -30,7 +30,7 @@ app.get('/home', requiresAuth(), async (req, res) => {
     res.redirect('/worlds/' + userInfo.sub);
 });
 app.get('/worlds/:worldId', requiresAuth(), (req, res) => {
-    res.render('world', {vrConnected: true, version: version});
+    res.render('world', {vrConnected: true, version: version, layout: 'vr'});
 });
 api(app);
 const port = env.PORT;

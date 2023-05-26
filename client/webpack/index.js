@@ -2,6 +2,7 @@ require('aframe');
 require('aframe-extras');
 require('aframe-lookatme');
 require('aframe-template-component');
+require('aframe-frame-rate');
 require('super-three');
 
 

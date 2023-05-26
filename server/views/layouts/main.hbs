@@ -36,43 +36,119 @@
         <script src="/dist/index.{{version}}.bundle.js" type="application/javascript"></script>
         <script src="/dist/components.{{version}}.bundle.js" type="application/javascript"></script>
     {{/if}}
-    <link href="/assets/main.css" rel="stylesheet"/>
+    <link href="/assets/pages/main.css" rel="stylesheet"/>
 
 
 </head>
 
-<body>
+<body class="subpage">
 {{#if nonVr}}
-<div id="header">
-    <ul>
-        <li><a href="/">Home</a></li>
-        <li><a href="/pages/about">About</a></li>
-        <li><a href="/pages/documentation">Documentation</a></li>
+    <div id="page-wrapper">
+        <section id="header">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <h1><a href="/" id="logo">Immersive Idea</a></h1>
+                        <nav id="nav">
+                            <a href="/">Home</a>
+                            <a href="/pages/about">About</a>
+                            <!--<a href="/pages/documentation">Documentation</a>-->
+                            {{#if admin}}
+                                <a href="/pages/directory">Admin</a>
+                            {{/if}}
+                            {{#if user}}
+                                <a href="/pages/account">Account</a>
+                            {{/if}}
+                            {{#if user}}
+                                <a href="#">
+                                Hi {{user}}
+                                </a>
+                            {{/if}}
+                            {{#unless user}}
+                               <a href="/login">Sign Up</a>
+                            {{/unless}}
+                        </nav>
 
-        {{#if admin}}
-            <li><a href="/pages/directory">Admin</a></li>
+                    </div>
+                </div>
+            </div>
 
-        {{/if}}
-        <li><a href="mailto:support@immersiveidea.com">Contact Us</a></li>
-        {{#if user}}
-            <li><a href="/pages/account">Account</a></li>
 
-        {{/if}}
-    </ul>
-    {{#if user}}
+            {{{body}}}
 
-        <span class="user">
-            Hi {{user}}
-        </span>
-    {{/if}}
-    {{#unless user}}
-        <span class="user">
-           <a href="/login">Sign Up</a>
-        </span>
-    {{/unless}}
+
+    <section id="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-8 col-12-medium">
+
+                    <!-- Links -->
+                    <section>
+                        <h2>Powered By</h2>
+                        <div>
+                            <div class="row">
+                                <div class="col-3 col-12-small">
+                                    <ul class="link-list last-child">
+                                        <li><a href="#">A-Frame</a></li>
+                                        <li><a href="#">Threejs</a></li>
+                                        <li><a href="#">Google Firebase</a></li>
+
+                                    </ul>
+                                </div>
+                                <div class="col-3 col-12-small">
+                                    <ul class="link-list last-child">
+                                        <li><a href="#">Signalwire</a></li>
+                                        <li><a href="#">Github</a></li>
+                                        <li><a href="#">Assemblyai</a></li>
+
+                                    </ul>
+                                </div>
+                                <div class="col-3 col-12-small">
+                                    <ul class="link-list last-child">
+                                        <li><a href="#">Heroku</a></li>
+                                        <li><a href="#">Auth0</a></li>
+                                        <li><a href="#">Cloudflare</a></li>
+
+                                    </ul>
+                                </div>
+                                <div class="col-3 col-12-small">
+                                    <ul class="link-list last-child">
+                                        <li><a href="#">New Relic</a></li>
+                                        <li><a href="#">Miro</a></li>
+                                        <li><a href="#">JIRA</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                </div>
+                <div class="col-4 col-12-medium imp-medium">
+
+                    <!-- Blurb -->
+                    <section>
+                        <h2>The future of VR is the web</h2>
+                        <p>
+                            We believe building useful solutions will inevitably
+                            require open web based solutions.  Our platform enables
+                            rapid development and deployment of experiences beyond what
+                            is capable with device specific implementation tools.  Our
+                            platforms is built upon open and extensible standards that
+                            are already well established in the marketplace.
+                        </p>
+                    </section>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Copyright -->
+    <div id="copyright">
+        &copy; Immersive Idea LLC. All rights reserved. | Version {{version}}
+    </div>
 </div>
 {{/if}}
-{{{body}}}
 {{#if vrConnected}}
 
     <script defer src="/dist/speech.{{version}}.bundle.js" type="application/javascript"></script>
@@ -120,6 +196,46 @@
         b.src = "https://snap.licdn.com/li.lms-analytics/insight.min.js";
         s.parentNode.insertBefore(b, s);})(window.lintrk);
 </script>
+<script>
+    document.addEventListener('directoryUpdate', (evt) => {
+        const htmlId = evt.detail.htmlId;
+        if (htmlId) {
+            const dir = document.getElementById(htmlId);
+            for (const d of Object.entries(evt.detail.entries)) {
+                const id = d[0];
+                if (dir) {
+                    const li = document.createElement('li');
+                    li.setAttribute('eid', id);
+                    const a = document.createElement('a');
+                    a.setAttribute('href', '/worlds/' + id);
+                    a.append(id);
+                    li.appendChild(a);
+                    if (dir.querySelector("li[eid='" + id + "'")) {
+
+                    } else {
+                        dir.appendChild(li);
+                    }
+
+                }
+
+            }
+        }
+
+    });
+
+</script>
+<script defer src="/dist/db.{{version}}.bundle.js" type="application/javascript"></script>
+<script>
+    if (typeof navigator.serviceWorker !== 'undefined') {
+        navigator.serviceWorker.register('/sw.js');
+    }
+</script>
+
+<script src="assets/pages/js/jquery.min.js"></script>
+<script src="assets/pages/js/browser.min.js"></script>
+<script src="assets/pages/js/breakpoints.min.js"></script>
+<script src="assets/pages/js/util.js"></script>
+<script src="assets/pages/js/main.js"></script>
 <noscript>
     <img height="1" width="1" style="display:none;" alt="" src="https://px.ads.linkedin.com/collect/?pid=4494916&fmt=gif" />
 </noscript>

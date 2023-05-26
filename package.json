@@ -33,6 +33,7 @@
     "buffer-image-size": "^0.6.4",
     "cookies": "^0.8.0",
     "crypto-hash": "^2.0.1",
+    "aframe-frame-rate" : "^0.1.0",
     "debug": "^4.3.4",
     "directory-tree": "^3.5.1",
     "dom-to-image": "^2.6.0",

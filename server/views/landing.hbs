@@ -1,106 +1,88 @@
-<div class="main">
-    <div id="hero">
-        <h1>Explore Your Ideas in an Immersive VR experience</h1>
-        <a href="https://www.oculus.com/open_url/?url=https%3A%2F%2Fwww.immersiveidea.com">
-            Open on your Meta Quest headset</a>
-
-    </div>
-
-    <div id="envlist">
-
-    <ul>
-        <li><a href="/local">Local Environment</a></li>
-        {{#if user}}
-
-            <li><a href="/worlds/public">Public Cloud</a></li>
-            <li><a href="/home">Private Cloud</a></li>
-            <li><a href="/pages/newRelic">New Relic Explorer</a></li>
-
-        {{/if}}
-    </ul>
-        <div id="gallery">
-            <iframe  src="https://www.youtube.com/embed/cUchj31iC-A" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+<div id="banner">
+    <div class="container">
+        <div class="row">
+            <div class="col-6 col-12-medium">
+                <a href="/worlds/local" class="button-large">Try Local Demo</a>
+                {{#unless user}}
+                    <a href="/login" class="button-large">Log In</a>
+                {{/unless}}
+                {{#if user}}
+                    <a href="https://www.oculus.com/open_url/?url=https%3A%2F%2Fwww.immersiveidea.com"
+                       class="button-large">Load on Quest</a>
+                {{/if}}
+                <p>Use our web based 3D immersive VR editing experience for an
+                    entirely new way to interact with your creative work.
+                    Combine Virtual Reality, intuitive controls, mobile, desktop,
+                    and collaborative features where users can manipulate
+                    and edit their content in a more intuitive and visually compelling manner.</p>
+            </div>
+            <div class="col-6 col-12-medium imp-medium">
+                <!-- Banner Image -->
+                <!--<a href="#" class="bordered-feature-image" style="width: 30%"><img src="images/demo1.jpg" alt="" /></a> -->
+                <iframe class="bordered-feature-image" style="width: 100%; height: 100%"
+                        src="https://www.youtube.com/embed/cUchj31iC-A" title="YouTube video player" frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        allowfullscreen></iframe>
+            </div>
         </div>
-
-        {{#unless user}}
-
-            <div class="secure">
-
-                <a href="/login">Signup/Login to access</a>
-                <ul class="disabled">
-                    <li>Public Cloud</li>
-                    <li>Private Cloud</li>
-                    <li>New Relic Explorer</li>
-                </ul>
+    </div>
+</div>
+</section>
+<section id="content">
+    <div class="container">
 
 
+        <div class="row">
+            <div class="col-6 col-12-medium imp-medium">
+                <section id="features">
+                    <div class="container">
+                        <div class="row">
+                            <section>
+                                <h2>Technical Architects</h2>
+                                <p>Bring your designs to life by illustrating connections, dependencies,
+                                    and interrelations between platforms, technologies, and networks</p>
+                            </section>
+                            <section>
+                                <h2>Designers</h2>
+                                <p>Lead interactive design thinking sessions that offer immersive 3d experiences that
+                                    go miles beyond sticky notes and whiteboards. </p>
+                            </section>
+                            <section>
+                                <h2>Operations Teams</h2>
+                                <p>Integrate the platform with tools like New Relic to create immersive
+                                    control room experiences allowing users to visualize and operate your
+                                    platform in a virtual world.</p>
+                            </section>
+
+                        </div>
+                    </div>
+                </section>
+            </div>
+            <div class="col-3 col-12-medium">
+                <section>
+                    <header><h2>Public Environments</h2></header>
+                    {{#unless user}}
+                        <p>You must for <a href="/login">log in</a> to use these environments</p>
+                    {{/unless}}
+                    <ul id="listing" class="link-list"></ul>
+                </section>
             </div>
 
-        {{/unless}}
+            <div class="col-3 col-12-medium">
+                <section>
+                    <header><h2>Private Environments</h2></header>
+                    {{#unless user}}
+                        <p>You must for <a href="/login">log in</a> to use these environments</p>
+                    {{/unless}}
+
+                    <ul class="link-list" id="privateListing"></ul>
+                </section>
+            </div>
+
+        </div>
 
     </div>
-    <div>
-        Please take a <a href="https://www.surveymonkey.com/r/FDJ9FHQ">One Minute Survey</a>
-        to help guide product development.
-    </div>
-    <h3>Environments privately shared with you</h3>
-    <div>
-        <ul id="privateListing"></ul>
-    </div>
-    <h3>Public spaces that anyone can edit</h3>
-    <div>
-        <ul id="listing"></ul>
-    </div>
+</section>
 
-    <p>Adding a new dimension of power for individuals and teams to explore and collaborate on complex concepts</p>
-    <div>
-        <p>
-            Unlock the power of your Oculus quest to explore ideas in 3D VR worlds unencumbered by
-            the normal constraints of physical reality. Using our tool you can collaboratively edit
-            diagrams and express ideas, workflows, technical models, and other concepts using your
-            Meta Quest without downloading or installing any software.
-        </p>
-        <p>
-            Try one of the above examples and see the power of our next generation WebXR technology framework
-            with nothing more than your Meta Quest headset browser.
-        </p>
-    </div>
 
-</div>
-<span id="version">Version {{version}}</span>
-<span id="copyright">Copyright 2023 - Immersive Idea LLC</span>
-<script>
-    document.addEventListener('directoryUpdate', (evt) => {
-        const htmlId = evt.detail.htmlId;
-        if (htmlId) {
-            const dir = document.getElementById(htmlId);
-            for (const d of Object.entries(evt.detail.entries)) {
-                const id = d[0];
-                if (dir) {
-                    const li = document.createElement('li');
-                    li.setAttribute('eid', id);
-                    const a = document.createElement('a');
-                    a.setAttribute('href', '/worlds/' + id);
-                    a.append(id);
-                    li.appendChild(a);
-                    if (dir.querySelector("li[eid='" + id + "'")) {
 
-                    } else {
-                        dir.appendChild(li);
-                    }
-
-                }
-
-            }
-        }
-
-    });
-
-</script>
-<script defer src="/dist/db.{{version}}.bundle.js" type="application/javascript"></script>
-
-<script>
-    if (typeof navigator.serviceWorker !== 'undefined') {
-        navigator.serviceWorker.register('/sw.js');
-    }
-</script>

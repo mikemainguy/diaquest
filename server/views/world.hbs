@@ -1,5 +1,5 @@
 
-<a-scene scene-initializer  renderer="foveationLevel: .1">
+<a-scene stats scene-initializer preferences renderer="foveationLevel: .1">
     <script>
         if (typeof newrelic !== 'undefined') {
             newrelic.addPageAction('load assets');
@@ -27,6 +27,9 @@
    -->
     <a-entity id="navigation" lookatme navigation position="23 2 0"></a-entity>
     <a-link visible="false" lookatme href="/pages/newRelic" position="0 8 -23" title="New Relic"></a-link>
+    <!--<a-entity id="test123" position="0 1.5 3.5" html-component="html: test<br/>this is some more text">
+
+    </a-entity> -->
 
     <a-entity id="sizer" visible="false">
 
@@ -56,13 +59,21 @@
     <a-entity  id="ambient" sound="src: url(/assets/sounds/classical.mp3); loop: true; volume: 0.1; positional: false"></a-entity>
 
 
-    </a-entity>
-    <!--
-    <a-entity position="0 0 2" gltf-model="url(/assets/basketball.glb)"></a-entity
-    -->
+
+   <!-- <a-entity>
+        <a-plane width="28" material="src: url(/assets/materials/wood_floor.jpeg); repeat: 2 8" position="0 .01 0" height="15" rotation="-90 0 0">
+        </a-plane>
+        <a-circle segments="36" radius="1.77" rotation="-90 0 0" material="src: url(/assets/materials/wood_floor.jpeg); repeat: 1 2" position="0 .0106 0"></a-circle>
+        <a-circle segments="36" radius="1.83" rotation="-90 0 0" position="0 .0103 0"></a-circle>
+        <a-plane width=".05" height="15" position="0 .0106 0" rotation="-90 0 0"></a-plane>
+        <a-plane width="4.57" height=".05" position="12.195 .0102 6.71" rotation="-90 0 0"></a-plane>
+        <a-plane width="4.57" height=".05" position="12.195 .0102 -6.71" rotation="-90 0 0"></a-plane>
+    </a-entity> -->
+
     <a-entity position=".5 -1 2" light="type: directional; color: #88A; intensity: .4;"></a-entity>
-    <a-circle radius="100" rotation="-90 0 0" shadow="receive: true" material="opacity: 1; src: /assets/grass.jpeg; repeat: 100 100; color: #bb3"></a-circle>
-    <a-sky id="skybox" radius="1000" position="0 5 0" color="#fff"  src="/assets/outdoor_field.jpeg"></a-sky>
+    <a-circle hide-on-enter-ar id="floor" radius="100" rotation="-90 0 0" shadow="receive: true"></a-circle>
+    <a-sky hide-on-enter-ar id="skybox" radius="1000" position="0 5 0" color="#000"></a-sky>
+
     <a-plane width="4"
              height="4"
              color="#fff"
