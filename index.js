@@ -22,7 +22,7 @@ const sgMail = require("@sendgrid/mail");
 auth0(app);
 setup(app);
 app.get('/local', (req, res) => {
-    res.render('world', {vrLocal: true, version: version});
+    res.render('world', {vrLocal: true, version: version, layout: 'vr'});
 });
 app.get('/login', (req, res) => res.oidc.login({returnTo: '/'}));
 app.get('/home', requiresAuth(), async (req, res) => {
