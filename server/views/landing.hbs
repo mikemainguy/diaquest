@@ -1,21 +1,33 @@
 <div id="banner">
     <div class="container">
         <div class="row">
-            <div class="col-6 col-12-medium">
+            <div class="col-4 col-12-medium">
                 <a href="/local" class="button-large">Demo</a>
+            </div>
+            <div class="col-4 col-12-medium">
                 {{#unless user}}
                     <a href="/login" class="button-large">Sign Up/Log In</a>
                 {{/unless}}
                 {{#if user}}
                     <a href="https://www.oculus.com/open_url/?url=https%3A%2F%2Fwww.immersiveidea.com"
-                       class="button-large">Load on Quest</a>
+                       class="button-large">Launch on Quest</a>
                 {{/if}}
+            </div>
+            <div class="col-4 col-12-medium">
+                <a class="button-large" href="https://discord.gg/qVbrhxTeW9">Join Our Discord</a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6 col-12-medium">
+
+
                 <p>Use our web based 3D immersive VR editing experience for an
                     entirely new way to interact with your creative work.
                     Combine Virtual Reality, intuitive controls, mobile, desktop,
                     and collaborative features where users can manipulate
                     and edit their content in a more intuitive and visually compelling manner.</p>
             </div>
+
             <div class="col-6 col-12-medium imp-medium">
                 <!-- Banner Image -->
                 <!--<a href="#" class="bordered-feature-image" style="width: 30%"><img src="images/demo1.jpg" alt="" /></a> -->
@@ -24,6 +36,7 @@
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                         allowfullscreen></iframe>
             </div>
+
         </div>
     </div>
 </div>

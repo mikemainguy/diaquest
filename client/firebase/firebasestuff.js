@@ -31,19 +31,37 @@ export function createOrUpdateDom (entity) {
             const parent = ele.getAttribute('stuff').parent;
             if (parent && document.querySelector('#' + parent)) {
                 ele.sceneEl.object3D.attach(ele.object3D);
-                ele.object3D.setRotationFromEuler(new THREE.Euler(
-                    THREE.MathUtils.degToRad(entity.rotation.x),
-                    THREE.MathUtils.degToRad(entity.rotation.y),
-                    THREE.MathUtils.degToRad(entity.rotation.z)));
+                if (entity.template == '#user-template') {
+                    const head = ele.querySelector('.head');
+                    head.object3D.setRotationFromEuler(new THREE.Euler(
+                        THREE.MathUtils.degToRad(entity.rotation.x),
+                        THREE.MathUtils.degToRad(entity.rotation.y),
+                        THREE.MathUtils.degToRad(entity.rotation.z)));
+                } else {
+                    ele.object3D.setRotationFromEuler(new THREE.Euler(
+                        THREE.MathUtils.degToRad(entity.rotation.x),
+                        THREE.MathUtils.degToRad(entity.rotation.y),
+                        THREE.MathUtils.degToRad(entity.rotation.z)));
+                }
+
                 document.querySelector('#' + parent).object3D.attach(ele.object3D);
             } else {
-                ele.object3D.setRotationFromEuler(new THREE.Euler(
-                    THREE.MathUtils.degToRad(entity.rotation.x),
-                    THREE.MathUtils.degToRad(entity.rotation.y),
-                    THREE.MathUtils.degToRad(entity.rotation.z)));
+                if (entity.template == '#user-template') {
+                    const head = ele.querySelector('.head');
+                    head.object3D.setRotationFromEuler(new THREE.Euler(
+                        THREE.MathUtils.degToRad(entity.rotation.x),
+                        THREE.MathUtils.degToRad(entity.rotation.y),
+                        THREE.MathUtils.degToRad(entity.rotation.z)));
+                } else {
+                    ele.object3D.setRotationFromEuler(new THREE.Euler(
+                        THREE.MathUtils.degToRad(entity.rotation.x),
+                        THREE.MathUtils.degToRad(entity.rotation.y),
+                        THREE.MathUtils.degToRad(entity.rotation.z)));
+                }
             }
 
         } else {
+
             ele.setAttribute('rotation', entity.rotation);
         }
 

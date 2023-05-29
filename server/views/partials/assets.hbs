@@ -202,26 +202,30 @@
         </a-entity>
     </script>
     <script id="user-template" type="html">
-        <a-entity share-position>
-        <a-entity rotation="0 0 0">
-            <a-entity rotation="0 0 0" scale="0.2 0.2 0.1">
+        <a-entity avatar share-position>
+
+            <a-entity rotation="0 0 0" class="head" scale="0.2 0.2 0.15">
                 <a-sphere
-                position="0 .5 0"
-                material="color: #ff0; opacity: .9"
-                radius=".5">
+                    position="0 .5 0"
+                    material="color: #ff0; opacity: 1"
+                    radius=".5">
+                    </a-sphere>
+                <a-entity>
+                <a-sphere position=".2 .6 -.4"
+                    radius="0.1" color="#33c">
                 </a-sphere>
-            <a-entity>
-            <a-sphere position=".2 .6 -.4"
-                radius="0.1" color="#33c">
-            </a-sphere>
-            <a-sphere position="-.2 .6 -.4"
-                radius="0.1" color="#33c">
-            </a-sphere>
+                <a-sphere position="-.2 .6 -.4"
+                    radius="0.1" color="#33c">
+                </a-sphere>
+            </a-entity>
             </a-entity>
             <a-entity
                     mixin="labelMixin"
-                    position="0 1 0">
+                    position="0 .5 0">
             </a-entity>
+            <a-cone class="body" position="0 -.5 0" radius-bottom=".2" radius-top=".04" height="1" color="#ff0">
+
+            </a-box>
         </a-entity>
     </script>
     <img id="voiceicon" src="/assets/voice.svg">
