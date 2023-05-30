@@ -5,6 +5,24 @@ import {default as axios} from "axios";
 AFRAME.registerSystem('signalwire', {
     init: function () {
         this.roomSession = null;
+        document.addEventListener('changeDevice', (evt) => {
+            if (this.roomSession) {
+                switch(evt.detail.kind) {
+                    case 'audioinput':
+                        this.roomSession.updateMicrophone({deviceId: evt.detail.id});
+                        break;
+                    case 'audiooutput':
+                        this.roomSession.updateSpeaker({deviceId: evt.detail.id});
+                        break;
+                    case 'videoinput':
+                        this.roomSession.updateCamera({deviceId: evt.detail.id});
+                        break;
+                    default:
+                        console.log('unknown event:  ' + JSON.serialize(evt.detail) );
+                }
+            }
+        });
+
         document.addEventListener('connectSignalwire', (evt) => {
             if (this.roomSession && this.roomSession.active) {
                 this.debug('already in session');
@@ -44,7 +62,10 @@ AFRAME.registerSystem('signalwire', {
                         }
                         this.roomSession.destroy();
                         this.roomSession = null;
-
+                        const els = document.querySelectorAll('.insession');
+                        els.forEach((el) => {
+                            el.setAttribute('visible', 'false');
+                        });
                     }).catch((error) => {
                         console.log(error);
                     });
@@ -95,6 +116,23 @@ AFRAME.registerSystem('signalwire', {
         console.log(message);
     }
 });
+function createDeviceList(id, items) {
+    const el = document.createElement('ul');
+    el.setAttribute('id', id);
+    for (const item of items) {
+        const it = document.createElement('li');
+        const a = document.createElement('a');
+        a.setAttribute('href', '#');
+        a.setAttribute('data-id', item.id);
+        a.setAttribute('data-kind', item.kind);
+
+        a.innerText = item.label;
+        it.appendChild(a);
+        el.appendChild(it);
+
+    }
+    document.getElementById('mediaselect').appendChild(el);
+}
 
 async function setupRoom() {
     const room = window.location.pathname;
@@ -114,6 +152,31 @@ async function setupRoom() {
             let videoPresent = true;
             try {
                 const video = await navigator.mediaDevices.getUserMedia({video: true});
+                const devices = await SignalWire.WebRTC.enumerateDevices();
+                const audioinputdevices = [];
+                const audiooutputdevices = [];
+                const videodevices = [];
+                for (const device of devices) {
+                    if (device.kind) {
+                        switch (device.kind) {
+                            case 'audioinput':
+                                audioinputdevices.push({kind: 'audioinput', id: device.deviceId, label: device.label});
+                                break;
+                            case 'videoinput' :
+                                videodevices.push({kind: 'videoinput', id: device.deviceId, label: device.label});
+                                break;
+                            case 'audiooutput' :
+                                audiooutputdevices.push({kind: 'audiooutput', id: device.deviceId, label: device.label});
+                                break;
+                            default:
+                                console.log(JSON.stringify(device) + ' Unknown device kind');
+                        }
+                    }
+                }
+                createDeviceList('audioinput', audioinputdevices);
+                createDeviceList('audiooutput', audiooutputdevices);
+                createDeviceList('videoinput', videodevices);
+                console.log(JSON.stringify(devices));
                 if (!video) {
                     videoPresent=false;
                 }

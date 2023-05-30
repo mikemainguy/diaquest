@@ -2,6 +2,9 @@
     <div id="room"></div>
 </div>
 <div class="nonvr">
+
+    <button style="float: right" id="hideNonVR">Hide</button>
+    <button style="float: right" id="showNonVR">Show</button>
     <button id="joinButton"></button>
     <button id="leaveButton"></button>
     <button id="muteButton"></button>
@@ -13,6 +16,9 @@
         <input id="fileupload" type="file" name="fileupload"/>
         <button id="uploadButton" type="submit"></button>
     </form>
+    <div id="mediaselect">
+
+    </div>
 
 </div>
 
@@ -33,41 +39,59 @@
 
     }, false);
 
-    document.getElementById('homeButton').addEventListener('click', () => {
-        window.location.href = (window.location.origin);
-    });
-    document.getElementById('joinButton').addEventListener('click', (evt) => {
-        document.dispatchEvent(
-                new CustomEvent('connectSignalwire',
-                        {detail: 'OK'}));
-        document.getElementById('leaveButton').style.display = 'inline-block';
-        document.getElementById('joinButton').style.display = 'none';
-        document.getElementById('muteButton').style.display = 'inline-block';
+    document.addEventListener('click', (event) => {
+        event.preventDefault();
+        if (event.target.getAttribute('data-kind')) {
+            document.dispatchEvent(
+                    new CustomEvent('changeDevice',
+                            {detail:
+                                        {kind: event.target.getAttribute('data-kind'),
+                                            id: event.target.getAttribute('data-id')}}));
+            console.log(event.target);
+        }
+        switch(event.target.getAttribute('id')) {
+            case 'joinButton':
+                document.dispatchEvent(
+                        new CustomEvent('connectSignalwire',
+                                {detail: 'OK'}));
+                document.getElementById('leaveButton').style.display = 'inline-block';
+                document.getElementById('joinButton').style.display = 'none';
+                document.getElementById('muteButton').style.display = 'inline-block';
 
-    });
-    document.getElementById('leaveButton').addEventListener('click', (evt) => {
-        document.dispatchEvent(
-                new CustomEvent('disconnectSignalwire',
-                        {detail: 'OK'}));
-        document.getElementById('leaveButton').style.display = 'none';
-        document.getElementById('joinButton').style.display = 'inline-block';
-        document.getElementById('muteButton').style.display = 'none';
-        document.getElementById('unmuteButton').style.display = 'none';
+                break;
+            case 'leaveButton':
+                document.dispatchEvent(
+                        new CustomEvent('disconnectSignalwire',
+                                {detail: 'OK'}));
+                document.getElementById('leaveButton').style.display = 'none';
+                document.getElementById('joinButton').style.display = 'inline-block';
+                document.getElementById('muteButton').style.display = 'none';
+                document.getElementById('unmuteButton').style.display = 'none';
+                break;
+            case 'muteButton':
 
-    });
-    document.getElementById('muteButton').addEventListener('click', (evt) => {
-        document.dispatchEvent(
-                new CustomEvent('mute',
-                        {detail: 'OK'}));
-        document.getElementById('muteButton').style.display = 'none';
-        document.getElementById('unmuteButton').style.display = 'inline-block';
+                    document.dispatchEvent(
+                            new CustomEvent('mute',
+                                    {detail: 'OK'}));
+                    document.getElementById('muteButton').style.display = 'none';
+                    document.getElementById('unmuteButton').style.display = 'inline-block';
 
-    });
-    document.getElementById('unmuteButton').addEventListener('click', (evt) => {
-        document.dispatchEvent(
-                new CustomEvent('unmute',
-                        {detail: 'OK'}));
-        document.getElementById('muteButton').style.display = 'inline-block';
-        document.getElementById('unmuteButton').style.display = 'none';
+                break;
+            case 'unmuteButton':
+                document.dispatchEvent(
+                        new CustomEvent('unmute',
+                                {detail: 'OK'}));
+                document.getElementById('muteButton').style.display = 'inline-block';
+                document.getElementById('unmuteButton').style.display = 'none';
+                break;
+            case 'homeButton': {
+                window.location.href = (window.location.origin);
+            }
+            case 'hideNonVR': {
+
+            }
+
+        }
+
     });
 </script>
