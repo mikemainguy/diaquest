@@ -3,19 +3,23 @@
 </div>
 <div class="nonvr">
 
-    <button style="float: right" id="hideNonVR">Hide</button>
-    <button style="float: right" id="showNonVR">Show</button>
-    <button id="joinButton"></button>
-    <button id="leaveButton"></button>
-    <button id="muteButton"></button>
-    <button id="unmuteButton"></button>
-    <button id="homeButton"></button>
+    <button style="float: right;" id="hideNonVR">Show Less</button>
+    <button style="float: right; display: none" id="showNonVR">Show More</button>
+    <div>
+        <button id="joinButton">Join Call</button>
+        <button id="leaveButton"></button>
+        <button id="muteButton"></button>
+        <button id="unmuteButton"></button>
+        <button id="homeButton">Go Home</button>
+    </div>
+    <div>
+        <form id="media" action="/api/media/create">
+            <label for="fileupload">Upload Media</label>
+            <input id="fileupload" type="file" name="fileupload"/>
+            <button id="uploadButton" type="submit">Upload File</button>
+        </form>
+    </div>
 
-    <form id="media" action="/api/media/create">
-        <label for="fileupload">Upload Media</label>
-        <input id="fileupload" type="file" name="fileupload"/>
-        <button id="uploadButton" type="submit"></button>
-    </form>
     <div id="mediaselect">
 
     </div>
@@ -23,9 +27,15 @@
 </div>
 
 <script>
-    document.getElementById('media').addEventListener('submit', function (event) {
+    document.getElementById('media')
+            .addEventListener('submit', function (event) {
         event.preventDefault();
         let formData = new FormData();
+        if (!event.target.fileupload.files) {
+            window.alert('select a file first');
+            return;
+        }
+
         formData.append("file", event.target.fileupload.files[0]);
         formData.append("path", window.location.pathname);
         fetch(event.target.action, {

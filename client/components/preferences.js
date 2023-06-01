@@ -1,8 +1,8 @@
 AFRAME.registerSystem('preferences', {
     schema: {
-        skyMaterial: {type: 'string', default: '/assets/outdoor_field.jpeg'},
+        skyMaterial: {type: 'string', default: '/assets/skyboxes/outdoor_field.jpeg'},
         skyColor: {type: 'string', default: '#fff'},
-        floorMaterial: {type: 'string', default: '/assets/grass.jpeg'},
+        floorMaterial: {type: 'string', default: '/assets/materials/grass.jpeg'},
         floorColor: {type: 'string', default: '#bb3'},
         floorRepeat: {type: 'string', default: '100 100'},
         ambientVolume: {type: 'number', default: '1'}

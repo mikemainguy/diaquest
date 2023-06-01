@@ -154,6 +154,8 @@ div.nonvr {
     bottom: 20px;
     left: 20px;
     background-color: #fff;
+
+
 }
 
 div.nonvr form {
@@ -163,11 +165,14 @@ div.nonvr form {
 
 
 div.nonvr  button {
-    width: 50px;
+    width: 128px;
     height: 50px;
     margin: 1px;
     border-radius: 16px;
-    background-size: cover;
+    background-size: 32px;
+    background-repeat: no-repeat;
+    background-position-y: center;
+    padding-left: 32px;
 }
 div.nonvr  button div {
     font-size: xx-small;
@@ -212,6 +217,12 @@ div.nonvr >> a {
 }
 #homeButton {
     background-image: url('/assets/icons/home-512x512-1617693.png');
+}
+#showNonVR {
+    background-image: url('/assets/icons/right-arrow-512x512-1617668.png');
+}
+#hideNonVR {
+    background-image: url('/assets/icons/left-512x512-1617692.png');
 }
 #uploadButton {
     background-image: url('/assets/icons/cloud-upload-512x512-1617655.png');
