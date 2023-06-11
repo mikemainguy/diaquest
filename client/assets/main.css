@@ -154,9 +154,26 @@ div.nonvr {
     bottom: 20px;
     left: 20px;
     background-color: #fff;
-
-
 }
+#showNonVR, #hideNonVR {
+    float: right;
+}
+div.nonvr #showNonVR {
+    display: none;
+}
+div.nonvrclosed {
+    width: 130px;
+    height: 52px;
+    overflow: hidden;
+}
+
+div.nonvrclosed #hideNonVR {
+    display: none;
+}
+div.nonvrclosed #showNonVR {
+    display: block;
+}
+
 
 div.nonvr form {
     display: inline-block;
@@ -178,7 +195,6 @@ div.nonvr  button div {
     font-size: xx-small;
 }
 div.nonvr >> a {
-
     overflow: hidden;
 }
 #roomparent {

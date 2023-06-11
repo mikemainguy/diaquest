@@ -1,10 +1,10 @@
 <div id="roomparent">
     <div id="room"></div>
 </div>
-<div class="nonvr">
+<div class="nonvr nonvrclosed">
 
-    <button style="float: right;" id="hideNonVR">Show Less</button>
-    <button style="float: right; display: none" id="showNonVR">Show More</button>
+    <button id="hideNonVR">Hide Menu</button>
+    <button id="showNonVR">Show Menu</button>
     <div>
         <button id="joinButton">Join Call</button>
         <button id="leaveButton"></button>
@@ -94,12 +94,17 @@
                 document.getElementById('muteButton').style.display = 'inline-block';
                 document.getElementById('unmuteButton').style.display = 'none';
                 break;
-            case 'homeButton': {
+            case 'homeButton':
                 window.location.href = (window.location.origin);
-            }
-            case 'hideNonVR': {
 
-            }
+            case 'hideNonVR':
+                document.querySelector('div.nonvr').classList.add('nonvrclosed');
+                break;
+
+            case 'showNonVR':
+                document.querySelector('div.nonvr').classList.remove(['nonvrclosed']);
+                break;
+
 
         }
 
