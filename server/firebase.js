@@ -88,6 +88,12 @@ const getNewRelicConfig = async function (world) {
         return null;
     }
 }
+const getWorld = async function(worldId) {
+    const db = admin.database();
+    const dirref = db.ref('/worlds/' + worldId);
+    const data = await dirref.once('value');
+    return data.val();
+}
 const listWorlds = async function (user) {
     const db = admin.database();
     const dirref = db.ref('/worlds');
@@ -157,5 +163,6 @@ module.exports = {
     storeMedia: storeMedia,
     updateJira: updateJira,
     getJiraConfig: getJiraConfig,
-    storeJiraBoardConfig: storeJiraBoardConfig
+    storeJiraBoardConfig: storeJiraBoardConfig,
+    getWorld: getWorld
 };

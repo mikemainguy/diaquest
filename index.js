@@ -1,6 +1,7 @@
 const {auth0, requiresAuth} = require('./server/auth0');
 const env = require('./server/env');
 const {expressLogger} = require('./server/logging');
+const {getWorld} = require('./server/firebase');
 const fileUpload = require("express-fileupload");
 require('./server/newrelic');
 
@@ -32,6 +33,14 @@ app.get('/home', requiresAuth(), async (req, res) => {
 app.get('/worlds/:worldId', requiresAuth(), (req, res) => {
     res.render('world', {vrConnected: true, version: version, layout: 'vr'});
 });
+app.get('/preview/:worldId',  (req, res) => {
+    getWorld(req.params['worldId'])
+        .then((data) => {
+            res.render('preview', {vrLocal: true, version: version, layout: 'preview', data: data});
+        })
+
+});
+
 api(app);
 const port = env.PORT;
 app.listen(port, () => {

@@ -42,14 +42,15 @@
             type: 'image/png'
         });
     };
-    document.querySelector('a-scene').addEventListener('renderstart', function(evt) {
+    {{#unless vrLocal}}
+        document.querySelector('a-scene').addEventListener('renderstart', function(evt) {
+            window.setTimeout(function() {
+                const evt = new CustomEvent('uploadPreview');
+                document.dispatchEvent(evt);
+            }, 15000);
+        });
+    {{/unless}}
 
-       window.setTimeout(function() {
-           const evt = new CustomEvent('uploadPreview');
-           document.dispatchEvent(evt);
-       }, 15000);
-
-    });
     document.addEventListener('uploadPreview', function() {
         const canvas = document.querySelector('a-scene').components.screenshot.getCanvas('equirectangular');
         canvas.toBlob(function(blob) {
