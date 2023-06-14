@@ -22,9 +22,10 @@ module.exports.handler = async(req, res) => {
         res.sendStatus(405);
         return;
     }
+    const world = req.body.path.replace('/worlds', '');
     const key = crypto
         .createHash('sha256')
-        .update(req.files.file.name)
+        .update(world + req.files.file.name)
         .digest('hex');
     const entry = {
         key: key,
@@ -43,7 +44,7 @@ module.exports.handler = async(req, res) => {
     } catch (err) {
         console.log(err);
     }
-    await storeMedia(req.body.path.replace('/worlds', ''), key, req.files.file.name, req.files.file.mimetype, dimensions.width, dimensions.height);
+    await storeMedia(req.body.path.replace('/worlds', ''), key, req.files.file.name, req.files.file.mimetype, dimensions.width, dimensions.height, req.body.preview);
     console.log(response);
     console.log(entry);
     res.status(200).send({status: 'OK'});

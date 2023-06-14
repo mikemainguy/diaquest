@@ -58,10 +58,26 @@
             <a-cone rotation="-90 0 0" segments-height="1" segments-radial="8" position="0 0 0" radius-top="0" radius-bottom="0.02" height=".04" class="data-packet" color="#111">
             </a-cone>
             <a-cylinder segments-height="1" segments-radial="8" open-ended="true" class="saveable data-direction" rotation="90 0 0" position="0 0 0"
-                        material="opacity: 0.9; color: #33f" height="1" radius="0.06" visible="false">
+                        material="opacity: 1; color: #33f" height="1" radius="0.06" visible="false">
             </a-cylinder>
             <a-entity class="label" mixin="labelMixin" position="0 0.3 0"></a-entity>
         </a-entity>
+    </script>
+    <script id="arc-template" type="html">
+        <a-entity class="data-connector" share-position>
+            <a-cone rotation="-90 0 0" segments-height="1" segments-radial="8" position="0 0 0" radius-top="0" radius-bottom="0.02" height=".04" class="data-packet" color="#111">
+            </a-cone>
+            <a-torus radius="1" radius-tubular=".02" arc="50" rotation="90 25 0" position="-.8 0 0"
+             material="color: #ff0"></a-torus>
+
+
+             <a-cylinder segments-height="1" segments-radial="8" open-ended="true" class="saveable data-direction" rotation="90 0 0" position="0 0 0"
+                        material="opacity: 0.9; color: #33f" height="1" radius="0.06" visible="true">
+            </a-cylinder>
+            <a-entity class="label" mixin="labelMixin" position="0 0.3 0"></a-entity>
+        </a-entity>
+
+
     </script>
     <script id="jiratemplate" type="html">
         <a-entity class="key" position="0 0 .0501" text="value: ???; color: #222; align: center">

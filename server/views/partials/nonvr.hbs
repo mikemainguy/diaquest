@@ -16,6 +16,7 @@
         <form id="media" action="/api/media/create">
             <label for="fileupload">Upload Media</label>
             <input id="fileupload" type="file" name="fileupload"/>
+            <input id="preview" type="hidden" name="preview" value="false"/>
             <button id="uploadButton" type="submit">Upload File</button>
         </form>
     </div>
@@ -27,6 +28,49 @@
 </div>
 
 <script>
+    function dataURLtoBlob(dataURL) {
+        let array, binary, i, len;
+        binary = atob(dataURL.split(',')[1]);
+        array = [];
+        i = 0;
+        len = binary.length;
+        while (i < len) {
+            array.push(binary.charCodeAt(i));
+            i++;
+        }
+        return new Blob([new Uint8Array(array)], {
+            type: 'image/png'
+        });
+    };
+    document.querySelector('a-scene').addEventListener('renderstart', function(evt) {
+
+       window.setTimeout(function() {
+           const evt = new CustomEvent('uploadPreview');
+           document.dispatchEvent(evt);
+       }, 15000);
+
+    });
+    document.addEventListener('uploadPreview', function() {
+        const canvas = document.querySelector('a-scene').components.screenshot.getCanvas('equirectangular');
+        canvas.toBlob(function(blob) {
+            let formData = new FormData();
+
+            formData.append("file", blob, 'preview.png');
+            formData.append("path", window.location.pathname);
+            formData.append("preview", "true");
+            fetch("/api/media/create", {
+                method: "POST",
+                body: formData
+            }).then((res) => {
+                console.log('preview uploaded');
+            });
+        });
+
+
+
+
+    });
+
     document.getElementById('media')
             .addEventListener('submit', function (event) {
         event.preventDefault();
@@ -35,9 +79,9 @@
             window.alert('select a file first');
             return;
         }
-
         formData.append("file", event.target.fileupload.files[0]);
         formData.append("path", window.location.pathname);
+        formData.append("preview", "false");
         fetch(event.target.action, {
             method: "POST",
             body: formData
@@ -50,7 +94,11 @@
     }, false);
 
     document.addEventListener('click', (event) => {
-        event.preventDefault();
+        if (event.target.getAttribute('name') != "fileupload" &&
+            event.target.getAttribute('type') != "submit") {
+            event.preventDefault();
+        }
+
         if (event.target.getAttribute('data-kind')) {
             document.dispatchEvent(
                     new CustomEvent('changeDevice',

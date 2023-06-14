@@ -1,5 +1,5 @@
 
-<a-scene stats scene-initializer preferences renderer="foveationLevel: .1">
+<a-scene scene-initializer preferences renderer="foveationLevel: .1">
     <script>
         if (typeof newrelic !== 'undefined') {
             newrelic.addPageAction('load assets');
@@ -52,6 +52,7 @@
     </a-entity>
 
     {{> rig }}
+
     <a-entity light="type: ambient; color: #fff; intensity: .9">
 
     </a-entity>
