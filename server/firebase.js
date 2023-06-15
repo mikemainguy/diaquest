@@ -32,11 +32,12 @@ const getUser = async (user) => {
 }
 const createWorld = async function (world, owner, publicFlag) {
     try {
+        const public = publicFlag? "write": null;
         const db = admin.database();
         const ref = db.ref('/worlds/' + world);
         const val = await ref.once('value');
         if (!val.exists()) {
-            await ref.set({"owner": owner, "public": publicFlag});
+            await ref.set({"owner": owner, "public": public});
             const dirref = db.ref('/directory/' + world);
             await dirref.set({"owner": owner, "public": publicFlag, "name": world});
         } else {

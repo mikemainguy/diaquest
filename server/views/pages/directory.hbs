@@ -1,42 +1,83 @@
-<form id="createWorld" method="POST" action="/api/worlds/create">
-    <div>
-        <label for="name">Name</label><input name="name">
-    </div>
-    <div>
-        <label for="">public?</label><input name="public" type="checkbox">
-    </div>
-    <div>
-        <input type="submit">
-    </div>
-</form>
-<form id="addCollaborator" method="POST" action="/api/worlds/invite">
-    <div>
-        <label for="email">Email</label><input name="email">
-    </div>
-    <div>
-        <label for="world">World</label><input name="world">
-    </div>
-    <div>
-        <input type="submit">
-    </div>
+<section id="content">
+    <div class="container">
+        <div class="row">
+            <div class="col-6 col-12-medium imp-medium">
+                <section id="features">
+                    <div class="container">
+                        <div class="row">
+                            <h2>Create World</h2>
+                            <div class="container">
+                            <form id="createWorld" method="POST" action="/api/worlds/create">
+                                <label for="name">Name</label><br>
+                                <input name="name"><br>
+                                <label for="">public?</label><br>
+                                <input id="public" name="public" type="checkbox" value="public"><br>
+                                <input type="submit">
+                            </form>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            <div class="col-6 col-12-medium imp-medium">
+                <section id="features">
+                    <div class="container">
+                        <div class="row">
+                            <h2>Add Collaborator</h2>
+                            <div class="container">
+                                <form id="addCollaborator" method="POST" action="/api/worlds/invite">
+
+                                        <label for="email">Email</label><br><input name="email"><br>
 
 
+                                        <label for="world">World</label><br><input name="world"><br>
+            <br>
 
-</form>
+                                        <input type="submit">
+
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6 col-12-medium imp-medium">
+                <section id="features">
+                    <div class="container">
+                        <div class="row">
+                            <h2>Existing Worlds</h2>
+                            <div class="container">
+                                <ul id="listing">
+
+                                </ul>
+
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+
 
 <script>
     document.getElementById('createWorld').addEventListener('submit',
-            function(event) {
+            function (event) {
                 event.preventDefault();
                 fetch(event.target.action,
                         {
                             headers: {
                                 "Content-Type": "application/x-www-form-urlencoded"
                             },
-                            method:'post',
+                            method: 'post',
                             body: new URLSearchParams(new FormData(event.target))
                         }
-                ).then((res)=> {
+                ).then((res) => {
                     if (res.status == 'OK') {
                         window.alert('world created');
                     } else {
@@ -47,7 +88,7 @@
 
 
     document.getElementById('addCollaborator').addEventListener('submit',
-            function(event) {
+            function (event) {
                 const form = FormData(event.target);
                 event.preventDefault();
                 fetch(event.target.action,
@@ -55,10 +96,10 @@
                             headers: {
                                 "Content-Type": "application/json"
                             },
-                            method:'post',
+                            method: 'post',
                             body: {email: form.get('email'), world: form.get('world')}
                         }
-                ).then((res)=> {
+                ).then((res) => {
                     if (res.status == 'OK') {
                         window.alert('collaborator added');
                     } else {
@@ -69,7 +110,4 @@
 
 </script>
 
-<ul id="listing">
-
-</ul>
 

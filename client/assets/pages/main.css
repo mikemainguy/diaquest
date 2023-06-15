@@ -89,7 +89,13 @@ input, select, textarea {
 		line-height: 1.85em;
 		font-weight: 300;
 	}
-
+	input[type=checkbox] {
+		display: block;
+		width: 1.85em;
+		height: 1.85em;
+		border: 2px solid #000;
+		-webkit-appearance:checkbox;
+	}
 	input, textarea, select {
 		color: #474f51;
 		font-size: 13.5pt;
