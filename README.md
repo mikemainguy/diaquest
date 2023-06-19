@@ -34,3 +34,4 @@ and run a completely custom solution versus making everything "come to the mothe
 Feel free to reach out on discord at
 
 "Small Store" (https://skfb.ly/6wzr9) by nikolanchino is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).
+"Server Rack" (https://skfb.ly/6SARA) by Spellkaze is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).
