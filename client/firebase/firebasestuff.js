@@ -81,6 +81,7 @@ export function createOrUpdateDom (entity) {
     const image = entity.image ? entity.image : '';
     const color = entity.color ? entity.color : '#669';
     const text = entity.text ? entity.text : '';
+    const objurl = entity.objurl ? entity.objurl : '/assets/models/small_store.glb'
     const parent = entity.parent ? entity.parent : '';
     switch (entity.template) {
         case '#user-template':
@@ -89,12 +90,14 @@ export function createOrUpdateDom (entity) {
         case '#pane-template':
         case '#cylinder-template':
         case '#light-template':
+        case '#glb-template':
         case '#sphere-template':
             ele.setAttribute('stuff', 'text: ' + text
                 + '; color: ' + color
                 + '; scale: ' + scale
                 + '; image: ' + image
-                + '; parent: ' + parent);
+                + '; parent: ' + parent
+                + '; objurl: ' + objurl);
             break;
         case '#connector-template':
             ele.setAttribute('stuff', 'text: ' + text + '; color: ' + color);

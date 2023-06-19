@@ -31,4 +31,6 @@ Would love some help on troubleshooting this and figuring out how to handle "new
 "completely new tenant for auth/firebase"...ideally corporate client and others could just fork this and config
 and run a completely custom solution versus making everything "come to the mothership".
 
-Feel free to reach out on discord at 
+Feel free to reach out on discord at
+
+"Small Store" (https://skfb.ly/6wzr9) by nikolanchino is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).

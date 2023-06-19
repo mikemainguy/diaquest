@@ -119,6 +119,7 @@ function createOrUpdateDom(entity) {
         case '#pane-template':
         case '#cylinder-template':
         case '#light-template':
+        case '#glb-template':
         case '#sphere-template':
             ele.setAttribute('stuff', 'text: ' + text + '; color: ' + color + '; scale: ' + scale);
             break;

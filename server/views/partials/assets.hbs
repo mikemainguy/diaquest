@@ -63,6 +63,22 @@
             <a-entity class="label" mixin="labelMixin" position="0 0.3 0"></a-entity>
         </a-entity>
     </script>
+    <script id="glb-template" type="html">
+    <a-entity share-position>
+
+                <a-entity
+                    class="saveable"
+                    gltf-model="/assets/models/small_shop2.glb">
+                </a-entity>
+
+
+            <a-entity
+                    mixin="labelMixin"
+                    position="0 0.4 0">
+            </a-entity>
+        </a-entity>
+
+    </script>
     <script id="arc-template" type="html">
         <a-entity class="data-connector" share-position>
             <a-cone rotation="-90 0 0" segments-height="1" segments-radial="8" position="0 0 0" radius-top="0" radius-bottom="0.02" height=".04" class="data-packet" color="#111">

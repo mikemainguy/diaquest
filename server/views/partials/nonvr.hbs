@@ -7,6 +7,8 @@
     <button id="showNonVR">Show Menu</button>
     <div>
         <button id="joinButton">Join Call</button>
+        <button id="startScreenShareButton">Screen Share</button>
+
         <button id="leaveButton"></button>
         <button id="muteButton"></button>
         <button id="unmuteButton"></button>
@@ -143,6 +145,11 @@
                 document.getElementById('muteButton').style.display = 'inline-block';
                 document.getElementById('unmuteButton').style.display = 'none';
                 break;
+            case 'startScreenShareButton':
+                document.dispatchEvent(
+                        new CustomEvent('startScreenShare',
+                                {detail: 'OK'}));
+
             case 'homeButton':
                 window.location.href = (window.location.origin);
 

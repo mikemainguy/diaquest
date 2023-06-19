@@ -7,7 +7,7 @@ AFRAME.registerSystem('signalwire', {
         this.roomSession = null;
         document.addEventListener('changeDevice', (evt) => {
             if (this.roomSession) {
-                switch(evt.detail.kind) {
+                switch (evt.detail.kind) {
                     case 'audioinput':
                         this.roomSession.updateMicrophone({deviceId: evt.detail.id});
                         break;
@@ -18,8 +18,18 @@ AFRAME.registerSystem('signalwire', {
                         this.roomSession.updateCamera({deviceId: evt.detail.id});
                         break;
                     default:
-                        console.log('unknown event:  ' + JSON.serialize(evt.detail) );
+                        console.log('unknown event:  ' + JSON.serialize(evt.detail));
                 }
+            }
+        });
+        document.addEventListener('startScreenShare', async (evt) => {
+            if (this.roomSession && this.roomSession.active) {
+                this.screenshare = await this.roomSession.startScreenShare(
+                    {
+                        layout: "screen-share",
+                        autoJoin: true,
+                        positions: {self: "reserved-1"}
+                    });
             }
         });
 
@@ -116,6 +126,7 @@ AFRAME.registerSystem('signalwire', {
         console.log(message);
     }
 });
+
 function createDeviceList(id, items) {
     const el = document.createElement('ul');
     el.setAttribute('id', id);
@@ -166,7 +177,11 @@ async function setupRoom() {
                                 videodevices.push({kind: 'videoinput', id: device.deviceId, label: device.label});
                                 break;
                             case 'audiooutput' :
-                                audiooutputdevices.push({kind: 'audiooutput', id: device.deviceId, label: device.label});
+                                audiooutputdevices.push({
+                                    kind: 'audiooutput',
+                                    id: device.deviceId,
+                                    label: device.label
+                                });
                                 break;
                             default:
                                 console.log(JSON.stringify(device) + ' Unknown device kind');
@@ -178,7 +193,7 @@ async function setupRoom() {
                 createDeviceList('videoinput', videodevices);
                 console.log(JSON.stringify(devices));
                 if (!video) {
-                    videoPresent=false;
+                    videoPresent = false;
                 }
             } catch (error) {
                 videoPresent = false;
@@ -191,7 +206,8 @@ async function setupRoom() {
                     sendVideo: videoPresent,
                     receiveVideo: true,
                     sendAudio: true,
-                    receiveAudio: true});
+                    receiveAudio: true
+                });
                 if (videoPresent) {
                     await roomSession.videoUnmute();
                 }

@@ -8,6 +8,7 @@ AFRAME.registerSystem('stuff', {
 });
 AFRAME.registerComponent('stuff', {
     schema: {
+        objurl: {type: 'string'},
         text: {type: 'string'},
         color: {type: 'string'},
         scale: {type: 'string', default: '.2 .2 .2'},
@@ -34,6 +35,7 @@ AFRAME.registerComponent('stuff', {
         this.text = this.data.text;
         this.sides = this.data.sides;
         this.image = this.data.image;
+        this.objurl = this.data.objurl;
         this.saveable = this.el.querySelector('.saveable');
         this.packet = this.el.querySelector('.data-packet');
         this.textDisplay = this.el.querySelector('[text]');
