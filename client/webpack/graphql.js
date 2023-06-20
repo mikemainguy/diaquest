@@ -6,11 +6,11 @@ document.addEventListener('gqlquery', async (event) => {
     const q = gql`
  {
   actor {
-    account(id: ${profile.newrelic_account}) {
+    account(id: 622279) {
       id
       name
       nrql(query: 
-      "${event.detail.query}"
+      "SELECT count(*) as value2, percentile(largestContentfulPaint, 95) as value1 FROM PageViewTiming  SINCE 3 days AGO facet pageUrl order by value2 desc limit 20 timeseries 1 hour"
       ) {
         results
       }

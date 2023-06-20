@@ -63,6 +63,16 @@
             <a-entity class="label" mixin="labelMixin" position="0 0.3 0"></a-entity>
         </a-entity>
     </script>
+    <script id="newrelic-template" type="html">
+    <a-entity share-position>
+        <a-sphere position="0 0 1" radius=".1" class="saveable"></a-sphere>
+        <a-entity newrelic position="0 0 0"></a-entity>
+        <a-entity
+                    mixin="labelMixin"
+                    position="0 -0.4 0">
+            </a-entity>
+    </a-entity>
+    </script>
     <script id="glb-template" type="html">
     <a-entity share-position>
 

@@ -45,12 +45,14 @@
         });
     };
     {{#unless vrLocal}}
+        <!--
         document.querySelector('a-scene').addEventListener('renderstart', function(evt) {
             window.setTimeout(function() {
                 const evt = new CustomEvent('uploadPreview');
                 document.dispatchEvent(evt);
             }, 15000);
         });
+        -->
     {{/unless}}
 
     document.addEventListener('uploadPreview', function() {

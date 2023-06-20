@@ -32,6 +32,7 @@
 
     <script src="/dist/index.{{version}}.bundle.js" type="application/javascript"></script>
     <script src="/dist/components.{{version}}.bundle.js" type="application/javascript"></script>
+
     {{#if vrLocal}}
         <script>
             var VRLOCAL = true;
@@ -40,6 +41,7 @@
     {{/if}}
     {{#unless vrLocal}}
         <script src="/dist/db.{{version}}.bundle.js" type="application/javascript"></script>
+        <script src="/dist/graphql.{{version}}.bundle.js" type="application/javascript"></script>
     {{/unless}}
     <link href="/assets/main.css" rel="stylesheet"/>
 </head>

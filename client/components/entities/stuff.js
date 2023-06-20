@@ -251,11 +251,14 @@ AFRAME.registerComponent('stuff', {
                 this.el.sceneEl.object3D.attach(this.grabbed.object3D);
 
             }
-            const newPos = round(this.grabbed.object3D.position, .1);
+            const positionSnap = 0.05;
+            const rotationSnap = 22.5;
+
+            const newPos = round(this.grabbed.object3D.position, positionSnap);
             this.grabbed.object3D.position.set(newPos.x, newPos.y, newPos.z);
 
             const ang = AFRAME.utils.coordinates.parse(this.grabbed.getAttribute('rotation'));
-            this.grabbed.setAttribute('rotation', AFRAME.utils.coordinates.stringify(round(ang, 45)));
+            this.grabbed.setAttribute('rotation', AFRAME.utils.coordinates.stringify(round(ang, rotationSnap)));
             this.grabbed = null;
         }
     }

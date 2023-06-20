@@ -5,11 +5,12 @@ AFRAME.registerSystem('preferences', {
         floorMaterial: {type: 'string', default: '/assets/materials/grass.jpeg'},
         floorColor: {type: 'string', default: '#272'},
         floorRepeat: {type: 'string', default: '100 100'},
-        ambientVolume: {type: 'number', default: '1'}
+        ambientVolume: {type: 'number', default: '1'},
+        rotateSnap: {type: 'number', default: '22.5'},
+        positionSnap: {type: 'number', default: '.1'}
     },
     init: function () {
         console.log("Preferences Initialized");
-
         this.el.sceneEl.addEventListener('loaded', () => {
             console.log("Main Scene Loaded");
         })

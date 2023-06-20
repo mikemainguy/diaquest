@@ -74,6 +74,19 @@
             </a-plane>
             <a-icon width=".25" height=".25" position="0 -.3 0.045" name="plus"></a-icon>
         </a-entity>
+        <a-entity>
+            <a-entity widget="method: add; template: #newrelic-template; label: New Relic"
+                      obj-model="obj: url(/assets/models/button.obj)"
+                      material="color: #fce; opacity: 1"></a-entity>
+            <a-plane
+                    width="0.25"
+                    height="0.25"
+                    position="0 0 0.045"
+                    mixin="widgetMaterial">
+
+            </a-plane>
+            <a-icon width=".25" height=".25" position="0 -.3 0.045" name="plus"></a-icon>
+        </a-entity>
 
         <a-entity>
             <a-entity widget="method: edit; label: Text"

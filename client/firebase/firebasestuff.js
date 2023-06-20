@@ -91,6 +91,7 @@ export function createOrUpdateDom (entity) {
         case '#cylinder-template':
         case '#light-template':
         case '#glb-template':
+        case '#newrelic-template':
         case '#sphere-template':
             ele.setAttribute('stuff', 'text: ' + text
                 + '; color: ' + color

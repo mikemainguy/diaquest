@@ -31,11 +31,15 @@ module.exports.handler = async(req, res) => {
         key: key,
         name: req.files.file.name
     }
+    let mimetype = req.files.file.mimetype;
+    if (req.files.file.name.endsWith('glb')) {
+        mimetype = 'model/gltf-binary';
+    }
     const response = await S3.send(
             new PutObjectCommand({Bucket: 'immersiveidea',
                 Key: key,
                 ContentLength: req.files.file.size,
-                ContentType: req.files.file.mimetype,
+                ContentType: mimetype,
                 Body: Readable.from(req.files.file.data)})
         );
     let dimensions = {width: 100, height: 100};
@@ -44,7 +48,7 @@ module.exports.handler = async(req, res) => {
     } catch (err) {
         console.log(err);
     }
-    await storeMedia(req.body.path.replace('/worlds', ''), key, req.files.file.name, req.files.file.mimetype, dimensions.width, dimensions.height, req.body.preview);
+    await storeMedia(req.body.path.replace('/worlds', ''), key, req.files.file.name, mimetype, dimensions.width, dimensions.height, req.body.preview);
     console.log(response);
     console.log(entry);
     res.status(200).send({status: 'OK'});
