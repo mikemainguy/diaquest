@@ -26,6 +26,7 @@ app.get('/local', (req, res) => {
     res.render('world', {vrLocal: true, version: version, layout: 'vr'});
 });
 app.get('/login', (req, res) => res.oidc.login({returnTo: '/'}));
+app.use('/cameras', express.static('cameras/dist'))
 app.get('/home', requiresAuth(), async (req, res) => {
     const userInfo = req.oidc.user;
     res.redirect('/worlds/' + userInfo.sub);

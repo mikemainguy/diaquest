@@ -24,7 +24,10 @@ const env =
         R2_ACCOUNT_ID: process.env.R2_ACCOUNT_ID || '',
         R2_ACCESS_KEY_ID: process.env.R2_ACCESS_KEY_ID || '',
         R2_SECRET_ACCESS_KEY: process.env.R2_SECRET_ACCESS_KEY || '',
-        SENDGRID_API_KEY: process.env.SENDGRID_API_KEY || ''
+        SENDGRID_API_KEY: process.env.SENDGRID_API_KEY || '',
+        RING_TOKEN: process.env.RING_TOKEN || ''
+
+
     }
 module.exports = env;
 
