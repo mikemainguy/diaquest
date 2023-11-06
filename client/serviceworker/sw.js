@@ -45,9 +45,6 @@ workbox.routing.registerRoute(
     })
 );
 
-
-
-
 workbox.routing.registerRoute(
     new RegExp('/login'),
     new workbox.strategies.NetworkFirst()

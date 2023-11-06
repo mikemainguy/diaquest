@@ -2,6 +2,8 @@ const axios = require("axios");
 module.exports.handler = async (req, res) => {
     console.log(req.body);
     const input = {"query":" {  actor {    user  { name } } }"};
+    //await axios.options('https://api.newrelic.com/graphql',
+
     const data = await axios.post('https://api.newrelic.com/graphql',
         req.body,
         {headers: { "Api-Key": "NRAK-W6FQ9H1JM9QE8UHIOIYATZPRMEG"}, "Content-Type": "application/json"}

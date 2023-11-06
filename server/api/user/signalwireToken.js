@@ -26,7 +26,6 @@ module.exports.handler = (req, res) => {
                 }
             });
 
-
         signalwirePromise.then((data) => {
             const obj = {};
             obj.signalwire_token = data.data.token;
